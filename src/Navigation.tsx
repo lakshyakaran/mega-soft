@@ -107,36 +107,43 @@ const navLinkGroups: INavLinkGroup[] = [
 
 const navStyles: Partial<INavStyles> = {
   root: {
+        position: "fixed",
         width: 208,
-        borderBottomLeftRadius:20,
-        borderTopLeftRadius:20,
         backgroundColor: '#040848',
-        selectors:{'&:hover': { color:'red' } }
+        height: "100%",
+        left: 0,
+        top: 0,
+        // selectors:{'&:hover': { color:"#040848" } }
     },
     link: {
         width: '200px',
-        selectors:{'&:hover': { color:'red' } }
     },
     linkText: {
         color: '#FFF',
         fontSize: 12,
         selectors: {
-            '&:hover': { color: 'red' },
-            '&:active ,&:focus-within': { backgroundColor: '#0337a4' }
+            '&:hover': { color:"#040848" },
         }
     },
     chevronIcon: {
         color:'#FFF'
-    }
+    },
     // navItems: {
     //     color: '#FFF',
     //     '&:hover': { color: 'red' },
     // }
-    // compositeLink: {
-    //     selectors: {
-    //         '&:active ,&:focus-within': { backgroundColor: '#0337a4' }
-    //     }
-    // },
+    compositeLink: {
+        selectors: {
+            '&:hover': {
+                '.ms-Button': {
+                    background: "red",
+                },
+                '.ms-Nav-linkText': {
+                    color: '#040848' // your real styling here
+                }
+            },
+        }
+    },
 };
 
 function Navigation() {
@@ -146,18 +153,13 @@ function Navigation() {
         setSelectedNavKey(item?.key || '');
     };
     return (
-        <div>
-            {/* <div>
-                {children}
-            </div> */}
-            <Nav
-                onLinkClick={onLinkClick}
-                selectedKey={selectedNavKey}
-                ariaLabel="Nav basic example"
-                styles={navStyles}
-                groups={navLinkGroups}
-            />
-        </div>
+        <Nav
+            onLinkClick={onLinkClick}
+            selectedKey={selectedNavKey}
+            ariaLabel="Nav basic example"
+            styles={navStyles}
+            groups={navLinkGroups}
+        />
     )
 }
 
