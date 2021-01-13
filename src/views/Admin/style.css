@@ -1,0 +1,10 @@
+.root {
+    background-color: aqua;
+    border: 1px solid black;
+}
+.buttonStyle{
+    justify-content: flex-end;
+}
+.buttonStyle :ms-Button--primary{
+    margin-right: 10px;
+}

@@ -1,4 +1,18 @@
+body{
+  background-color: #f8f7fc;
+}
 .container{
-  width: calc("100% - 208px");
-  margin-left: 208px;
+  width: calc("100% - 20px");
+  margin-left: 200px;
+}
+.sidebar{
+  position: fixed;
+  width: 208;
+  background-color: #040848;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.content{
+  /* padding: 10px; */
 }

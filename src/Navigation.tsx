@@ -9,11 +9,10 @@ initializeIcons();
 
 const navLinkGroups: INavLinkGroup[] = [
     {
-        name: 'Performance',
         links: [
             {
                 name: 'Appraisal',
-                url: '',
+                url: '/claim',
                 key: '01',
                 icon:'UpgradeAnalysis',
                 expandAriaLabel: 'Expand Home section',
@@ -107,12 +106,6 @@ const navLinkGroups: INavLinkGroup[] = [
 
 const navStyles: Partial<INavStyles> = {
   root: {
-        position: "fixed",
-        width: 208,
-        backgroundColor: '#040848',
-        height: "100%",
-        left: 0,
-        top: 0,
         // selectors:{'&:hover': { color:"#040848" } }
     },
     link: {
@@ -148,18 +141,46 @@ const navStyles: Partial<INavStyles> = {
 
 function Navigation() {
     // const { children } = props;
+    let history = useHistory();
     const [selectedNavKey, setSelectedNavKey] = React.useState('');
     const onLinkClick = (ev?: React.MouseEvent<HTMLElement>, item?: INavLink) => {
         setSelectedNavKey(item?.key || '');
     };
+    React.useEffect(() => {
+        navLinkGroups[0].links.map(item => {
+          if(item.links) {
+            item.links.map(subItem => {
+              if(matchPath(history.location.pathname, {
+                path: subItem.url,
+                exact: true
+              })) {
+                setSelectedNavKey(subItem?.key || '');
+                return;
+              }
+            })
+          } else {
+            if(matchPath(history.location.pathname, {
+              path: item.url,
+              exact: true
+            })) {
+              setSelectedNavKey(item?.key || '');
+              return;
+            }
+          }
+        })
+      }, [history.location.pathname]
+    );
     return (
-        <Nav
-            onLinkClick={onLinkClick}
-            selectedKey={selectedNavKey}
-            ariaLabel="Nav basic example"
-            styles={navStyles}
-            groups={navLinkGroups}
-        />
+        <div className="sidebar">
+            <h1>Logo</h1>
+            <Nav
+                onLinkClick={onLinkClick}
+                selectedKey={selectedNavKey}
+                ariaLabel="Nav basic example"
+                styles={navStyles}
+                groups={navLinkGroups}
+            />
+        </div>
     )
 }
 

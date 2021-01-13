@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Breadcrumb, IBreadcrumbItem, IDividerAsProps } from 'office-ui-fabric-react/lib/Breadcrumb';
+import { Breadcrumb, IBreadcrumbItem, IBreadcrumbStyles, IDividerAsProps } from 'office-ui-fabric-react/lib/Breadcrumb';
 import { DefaultButton, IContextualMenuProps, Stack, IStackTokens, IStackProps } from 'office-ui-fabric-react';
 import { TooltipHost } from 'office-ui-fabric-react/lib/Tooltip';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
+
+import './Header.css'
 
 const menuProps: IContextualMenuProps = {
   items: [
@@ -22,9 +24,8 @@ function _onBreadcrumbItemClicked(ev?: React.MouseEvent<HTMLElement>, item?: IBr
   console.log(`Breadcrumb item with key "${item?.key}" has been clicked.`);
 }
 const itemsWithHeading: IBreadcrumbItem[] = [
-  { text: 'Files', key: 'Files', onClick: _onBreadcrumbItemClicked },
-  { text: 'Folder 1', key: 'd1', onClick: _onBreadcrumbItemClicked },
-  { text: 'Folder 2', key: 'd2', isCurrentItem: true, as: 'h4' },
+  { text: 'Claims', key: 'Files', onClick: _onBreadcrumbItemClicked, href:'/claim' },
+  { text: '20192281', key: 'd1', isCurrentItem: true }
 ];
 function _getCustomOverflowIcon(): JSX.Element {
   return <Icon iconName={'ChevronDown'} />;
@@ -40,6 +41,16 @@ function _getCustomDivider(dividerProps: IDividerAsProps): JSX.Element {
   );
 }
 
+const breadCrumStyle : Partial<IBreadcrumbStyles> ={
+  root:{
+    margin: '0px',
+    padding:'10px'
+  },
+  itemLink:{
+    fontSize:'22px',
+  }
+}
+
 function Header(props: { item?: IBreadcrumbItem[] }) {
   const _alertClicked = () => {
     console.log("clicked==>")
@@ -50,13 +61,16 @@ function Header(props: { item?: IBreadcrumbItem[] }) {
   };
     
   return (
-    <Breadcrumb
-      items={itemsWithHeading}
-      maxDisplayedItems={3}
-      ariaLabel="With custom rendered divider and overflow icon"
-      dividerAs={_getCustomDivider}
-      onRenderOverflowIcon={_getCustomOverflowIcon}
-    />
+    <div className="header">
+      <Breadcrumb
+        items={itemsWithHeading}
+        styles={breadCrumStyle}
+        maxDisplayedItems={3}
+        ariaLabel="With custom rendered divider and overflow icon"
+        dividerAs={_getCustomDivider}
+        onRenderOverflowIcon={_getCustomOverflowIcon}
+      />
+    </div>
   )
 }
 
