@@ -12,7 +12,7 @@ function App() {
       <div className="container">
         
         <Switch>
-          <Route exact path="/claim" component={Admin} />
+          <Route exact path="/" component={Admin} />
         </Switch>
       </div>
     </BrowserRouter>

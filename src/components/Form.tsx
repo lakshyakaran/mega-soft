@@ -9,6 +9,7 @@ import {
   IStackProps,
   IStackStyles,
 } from "office-ui-fabric-react/lib/Stack";
+import "./style.css";
 
 function Form() {
   const stackTokens = { childrenGap: 50 };
@@ -24,8 +25,8 @@ function Form() {
     },
   };
   return (
-    <div>
-      {/* <Stack horizontal tokens={stackTokens} styles={stackStyles}>
+    <div className="form-container">
+      <Stack horizontal tokens={stackTokens} styles={stackStyles}>
         <TextField required label="ID" styles={textfelidStyle} />
         <TextField required label="Description" styles={textfelidStyle} />
       </Stack>
@@ -36,7 +37,7 @@ function Form() {
       <Stack horizontal tokens={stackTokens} styles={stackStyles}>
         <TextField label="Review From" styles={textfelidStyle} />
         <TextField label="Appraisal To" styles={textfelidStyle} />
-      </Stack> */}
+      </Stack>
       <h3>form to add </h3>
     </div>
   );

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DetailsList,
   IColumn,
   IDetailsColumnStyles,
   IDetailsListStyleProps,
   IDetailsListStyles,
+  IGroup,
 } from "office-ui-fabric-react/lib/DetailsList";
 import { mergeStyleSets } from "office-ui-fabric-react/lib/Styling";
 import "office-ui-fabric-react/dist/css/fabric.css";
@@ -28,12 +29,16 @@ import { useId, useBoolean } from "@uifabric/react-hooks";
 import { IBreadcrumbItem } from "office-ui-fabric-react/lib/Breadcrumb";
 import Header from "../../Header";
 import Form from "../../components/Form";
+import { Pagination } from '@uifabric/experiments';
+
+
 
 import "./style.css";
 
-const operations = [
-  {
-    sno: "01",
+const operations: any[] = [];
+for(var i = 0; i < 500; i++) {
+  operations.push(  {
+    sno: i+1,
     action: "action1",
     id: "1.343",
     description: "Lorem ipsum dolor sit amet,",
@@ -41,48 +46,8 @@ const operations = [
     appraisalTo: "20-05-2020",
     owner: "20-05-2020",
     reviewFrequency: "20-05-2020",
-  },
-  {
-    sno: "02",
-    action: "bltpro2",
-    id: "1.343",
-    description: "Lorem ipsum dolor sit amet,",
-    reviewFrom: "20-05-2020",
-    appraisalTo: "20-05-2020",
-    owner: "20-05-2020",
-    reviewFrequency: "20-05-2020",
-  },
-  {
-    sno: "03",
-    action: "dgfkogtw",
-    id: "1.343",
-    description: "Lorem ipsum dolor sit amet,",
-    reviewFrom: "20-05-2020",
-    appraisalTo: "20-05-2020",
-    owner: "20-05-2020",
-    reviewFrequency: "20-05-2020",
-  },
-  {
-    sno: "04",
-    action: "Lorem ipsum ",
-    id: "1.343",
-    description: "Lorem ipsum dolor sit amet,",
-    reviewFrom: "20-05-2020",
-    appraisalTo: "20-05-2020",
-    owner: "20-05-2020",
-    reviewFrequency: "20-05-2020",
-  },
-  {
-    sno: "05",
-    action: "monLorem ipsum ",
-    id: "1.343",
-    description: "Lorem ipsum dolor sit amet,",
-    reviewFrom: "20-05-2020",
-    appraisalTo: "20-05-2020",
-    owner: "20-05-2020",
-    reviewFrequency: "20-05-2020",
-  },
-];
+  })
+}
 const headerStyle: Partial<IDetailsColumnStyles> = {
   cellTitle: {
     color: "#c00",
@@ -103,7 +68,8 @@ function Admin() {
       key: "01",
       name: "S.No.",
       fieldName: "sno",
-      minWidth: 150,
+      minWidth: 10,
+      maxWidth: 70,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -116,7 +82,8 @@ function Admin() {
       key: "02",
       name: "Action",
       fieldName: "action",
-      minWidth: 150,
+      minWidth: 10,
+      maxWidth: 150,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -129,7 +96,8 @@ function Admin() {
       key: "03",
       name: "Id",
       fieldName: "id",
-      minWidth: 150,
+      minWidth: 10,
+      maxWidth: 150,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -142,7 +110,8 @@ function Admin() {
       key: "04",
       name: "Description",
       fieldName: "description",
-      minWidth: 150,
+      minWidth: 10,
+      maxWidth: 250,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -155,8 +124,8 @@ function Admin() {
       key: "05",
       name: "Review From",
       fieldName: "reviewFrom",
-      minWidth: 150,
-      isSorted: true,
+      minWidth: 10,
+      maxWidth: 150,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -168,7 +137,8 @@ function Admin() {
       key: "06",
       name: "Appraisal To",
       fieldName: "appraisalTo",
-      minWidth: 150,
+      minWidth: 10,
+      maxWidth: 150,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -181,7 +151,8 @@ function Admin() {
       key: "07",
       name: "Owner",
       fieldName: "owner",
-      minWidth: 150,
+      minWidth: 10,
+      maxWidth: 150,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -194,7 +165,8 @@ function Admin() {
       key: "08",
       name: "Review Frequency",
       fieldName: "reviewFrequency",
-      minWidth: 150,
+      minWidth: 10,
+      maxWidth: 100,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -248,15 +220,13 @@ function Admin() {
   }
 
   const modalStyle: Partial<IModalStyles> = {
-    root: {
-      width: "100%",
-      ".ms-Dialog-main main-164": {
-        height: "70%",
-        width: "70%",
-        backgroundColor: "#edf5ff",
-      },
+    root: {},
+    main: {
+      height: "70%",
+      width: "70%",
+      backgroundColor: "#7d9dc5",
+      padding: "5px",
     },
-    main: {},
   };
 
   const theme = getTheme();
@@ -287,6 +257,15 @@ function Admin() {
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(
     false
   );
+
+  const [itemsLength, setItemsLength] = useState(0);
+  const [currentPage, setCurentPage] = useState(0);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    setItemsLength(operations.length);
+  }, []);
+  
   //   const [items, setItems] = useState(operations);
   const [state, setState] = useState({
     items: operations,
@@ -338,6 +317,8 @@ function Admin() {
     },
   };
 
+  const itemsToDisplay = state.items.filter((item, index) => index >= currentPage * itemsPerPage && index < (currentPage + 1) * itemsPerPage);
+
   return (
     <div className="view">
       <Header item={itemsWithHeading} />
@@ -351,9 +332,24 @@ function Admin() {
           />
           <DetailsList
             styles={listStyle}
-            items={state.items}
+            items={itemsToDisplay}
             columns={columns}
             selectionMode={1}
+          />
+          <Pagination
+            format="buttons"
+            selectedPageIndex={currentPage}
+            pageCount={Math.ceil
+              (itemsLength / itemsPerPage)}
+            itemsPerPage={itemsPerPage}
+            totalItemCount={itemsLength}
+            previousPageAriaLabel={'previous page'}
+            nextPageAriaLabel={'next page'}
+            firstPageAriaLabel={'first page'}
+            lastPageAriaLabel={'last page'}
+            pageAriaLabel={'page'}
+            selectedAriaLabel={'selected'}
+            onPageChange={(page) => setCurentPage(page)}
           />
           <Stack horizontal tokens={stackTokens} className="buttonStyle">
             <PrimaryButton
@@ -375,11 +371,11 @@ function Admin() {
             isOpen={isModalOpen}
             onDismiss={hideModal}
             isModeless={true}
-            containerClassName={contentStyles.container}
-            // styles={modalStyle}
+            // containerClassName={contentStyles.container}
+            styles={modalStyle}
           >
-            <div>
-              {/* <span id={titleId}>Lorem Ipsum</span> */}
+            <div className="modal-header">
+              <div className="modal-title">Appraisal</div>
               <IconButton
                 styles={iconButtonStyles}
                 iconProps={cancelIcon}

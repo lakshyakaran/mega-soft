@@ -21,27 +21,27 @@ const navLinkGroups: INavLinkGroup[] = [
     links: [
       {
         name: "Appraisal",
-        url: "/claim",
-        key: "01",
+        url: "",
+        key: "key01",
         icon: "UpgradeAnalysis",
         expandAriaLabel: "Expand Home section",
         collapseAriaLabel: "Collapse Home section",
       },
       {
         name: "Administrator",
-        url: "",
+        url: "/admin",
         key: "key02",
         // icon:'MedicationAdmin',
         links: [
           {
             name: "Setup",
-            url: "",
+            url: "/admin/setup",
             icon: "SettingsAdd",
             key: "key03",
           },
           {
             name: "Rating",
-            url: "",
+            url: "/admin/rating",
             icon: "6PointStar",
             key: "key04",
           },
@@ -50,20 +50,20 @@ const navLinkGroups: INavLinkGroup[] = [
       },
       {
         name: "Manager",
-        url: "",
+        url: "/manager",
         key: "key05",
         expandAriaLabel: "Expand Admin section",
         collapseAriaLabel: "Collapse admin section",
         links: [
           {
             name: "Team Goal Setting",
-            url: "",
+            url: "/mananger/team",
             icon: "SplitObject",
             key: "key06",
           },
           {
             name: "Team Assessment",
-            url: "",
+            url: "/mananger/assess",
             key: "key07",
             icon: "AssessmentGroup",
           },
@@ -72,18 +72,18 @@ const navLinkGroups: INavLinkGroup[] = [
       },
       {
         name: "Confirmation",
-        url: "",
+        url: "/confirmation",
         key: "key09",
         expandAriaLabel: "Expand Admin section",
         collapseAriaLabel: "Collapse admin section",
         links: [
           {
             name: "Confirmation Approval",
-            url: "",
+            url: "/confirmation",
             links: [
               {
                 name: "Manager Approval",
-                url: "",
+                url: "/confirmation/approv",
                 key: "key10",
                 icon: "FabricFolderConfirm",
               },
@@ -94,15 +94,15 @@ const navLinkGroups: INavLinkGroup[] = [
       },
       {
         name: "Salary Review",
-        url: "",
+        url: "/salary",
         key: "key12",
         expandAriaLabel: "Expand Admin section",
         collapseAriaLabel: "Collapse admin section",
         links: [
           {
             name: "Appraiser",
-            url: "",
-            key: "key12",
+            url: "/salary/appraiser",
+            key: "key13",
             icon: "Money",
           },
         ],
