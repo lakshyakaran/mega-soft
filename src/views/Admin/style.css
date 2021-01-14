@@ -2,9 +2,12 @@
     background-color: aqua;
     border: 1px solid black;
 }
-.buttonStyle{
+
+.buttonStyle {
     justify-content: flex-end;
+    margin-top: 10px;
 }
-.buttonStyle :ms-Button--primary{
+
+/* .buttonStyle :ms-Button ms-Button--primary root-123 {
     margin-right: 10px;
-}
+} */

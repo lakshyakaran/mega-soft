@@ -3,7 +3,8 @@ import { Breadcrumb, IBreadcrumbItem, IBreadcrumbStyles, IDividerAsProps } from 
 import { DefaultButton, IContextualMenuProps, Stack, IStackTokens, IStackProps } from 'office-ui-fabric-react';
 import { TooltipHost } from 'office-ui-fabric-react/lib/Tooltip';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
-
+import { Panel } from 'office-ui-fabric-react/lib/Panel';
+import { useBoolean } from '@uifabric/react-hooks';
 import './Header.css'
 
 const menuProps: IContextualMenuProps = {
@@ -59,7 +60,8 @@ function Header(props: { item?: IBreadcrumbItem[] }) {
       horizontal: true,
       tokens: { childrenGap: 100, },
   };
-    
+  const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
+  
   return (
     <div className="header">
       <Breadcrumb
@@ -70,6 +72,7 @@ function Header(props: { item?: IBreadcrumbItem[] }) {
         dividerAs={_getCustomDivider}
         onRenderOverflowIcon={_getCustomOverflowIcon}
       />
+      
     </div>
   )
 }
