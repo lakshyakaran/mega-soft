@@ -1,4 +1,68 @@
-.form-container{
+.form-container {
     background-color: #edf5ff;
     padding: 15px;
+}
+
+.input-form {
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+/* .fieldGroup-195 {
+    border: none;
+    height: 30px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+.fieldGroup-198 {
+    border: none;
+    height: 30px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+.fieldGroup-96 {
+    border: none;
+    height: 30px;
+    width: 200px;
+    border-radius: 10px;
+} */
+
+.main-input {
+    /* margin-top: 10px; */
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkbox-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+.text-header {
+    background-color: #0d74da;
+    height: 30px;
+    border-radius: 2px;
+}
+
+.header-title {
+    color: #FFF;
+    text-align: center;
+    font-size: 18px;
+}
+
+.table-heading {
+    background-color: #0d74da;
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid black;
+}
+
+.table-header-title{
+    color: #FFF;
+    text-align: center;
+    font-size: 15px;
 }

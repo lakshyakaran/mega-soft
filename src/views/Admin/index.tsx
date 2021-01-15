@@ -24,29 +24,28 @@ import {
   TextField,
   Announced,
   ITextFieldStyleProps,
+  IContextualMenuProps,
 } from "office-ui-fabric-react";
 import { useId, useBoolean } from "@uifabric/react-hooks";
 import { IBreadcrumbItem } from "office-ui-fabric-react/lib/Breadcrumb";
 import Header from "../../Header";
 import Form from "../../components/Form";
-import { Pagination } from '@uifabric/experiments';
-
-
+import { Pagination } from "@uifabric/experiments";
 
 import "./style.css";
 
 const operations: any[] = [];
-for(var i = 0; i < 500; i++) {
-  operations.push(  {
-    sno: i+1,
-    action: "action1",
+for (var i = 0; i < 500; i++) {
+  operations.push({
+    sno: i + 1,
+    action: `Action${i}`,
     id: "1.343",
     description: "Lorem ipsum dolor sit amet,",
     reviewFrom: "20-05-2020",
     appraisalTo: "20-05-2020",
     owner: "20-05-2020",
     reviewFrequency: "20-05-2020",
-  })
+  });
 }
 const headerStyle: Partial<IDetailsColumnStyles> = {
   cellTitle: {
@@ -62,7 +61,7 @@ function Admin() {
     false
   );
   const titleId = useId("title");
-  const cancelIcon: IIconProps = { iconName: "Cancel" };
+  const cancelIcon: IIconProps = { iconName: "Cancel", color: "#FFF" };
   const columns: IColumn[] = [
     {
       key: "01",
@@ -98,10 +97,8 @@ function Admin() {
       fieldName: "id",
       minWidth: 10,
       maxWidth: 150,
-      isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
-      isRowHeader: true,
       onColumnClick: _onColumnClick,
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
@@ -112,7 +109,6 @@ function Admin() {
       fieldName: "description",
       minWidth: 10,
       maxWidth: 250,
-      isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -139,7 +135,6 @@ function Admin() {
       fieldName: "appraisalTo",
       minWidth: 10,
       maxWidth: 150,
-      isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -152,8 +147,7 @@ function Admin() {
       name: "Owner",
       fieldName: "owner",
       minWidth: 10,
-      maxWidth: 150,
-      isSorted: true,
+      maxWidth: 200,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -167,7 +161,6 @@ function Admin() {
       fieldName: "reviewFrequency",
       minWidth: 10,
       maxWidth: 100,
-      isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -222,9 +215,9 @@ function Admin() {
   const modalStyle: Partial<IModalStyles> = {
     root: {},
     main: {
-      height: "70%",
-      width: "70%",
-      backgroundColor: "#7d9dc5",
+      height: "45%",
+      width: "30%",
+      backgroundColor: "#6f90dc",
       padding: "5px",
     },
   };
@@ -265,7 +258,7 @@ function Admin() {
   useEffect(() => {
     setItemsLength(operations.length);
   }, []);
-  
+
   //   const [items, setItems] = useState(operations);
   const [state, setState] = useState({
     items: operations,
@@ -310,6 +303,9 @@ function Admin() {
       //     color: "#FFF",
       //   },
     },
+    // root: {
+    //   width: "80%",
+    // },
     contentWrapper: {
       ".ms-FocusZone css-61 ms-DetailsHeader root-104": {
         paddingTop: "0px",
@@ -317,7 +313,26 @@ function Admin() {
     },
   };
 
-  const itemsToDisplay = state.items.filter((item, index) => index >= currentPage * itemsPerPage && index < (currentPage + 1) * itemsPerPage);
+  const itemsToDisplay = state.items.filter(
+    (item, index) =>
+      index >= currentPage * itemsPerPage &&
+      index < (currentPage + 1) * itemsPerPage
+  );
+
+  const menuProps: IContextualMenuProps = {
+    items: [
+      {
+        key: "emailMessage",
+        text: "Action1",
+        // iconProps: { iconName: "Mail" },
+      },
+      {
+        key: "calendarEvent",
+        text: "Action2",
+        // iconProps: { iconName: "Calendar" },
+      },
+    ],
+  };
 
   return (
     <div className="view">
@@ -334,21 +349,20 @@ function Admin() {
             styles={listStyle}
             items={itemsToDisplay}
             columns={columns}
-            selectionMode={1}
+            selectionMode={0}
           />
           <Pagination
             format="buttons"
             selectedPageIndex={currentPage}
-            pageCount={Math.ceil
-              (itemsLength / itemsPerPage)}
+            pageCount={Math.ceil(itemsLength / itemsPerPage)}
             itemsPerPage={itemsPerPage}
             totalItemCount={itemsLength}
-            previousPageAriaLabel={'previous page'}
-            nextPageAriaLabel={'next page'}
-            firstPageAriaLabel={'first page'}
-            lastPageAriaLabel={'last page'}
-            pageAriaLabel={'page'}
-            selectedAriaLabel={'selected'}
+            previousPageAriaLabel={"previous page"}
+            nextPageAriaLabel={"next page"}
+            firstPageAriaLabel={"first page"}
+            lastPageAriaLabel={"last page"}
+            pageAriaLabel={"page"}
+            selectedAriaLabel={"selected"}
             onPageChange={(page) => setCurentPage(page)}
           />
           <Stack horizontal tokens={stackTokens} className="buttonStyle">
@@ -361,6 +375,7 @@ function Admin() {
             />
             <PrimaryButton
               text="Action"
+              menuProps={menuProps}
               allowDisabledFocus
               disabled={false}
               checked={false}
@@ -384,9 +399,41 @@ function Admin() {
               />
             </div>
             <Form />
+            <Stack
+              horizontal
+              tokens={stackTokens}
+              style={{ justifyContent: "flex-end" }}
+            >
+              <div
+                style={{
+                  marginTop: "15px",
+                }}
+              >
+                <PrimaryButton
+                  text="Add"
+                  allowDisabledFocus
+                  disabled={false}
+                  // onClick={hideModal}
+                  checked={false}
+                />
+              </div>
+              <div
+                style={{
+                  marginTop: "15px",
+                }}
+              >
+                <PrimaryButton
+                  text="Cancel"
+                  allowDisabledFocus
+                  disabled={false}
+                  onClick={hideModal}
+                  checked={false}
+                />
+              </div>
+            </Stack>
           </Modal>
         </div>
-        <DefaultButton text="Open panel" onClick={openPanel} />
+        {/* <DefaultButton text="Open panel" onClick={openPanel} /> */}
         <Panel
           headerText="Sample panel"
           isOpen={isOpen}

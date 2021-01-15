@@ -1,11 +1,13 @@
-body{
+body {
   background-color: #f8f7fc;
 }
-.container{
+
+.container {
   width: calc("100% - 20px");
   margin-left: 200px;
 }
-.sidebar{
+
+.sidebar {
   position: fixed;
   width: 208;
   background-color: #040848;
@@ -13,13 +15,25 @@ body{
   left: 0;
   top: 0;
 }
-.content{
+
+.content {
   /* padding: 10px; */
 }
-.modal-header{
+
+.modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
+  color: #FFF;
+}
+
+.root-110 {
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+.ms-DetailsHeader{
+  /* border: 1px solid black; */
 }

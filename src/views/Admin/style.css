@@ -11,3 +11,8 @@
 /* .buttonStyle :ms-Button ms-Button--primary root-123 {
     margin-right: 10px;
 } */
+
+.ms-TextField-fieldGroup fieldGroup-195 {
+    border: none;
+    border-radius: 10px;
+}
