@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   TextField,
   MaskedTextField,
@@ -181,11 +181,7 @@ function Form() {
     },
   ];
 
-  function _onChange(ev?: React.FormEvent<HTMLElement>, isChecked?: boolean) {
-    console.log(
-      `The option ${ev?.currentTarget.title} has been changed to ${isChecked}.`
-    );
-  }
+ 
 
   const DayPickerStrings: IDatePickerStrings = {
     months: [
@@ -258,15 +254,54 @@ function Form() {
     },
   };
 
+  const [claimsData, setClaimsData] = useState({
+    id: '',
+    description: '',
+    owner: '',
+    kraSetting: false,
+    assessment: false,
+  })
+
+  function onChangeCheckbox(ev?: React.FormEvent<HTMLElement>, isChecked?: boolean) {
+    const target = ev?.target as HTMLInputElement;
+    setClaimsData({
+      ...claimsData,
+      [target.name] : isChecked || false
+    })
+  }
+
+  const onChangeInput = (ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text?: string): void => {
+    const target = ev?.target as HTMLInputElement;
+    setClaimsData({
+      ...claimsData,
+      [target.name]: target.value || ''
+    })
+  }
+
+  const [date, setDate] = useState<Date | null | undefined>(null)
+
+  const onSelectDate = (date: Date | null | undefined): void => {
+    console.log("date==>", date)
+    setDate(date);
+  };
+
   return (
     <div className="form-container">
       <div className="input-form">
         <TextField
           required
           placeholder="ID"
+          name="id"
+          onChange = {onChangeInput}
           // styles={textfelidStyle}
         />
-        <TextField required placeholder="Description" styles={textfelidStyle} />
+        <TextField 
+          required 
+          placeholder="Description" 
+          styles={textfelidStyle} 
+          name="description"
+          onChange = {onChangeInput}
+        />
       </div>
       {/* <div className="input-form"></div> */}
       <div className="input-form">
@@ -274,6 +309,7 @@ function Form() {
           className={controlClass.control}
           firstDayOfWeek={firstDayOfWeek}
           strings={DayPickerStrings}
+          onSelectDate={onSelectDate}
           placeholder="Select a date"
           ariaLabel="Select a date"
           styles={datePickerStyle}
@@ -303,7 +339,12 @@ function Form() {
           options={options}
           styles={typeDropdownStyles}
         />
-        <TextField placeholder="Owner" />
+        <TextField 
+          placeholder="Owner" 
+          styles={textfelidStyle} 
+          name="owner"
+          onChange = {onChangeInput}  
+        />
       </div>
       <div className="input-form">
         <div>
@@ -314,7 +355,8 @@ function Form() {
                 <Checkbox
                   label={checkBoxItem.Title}
                   title={checkBoxItem.Title}
-                  onChange={_onChange}
+                  name="kraSetting"
+                  onChange={onChangeCheckbox}
                 />
                 <span></span>
               </Stack>
@@ -329,7 +371,8 @@ function Form() {
                 <Checkbox
                   label={checkBoxItem.Title}
                   title={checkBoxItem.Title}
-                  onChange={_onChange}
+                  name="assessment"
+                  onChange={onChangeCheckbox}
                 />
                 <span></span>
               </Stack>

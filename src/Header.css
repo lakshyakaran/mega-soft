@@ -1,4 +1,9 @@
 .header{
     background-color: #FFF;
-    margin-bottom: 10px;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    width: calc(100% - 200px);
+    left: 200px;
+    box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
 }

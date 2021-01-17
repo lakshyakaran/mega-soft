@@ -29,24 +29,26 @@ import {
 import { useId, useBoolean } from "@uifabric/react-hooks";
 import { IBreadcrumbItem } from "office-ui-fabric-react/lib/Breadcrumb";
 import Header from "../../Header";
+import SideNav from "../../components/SideNav";
 import Form from "../../components/Form";
 import { Pagination } from "@uifabric/experiments";
+import {connect} from 'react-redux'
 
 import "./style.css";
 
-const operations: any[] = [];
-for (var i = 0; i < 500; i++) {
-  operations.push({
-    sno: i + 1,
-    action: `Action${i}`,
-    id: "1.343",
-    description: "Lorem ipsum dolor sit amet,",
-    reviewFrom: "20-05-2020",
-    appraisalTo: "20-05-2020",
-    owner: "20-05-2020",
-    reviewFrequency: "20-05-2020",
-  });
-}
+// const operations: any[] = [];
+// for (var i = 0; i < 500; i++) {
+//   operations.push({
+//     sno: i + 1,
+//     action: `Action${i}`,
+//     id: "1.343",
+//     description: "Lorem ipsum dolor sit amet,",
+//     reviewFrom: "20-05-2020",
+//     appraisalTo: "20-05-2020",
+//     owner: "20-05-2020",
+//     reviewFrequency: "20-05-2020",
+//   });
+// }
 const headerStyle: Partial<IDetailsColumnStyles> = {
   cellTitle: {
     color: "#c00",
@@ -56,7 +58,10 @@ const headerStyle: Partial<IDetailsColumnStyles> = {
   },
 };
 
-function Admin() {
+
+function Admin(props: any) {
+  // console.log("props==>", props.tasks.list);
+  const operations: any[] = props.tasks.list;
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
@@ -338,7 +343,7 @@ function Admin() {
     <div className="view">
       <Header item={itemsWithHeading} />
       <div className="content">
-        <div>
+        <div className="body has-right-panel">
           <TextField
             // label="Filter by name:"
             onChange={_onChangeText}
@@ -433,22 +438,18 @@ function Admin() {
             </Stack>
           </Modal>
         </div>
-        {/* <DefaultButton text="Open panel" onClick={openPanel} /> */}
-        <Panel
-          headerText="Sample panel"
-          isOpen={isOpen}
-          onDismiss={dismissPanel}
-          isBlocking={false}
-          // You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
-          closeButtonAriaLabel="Close"
-        >
-          <p>Content goes here.</p>
-        </Panel>
+        <div className="right-panel">
+          <SideNav />
+        </div>
       </div>
     </div>
   );
 }
-export default Admin;
+export default connect(state => (
+	{ 
+    ...state 
+  }
+))(Admin)
 
 const contentStyles = mergeStyleSets({
   container: {
