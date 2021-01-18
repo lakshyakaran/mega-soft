@@ -2,39 +2,42 @@ import React, { useEffect, useState } from "react";
 import {
   DetailsList,
   IColumn,
-  IDetailsColumnStyles,
-  IDetailsListStyleProps,
   IDetailsListStyles,
-  IGroup,
 } from "office-ui-fabric-react/lib/DetailsList";
 import { mergeStyleSets } from "office-ui-fabric-react/lib/Styling";
 import "office-ui-fabric-react/dist/css/fabric.css";
 import {
-  DefaultButton,
   PrimaryButton,
   Stack,
-  IStackTokens,
   Modal,
   IconButton,
   getTheme,
-  FontWeights,
   IIconProps,
   IModalStyles,
-  Panel,
   TextField,
-  Announced,
-  ITextFieldStyleProps,
   IContextualMenuProps,
+  Checkbox,
+  DatePicker,
+  Dropdown,
+  Label,
+  DayOfWeek,
+  IDatePickerStrings,
+  IDatePickerStyles,
+  DropdownMenuItemType,
+  IDropdownOption,
+  IDropdownStyles,
+  ITextFieldStyles,
 } from "office-ui-fabric-react";
 import { useId, useBoolean } from "@uifabric/react-hooks";
 import { IBreadcrumbItem } from "office-ui-fabric-react/lib/Breadcrumb";
 import Header from "../../Header";
-import SideNav from "../../components/SideNav";
-import Form from "../../components/Form";
+import Panel from "../../components/Panel";
+import { ICheckboxInput } from "../../components/Form";
 import { Pagination } from "@uifabric/experiments";
-import {connect} from 'react-redux'
+import { connect, useDispatch } from "react-redux";
 
 import "./style.css";
+import { fetchUserList, userData } from "../../redux/actions";
 
 // const operations: any[] = [];
 // for (var i = 0; i < 500; i++) {
@@ -49,19 +52,38 @@ import "./style.css";
 //     reviewFrequency: "20-05-2020",
 //   });
 // }
-const headerStyle: Partial<IDetailsColumnStyles> = {
-  cellTitle: {
-    color: "#c00",
-  },
-  root: {
-    paddingBottom: "0px",
-  },
-};
-
+// const headerStyle: Partial<IDetailsColumnStyles> = {
+//   cellTitle: {
+//     color: "#c00",
+//   },
+//   root: {
+//     paddingBottom: "0px",
+//   },
+// };
 
 function Admin(props: any) {
   // console.log("props==>", props.tasks.list);
-  const operations: any[] = props.tasks.list;
+  const dispatch = useDispatch();
+  const [list, setList] = useState([]);
+
+  const fetchData = () => {
+    userData((response) => {
+      dispatch(fetchUserList(response));
+      console.log("local response ==>", response.payload.data);
+      // setList(response.payload.data);
+    });
+  };
+
+  let focusListner: any = {};
+
+  useEffect(() => {
+    fetchData();
+    focusListner = document.addEventListener("focus", () => {});
+  }, []);
+
+  console.log("list==>", props);
+
+  const operations: any[] = list;
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
@@ -70,10 +92,10 @@ function Admin(props: any) {
   const columns: IColumn[] = [
     {
       key: "01",
-      name: "S.No.",
-      fieldName: "sno",
+      name: "ID",
+      fieldName: "id",
       minWidth: 10,
-      maxWidth: 70,
+      maxWidth: 110,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -87,7 +109,7 @@ function Admin(props: any) {
       name: "Action",
       fieldName: "action",
       minWidth: 10,
-      maxWidth: 150,
+      maxWidth: 110,
       isSorted: true,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
@@ -98,10 +120,10 @@ function Admin(props: any) {
     },
     {
       key: "03",
-      name: "Id",
-      fieldName: "id",
+      name: "Name",
+      fieldName: "name",
       minWidth: 10,
-      maxWidth: 150,
+      maxWidth: 110,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       onColumnClick: _onColumnClick,
@@ -113,7 +135,7 @@ function Admin(props: any) {
       name: "Description",
       fieldName: "description",
       minWidth: 10,
-      maxWidth: 250,
+      maxWidth: 180,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -124,9 +146,9 @@ function Admin(props: any) {
     {
       key: "05",
       name: "Review From",
-      fieldName: "reviewFrom",
+      fieldName: "review_from",
       minWidth: 10,
-      maxWidth: 150,
+      maxWidth: 110,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -137,9 +159,9 @@ function Admin(props: any) {
     {
       key: "06",
       name: "Appraisal To",
-      fieldName: "appraisalTo",
+      fieldName: "appraisal_to",
       minWidth: 10,
-      maxWidth: 150,
+      maxWidth: 110,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -152,7 +174,7 @@ function Admin(props: any) {
       name: "Owner",
       fieldName: "owner",
       minWidth: 10,
-      maxWidth: 200,
+      maxWidth: 170,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -163,9 +185,9 @@ function Admin(props: any) {
     {
       key: "08",
       name: "Review Frequency",
-      fieldName: "reviewFrequency",
+      fieldName: "review_frequency",
       minWidth: 10,
-      maxWidth: 100,
+      maxWidth: 90,
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -271,14 +293,14 @@ function Admin(props: any) {
     announcedMessage: "",
   });
 
-  const _onChangeText = (
+  const itemSearch = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
   ): void => {
     setState({
       ...state,
       items: text
-        ? operations.filter((i) => i.action.toLowerCase().indexOf(text) > -1)
+        ? operations.filter((i) => i.name.toLowerCase().indexOf(text) > -1)
         : operations,
     });
   };
@@ -339,6 +361,170 @@ function Admin(props: any) {
     ],
   };
 
+  //form container ==>
+
+  const [claimsData, setClaimsData] = useState({
+    id: "",
+    description: "",
+    owner: "",
+    kraSetting: false,
+    assessment: false,
+  });
+  const [selectedType, setSelectedType] = React.useState<string[]>([]);
+
+  function onChangeCheckbox(
+    ev?: React.FormEvent<HTMLElement>,
+    isChecked?: boolean
+  ) {
+    const target = ev?.target as HTMLInputElement;
+    setClaimsData({
+      ...claimsData,
+      [target.name]: isChecked || false,
+    });
+  }
+
+  const onChangeInput = (
+    ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    text?: string
+  ): void => {
+    const target = ev?.target as HTMLInputElement;
+    setClaimsData({
+      ...claimsData,
+      [target.name]: target.value || "",
+    });
+  };
+
+  const onChangeType = (
+    event?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    // console.log("type===>", item);
+    if (item) {
+      setSelectedType(
+        item.selected
+          ? [...selectedType, item.key as string]
+          : selectedType.filter((key) => key !== item.key)
+      );
+    }
+  };
+  // console.log("type==>", selectedType);
+
+  const [date, setDate] = useState<Date | null | undefined>(null);
+
+  const onSelectDate = (date: Date | null | undefined): void => {
+    // console.log("date==>", date);
+    setDate(date);
+  };
+
+  const controlClass = mergeStyleSets({
+    control: {
+      margin: "0 0 15px 0",
+      maxWidth: "150px",
+    },
+  });
+
+  const datePickerStyle: Partial<IDatePickerStyles> = {
+    icon: {
+      color: "rgb(111 144 220)",
+    },
+  };
+
+  const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
+
+  const DayPickerStrings: IDatePickerStrings = {
+    months: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+
+    shortMonths: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+
+    days: [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
+
+    shortDays: ["S", "M", "T", "W", "T", "F", "S"],
+
+    goToToday: "Go to today",
+    prevMonthAriaLabel: "Go to previous month",
+    nextMonthAriaLabel: "Go to next month",
+    prevYearAriaLabel: "Go to previous year",
+    nextYearAriaLabel: "Go to next year",
+    closeButtonAriaLabel: "Close date picker",
+    monthPickerHeaderAriaLabel: "{0}, select to change the year",
+    yearPickerHeaderAriaLabel: "{0}, select to change the month",
+  };
+
+  const checkboxOptions: ICheckboxInput[] = [
+    { ID: 1, Title: "Goals" },
+    { ID: 2, Title: "Competencies" },
+    { ID: 3, Title: "Development Plans" },
+    { ID: 4, Title: "Summary" },
+  ];
+
+  const options: IDropdownOption[] = [
+    {
+      key: "key1",
+      text: "Key 1",
+    },
+    { key: "key2", text: "Key 2" },
+    { key: "key3", text: "Key 3" },
+    { key: "key4", text: "Key 4" },
+  ];
+
+  const dropdownStyles: Partial<IDropdownStyles> = {
+    dropdown: {
+      width: 170,
+      border: "0px",
+    },
+  };
+
+  const typeDropdownStyles: Partial<IDropdownStyles> = {
+    dropdown: {
+      width: 150,
+    },
+  };
+  const textfelidStyle: Partial<ITextFieldStyles> = {
+    root: {
+      ".ms-TextField-wrapper": {
+        borderRadius: "10px",
+      },
+
+      ".ms-TextField-fieldGroup fieldGroup-195": {
+        borderRadius: "10px",
+      },
+    },
+  };
+
   return (
     <div className="view">
       <Header item={itemsWithHeading} />
@@ -346,7 +532,7 @@ function Admin(props: any) {
         <div className="body has-right-panel">
           <TextField
             // label="Filter by name:"
-            onChange={_onChangeText}
+            onChange={itemSearch}
             placeholder=" Search items.."
             styles={controlStyles}
           />
@@ -403,7 +589,102 @@ function Admin(props: any) {
                 onClick={hideModal}
               />
             </div>
-            <Form />
+            <div className="form-container">
+              <div className="input-form">
+                <TextField
+                  required
+                  placeholder="ID"
+                  name="id"
+                  onChange={onChangeInput}
+                  // styles={textfelidStyle}
+                />
+                <TextField
+                  required
+                  placeholder="Description"
+                  styles={textfelidStyle}
+                  name="description"
+                  onChange={onChangeInput}
+                />
+              </div>
+              {/* <div className="input-form"></div> */}
+              <div className="input-form">
+                <DatePicker
+                  className={controlClass.control}
+                  firstDayOfWeek={firstDayOfWeek}
+                  strings={DayPickerStrings}
+                  onSelectDate={onSelectDate}
+                  placeholder="Select a date"
+                  ariaLabel="Select a date"
+                  styles={datePickerStyle}
+                />
+                <DatePicker
+                  className={controlClass.control}
+                  firstDayOfWeek={firstDayOfWeek}
+                  strings={DayPickerStrings}
+                  styles={datePickerStyle}
+                  placeholder="Select a date"
+                  ariaLabel="Select a date"
+                />
+                <Dropdown
+                  placeholder="Select"
+                  options={options}
+                  styles={dropdownStyles}
+                />
+              </div>
+              <div className="input-form">
+                <Dropdown
+                  placeholder="Select Type"
+                  options={options}
+                  onChange={onChangeType}
+                  styles={typeDropdownStyles}
+                />
+                <Dropdown
+                  placeholder="Select Formate Type"
+                  options={options}
+                  styles={typeDropdownStyles}
+                />
+                <TextField
+                  placeholder="Owner"
+                  styles={textfelidStyle}
+                  name="owner"
+                  onChange={onChangeInput}
+                />
+              </div>
+              <div className="input-form">
+                <div>
+                  <Label>KRA Settings Tabs: </Label>
+                  {checkboxOptions.map((checkBoxItem: ICheckboxInput) => {
+                    return (
+                      <Stack tokens={stackTokens}>
+                        <Checkbox
+                          label={checkBoxItem.Title}
+                          title={checkBoxItem.Title}
+                          name="kraSetting"
+                          onChange={onChangeCheckbox}
+                        />
+                        <span></span>
+                      </Stack>
+                    );
+                  })}
+                </div>
+                <div>
+                  <Label>Assessment Tabs: </Label>
+                  {checkboxOptions.map((checkBoxItem: ICheckboxInput) => {
+                    return (
+                      <Stack tokens={stackTokens}>
+                        <Checkbox
+                          label={checkBoxItem.Title}
+                          title={checkBoxItem.Title}
+                          name="assessment"
+                          onChange={onChangeCheckbox}
+                        />
+                        <span></span>
+                      </Stack>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
             <Stack
               horizontal
               tokens={stackTokens}
@@ -439,22 +720,22 @@ function Admin(props: any) {
           </Modal>
         </div>
         <div className="right-panel">
-          <SideNav />
+          <Panel>
+            <h2>Panel</h2>
+          </Panel>
         </div>
       </div>
     </div>
   );
 }
-export default connect(state => (
-	{ 
-    ...state 
-  }
-))(Admin)
+export default connect((state) => ({
+  ...state,
+}))(Admin);
 
-const contentStyles = mergeStyleSets({
-  container: {
-    display: "flex",
-    flexFlow: "column nowrap",
-    alignItems: "stretch",
-  },
-});
+// const contentStyles = mergeStyleSets({
+//   container: {
+//     display: "flex",
+//     flexFlow: "column nowrap",
+//     alignItems: "stretch",
+//   },
+// });

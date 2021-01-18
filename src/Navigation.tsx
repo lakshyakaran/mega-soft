@@ -5,12 +5,6 @@ import {
   INavStyles,
   INavLinkGroup,
 } from "office-ui-fabric-react/lib/Nav";
-import {
-  IIconProps,
-  IIconStyles,
-  Sticky,
-  StickyPositionType,
-} from "office-ui-fabric-react";
 import { initializeIcons } from "@uifabric/icons";
 import { useHistory, matchPath } from "react-router-dom";
 

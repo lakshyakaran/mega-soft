@@ -16,3 +16,14 @@
     border: none;
     border-radius: 10px;
 }
+
+.form-container {
+    background-color: #edf5ff;
+    padding: 15px;
+}
+
+.input-form {
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}

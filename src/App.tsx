@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Navigation from "./Navigation";
 import Admin from "./views/Admin";
-import SideNav from "./components/SideNav";
 
 import "./App.css";
 

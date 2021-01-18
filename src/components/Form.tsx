@@ -1,23 +1,16 @@
 import React, { useState } from "react";
 import {
   TextField,
-  MaskedTextField,
   ITextFieldStyles,
 } from "office-ui-fabric-react/lib/TextField";
-import {
-  Stack,
-  IStackProps,
-  IStackStyles,
-} from "office-ui-fabric-react/lib/Stack";
+import { Stack, IStackStyles } from "office-ui-fabric-react/lib/Stack";
 import "./style.css";
 import {
   DatePicker,
   DayOfWeek,
-  DetailsList,
   Dropdown,
   DropdownMenuItemType,
   FontIcon,
-  ICheckboxProps,
   IColumn,
   IDatePickerStrings,
   IDatePickerStyles,
@@ -26,10 +19,9 @@ import {
   Label,
   mergeStyles,
   mergeStyleSets,
-  PrimaryButton,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
-import { useId, useBoolean } from "@uifabric/react-hooks";
+import { useBoolean } from "@uifabric/react-hooks";
 
 const options: IDropdownOption[] = [
   {
@@ -181,8 +173,6 @@ function Form() {
     },
   ];
 
- 
-
   const DayPickerStrings: IDatePickerStrings = {
     months: [
       "January",
@@ -255,33 +245,39 @@ function Form() {
   };
 
   const [claimsData, setClaimsData] = useState({
-    id: '',
-    description: '',
-    owner: '',
+    id: "",
+    description: "",
+    owner: "",
     kraSetting: false,
     assessment: false,
-  })
+  });
 
-  function onChangeCheckbox(ev?: React.FormEvent<HTMLElement>, isChecked?: boolean) {
+  function onChangeCheckbox(
+    ev?: React.FormEvent<HTMLElement>,
+    isChecked?: boolean
+  ) {
     const target = ev?.target as HTMLInputElement;
     setClaimsData({
       ...claimsData,
-      [target.name] : isChecked || false
-    })
+      [target.name]: isChecked || false,
+    });
   }
 
-  const onChangeInput = (ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text?: string): void => {
+  const onChangeInput = (
+    ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    text?: string
+  ): void => {
     const target = ev?.target as HTMLInputElement;
     setClaimsData({
       ...claimsData,
-      [target.name]: target.value || ''
-    })
-  }
+      [target.name]: target.value || "",
+    });
+  };
 
-  const [date, setDate] = useState<Date | null | undefined>(null)
+  const [date, setDate] = useState<Date | null | undefined>(null);
 
   const onSelectDate = (date: Date | null | undefined): void => {
-    console.log("date==>", date)
+    console.log("date==>", date);
     setDate(date);
   };
 
@@ -292,15 +288,15 @@ function Form() {
           required
           placeholder="ID"
           name="id"
-          onChange = {onChangeInput}
+          onChange={onChangeInput}
           // styles={textfelidStyle}
         />
-        <TextField 
-          required 
-          placeholder="Description" 
-          styles={textfelidStyle} 
+        <TextField
+          required
+          placeholder="Description"
+          styles={textfelidStyle}
           name="description"
-          onChange = {onChangeInput}
+          onChange={onChangeInput}
         />
       </div>
       {/* <div className="input-form"></div> */}
@@ -339,11 +335,11 @@ function Form() {
           options={options}
           styles={typeDropdownStyles}
         />
-        <TextField 
-          placeholder="Owner" 
-          styles={textfelidStyle} 
+        <TextField
+          placeholder="Owner"
+          styles={textfelidStyle}
           name="owner"
-          onChange = {onChangeInput}  
+          onChange={onChangeInput}
         />
       </div>
       <div className="input-form">
