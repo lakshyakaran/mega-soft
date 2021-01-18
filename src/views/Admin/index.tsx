@@ -39,9 +39,9 @@ import { connect, useDispatch } from "react-redux";
 import "./style.css";
 import { fetchUserList, userData } from "../../redux/actions";
 
-// const operations: any[] = [];
+// const list: any[] = [];
 // for (var i = 0; i < 500; i++) {
-//   operations.push({
+//   list.push({
 //     sno: i + 1,
 //     action: `Action${i}`,
 //     id: "1.343",
@@ -62,28 +62,27 @@ import { fetchUserList, userData } from "../../redux/actions";
 // };
 
 function Admin(props: any) {
-  // console.log("props==>", props.tasks.list);
-  const dispatch = useDispatch();
+  const [hasMoreRecord, setHasMoreRecord] = useState(true);
   const [list, setList] = useState([]);
+  const [limitStart, setLimitSTart] = useState(0);
+  const [limitPageLength, setLimitPageLength] = useState(3);
+  const [orderBy, setOrderBy] = useState("asc");
+  const [orderByField, setOrderByField] = useState("id");
 
-  const fetchData = () => {
-    userData((response) => {
-      dispatch(fetchUserList(response));
-      console.log("local response ==>", response.payload.data);
-      // setList(response.payload.data);
-    });
-  };
-
-  let focusListner: any = {};
-
-  useEffect(() => {
-    fetchData();
-    focusListner = document.addEventListener("focus", () => {});
-  }, []);
-
-  console.log("list==>", props);
-
-  const operations: any[] = list;
+  useEffect(()=> {
+    userData(limitStart, limitPageLength, `${orderByField} ${orderBy}`)
+    .then(response => {
+      if(response.data.length) {
+        setList(response.data)
+      }
+      if(response.data.length == limitPageLength) {
+        setHasMoreRecord(true);
+      } else {
+        setHasMoreRecord(false);
+      }
+    })
+  },[limitStart, limitPageLength, orderBy])
+  
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
@@ -202,41 +201,59 @@ function Admin(props: any) {
     { text: "Folder 2", key: "d2", isCurrentItem: true, as: "h4" },
   ];
 
+  // function _onColumnClick(
+  //   ev?: React.MouseEvent<HTMLElement>,
+  //   column?: IColumn
+  // ): void {
+  //   // console.log("clicked===>", column);
+  //   const newColumns: IColumn[] = columns.slice();
+  //   const currColumn: IColumn = newColumns.filter(
+  //     (currCol) => column?.key === currCol.key
+  //   )[0];
+  //   newColumns.forEach((newCol: IColumn) => {
+  //     if (newCol === currColumn) {
+  //       currColumn.isSortedDescending = !currColumn.isSortedDescending;
+  //       currColumn.isSorted = true;
+  //       setState({
+  //         ...state,
+  //         announcedMessage:
+  //           `${currColumn.name} is sorted ${
+  //             currColumn.isSortedDescending ? "descending" : "ascending"
+  //           }` || "",
+  //       });
+  //     } else {
+  //       newCol.isSorted = false;
+  //       newCol.isSortedDescending = true;
+  //     }
+  //   });
+  //   const newItems = _copyAndSort(
+  //     state.items,
+  //     currColumn.fieldName!,
+  //     currColumn.isSortedDescending
+  //   );
+  //   setState({
+  //     ...state,
+  //     columns: newColumns,
+  //     items: newItems,
+  //   });
+  // }
+ 
   function _onColumnClick(
     ev?: React.MouseEvent<HTMLElement>,
     column?: IColumn
   ): void {
-    // console.log("clicked===>");
-    const newColumns: IColumn[] = columns.slice();
-    const currColumn: IColumn = newColumns.filter(
-      (currCol) => column?.key === currCol.key
-    )[0];
-    newColumns.forEach((newCol: IColumn) => {
-      if (newCol === currColumn) {
-        currColumn.isSortedDescending = !currColumn.isSortedDescending;
-        currColumn.isSorted = true;
-        setState({
-          ...state,
-          announcedMessage:
-            `${currColumn.name} is sorted ${
-              currColumn.isSortedDescending ? "descending" : "ascending"
-            }` || "",
-        });
-      } else {
-        newCol.isSorted = false;
-        newCol.isSortedDescending = true;
+    // console.log('column', column)
+    if(column?.fieldName == orderByField ){
+      if(orderBy == 'asc'){
+        setOrderBy('desc')
       }
-    });
-    const newItems = _copyAndSort(
-      state.items,
-      currColumn.fieldName!,
-      currColumn.isSortedDescending
-    );
-    setState({
-      ...state,
-      columns: newColumns,
-      items: newItems,
-    });
+      else {
+        setOrderBy('asc')
+      }
+    }
+    else{
+      setOrderByField(column?.fieldName || "id");
+    }
   }
 
   const modalStyle: Partial<IModalStyles> = {
@@ -282,13 +299,13 @@ function Admin(props: any) {
   const [currentPage, setCurentPage] = useState(0);
   const itemsPerPage = 10;
 
-  useEffect(() => {
-    setItemsLength(operations.length);
-  }, []);
+  // useEffect(() => {
+  //   setItemsLength(list.length);
+  // }, []);
 
-  //   const [items, setItems] = useState(operations);
+  //   const [items, setItems] = useState(list);
   const [state, setState] = useState({
-    items: operations,
+    items: list,
     columns: columns,
     announcedMessage: "",
   });
@@ -297,12 +314,12 @@ function Admin(props: any) {
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
   ): void => {
-    setState({
-      ...state,
-      items: text
-        ? operations.filter((i) => i.name.toLowerCase().indexOf(text) > -1)
-        : operations,
-    });
+    // setState({
+    //   ...state,
+    //   items: text
+    //     ? list.filter((i) => i.name.toLowerCase().indexOf(text) > -1)
+    //     : list,
+    // });
   };
   function _copyAndSort<T>(
     items: T[],
@@ -339,12 +356,6 @@ function Admin(props: any) {
       },
     },
   };
-
-  const itemsToDisplay = state.items.filter(
-    (item, index) =>
-      index >= currentPage * itemsPerPage &&
-      index < (currentPage + 1) * itemsPerPage
-  );
 
   const menuProps: IContextualMenuProps = {
     items: [
@@ -525,6 +536,8 @@ function Admin(props: any) {
     },
   };
 
+  console.log("List => ", list);
+
   return (
     <div className="view">
       <Header item={itemsWithHeading} />
@@ -538,23 +551,32 @@ function Admin(props: any) {
           />
           <DetailsList
             styles={listStyle}
-            items={itemsToDisplay}
+            items={list}
             columns={columns}
             selectionMode={0}
           />
           <Pagination
             format="buttons"
             selectedPageIndex={currentPage}
-            pageCount={Math.ceil(itemsLength / itemsPerPage)}
-            itemsPerPage={itemsPerPage}
-            totalItemCount={itemsLength}
+            pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
+            itemsPerPage={limitPageLength}
+            totalItemCount={limitPageLength * 2}
             previousPageAriaLabel={"previous page"}
             nextPageAriaLabel={"next page"}
             firstPageAriaLabel={"first page"}
             lastPageAriaLabel={"last page"}
             pageAriaLabel={"page"}
             selectedAriaLabel={"selected"}
-            onPageChange={(page) => setCurentPage(page)}
+            onPageChange={(page) => {
+              if(currentPage < page && hasMoreRecord) {
+                setCurentPage(page);
+                setLimitSTart(limitStart + limitPageLength);
+              }
+              if(currentPage > page && (limitStart - limitPageLength) >= 0){
+                setLimitSTart((limitStart - limitPageLength));
+                setCurentPage(page);
+              }
+            }}
           />
           <Stack horizontal tokens={stackTokens} className="buttonStyle">
             <PrimaryButton

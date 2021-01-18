@@ -1,51 +1,5 @@
 var initailState = {
-  list: [
-    {
-      id: "1.343",
-      name: "01",
-      action: "action1",
-      description: "Lorem ipsum dolor sit amet,",
-      review_from: "20-05-2020",
-      appraisal_to: "20-05-2020",
-      review_frequency: "20-05-2020",
-    },
-    {
-      id: "2.456",
-      name: "02",
-      action: "action1",
-      description: "Lorem ipsum dolor sit amet,",
-      review_from: "20-05-2020",
-      appraisal_to: "20-05-2020",
-      review_frequency: "20-05-2020",
-    },
-    {
-      id: "1.343",
-      name: "03",
-      action: "action1",
-      description: "Lorem ipsum dolor sit amet,",
-      review_from: "20-05-2020",
-      appraisal_to: "20-05-2020",
-      review_frequency: "20-05-2020",
-    },
-    {
-      id: "1.343",
-      name: "04",
-      action: "action1",
-      description: "Lorem ipsum dolor sit amet,",
-      review_from: "20-05-2020",
-      appraisal_to: "20-05-2020",
-      review_frequency: "20-05-2020",
-    },
-    {
-      id: "1.343",
-      name: "05",
-      action: "action1",
-      description: "Lorem ipsum dolor sit amet,",
-      review_from: "20-05-2020",
-      appraisal_to: "20-05-2020",
-      review_frequency: "20-05-2020",
-    },
-  ],
+  list: [],
 };
 
 export default function tasks(
@@ -57,6 +11,12 @@ export default function tasks(
       return {
         ...state,
         list: [...state.list, action.payload],
+      };
+    }
+    case "USER_LIST": {
+      return {
+        ...state,
+        list:  action.payload,
       };
     }
     case "REMOVE_LIST": {

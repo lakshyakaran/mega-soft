@@ -1,5 +1,6 @@
 import axios from "axios";
 import base64 from "base-64";
+import { useDispatch } from "react-redux";
 
 export const processAddList = (item: any) => {
   return {
@@ -29,15 +30,16 @@ export const fetchUserList = (item: any) => {
   };
 };
 
-export const userData = async (
-  callback: (arg0: { type: string; payload: any }) => void
-) => {
+export const userData = async (limit_start = 0, limit_page_length = 10, order_by = "id asc") => {
   try {
     const response = await axios({
-      url: `http://52.146.0.154/api/resource/Appraisal?fields=["name","id","description","review_from","appraisal_to","review_frequency"]`,
-      //   url: `http://52.146.0.154/api/method/version`,
-      //   url: `http://52.146.0.154/api/method/login?usr=rahul.sinha@nuagebiz.tech&pwd=F@ntastic2020`,
-
+      url: `http://52.146.0.154/api/resource/Appraisal`,
+      params: {
+        limit_start,
+        limit_page_length,
+        order_by,
+        fields: JSON.stringify(["name","id","description","review_from","appraisal_to","review_frequency"])
+      },
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -52,14 +54,11 @@ export const userData = async (
       },
     });
     const responseBody = await response.data;
-    // console.log("api response==>", responseBody);
+    return responseBody
     // dispatch({
     //   type: "USER_LIST",
     //   payload: responseBody,
     // });
-    if (typeof callback === "function") {
-      callback(responseBody.data);
-    }
   } catch (error) {
     return {
       ...error,
