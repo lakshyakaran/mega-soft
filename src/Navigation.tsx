@@ -8,6 +8,8 @@ import {
 import { initializeIcons } from "@uifabric/icons";
 import { useHistory, matchPath } from "react-router-dom";
 
+import hrms_logo from "./assets/img/hrms_logo.gif";
+
 initializeIcons();
 
 const navLinkGroups: INavLinkGroup[] = [
@@ -108,6 +110,7 @@ const navLinkGroups: INavLinkGroup[] = [
 
 const navStyles: Partial<INavStyles> = {
   root: {
+    // border: "1px solid black",
     // selectors:{'&:hover': { color:"#040848" } }
   },
   link: {
@@ -115,9 +118,9 @@ const navStyles: Partial<INavStyles> = {
   },
   linkText: {
     color: "#FFF",
-    fontSize: 12,
+    // fontSize: 12,
     selectors: {
-      "&:hover": { color: "#0337a4" },
+      "&:hover": { color: "#FFF" },
     },
   },
   chevronIcon: {
@@ -131,10 +134,13 @@ const navStyles: Partial<INavStyles> = {
     selectors: {
       "&:hover": {
         ".ms-Button": {
-          background: "red",
+          background: "#0372c7",
         },
         ".ms-Nav-linkText": {
-          color: "#0337a4", // your real styling here
+          color: "#FFF", // your real styling here
+        },
+        ".ms-Icon": {
+          color: "#FFF", // your real styling here
         },
       },
     },
@@ -177,7 +183,9 @@ function Navigation() {
   }, [history.location.pathname]);
   return (
     <div className="sidebar">
-      <h1 style={{ color: "#FFF" }}>Logo</h1>
+      <div className="main-logo">
+        <img src={hrms_logo} />
+      </div>
       <Nav
         onLinkClick={onLinkClick}
         selectedKey={selectedNavKey}

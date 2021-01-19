@@ -65,24 +65,29 @@ function Admin(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
   const [list, setList] = useState([]);
   const [limitStart, setLimitSTart] = useState(0);
-  const [limitPageLength, setLimitPageLength] = useState(3);
+  const [limitPageLength, setLimitPageLength] = useState(2);
   const [orderBy, setOrderBy] = useState("asc");
   const [orderByField, setOrderByField] = useState("id");
+  const [filtersById, setFiltersById] = useState([["id", "like", ""]]);
 
-  useEffect(()=> {
-    userData(limitStart, limitPageLength, `${orderByField} ${orderBy}`)
-    .then(response => {
-      if(response.data.length) {
-        setList(response.data)
+  useEffect(() => {
+    userData(
+      limitStart,
+      limitPageLength,
+      `${orderByField} ${orderBy}`,
+      filtersById
+    ).then((response) => {
+      if (response.data.length) {
+        setList(response.data);
       }
-      if(response.data.length == limitPageLength) {
+      if (response.data.length == limitPageLength) {
         setHasMoreRecord(true);
       } else {
         setHasMoreRecord(false);
       }
-    })
-  },[limitStart, limitPageLength, orderBy])
-  
+    });
+  }, [limitStart, limitPageLength, orderBy, filtersById]);
+
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
@@ -103,20 +108,20 @@ function Admin(props: any) {
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
-    {
-      key: "02",
-      name: "Action",
-      fieldName: "action",
-      minWidth: 10,
-      maxWidth: 110,
-      isSorted: true,
-      isSortedDescending: false,
-      sortAscendingAriaLabel: "Sorted A to Z",
-      isRowHeader: true,
-      onColumnClick: _onColumnClick,
-      sortDescendingAriaLabel: "Sorted Z to A",
-      isResizable: false,
-    },
+    // {
+    //   key: "02",
+    //   name: "Action",
+    //   fieldName: "action",
+    //   minWidth: 10,
+    //   maxWidth: 110,
+    //   isSorted: true,
+    //   isSortedDescending: false,
+    //   sortAscendingAriaLabel: "Sorted A to Z",
+    //   isRowHeader: true,
+    //   onColumnClick: _onColumnClick,
+    //   sortDescendingAriaLabel: "Sorted Z to A",
+    //   isResizable: false,
+    // },
     {
       key: "03",
       name: "Name",
@@ -168,19 +173,19 @@ function Admin(props: any) {
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
-    {
-      key: "07",
-      name: "Owner",
-      fieldName: "owner",
-      minWidth: 10,
-      maxWidth: 170,
-      isSortedDescending: false,
-      sortAscendingAriaLabel: "Sorted A to Z",
-      isRowHeader: true,
-      onColumnClick: _onColumnClick,
-      sortDescendingAriaLabel: "Sorted Z to A",
-      isResizable: false,
-    },
+    // {
+    //   key: "07",
+    //   name: "Owner",
+    //   fieldName: "owner",
+    //   minWidth: 10,
+    //   maxWidth: 170,
+    //   isSortedDescending: false,
+    //   sortAscendingAriaLabel: "Sorted A to Z",
+    //   isRowHeader: true,
+    //   onColumnClick: _onColumnClick,
+    //   sortDescendingAriaLabel: "Sorted Z to A",
+    //   isResizable: false,
+    // },
     {
       key: "08",
       name: "Review Frequency",
@@ -201,57 +206,23 @@ function Admin(props: any) {
     { text: "Folder 2", key: "d2", isCurrentItem: true, as: "h4" },
   ];
 
-  // function _onColumnClick(
-  //   ev?: React.MouseEvent<HTMLElement>,
-  //   column?: IColumn
-  // ): void {
-  //   // console.log("clicked===>", column);
-  //   const newColumns: IColumn[] = columns.slice();
-  //   const currColumn: IColumn = newColumns.filter(
-  //     (currCol) => column?.key === currCol.key
-  //   )[0];
-  //   newColumns.forEach((newCol: IColumn) => {
-  //     if (newCol === currColumn) {
-  //       currColumn.isSortedDescending = !currColumn.isSortedDescending;
-  //       currColumn.isSorted = true;
-  //       setState({
-  //         ...state,
-  //         announcedMessage:
-  //           `${currColumn.name} is sorted ${
-  //             currColumn.isSortedDescending ? "descending" : "ascending"
-  //           }` || "",
-  //       });
-  //     } else {
-  //       newCol.isSorted = false;
-  //       newCol.isSortedDescending = true;
-  //     }
-  //   });
-  //   const newItems = _copyAndSort(
-  //     state.items,
-  //     currColumn.fieldName!,
-  //     currColumn.isSortedDescending
-  //   );
-  //   setState({
-  //     ...state,
-  //     columns: newColumns,
-  //     items: newItems,
-  //   });
-  // }
- 
+  const handleSearchById = () => {
+    // console.log("searchById", searchById);
+    setFiltersById([["id", "like", `${searchById}` + "%"]]);
+  };
+
   function _onColumnClick(
     ev?: React.MouseEvent<HTMLElement>,
     column?: IColumn
   ): void {
     // console.log('column', column)
-    if(column?.fieldName == orderByField ){
-      if(orderBy == 'asc'){
-        setOrderBy('desc')
+    if (column?.fieldName == orderByField) {
+      if (orderBy == "asc") {
+        setOrderBy("desc");
+      } else {
+        setOrderBy("asc");
       }
-      else {
-        setOrderBy('asc')
-      }
-    }
-    else{
+    } else {
       setOrderByField(column?.fieldName || "id");
     }
   }
@@ -280,7 +251,7 @@ function Admin(props: any) {
   };
   const controlStyles = {
     root: {
-      margin: "0 30px 20px 10px",
+      margin: "0 10px 20px 0",
       maxWidth: "300px",
     },
 
@@ -297,23 +268,21 @@ function Admin(props: any) {
 
   const [itemsLength, setItemsLength] = useState(0);
   const [currentPage, setCurentPage] = useState(0);
-  const itemsPerPage = 10;
 
   // useEffect(() => {
   //   setItemsLength(list.length);
   // }, []);
 
   //   const [items, setItems] = useState(list);
-  const [state, setState] = useState({
-    items: list,
-    columns: columns,
-    announcedMessage: "",
-  });
+  const [searchById, setSearchById] = useState("");
 
   const itemSearch = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
   ): void => {
+    if (text) {
+      setSearchById(text);
+    }
     // setState({
     //   ...state,
     //   items: text
@@ -321,18 +290,18 @@ function Admin(props: any) {
     //     : list,
     // });
   };
-  function _copyAndSort<T>(
-    items: T[],
-    columnKey: string,
-    isSortedDescending?: boolean
-  ): T[] {
-    const key = columnKey as keyof T;
-    return items
-      .slice(0)
-      .sort((a: T, b: T) =>
-        (isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1
-      );
-  }
+  // function _copyAndSort<T>(
+  //   items: T[],
+  //   columnKey: string,
+  //   isSortedDescending?: boolean
+  // ): T[] {
+  //   const key = columnKey as keyof T;
+  //   return items
+  //     .slice(0)
+  //     .sort((a: T, b: T) =>
+  //       (isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1
+  //     );
+  // }
   const listStyle: Partial<IDetailsListStyles> = {
     headerWrapper: {
       ".root-106": {
@@ -347,9 +316,11 @@ function Admin(props: any) {
       //     color: "#FFF",
       //   },
     },
-    // root: {
-    //   width: "80%",
-    // },
+    root: {
+      ".ms-Viewport": {
+        minWidth: "200px",
+      },
+    },
     contentWrapper: {
       ".ms-FocusZone css-61 ms-DetailsHeader root-104": {
         paddingTop: "0px",
@@ -537,18 +508,21 @@ function Admin(props: any) {
   };
 
   console.log("List => ", list);
+  console.log("filter => ", filtersById);
 
   return (
     <div className="view">
       <Header item={itemsWithHeading} />
       <div className="content">
         <div className="body has-right-panel">
-          <TextField
-            // label="Filter by name:"
-            onChange={itemSearch}
-            placeholder=" Search items.."
-            styles={controlStyles}
-          />
+          <div style={{ display: "flex" }}>
+            <TextField
+              onChange={itemSearch}
+              placeholder=" Search by id"
+              styles={controlStyles}
+            />
+            <PrimaryButton text="Search" onClick={handleSearchById} />
+          </div>
           <DetailsList
             styles={listStyle}
             items={list}
@@ -568,12 +542,12 @@ function Admin(props: any) {
             pageAriaLabel={"page"}
             selectedAriaLabel={"selected"}
             onPageChange={(page) => {
-              if(currentPage < page && hasMoreRecord) {
+              if (currentPage < page && hasMoreRecord) {
                 setCurentPage(page);
                 setLimitSTart(limitStart + limitPageLength);
               }
-              if(currentPage > page && (limitStart - limitPageLength) >= 0){
-                setLimitSTart((limitStart - limitPageLength));
+              if (currentPage > page && limitStart - limitPageLength >= 0) {
+                setLimitSTart(limitStart - limitPageLength);
                 setCurentPage(page);
               }
             }}

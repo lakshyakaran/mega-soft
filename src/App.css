@@ -17,7 +17,7 @@ body {
   top: 0;
 }
 
-.view{
+.view {
   padding-top: 75px;
 }
 
@@ -39,18 +39,71 @@ body {
   padding-top: 0px;
 }
 
-.ms-DetailsHeader{
+.ms-DetailsHeader {
   /* border: 1px solid black; */
 }
 
-.right-panel{
+.right-panel {
   width: 450px;
   background-color: #FFF;
   height: 100%;
   position: fixed;
   right: 0;
   top: 56px;
+  padding: 1rem;
 }
-.has-right-panel{
-  width: calc(100% - 450px);
+
+.has-right-panel {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  width: calc(100% - 550px);
+}
+
+/* .visibleItemLabel-149 {
+  display: none;
+} */
+
+.ms-Pagination-pageNumber {
+  display: none;
+}
+
+.ms-TooltipHost root-93 {
+  display: none;
+}
+
+.css-155 {
+  display: none;
+}
+
+.sidebar .ms-Nav-link {
+  background-color: transparent;
+}
+
+.sidebar .ms-Nav-link .ms-Icon {
+  color: #FFF;
+}
+
+.sidebar .ms-Nav-link:hover, .sidebar .ms-Nav-compositeLink:hover .link-76, .ms-Nav-compositeLink:hover .link-81 {
+  /* background-color: #0078d4 !important; */
+  background-color: #f79420 !important;
+}
+
+.sidebar .main-logo img {
+  width: 100px;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.sidebar .main-logo {
+  text-align: center;
+}
+
+.ms-Button--primary.root-106 {
+  background-color: #f79420;
+  border-color: #f79420;
+}
+
+.ms-Button--primary.root-106:hover {
+  background-color: #ea8c1e;
+  border-color: #ea8c1e;
 }

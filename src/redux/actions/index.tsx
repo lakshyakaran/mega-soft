@@ -30,7 +30,12 @@ export const fetchUserList = (item: any) => {
   };
 };
 
-export const userData = async (limit_start = 0, limit_page_length = 10, order_by = "id asc") => {
+export const userData = async (
+  limit_start = 0,
+  limit_page_length = 10,
+  order_by = "id asc",
+  filters = [["id", "like", ""]]
+) => {
   try {
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal`,
@@ -38,7 +43,15 @@ export const userData = async (limit_start = 0, limit_page_length = 10, order_by
         limit_start,
         limit_page_length,
         order_by,
-        fields: JSON.stringify(["name","id","description","review_from","appraisal_to","review_frequency"])
+        filters: JSON.stringify(filters),
+        fields: JSON.stringify([
+          "name",
+          "id",
+          "description",
+          "review_from",
+          "appraisal_to",
+          "review_frequency",
+        ]),
       },
       method: "GET",
       headers: {
@@ -54,7 +67,7 @@ export const userData = async (limit_start = 0, limit_page_length = 10, order_by
       },
     });
     const responseBody = await response.data;
-    return responseBody
+    return responseBody;
     // dispatch({
     //   type: "USER_LIST",
     //   payload: responseBody,
