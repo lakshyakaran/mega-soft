@@ -107,3 +107,7 @@ body {
   background-color: #ea8c1e;
   border-color: #ea8c1e;
 }
+
+.ms-Nav-compositeLink.is-selected.compositeLink-46{
+  background-color: #f79420;
+}

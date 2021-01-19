@@ -68,25 +68,38 @@ function Admin(props: any) {
   const [limitPageLength, setLimitPageLength] = useState(2);
   const [orderBy, setOrderBy] = useState("asc");
   const [orderByField, setOrderByField] = useState("id");
-  const [filtersById, setFiltersById] = useState([["id", "like", ""]]);
+  const [filtersById, setFiltersById] = useState('');
+  const [filtersByReviewFrom, setFiltersByReviewFrom] = useState('');
+  const [filtersByApprisalTo, setFiltersByApprisalTo] = useState('');
 
-  useEffect(() => {
+  useEffect((): void => {
+    const filters = [];
+    if(filtersById) {
+      filters.push(["id", "like", filtersById])
+    }
+    if(filtersByReviewFrom){
+      filters.push(["review_from", ">=", filtersByReviewFrom])
+    }
+    if(filtersByApprisalTo){
+      filters.push(["appraisal_to", ">=", filtersByApprisalTo])
+    }
     userData(
       limitStart,
       limitPageLength,
       `${orderByField} ${orderBy}`,
-      filtersById
+      JSON.stringify(filters)
     ).then((response) => {
-      if (response.data.length) {
-        setList(response.data);
-      }
+      setList(response.data);
       if (response.data.length == limitPageLength) {
         setHasMoreRecord(true);
       } else {
         setHasMoreRecord(false);
       }
     });
-  }, [limitStart, limitPageLength, orderBy, filtersById]);
+    // console.log("filters==>", filters)
+  }, [limitStart, limitPageLength, orderBy, filtersById, filtersByReviewFrom, filtersByApprisalTo]);
+
+    
 
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
@@ -206,9 +219,12 @@ function Admin(props: any) {
     { text: "Folder 2", key: "d2", isCurrentItem: true, as: "h4" },
   ];
 
-  const handleSearchById = () => {
-    // console.log("searchById", searchById);
-    setFiltersById([["id", "like", `${searchById}` + "%"]]);
+  const handleSearchClick = () => {
+    setFiltersById(`${searchById}%`);
+    setFiltersByReviewFrom(`${reviewFromSearch}`);
+    setFiltersByApprisalTo(`${appraisalToSearch}`);
+    setLimitSTart(0);
+    setCurentPage(0);
   };
 
   function _onColumnClick(
@@ -275,20 +291,43 @@ function Admin(props: any) {
 
   //   const [items, setItems] = useState(list);
   const [searchById, setSearchById] = useState("");
+  const [reviewFromSearch, setReviewFromSearch] = useState("");
+  const [appraisalToSearch, setAppraisalToSearch] = useState("");
 
   const itemSearch = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
   ): void => {
-    if (text) {
-      setSearchById(text);
-    }
-    // setState({
-    //   ...state,
-    //   items: text
-    //     ? list.filter((i) => i.name.toLowerCase().indexOf(text) > -1)
-    //     : list,
-    // });
+    setSearchById(text || "")
+    // if(text === "" && searchById !== "") {
+    //   setFiltersById("");
+    //   setLimitSTart(0);
+    //   setCurentPage(0)
+    // }
+  };
+  
+  const itemSearchReviewFrom = (
+    ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    text?: string
+  ): void => {
+    setReviewFromSearch(text || "")
+    // if(text === "" && searchById !== "") {
+    //   setFiltersById("");
+    //   setLimitSTart(0);
+    //   setCurentPage(0)
+    // }
+  };
+  
+  const itemSearchApprisalTo = (
+    ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    text?: string
+  ): void => {
+    setAppraisalToSearch(text || "")
+    // if(text === "" && searchById !== "") {
+    //   setFiltersById("");
+    //   setLimitSTart(0);
+    //   setCurentPage(0)
+    // }
   };
   // function _copyAndSort<T>(
   //   items: T[],
@@ -507,8 +546,8 @@ function Admin(props: any) {
     },
   };
 
-  console.log("List => ", list);
-  console.log("filter => ", filtersById);
+  // console.log("List => ", list);
+  // console.log("filter => ", filtersById);
 
   return (
     <div className="view">
@@ -518,10 +557,20 @@ function Admin(props: any) {
           <div style={{ display: "flex" }}>
             <TextField
               onChange={itemSearch}
-              placeholder=" Search by id"
+              placeholder = "Id"
               styles={controlStyles}
             />
-            <PrimaryButton text="Search" onClick={handleSearchById} />
+            <TextField
+              onChange={itemSearchReviewFrom}
+              placeholder= "Review from"
+              styles={controlStyles}
+            />
+            <TextField
+              onChange={itemSearchApprisalTo}
+              placeholder= "Appraisal To"
+              styles={controlStyles}
+            />
+            <PrimaryButton text="Search" onClick={handleSearchClick} />
           </div>
           <DetailsList
             styles={listStyle}

@@ -34,7 +34,7 @@ export const userData = async (
   limit_start = 0,
   limit_page_length = 10,
   order_by = "id asc",
-  filters = [["id", "like", ""]]
+  filters: any
 ) => {
   try {
     const response = await axios({
@@ -43,7 +43,7 @@ export const userData = async (
         limit_start,
         limit_page_length,
         order_by,
-        filters: JSON.stringify(filters),
+        filters,
         fields: JSON.stringify([
           "name",
           "id",
