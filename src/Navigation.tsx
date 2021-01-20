@@ -17,7 +17,7 @@ const navLinkGroups: INavLinkGroup[] = [
     links: [
       {
         name: "Appraisal",
-        url: "",
+        url: "/",
         key: "key01",
         icon: "UpgradeAnalysis",
         expandAriaLabel: "Expand Home section",

@@ -32,12 +32,12 @@ function _onBreadcrumbItemClicked(
 }
 const itemsWithHeading: IBreadcrumbItem[] = [
   {
-    text: "Claims",
+    text: "Performance",
     key: "Files",
     onClick: _onBreadcrumbItemClicked,
-    href: "/claim",
+    href: "",
   },
-  { text: "20192281", key: "d1", isCurrentItem: true },
+  { text: "Appraisal", key: "d1", isCurrentItem: true },
 ];
 function _getCustomOverflowIcon(): JSX.Element {
   return <Icon iconName={"ChevronDown"} />;

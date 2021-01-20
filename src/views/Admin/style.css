@@ -8,22 +8,27 @@
     margin-top: 10px;
 }
 
-/* .buttonStyle :ms-Button ms-Button--primary root-123 {
-    margin-right: 10px;
-} */
-
 .ms-TextField-fieldGroup fieldGroup-195 {
     border: none;
     border-radius: 10px;
 }
 
-.form-container {
-    background-color: #edf5ff;
-    padding: 15px;
+.link-icons {
+    margin-right: .5rem;
+    color: black;
 }
 
-.input-form {
-    display: flex;
-    margin-top: 10px;
-    justify-content: space-between;
+.ms-TextField-wrapper .ms-TextField-fieldGroup .fieldGroup-97 .feild-98 {
+    width: 624px;
+}
+
+.descriptionInput {
+    width: 58%;
+}
+.descriptionInput :active {
+    border: none;
+}
+
+.type-input{
+    /* width: 58%; */
 }

@@ -27,17 +27,23 @@ import {
   IDropdownOption,
   IDropdownStyles,
   ITextFieldStyles,
+  Link,
+  FontIcon,
+  TooltipHost,
 } from "office-ui-fabric-react";
 import { useId, useBoolean } from "@uifabric/react-hooks";
 import { IBreadcrumbItem } from "office-ui-fabric-react/lib/Breadcrumb";
 import Header from "../../Header";
 import Panel from "../../components/Panel";
-import { ICheckboxInput } from "../../components/Form";
+import WelcomeHeader from "../../components/WelcomeHeader";
+import Form, { ICheckboxInput } from "../../components/AddApprisalForm";
 import { Pagination } from "@uifabric/experiments";
 import { connect, useDispatch } from "react-redux";
+import { Text, ITextProps } from "office-ui-fabric-react/lib/Text";
 
 import "./style.css";
 import { fetchUserList, userData } from "../../redux/actions";
+import { useHistory } from "react-router-dom";
 
 // const list: any[] = [];
 // for (var i = 0; i < 500; i++) {
@@ -68,21 +74,23 @@ function Admin(props: any) {
   const [limitPageLength, setLimitPageLength] = useState(2);
   const [orderBy, setOrderBy] = useState("asc");
   const [orderByField, setOrderByField] = useState("id");
-  const [filtersById, setFiltersById] = useState('');
-  const [filtersByReviewFrom, setFiltersByReviewFrom] = useState('');
-  const [filtersByApprisalTo, setFiltersByApprisalTo] = useState('');
+  const [filtersById, setFiltersById] = useState("");
+  const [filtersByReviewFrom, setFiltersByReviewFrom] = useState("");
+  const [filtersByApprisalTo, setFiltersByApprisalTo] = useState("");
+  const [filtersByDescription, setFiltersByDescription] = useState("");
+  const [filtersByReviewFreq, setFiltersByReviewFreq] = useState("");
 
   useEffect((): void => {
     const filters = [];
-    if(filtersById) {
-      filters.push(["id", "like", filtersById])
+    if (filtersById) {
+      filters.push(["id", "like", filtersById]);
     }
-    if(filtersByReviewFrom){
-      filters.push(["review_from", ">=", filtersByReviewFrom])
+    if (filtersByDescription) {
+      filters.push(["description", "like", filtersByDescription]);
     }
-    if(filtersByApprisalTo){
-      filters.push(["appraisal_to", ">=", filtersByApprisalTo])
-    }
+    // if (filtersByReviewFreq) {
+    //   filters.push(["review_frequency", "=", filtersByReviewFreq]);
+    // }
     userData(
       limitStart,
       limitPageLength,
@@ -97,9 +105,14 @@ function Admin(props: any) {
       }
     });
     // console.log("filters==>", filters)
-  }, [limitStart, limitPageLength, orderBy, filtersById, filtersByReviewFrom, filtersByApprisalTo]);
-
-    
+  }, [
+    limitStart,
+    limitPageLength,
+    orderBy,
+    filtersById,
+    filtersByDescription,
+    filtersByReviewFreq,
+  ]);
 
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
@@ -107,6 +120,42 @@ function Admin(props: any) {
   const titleId = useId("title");
   const cancelIcon: IIconProps = { iconName: "Cancel", color: "#FFF" };
   const columns: IColumn[] = [
+    {
+      key: "02",
+      name: "Action",
+      fieldName: "action",
+      minWidth: 10,
+      maxWidth: 110,
+      isRowHeader: true,
+      onRender: (item) => (
+        <div>
+          <Link
+            className="link-icons"
+            onClick={() => {
+              console.log("view=>", item);
+            }}
+          >
+            <FontIcon iconName="RedEye" />
+          </Link>
+          <Link
+            className="link-icons"
+            onClick={(item) => {
+              alert(item);
+            }}
+          >
+            <FontIcon iconName="Edit" />
+          </Link>
+          <Link
+            className="link-icons"
+            onClick={() => {
+              console.log("delete=>", item);
+            }}
+          >
+            <FontIcon iconName="Delete" />
+          </Link>
+        </div>
+      ),
+    },
     {
       key: "01",
       name: "ID",
@@ -122,31 +171,17 @@ function Admin(props: any) {
       isResizable: false,
     },
     // {
-    //   key: "02",
-    //   name: "Action",
-    //   fieldName: "action",
+    //   key: "03",
+    //   name: "Name",
+    //   fieldName: "name",
     //   minWidth: 10,
     //   maxWidth: 110,
-    //   isSorted: true,
     //   isSortedDescending: false,
     //   sortAscendingAriaLabel: "Sorted A to Z",
-    //   isRowHeader: true,
     //   onColumnClick: _onColumnClick,
     //   sortDescendingAriaLabel: "Sorted Z to A",
     //   isResizable: false,
     // },
-    {
-      key: "03",
-      name: "Name",
-      fieldName: "name",
-      minWidth: 10,
-      maxWidth: 110,
-      isSortedDescending: false,
-      sortAscendingAriaLabel: "Sorted A to Z",
-      onColumnClick: _onColumnClick,
-      sortDescendingAriaLabel: "Sorted Z to A",
-      isResizable: false,
-    },
     {
       key: "04",
       name: "Description",
@@ -154,10 +189,7 @@ function Admin(props: any) {
       minWidth: 10,
       maxWidth: 180,
       isSortedDescending: false,
-      sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
-      onColumnClick: _onColumnClick,
-      sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
     {
@@ -166,10 +198,7 @@ function Admin(props: any) {
       fieldName: "review_from",
       minWidth: 10,
       maxWidth: 110,
-      isSortedDescending: false,
-      sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
-      onColumnClick: _onColumnClick,
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
@@ -180,10 +209,7 @@ function Admin(props: any) {
       minWidth: 10,
       maxWidth: 110,
       isSortedDescending: false,
-      sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
-      onColumnClick: _onColumnClick,
-      sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
     // {
@@ -206,10 +232,7 @@ function Admin(props: any) {
       minWidth: 10,
       maxWidth: 90,
       isSortedDescending: false,
-      sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
-      onColumnClick: _onColumnClick,
-      sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
   ];
@@ -221,8 +244,10 @@ function Admin(props: any) {
 
   const handleSearchClick = () => {
     setFiltersById(`${searchById}%`);
-    setFiltersByReviewFrom(`${reviewFromSearch}`);
+    // setFiltersByReviewFrom(`${searchByDescription}%`);
+    setFiltersByDescription(`${searchByDescription}%`);
     setFiltersByApprisalTo(`${appraisalToSearch}`);
+    setFiltersByReviewFreq(`${reviewSearch}%`);
     setLimitSTart(0);
     setCurentPage(0);
   };
@@ -246,8 +271,8 @@ function Admin(props: any) {
   const modalStyle: Partial<IModalStyles> = {
     root: {},
     main: {
-      height: "45%",
-      width: "30%",
+      height: "62%",
+      width: "60%",
       backgroundColor: "#6f90dc",
       padding: "5px",
     },
@@ -291,38 +316,59 @@ function Admin(props: any) {
 
   //   const [items, setItems] = useState(list);
   const [searchById, setSearchById] = useState("");
-  const [reviewFromSearch, setReviewFromSearch] = useState("");
+  const [searchByDescription, setSearchByDescription] = useState("");
   const [appraisalToSearch, setAppraisalToSearch] = useState("");
+  const [reviewSearch, setReviewSearch] = useState<string[]>([]);
 
   const itemSearch = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
   ): void => {
-    setSearchById(text || "")
+    setSearchById(text || "");
     // if(text === "" && searchById !== "") {
     //   setFiltersById("");
     //   setLimitSTart(0);
     //   setCurentPage(0)
     // }
   };
-  
-  const itemSearchReviewFrom = (
+
+  const itemSearchDescription = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
   ): void => {
-    setReviewFromSearch(text || "")
+    setSearchByDescription(text || "");
     // if(text === "" && searchById !== "") {
     //   setFiltersById("");
     //   setLimitSTart(0);
     //   setCurentPage(0)
     // }
   };
-  
+
+  const itemSearchReview = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    // console.log("dropdown", item?.selected);
+    if (item) {
+      // setReviewSearch(item);
+      setReviewSearch(
+        item.selected
+          ? [item.key as string]
+          : reviewSearch.filter((key) => key !== item.key)
+      );
+    }
+    // if(text === "" && searchById !== "") {
+    //   setFiltersById("");
+    //   setLimitSTart(0);
+    //   setCurentPage(0)
+    // }
+  };
+
   const itemSearchApprisalTo = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
   ): void => {
-    setAppraisalToSearch(text || "")
+    setAppraisalToSearch(text || "");
     // if(text === "" && searchById !== "") {
     //   setFiltersById("");
     //   setLimitSTart(0);
@@ -522,6 +568,12 @@ function Admin(props: any) {
     { key: "key4", text: "Key 4" },
   ];
 
+  const searchOptions: IDropdownOption[] = [
+    { key: "key1", text: "" },
+    { key: "key2", text: "Yearly" },
+    { key: "key3", text: "Monthly" },
+  ];
+
   const dropdownStyles: Partial<IDropdownStyles> = {
     dropdown: {
       width: 170,
@@ -549,28 +601,90 @@ function Admin(props: any) {
   // console.log("List => ", list);
   // console.log("filter => ", filtersById);
 
+  const dateNow = new Date().toLocaleDateString();
+  const timeNow = new Date().toLocaleTimeString();
+  // console.log(dateNow);
+  const history = useHistory();
+
+  // const handleAddBtn = () => {
+
+  // }
+
   return (
     <div className="view">
+      <WelcomeHeader>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              // justifyContent: "flex-end",
+              padding: "10px",
+            }}
+          >
+            <Text style={{ marginRight: "10px" }}>Welcome Rahul Sinha</Text>
+            <div style={{ display: "flex", marginRight: "10px" }}>
+              <Text style={{ marginRight: "5px" }}>Date :</Text>
+              <Text>{dateNow}</Text>
+            </div>
+            <Text style={{ marginRight: "5px" }}>Time : </Text>
+            <Text>{timeNow}</Text>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              padding: "10px",
+            }}
+          >
+            <TooltipHost content="Settings">
+              <FontIcon iconName="Settings" />
+            </TooltipHost>
+          </div>
+        </div>
+      </WelcomeHeader>
       <Header item={itemsWithHeading} />
       <div className="content">
         <div className="body has-right-panel">
           <div style={{ display: "flex" }}>
             <TextField
+              label="ID"
               onChange={itemSearch}
-              placeholder = "Id"
+              placeholder="Enter id"
               styles={controlStyles}
             />
             <TextField
-              onChange={itemSearchReviewFrom}
-              placeholder= "Review from"
+              label="Description"
+              onChange={itemSearchDescription}
+              placeholder="Description"
               styles={controlStyles}
             />
-            <TextField
+            <Dropdown
+              label="Review Frequency"
+              placeholder="Review Frequency"
+              options={searchOptions}
+              onChange={itemSearchReview}
+              styles={dropdownStyles}
+            />
+            <PrimaryButton
+              iconProps={{ iconName: "Search" }}
+              onClick={handleSearchClick}
+              style={{ marginLeft: "10px", marginTop: "28px" }}
+            />
+            <PrimaryButton
+              text="New Appraisal"
+              iconProps={{ iconName: "Add" }}
+              allowDisabledFocus
+              onClick={() => {
+                history.push("/addApprisal");
+              }}
+              style={{ marginLeft: "373px", marginTop: "28px" }}
+              disabled={false}
+              checked={false}
+            />
+            {/* <TextField
               onChange={itemSearchApprisalTo}
               placeholder= "Appraisal To"
               styles={controlStyles}
-            />
-            <PrimaryButton text="Search" onClick={handleSearchClick} />
+            /> */}
           </div>
           <DetailsList
             styles={listStyle}
@@ -601,23 +715,7 @@ function Admin(props: any) {
               }
             }}
           />
-          <Stack horizontal tokens={stackTokens} className="buttonStyle">
-            <PrimaryButton
-              text="Add"
-              allowDisabledFocus
-              disabled={false}
-              onClick={showModal}
-              checked={false}
-            />
-            <PrimaryButton
-              text="Action"
-              menuProps={menuProps}
-              allowDisabledFocus
-              disabled={false}
-              checked={false}
-            />
-          </Stack>
-          <Modal
+          {/* <Modal
             titleAriaId={titleId}
             isOpen={isModalOpen}
             onDismiss={hideModal}
@@ -634,141 +732,14 @@ function Admin(props: any) {
                 onClick={hideModal}
               />
             </div>
-            <div className="form-container">
-              <div className="input-form">
-                <TextField
-                  required
-                  placeholder="ID"
-                  name="id"
-                  onChange={onChangeInput}
-                  // styles={textfelidStyle}
-                />
-                <TextField
-                  required
-                  placeholder="Description"
-                  styles={textfelidStyle}
-                  name="description"
-                  onChange={onChangeInput}
-                />
-              </div>
-              {/* <div className="input-form"></div> */}
-              <div className="input-form">
-                <DatePicker
-                  className={controlClass.control}
-                  firstDayOfWeek={firstDayOfWeek}
-                  strings={DayPickerStrings}
-                  onSelectDate={onSelectDate}
-                  placeholder="Select a date"
-                  ariaLabel="Select a date"
-                  styles={datePickerStyle}
-                />
-                <DatePicker
-                  className={controlClass.control}
-                  firstDayOfWeek={firstDayOfWeek}
-                  strings={DayPickerStrings}
-                  styles={datePickerStyle}
-                  placeholder="Select a date"
-                  ariaLabel="Select a date"
-                />
-                <Dropdown
-                  placeholder="Select"
-                  options={options}
-                  styles={dropdownStyles}
-                />
-              </div>
-              <div className="input-form">
-                <Dropdown
-                  placeholder="Select Type"
-                  options={options}
-                  onChange={onChangeType}
-                  styles={typeDropdownStyles}
-                />
-                <Dropdown
-                  placeholder="Select Formate Type"
-                  options={options}
-                  styles={typeDropdownStyles}
-                />
-                <TextField
-                  placeholder="Owner"
-                  styles={textfelidStyle}
-                  name="owner"
-                  onChange={onChangeInput}
-                />
-              </div>
-              <div className="input-form">
-                <div>
-                  <Label>KRA Settings Tabs: </Label>
-                  {checkboxOptions.map((checkBoxItem: ICheckboxInput) => {
-                    return (
-                      <Stack tokens={stackTokens}>
-                        <Checkbox
-                          label={checkBoxItem.Title}
-                          title={checkBoxItem.Title}
-                          name="kraSetting"
-                          onChange={onChangeCheckbox}
-                        />
-                        <span></span>
-                      </Stack>
-                    );
-                  })}
-                </div>
-                <div>
-                  <Label>Assessment Tabs: </Label>
-                  {checkboxOptions.map((checkBoxItem: ICheckboxInput) => {
-                    return (
-                      <Stack tokens={stackTokens}>
-                        <Checkbox
-                          label={checkBoxItem.Title}
-                          title={checkBoxItem.Title}
-                          name="assessment"
-                          onChange={onChangeCheckbox}
-                        />
-                        <span></span>
-                      </Stack>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-            <Stack
-              horizontal
-              tokens={stackTokens}
-              style={{ justifyContent: "flex-end" }}
-            >
-              <div
-                style={{
-                  marginTop: "15px",
-                }}
-              >
-                <PrimaryButton
-                  text="Add"
-                  allowDisabledFocus
-                  disabled={false}
-                  // onClick={hideModal}
-                  checked={false}
-                />
-              </div>
-              <div
-                style={{
-                  marginTop: "15px",
-                }}
-              >
-                <PrimaryButton
-                  text="Cancel"
-                  allowDisabledFocus
-                  disabled={false}
-                  onClick={hideModal}
-                  checked={false}
-                />
-              </div>
-            </Stack>
-          </Modal>
+            <Form />
+          </Modal> */}
         </div>
-        <div className="right-panel">
+        {/* <div className="right-panel">
           <Panel>
             <h2>Panel</h2>
           </Panel>
-        </div>
+        </div> */}
       </div>
     </div>
   );

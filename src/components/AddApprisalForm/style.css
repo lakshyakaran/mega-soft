@@ -1,34 +1,13 @@
 .form-container {
-    background-color: #edf5ff;
+    background-color: #FFF;
     padding: 15px;
+    margin: 1rem;
 }
 
 .input-form {
     display: flex;
-    margin-top: 10px;
     justify-content: space-between;
 }
-
-/* .fieldGroup-195 {
-    border: none;
-    height: 30px;
-    width: 200px;
-    border-radius: 10px;
-}
-
-.fieldGroup-198 {
-    border: none;
-    height: 30px;
-    width: 200px;
-    border-radius: 10px;
-}
-
-.fieldGroup-96 {
-    border: none;
-    height: 30px;
-    width: 200px;
-    border-radius: 10px;
-} */
 
 .main-input {
     /* margin-top: 10px; */
@@ -61,8 +40,16 @@
     border-top: 1px solid black;
 }
 
-.table-header-title{
+.table-header-title {
     color: #FFF;
     text-align: center;
     font-size: 15px;
+}
+
+.descriptionInput {
+    width: 58%;
+}
+
+.descriptionInput :active {
+    border: none;
 }
