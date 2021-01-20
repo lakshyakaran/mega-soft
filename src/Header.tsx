@@ -75,11 +75,13 @@ function Header(props: { item?: IBreadcrumbItem[] }) {
   //     tokens: { childrenGap: 100, },
   // };
   // const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
+  
 
   return (
     <div className="header">
       <Breadcrumb
         items={itemsWithHeading}
+        // items={items={props.item || []}}
         styles={breadCrumStyle}
         maxDisplayedItems={3}
         ariaLabel="With custom rendered divider and overflow icon"

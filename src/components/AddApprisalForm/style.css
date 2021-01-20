@@ -5,7 +5,7 @@
 }
 
 .input-form {
-    display: flex;
+    /* display: flex; */
     justify-content: space-between;
 }
 
@@ -46,10 +46,24 @@
     font-size: 15px;
 }
 
-.descriptionInput {
-    width: 58%;
+
+.row{
+    display: flex;
+    justify-content: space-between;
+}
+.flexGrow{
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+.flexGrowTextInput{
+    margin-right: 1rem;
 }
 
-.descriptionInput :active {
-    border: none;
+.flexGrowCheckBox{
+    margin-right: 10rem;
+    margin-top: 10px;
+}
+
+.rowCheckBox{
+    display: flex;
 }

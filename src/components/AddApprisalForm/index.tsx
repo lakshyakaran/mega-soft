@@ -56,7 +56,7 @@ const formulaList: IDropdownOption[] = [
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: {
-    width: 170,
+    // width: 170,
     border: "0px",
   },
 };
@@ -238,7 +238,7 @@ function Form() {
   const controlClass = mergeStyleSets({
     control: {
       margin: "0 0 15px 0",
-      maxWidth: "150px",
+      // maxWidth: "150px",
     },
   });
 
@@ -257,10 +257,19 @@ function Form() {
     id: "",
     description: "",
     owner: "",
-    kraSetting: false,
-    assessment: false,
+    kraSettingGoal: false,
+    kraSettingCompetencies: false,
+    kraSettingDevelopmentPlan: false,
+    kraSettingSummary: false,
+    assessmentGoal: false,
+    assessmentCompetencies: false,
+    assessmentDevelopmentPlan: false,
+    assessmentSummary: false,
   });
-  const [selectedType, setSelectedType] = React.useState<string[]>([]);
+
+
+  // console.log("data==>", claimsData)
+  const [selectedType, setSelectedType] = useState<string[]>([]);
 
   function onChangeCheckbox(
     ev?: React.FormEvent<HTMLElement>,
@@ -349,32 +358,32 @@ function Form() {
       </WelcomeHeader>
       <Header item={itemsWithHeading} />
       <div className="content">
-        <div className="body">
+        <div className="body has-right-panel">
           <div className="form-container">
-            <div className="input-form">
+            <div className="row">
               <TextField
                 required
                 placeholder="ID"
                 name="id"
                 label="Id"
                 onChange={onChangeInput}
-                // styles={textfelidStyle}
+                className="flexGrowTextInput"
               />
               <TextField
                 required
                 placeholder="Description"
                 label="Description"
                 // styles={textfelidStyle}
-                className="descriptionInput"
+                className="flexGrow"
                 name="description"
                 onChange={onChangeInput}
               />
             </div>
             {/* <div className="input-form"></div> */}
-            <div className="input-form">
+            <div className="row">
               <DatePicker
                 label="Review From"
-                className={controlClass.control}
+                className={`${controlClass.control} flexGrow`}
                 firstDayOfWeek={firstDayOfWeek}
                 strings={DayPickerStrings}
                 onSelectDate={onSelectDate}
@@ -384,7 +393,7 @@ function Form() {
               />
               <DatePicker
                 label="Appraisal To"
-                className={controlClass.control}
+                className={`${controlClass.control} flexGrow`}
                 firstDayOfWeek={firstDayOfWeek}
                 strings={DayPickerStrings}
                 styles={datePickerStyle}
@@ -395,6 +404,7 @@ function Form() {
                 required
                 label="Review Frequency"
                 placeholder="Select"
+                className="flexGrow"
                 options={options}
                 styles={dropdownStyles}
               />
@@ -422,38 +432,75 @@ function Form() {
               name="owner"
               onChange={onChangeInput}
             />
-            <div className="input-form">
+            <div className="rowCheckBox">
               <div>
                 <Label>KRA Settings Tabs: </Label>
-                {checkboxOptions.map((checkBoxItem: ICheckboxInput) => {
-                  return (
-                    <Stack tokens={stackTokens}>
-                      <Checkbox
-                        label={checkBoxItem.Title}
-                        title={checkBoxItem.Title}
-                        name="kraSetting"
-                        onChange={onChangeCheckbox}
-                      />
-                      <span></span>
-                    </Stack>
-                  );
-                })}
+                <Checkbox
+                  label={'Goals'}
+                  title={'Goals'}
+                  checked={claimsData.kraSettingGoal}
+                  className="flexGrowCheckBox"
+                  name="kraSettingGoal"
+                  onChange={onChangeCheckbox}
+                />
+                <Checkbox
+                  label={'Competencies'}
+                  title={'Competencies'}
+                  checked={claimsData.kraSettingCompetencies}
+                  className="flexGrowCheckBox"
+                  name="kraSettingCompetencies"
+                  onChange={onChangeCheckbox}
+                />
+                <Checkbox
+                  label={'Development Plans'}
+                  title={'Development Plans'}
+                  checked={claimsData.kraSettingDevelopmentPlan}
+                  className="flexGrowCheckBox"
+                  name="kraSettingDevelopmentPlan"
+                  onChange={onChangeCheckbox}
+                />
+                <Checkbox
+                  label={'Summary'}
+                  title={'Summary'}
+                  checked={claimsData.kraSettingSummary}
+                  className="flexGrowCheckBox"
+                  name="kraSettingSummary"
+                  onChange={onChangeCheckbox}
+                />
               </div>
               <div>
                 <Label>Assessment Tabs: </Label>
-                {checkboxOptions.map((checkBoxItem: ICheckboxInput) => {
-                  return (
-                    <Stack tokens={stackTokens}>
-                      <Checkbox
-                        label={checkBoxItem.Title}
-                        title={checkBoxItem.Title}
-                        name="assessment"
-                        onChange={onChangeCheckbox}
-                      />
-                      <span></span>
-                    </Stack>
-                  );
-                })}
+                <Checkbox
+                  label={'Goals'}
+                  title={'Goals'}
+                  checked={claimsData.assessmentGoal}
+                  className="flexGrowCheckBox"
+                  name="assessmentGoal"
+                  onChange={onChangeCheckbox}
+                />
+                <Checkbox
+                  label={'Competencies'}
+                  title={'Competencies'}
+                  checked={claimsData.assessmentCompetencies}
+                  className="flexGrowCheckBox"
+                  name="assessmentCompetencies"
+                  onChange={onChangeCheckbox}
+                />
+                <Checkbox
+                  label={'Development Plans'}
+                  title={'Development Plans'}
+                  checked={claimsData.assessmentDevelopmentPlan}
+                  className="flexGrowCheckBox"
+                  name="assessmentSummary"
+                  onChange={onChangeCheckbox}
+                /><Checkbox
+                  label={'Summary'}
+                  title={'Summary'}
+                  checked={claimsData.assessmentSummary}
+                  className="flexGrowCheckBox"
+                  name="assessmentSummary"
+                  onChange={onChangeCheckbox}
+                />
               </div>
             </div>
             <Stack
