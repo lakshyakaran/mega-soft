@@ -1,5 +1,10 @@
 const initialState = {
-  UserData: [],
+  UserData: [
+    {
+      name: "Rahul Sinha",
+      id: "009234",
+    },
+  ],
 };
 
 export default function userData(

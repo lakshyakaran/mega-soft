@@ -59,14 +59,15 @@ function _getCustomDivider(dividerProps: IDividerAsProps): JSX.Element {
 const breadCrumStyle: Partial<IBreadcrumbStyles> = {
   root: {
     margin: "0px",
-    padding: "10px",
+    padding: "0px",
+    marginTop: "-10px",
   },
   itemLink: {
     fontSize: "22px",
   },
 };
 
-function Header(props: { item?: IBreadcrumbItem[] }) {
+function Header(props: { item?: IBreadcrumbItem[]; styles: any }) {
   // const _alertClicked = () => {
   //   console.log("clicked==>")
   // }
@@ -75,14 +76,13 @@ function Header(props: { item?: IBreadcrumbItem[] }) {
   //     tokens: { childrenGap: 100, },
   // };
   // const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
-  
 
   return (
     <div className="header">
       <Breadcrumb
-        items={itemsWithHeading}
-        // items={items={props.item || []}}
-        styles={breadCrumStyle}
+        // items={itemsWithHeading}
+        items={props.item || []}
+        styles={props.styles}
         maxDisplayedItems={3}
         ariaLabel="With custom rendered divider and overflow icon"
         dividerAs={_getCustomDivider}

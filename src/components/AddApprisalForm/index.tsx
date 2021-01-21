@@ -12,6 +12,7 @@ import {
   DropdownMenuItemType,
   FontIcon,
   IBreadcrumbItem,
+  IBreadcrumbStyles,
   IColumn,
   IDatePickerStrings,
   IDatePickerStyles,
@@ -21,6 +22,7 @@ import {
   mergeStyles,
   mergeStyleSets,
   PrimaryButton,
+  Separator,
   TooltipHost,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
@@ -31,27 +33,23 @@ import Header from "../../Header";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addApprisal, add_apprisal } from "../../redux/actions/apprisal";
 
-const options: IDropdownOption[] = [
-  {
-    key: "key1",
-    text: "Key 1",
-    itemType: DropdownMenuItemType.Header,
-  },
-  { key: "key2", text: "Key 2" },
-  { key: "key3", text: "Key 3" },
-  { key: "key4", text: "Key 4" },
+const formateTypeOptions: IDropdownOption[] = [
+  { key: "key1", text: "Sales" },
+  { key: "key3", text: "HR" },
+  { key: "key4", text: "Management" },
 ];
 
-const formulaList: IDropdownOption[] = [
-  {
-    key: "key1",
-    text: "Formula1",
-    itemType: DropdownMenuItemType.Header,
-  },
-  { key: "key2", text: "Formula2" },
-  { key: "key3", text: "Formula3" },
-  { key: "key4", text: "Formula4" },
+const reviewFrequencyOptions: IDropdownOption[] = [
+  { key: "key1", text: "Yearly" },
+  { key: "key2", text: "Monthly" },
+];
+
+const typeOptions: IDropdownOption[] = [
+  { key: "key1", text: "Annual Apprisal" },
+  { key: "key2", text: "Quarterly Apprisal" },
 ];
 
 const dropdownStyles: Partial<IDropdownStyles> = {
@@ -119,58 +117,6 @@ function Form() {
     color: "#ff0000",
     margin: "6px 15px",
   });
-  const columns: IColumn[] = [
-    {
-      key: "01",
-      name: "And/Or",
-      fieldName: "and",
-      minWidth: 10,
-      maxWidth: 70,
-      isResizable: false,
-    },
-    {
-      key: "02",
-      name: "Column",
-      fieldName: "column",
-      minWidth: 10,
-      maxWidth: 150,
-      isRowHeader: true,
-      isResizable: false,
-      onRender: (item) => (
-        // eslint-disable-next-line react/jsx-no-bind
-        <Dropdown placeholder="Formula:" options={formulaList} />
-      ),
-    },
-    {
-      key: "03",
-      name: "Comparison",
-      fieldName: "comparison",
-      minWidth: 10,
-      maxWidth: 150,
-      isRowHeader: true,
-      isResizable: false,
-    },
-    {
-      key: "04",
-      name: "Compare To",
-      fieldName: "compareto",
-      minWidth: 10,
-      maxWidth: 250,
-      isRowHeader: true,
-      isResizable: false,
-      onRender: (item) => <TextField multiline autoAdjustHeight />,
-    },
-    {
-      key: "05",
-      name: "Action",
-      fieldName: "action",
-      minWidth: 10,
-      maxWidth: 150,
-      isRowHeader: true,
-      isResizable: false,
-      onRender: (item) => <FontIcon iconName="Accept" className={iconClass} />,
-    },
-  ];
 
   const itemsToDisplay: any[] = [
     {
@@ -267,9 +213,21 @@ function Form() {
     assessmentSummary: false,
   });
 
-
   // console.log("data==>", claimsData)
-  const [selectedType, setSelectedType] = useState<string[]>([]);
+  const [selectedType, setSelectedType] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
+
+  const [reviewFrequency, setReviewFrequency] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
+
+  const [formateType, setFormateType] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
 
   function onChangeCheckbox(
     ev?: React.FormEvent<HTMLElement>,
@@ -294,23 +252,46 @@ function Form() {
   };
 
   const onChangeType = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setSelectedType(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
+
+  const onChangeReviewFrequency = (
     event?: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
   ): void => {
-    // console.log("type===>", item);
-    if (item) {
-      setSelectedType(
-        item.selected
-          ? [...selectedType, item.key as string]
-          : selectedType.filter((key) => key !== item.key)
-      );
-    }
+    setReviewFrequency(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
+
+  const onChangeFormateType = (
+    event?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setFormateType(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
   };
 
   const _onBreadcrumbItemClicked = () => {};
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: "Folder 1", key: "d1", onClick: _onBreadcrumbItemClicked },
-    { text: "Folder 2", key: "d2", isCurrentItem: true, as: "h4" },
+    { text: "Performance", key: "d1", onClick: _onBreadcrumbItemClicked },
+    { text: "Appraisal", key: "d2", isCurrentItem: true, as: "h4", href: "/" },
+    { text: "Add Appraisal", key: "d3", as: "h4" },
   ];
 
   const [date, setDate] = useState<Date | null | undefined>(null);
@@ -325,6 +306,32 @@ function Form() {
 
   const history = useHistory();
 
+  const breadCrumStyle: Partial<IBreadcrumbStyles> = {
+    root: {
+      marginTop: "-1rem",
+    },
+    itemLink: {
+      fontSize: "20px",
+    },
+  };
+
+  // const dispatch = useDispatch();
+
+  const handleAddApprisal = () => {
+    const addQueary = {
+      id: claimsData.id,
+      appraisal_description: claimsData.description,
+      appraisal_owner: claimsData.owner,
+      description: "22",
+      format_type: formateType.text,
+      review_frequency: reviewFrequency.text,
+      type: selectedType.text,
+    };
+    add_apprisal(addQueary, (response: any) => {
+      console.log("response=>", response);
+    });
+  };
+
   return (
     <div className="view">
       <WelcomeHeader>
@@ -336,7 +343,9 @@ function Form() {
               padding: "10px",
             }}
           >
-            <Text style={{ marginRight: "10px" }}>Welcome Rahul Sinha</Text>
+            <Text style={{ marginRight: "10px" }}>
+              Welcome Rahul Sinha(900154)
+            </Text>
             <div style={{ display: "flex", marginRight: "10px" }}>
               <Text style={{ marginRight: "5px" }}>Date :</Text>
               <Text>{dateNow}</Text>
@@ -356,7 +365,7 @@ function Form() {
           </div>
         </div>
       </WelcomeHeader>
-      <Header item={itemsWithHeading} />
+      <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="body has-right-panel">
           <div className="form-container">
@@ -405,7 +414,8 @@ function Form() {
                 label="Review Frequency"
                 placeholder="Select"
                 className="flexGrow"
-                options={options}
+                onChange={onChangeReviewFrequency}
+                options={reviewFrequencyOptions}
                 styles={dropdownStyles}
               />
             </div>
@@ -414,15 +424,16 @@ function Form() {
               label="Type"
               placeholder="Select Type"
               className="type-input"
-              options={options}
+              options={typeOptions}
               onChange={onChangeType}
               // styles={typeDropdownStyles}
             />
             <Dropdown
-              label="Formate Type"
+              label="Format Type"
               className="type-input"
-              placeholder="Select Formate Type"
-              options={options}
+              onChange={onChangeFormateType}
+              placeholder="Select Format Type"
+              options={formateTypeOptions}
               // styles={typeDropdownStyles}
             />
             <TextField
@@ -432,36 +443,37 @@ function Form() {
               name="owner"
               onChange={onChangeInput}
             />
+            <Separator />
             <div className="rowCheckBox">
               <div>
                 <Label>KRA Settings Tabs: </Label>
                 <Checkbox
-                  label={'Goals'}
-                  title={'Goals'}
+                  label={"Goals"}
+                  title={"Goals"}
                   checked={claimsData.kraSettingGoal}
                   className="flexGrowCheckBox"
                   name="kraSettingGoal"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
-                  label={'Competencies'}
-                  title={'Competencies'}
+                  label={"Competencies"}
+                  title={"Competencies"}
                   checked={claimsData.kraSettingCompetencies}
                   className="flexGrowCheckBox"
                   name="kraSettingCompetencies"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
-                  label={'Development Plans'}
-                  title={'Development Plans'}
+                  label={"Development Plans"}
+                  title={"Development Plans"}
                   checked={claimsData.kraSettingDevelopmentPlan}
                   className="flexGrowCheckBox"
                   name="kraSettingDevelopmentPlan"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
-                  label={'Summary'}
-                  title={'Summary'}
+                  label={"Summary"}
+                  title={"Summary"}
                   checked={claimsData.kraSettingSummary}
                   className="flexGrowCheckBox"
                   name="kraSettingSummary"
@@ -471,31 +483,32 @@ function Form() {
               <div>
                 <Label>Assessment Tabs: </Label>
                 <Checkbox
-                  label={'Goals'}
-                  title={'Goals'}
+                  label={"Goals"}
+                  title={"Goals"}
                   checked={claimsData.assessmentGoal}
                   className="flexGrowCheckBox"
                   name="assessmentGoal"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
-                  label={'Competencies'}
-                  title={'Competencies'}
+                  label={"Competencies"}
+                  title={"Competencies"}
                   checked={claimsData.assessmentCompetencies}
                   className="flexGrowCheckBox"
                   name="assessmentCompetencies"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
-                  label={'Development Plans'}
-                  title={'Development Plans'}
+                  label={"Development Plans"}
+                  title={"Development Plans"}
                   checked={claimsData.assessmentDevelopmentPlan}
                   className="flexGrowCheckBox"
                   name="assessmentSummary"
                   onChange={onChangeCheckbox}
-                /><Checkbox
-                  label={'Summary'}
-                  title={'Summary'}
+                />
+                <Checkbox
+                  label={"Summary"}
+                  title={"Summary"}
                   checked={claimsData.assessmentSummary}
                   className="flexGrowCheckBox"
                   name="assessmentSummary"
@@ -516,8 +529,7 @@ function Form() {
                 <PrimaryButton
                   text="Add"
                   allowDisabledFocus
-                  disabled={false}
-                  checked={false}
+                  onClick={handleAddApprisal}
                 />
               </div>
               <div

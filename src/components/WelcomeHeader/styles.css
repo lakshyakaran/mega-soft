@@ -3,8 +3,10 @@
     position: fixed;
     z-index: 999;
     top: 0;
-    width: calc(100% - 200px);
+    width: calc(100% - 232px);
     left: 200px;
-    box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
-    height: 40px;
+    /* box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28); */
+    height: 50px;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }

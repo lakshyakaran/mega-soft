@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   DetailsList,
   IColumn,
+  IDetailsListProps,
   IDetailsListStyles,
 } from "office-ui-fabric-react/lib/DetailsList";
 import "office-ui-fabric-react/dist/css/fabric.css";
@@ -16,7 +17,16 @@ import {
   FontIcon,
   TooltipHost,
 } from "office-ui-fabric-react";
-import { IBreadcrumbItem } from "office-ui-fabric-react/lib/Breadcrumb";
+import {
+  IBreadcrumbItem,
+  IBreadcrumbStyles,
+} from "office-ui-fabric-react/lib/Breadcrumb";
+import { Spinner, SpinnerSize } from "office-ui-fabric-react/lib/Spinner";
+import {
+  Shimmer,
+  ShimmerElementType,
+  IShimmerElement,
+} from "office-ui-fabric-react/lib/Shimmer";
 import Header from "../../Header";
 import Panel from "../../components/Panel";
 import WelcomeHeader from "../../components/WelcomeHeader";
@@ -27,7 +37,6 @@ import { Text } from "office-ui-fabric-react/lib/Text";
 import "./style.css";
 import { userData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
-
 
 function Admin(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
@@ -193,8 +202,8 @@ function Admin(props: any) {
   ];
   const _onBreadcrumbItemClicked = () => {};
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: "Folder1", key: "d1", onClick: _onBreadcrumbItemClicked },
-    { text: "Folder 2", key: "d2", isCurrentItem: true, as: "h4" },
+    { text: "Performance", key: "d1", onClick: _onBreadcrumbItemClicked },
+    { text: "Appraisal", key: "d2", isCurrentItem: true, as: "h4" },
   ];
 
   const handleSearchClick = () => {
@@ -221,13 +230,13 @@ function Admin(props: any) {
     }
   }
 
-
   const theme = getTheme();
 
   const controlStyles = {
     root: {
       margin: "0 10px 20px 0",
       maxWidth: "300px",
+      borderRadius: "5px",
     },
 
     wrapper: {
@@ -236,7 +245,7 @@ function Admin(props: any) {
       },
     },
   };
- 
+
   const [itemsLength, setItemsLength] = useState(0);
   const [currentPage, setCurentPage] = useState(0);
 
@@ -245,7 +254,12 @@ function Admin(props: any) {
   const [appraisalToSearch, setAppraisalToSearch] = useState("");
   const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
     key: "",
-    text: ""
+    text: "",
+  });
+
+  const [selectRoles, setSelectRoles] = useState<IDropdownOption>({
+    key: "",
+    text: "",
   });
 
   const itemSearch = (
@@ -276,10 +290,24 @@ function Admin(props: any) {
     ev?: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
   ): void => {
-    setReviewSearch(item || {
-      key: "",
-      text: ""
-    });
+    setReviewSearch(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
+
+  const handleRoles = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setReviewSearch(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
   };
 
   const itemSearchApprisalTo = (
@@ -293,7 +321,7 @@ function Admin(props: any) {
     //   setCurentPage(0)
     // }
   };
-  
+
   const listStyle: Partial<IDetailsListStyles> = {
     headerWrapper: {
       ".root-106": {
@@ -314,12 +342,16 @@ function Admin(props: any) {
     },
   };
 
-
-  
   const searchOptions: IDropdownOption[] = [
     { key: "key1", text: "" },
     { key: "key2", text: "Yearly" },
     { key: "key3", text: "Monthly" },
+  ];
+
+  const rolesOption: IDropdownOption[] = [
+    { key: "key1", text: "HR" },
+    { key: "key2", text: "Manager" },
+    { key: "key3", text: "Employee" },
   ];
 
   const dropdownStyles: Partial<IDropdownStyles> = {
@@ -329,73 +361,120 @@ function Admin(props: any) {
     },
   };
 
- 
-
-  
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
   const history = useHistory();
+  const userName = props.userData.UserData[0].name;
+  const userId = props.userData.UserData[0].id;
 
+  const breadCrumStyle: Partial<IBreadcrumbStyles> = {
+    root: {
+      margin: "0px",
+      padding: "0px",
+      marginTop: "-10px",
+    },
+    itemLink: {
+      fontSize: "20px",
+    },
+  };
 
+  // const renderRow: Partial<IDetailsListProps["onRenderRow"]> = {
+  //   const customStyles: Partial<IDetailsRowStyles> = { };
+  //   if (itemIndex % 2 === 0) {
+  //       // Every other row renders with a different background color
+  //       customStyles.root = { backgroundColor: theme.palette.themeLighterAlt };
+  //     }
+  // };
 
+  // console.log("props==>", props.userData.UserData[0].name);
   return (
     <div className="view">
       <WelcomeHeader>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <div
             style={{
               display: "flex",
-              // justifyContent: "flex-end",
+              justifyContent: "space-between",
+              alignItems: "center",
               padding: "10px",
             }}
           >
-            <Text style={{ marginRight: "10px" }}>Welcome Rahul Sinha</Text>
-            <div style={{ display: "flex", marginRight: "10px" }}>
+            <Text style={{ marginRight: "10px" }}>
+              Welcome {userName} ({userId})
+            </Text>
+            <Dropdown
+              options={rolesOption}
+              onChange={handleRoles}
+              className="rolesDropDown"
+              styles={dropdownStyles}
+              style={{ marginLeft: "2rem" }}
+            />
+            {/* <div style={{ display: "flex", marginRight: "10px" }}>
               <Text style={{ marginRight: "5px" }}>Date :</Text>
               <Text>{dateNow}</Text>
             </div>
             <Text style={{ marginRight: "5px" }}>Time : </Text>
-            <Text>{timeNow}</Text>
+            <Text>{timeNow}</Text> */}
+            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
+              Logged In:
+            </Text>
+            <Text style={{ marginRight: "5px" }}>
+              {dateNow} {timeNow}
+            </Text>
+            {/* <Text style={{ marginRight: "5px" }}>Time:</Text> */}
+            {/* <Text style={{ marginRight: "5px" }}>{timeNow}</Text> */}
           </div>
           <div
             style={{
               display: "flex",
               padding: "10px",
+              // marginLeft: "1rem",
             }}
           >
-            <TooltipHost content="Settings">
+            <Text variant={"medium"}>Logged Out</Text>
+            {/* <TooltipHost content="Settings">
               <FontIcon iconName="Settings" />
-            </TooltipHost>
+            </TooltipHost> */}
           </div>
         </div>
       </WelcomeHeader>
-      <Header item={itemsWithHeading} />
+      <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="body has-right-panel">
           <div style={{ display: "flex" }}>
             <TextField
               label="ID"
               onChange={itemSearch}
-              placeholder="Enter id"
+              placeholder="Enter ID"
+              className="searchInput"
               styles={controlStyles}
             />
             <TextField
               label="Description"
+              className="searchInput"
               onChange={itemSearchDescription}
-              placeholder="Description"
+              placeholder="Enter Description"
               styles={controlStyles}
             />
             <Dropdown
               label="Review Frequency"
-              placeholder="Review Frequency"
+              placeholder="Select"
               options={searchOptions}
+              className="reviewFrequency"
               onChange={itemSearchReview}
+              style={{ padding: "0px" }}
               styles={dropdownStyles}
             />
             <PrimaryButton
               iconProps={{ iconName: "Search" }}
               onClick={handleSearchClick}
-              style={{ marginLeft: "10px", marginTop: "28px" }}
+              style={{ marginLeft: "10px", marginTop: "18px" }}
             />
             <PrimaryButton
               text="New Appraisal"
@@ -404,7 +483,7 @@ function Admin(props: any) {
               onClick={() => {
                 history.push("/addApprisal");
               }}
-              style={{ marginLeft: "373px", marginTop: "28px" }}
+              style={{ marginLeft: "auto", alignSelf: "center" }}
               disabled={false}
               checked={false}
             />
@@ -414,12 +493,19 @@ function Admin(props: any) {
               styles={controlStyles}
             /> */}
           </div>
-          <DetailsList
-            styles={listStyle}
-            items={list}
-            columns={columns}
-            selectionMode={0}
-          />
+          {list.length === 0 ? (
+            <div>
+              <Shimmer />
+            </div>
+          ) : (
+            <DetailsList
+              styles={listStyle}
+              items={list}
+              // onRenderRow = {renderRow}
+              columns={columns}
+              selectionMode={0}
+            />
+          )}
           <Pagination
             format="buttons"
             selectedPageIndex={currentPage}

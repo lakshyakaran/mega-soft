@@ -25,10 +25,34 @@
 .descriptionInput {
     width: 58%;
 }
+
 .descriptionInput :active {
     border: none;
 }
 
-.type-input{
+.type-input {
     /* width: 58%; */
+}
+
+.rolesDropDown .title-85 {
+    border: none;
+    width: 100px;
+    height: 30px;
+}
+
+.rolesDropDown .ms-Dropdown-title {
+    background-color: transparent;
+    border-width: 0px;
+    border-style: solid;
+    border-color: rgb(96, 94, 92);
+    border-radius: 2px;
+    border-bottom: solid 1px #605e5c;
+}
+
+.reviewFrequency label {
+    padding: 0px;
+}
+
+.searchInput .ms-TextField-fieldGroup .fieldGroup-100 {
+    border-radius: 4px;
 }

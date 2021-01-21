@@ -10,7 +10,7 @@ body {
 .sidebar {
   position: fixed;
   width: 208;
-  background-color: #040848;
+  background-color: #344f84;
   height: 100%;
   left: 0;
   top: 0;
@@ -91,9 +91,13 @@ body {
   color: #FFF;
 }
 
+.sidebar .ms-Nav-chevronButton .chevronButton-56:hover {
+  color: transparent;
+}
+
 .sidebar .ms-Nav-link:hover, .sidebar .ms-Nav-compositeLink:hover .link-76, .ms-Nav-compositeLink:hover .link-81 {
   /* background-color: #0078d4 !important; */
-  background-color: #f79420 !important;
+  background-color: #29416f !important;
 }
 
 .sidebar .main-logo img {
@@ -117,10 +121,18 @@ body {
 }
 
 .ms-Nav-compositeLink.is-selected.compositeLink-46 {
-  background-color: #f79420;
+  background-color: #29416f;
+}
+
+.itemLink-109 {
+  font-size: 20px;
 }
 
 /* .ms-TooltipHost.root-175 {
   display: none;
 } */
 
+.ms-Breadcrumb-list {
+  margin-top: -18px;
+  padding: 0 1rem;
+}
