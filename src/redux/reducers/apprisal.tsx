@@ -1,33 +1,19 @@
-var initailState = {
-  id: "",
-  description: "1",
-  appraisal_description: "",
-  review_from: "",
-  appraisal_to: "",
-  review_frequency: "",
-  type: "",
-  format_type: "",
-  kra_settings_tab_goals: false,
-  kra_settings_tab_competencies: false,
-  kra_settings_tab_development_plan: false,
-  kra_settings_tab_summary: false,
-  assessment_tab_goals: false,
-  assessment_tab_development_plan: false,
-  assessment_tab_competencies: false,
-  assessment_tab_summary: false,
-  appraisal_owner: "",
-  route: "",
-};
+interface appraisalType {
+  [key: string]: any[];
+} 
 
-export default function Appraisal(
-  state = initailState,
-  action: { type: string; payload: any }
-) {
+const initialState: appraisalType = {
+  appraisalList: []
+}
+
+export default function appraisal(
+  state = initialState,
+  action: { type: string; payload: any[] }
+){
   switch (action.type) {
-    case "ADD_APPRISAL": {
+    case "FETCH_APPRAISAL_LIST_SUCCESS": {
       return {
-        ...state,
-        ...action.payload,
+        appraisalList: action.payload,
       };
     }
     default:

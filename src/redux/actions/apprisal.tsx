@@ -10,26 +10,45 @@ export const addApprisal = (item: any) => {
 
 // const dispatch = useDispatch();
 
-export const add_apprisal = async (credentials: any, callback: any) => {
+export const add_apprisal = async (data: any) => {
   try {
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "token ca9378d049d1ab4:a0d4d82db2d186a",
+        "Accept": "application/json",
+        "Authorization": "token ca9378d049d1ab4:a0d4d82db2d186a",
       },
-      data: JSON.stringify(credentials),
+      data: JSON.stringify(data),
     });
-    const responseBody = await response.data;
-    console.log("api=>", responseBody);
-    if (callback) {
-      callback(responseBody.data);
-    }
+    return await response.data;
   } catch (error) {
     return {
       ...error,
     };
   }
 };
+
+
+export const edit_appraisal = async (data: any) => {
+  try {
+    const response = await axios({
+      url: `http://52.146.0.154/api/resource/Appraisal/`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "token ca9378d049d1ab4:a0d4d82db2d186a",
+      },
+      data: JSON.stringify(data),
+    });
+    return await response.data;
+  } catch (error) {
+    return {
+      ...error,
+    };
+  }
+};
+
+

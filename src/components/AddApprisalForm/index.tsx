@@ -3,11 +3,13 @@ import {
   TextField,
   ITextFieldStyles,
 } from "office-ui-fabric-react/lib/TextField";
+import { useParams } from "react-router-dom";
 import { Stack, IStackStyles } from "office-ui-fabric-react/lib/Stack";
 import "./style.css";
 import {
   DatePicker,
   DayOfWeek,
+  Dialog,
   Dropdown,
   DropdownMenuItemType,
   FontIcon,
@@ -30,6 +32,7 @@ import { useBoolean } from "@uifabric/react-hooks";
 import WelcomeHeader from "../WelcomeHeader";
 import { Text, ITextProps } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
+import moment from 'moment';
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
@@ -37,19 +40,19 @@ import { useDispatch } from "react-redux";
 import { addApprisal, add_apprisal } from "../../redux/actions/apprisal";
 
 const formateTypeOptions: IDropdownOption[] = [
-  { key: "key1", text: "Sales" },
+  { key: "key1", text: "Sales Employees" },
   { key: "key3", text: "HR" },
   { key: "key4", text: "Management" },
 ];
 
 const reviewFrequencyOptions: IDropdownOption[] = [
-  { key: "key1", text: "Yearly" },
-  { key: "key2", text: "Monthly" },
+  { key: "key1", text: "Monthly" },
+  { key: "key2", text: "Yearly" },
 ];
 
 const typeOptions: IDropdownOption[] = [
-  { key: "key1", text: "Annual Apprisal" },
-  { key: "key2", text: "Quarterly Apprisal" },
+  { key: "key1", text: "Annual Appraisal" },
+  { key: "key2", text: "Quarterly Appraisal" },
 ];
 
 const dropdownStyles: Partial<IDropdownStyles> = {
@@ -78,7 +81,13 @@ const checkboxOptions: ICheckboxInput[] = [
   { ID: 4, Title: "Summary" },
 ];
 
+// interface ParamTypes {
+//   id: string
+// }
+
 function Form() {
+  // const params = useParams<ParamTypes>();
+  // console.log("id => ", params.id);
   const stackTokens = { childrenGap: 10 };
   const stackStyles: Partial<IStackStyles> = {
     root: {
@@ -213,7 +222,7 @@ function Form() {
     assessmentSummary: false,
   });
 
-  // console.log("data==>", claimsData)
+  
   const [selectedType, setSelectedType] = useState<IDropdownOption>({
     key: "",
     text: "",
@@ -262,6 +271,7 @@ function Form() {
       }
     );
   };
+  // console.log("type==>", selectedType.text )
 
   const onChangeReviewFrequency = (
     event?: React.FormEvent<HTMLDivElement>,
@@ -294,11 +304,18 @@ function Form() {
     { text: "Add Appraisal", key: "d3", as: "h4" },
   ];
 
-  const [date, setDate] = useState<Date | null | undefined>(null);
+  const [dateReview, setDateReview] = useState<Date | null | undefined>(null);
+  const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(null);
 
-  const onSelectDate = (date: Date | null | undefined): void => {
-    console.log("date==>", date);
-    setDate(date);
+  const reviewFromDate = (date: Date | null | undefined): void => {
+    const reviewFrequencyDate :any = moment(date).format('YYYY-MM-DD');
+    // console.log("date==>", reviewFrequencyDate);
+    setDateReview(reviewFrequencyDate);
+  };
+  const appraisalToDate = (date: Date | null | undefined): void => {
+    const appraisalDate :any = moment(date).format('YYYY-MM-DD');
+    // console.log("date==>", reviewFrequencyDate);
+    setdDateAppraisal(appraisalDate);
   };
 
   const dateNow = new Date().toLocaleDateString();
@@ -321,15 +338,34 @@ function Form() {
     const addQueary = {
       id: claimsData.id,
       appraisal_description: claimsData.description,
-      appraisal_owner: claimsData.owner,
       description: "22",
       format_type: formateType.text,
       review_frequency: reviewFrequency.text,
       type: selectedType.text,
+      kra_settings_tab_goals: claimsData.kraSettingGoal,
+      kra_settings_tab_competencies: claimsData.kraSettingCompetencies,
+      kra_settings_tab_development_plan: claimsData.kraSettingDevelopmentPlan,
+      kra_settings_tab_summary: claimsData.kraSettingSummary,
+      assessment_tab_goals: claimsData.assessmentGoal,
+      assessment_tab_competencies: claimsData.assessmentCompetencies,
+      assessment_tab_development_plan: claimsData.assessmentCompetencies,
+      assessment_tab_summary: claimsData.assessmentSummary,
+      route: "appraisal/BB00002",
+      review_from:"2020-04-01",
+      appraisal_to:"2020-04-01",
+      appraisal_owner: claimsData.owner,
     };
-    add_apprisal(addQueary, (response: any) => {
-      console.log("response=>", response);
-    });
+    // console.log('addQueary=>', addQueary)
+    add_apprisal(addQueary)
+    .then(response => {
+      if(response == 200){
+        console.log("response=>", response)
+        history.push("/");
+      }
+      else{
+        console.log("errror=>", response.error)
+      }
+    })
   };
 
   return (
@@ -395,7 +431,7 @@ function Form() {
                 className={`${controlClass.control} flexGrow`}
                 firstDayOfWeek={firstDayOfWeek}
                 strings={DayPickerStrings}
-                onSelectDate={onSelectDate}
+                onSelectDate={reviewFromDate}
                 placeholder="Select a date"
                 ariaLabel="Select a date"
                 styles={datePickerStyle}
@@ -405,6 +441,7 @@ function Form() {
                 className={`${controlClass.control} flexGrow`}
                 firstDayOfWeek={firstDayOfWeek}
                 strings={DayPickerStrings}
+                onSelectDate={appraisalToDate}
                 styles={datePickerStyle}
                 placeholder="Select a date"
                 ariaLabel="Select a date"
@@ -555,3 +592,5 @@ function Form() {
   );
 }
 export default Form;
+
+

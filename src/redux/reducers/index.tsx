@@ -1,12 +1,13 @@
 import { combineReducers } from "redux";
 import tasks from "./tasks";
-import Appraisal from "./apprisal";
+import appraisal from "./apprisal";
 import userData from "./userData";
 
 const reducer = combineReducers({
   tasks,
-  Appraisal,
+  appraisal,
   userData,
 });
 
 export default reducer;
+export type RootState = ReturnType<typeof reducer>

@@ -14,6 +14,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Admin} />
           <Route exact path="/addApprisal" component={Form} />
+          {/* <Route exact path="/appraisal/add" component={Form} />
+          <Route exact path="/appraisal/update/:id" component={Form} /> */}
         </Switch>
       </div>
     </BrowserRouter>

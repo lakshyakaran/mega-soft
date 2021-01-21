@@ -30,12 +30,7 @@ export const fetchUserList = (item: any) => {
   };
 };
 
-export const userData = async (
-  limit_start = 0,
-  limit_page_length = 10,
-  order_by = "id asc",
-  filters: any
-) => {
+export const fetchAppraisalData = (limit_start = 0, limit_page_length = 10, order_by = "id asc", filters: any) => async (dispatch: any): Promise<any> => {
   try {
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal`,
@@ -67,14 +62,14 @@ export const userData = async (
       },
     });
     const responseBody = await response.data;
+    dispatch({
+      type: "FETCH_APPRAISAL_LIST_SUCCESS",
+      payload: responseBody.data,
+    });
     return responseBody;
-    // dispatch({
-    //   type: "USER_LIST",
-    //   payload: responseBody,
-    // });
   } catch (error) {
     return {
       ...error,
     };
   }
-};
+}

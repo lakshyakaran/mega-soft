@@ -31,23 +31,26 @@ import Header from "../../Header";
 import Panel from "../../components/Panel";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import { Pagination } from "@uifabric/experiments";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { Text } from "office-ui-fabric-react/lib/Text";
 
 import "./style.css";
-import { userData } from "../../redux/actions";
+import { RootState } from '../../redux/reducers'
+import { fetchAppraisalData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 
 function Admin(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
   const [list, setList] = useState([]);
   const [limitStart, setLimitSTart] = useState(0);
-  const [limitPageLength, setLimitPageLength] = useState(2);
+  const [limitPageLength, setLimitPageLength] = useState(5);
   const [orderBy, setOrderBy] = useState("asc");
   const [orderByField, setOrderByField] = useState("id");
   const [filtersById, setFiltersById] = useState("");
   const [filtersByDescription, setFiltersByDescription] = useState("");
   const [filtersByReviewFreq, setFiltersByReviewFreq] = useState("");
+  const dispatch = useDispatch()
+  const appraisal = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
 
   useEffect((): void => {
     const filters = [];
@@ -60,19 +63,25 @@ function Admin(props: any) {
     if (filtersByReviewFreq) {
       filters.push(["review_frequency", "=", filtersByReviewFreq]);
     }
-    userData(
+    dispatch(fetchAppraisalData(
       limitStart,
       limitPageLength,
       `${orderByField} ${orderBy}`,
       JSON.stringify(filters)
-    ).then((response) => {
-      setList(response.data);
-      if (response.data.length == limitPageLength) {
-        setHasMoreRecord(true);
-      } else {
-        setHasMoreRecord(false);
-      }
-    });
+    ))
+    // fetchAppraisalData(
+    //   limitStart,
+    //   limitPageLength,
+    //   `${orderByField} ${orderBy}`,
+    //   JSON.stringify(filters)
+    // ).then((response: any) => {
+    //   // setList(response.data);
+    //   // if (response.data.length == limitPageLength) {
+    //   //   setHasMoreRecord(true);
+    //   // } else {
+    //   //   setHasMoreRecord(false);
+    //   // }
+    // })
     // console.log("filters==>", filters)
   }, [
     limitStart,
@@ -84,42 +93,6 @@ function Admin(props: any) {
   ]);
 
   const columns: IColumn[] = [
-    {
-      key: "02",
-      name: "Action",
-      fieldName: "action",
-      minWidth: 10,
-      maxWidth: 110,
-      isRowHeader: true,
-      onRender: (item) => (
-        <div>
-          <Link
-            className="link-icons"
-            onClick={() => {
-              console.log("view=>", item);
-            }}
-          >
-            <FontIcon iconName="RedEye" />
-          </Link>
-          <Link
-            className="link-icons"
-            onClick={(item) => {
-              alert(item);
-            }}
-          >
-            <FontIcon iconName="Edit" />
-          </Link>
-          <Link
-            className="link-icons"
-            onClick={() => {
-              console.log("delete=>", item);
-            }}
-          >
-            <FontIcon iconName="Delete" />
-          </Link>
-        </div>
-      ),
-    },
     {
       key: "01",
       name: "ID",
@@ -177,29 +150,66 @@ function Admin(props: any) {
       isResizable: false,
     },
     // {
-    //   key: "07",
-    //   name: "Owner",
-    //   fieldName: "owner",
-    //   minWidth: 10,
-    //   maxWidth: 170,
-    //   isSortedDescending: false,
-    //   sortAscendingAriaLabel: "Sorted A to Z",
-    //   isRowHeader: true,
-    //   onColumnClick: _onColumnClick,
-    //   sortDescendingAriaLabel: "Sorted Z to A",
-    //   isResizable: false,
-    // },
-    {
-      key: "08",
-      name: "Review Frequency",
-      fieldName: "review_frequency",
-      minWidth: 10,
-      maxWidth: 90,
-      isSortedDescending: false,
-      isRowHeader: true,
-      isResizable: false,
-    },
+      //   key: "07",
+      //   name: "Owner",
+      //   fieldName: "owner",
+      //   minWidth: 10,
+      //   maxWidth: 170,
+      //   isSortedDescending: false,
+      //   sortAscendingAriaLabel: "Sorted A to Z",
+      //   isRowHeader: true,
+      //   onColumnClick: _onColumnClick,
+      //   sortDescendingAriaLabel: "Sorted Z to A",
+      //   isResizable: false,
+      // },
+      {
+        key: "08",
+        name: "Review Frequency",
+        fieldName: "review_frequency",
+        minWidth: 10,
+        maxWidth: 160,
+        isSortedDescending: false,
+        isRowHeader: true,
+        isResizable: false,
+      },
+      {
+        key: "02",
+        name: "Action",
+        fieldName: "action",
+        minWidth: 10,
+        maxWidth: 110,
+        isRowHeader: true,
+        onRender: (item) => (
+          <div>
+            <Link
+              className="link-icons"
+              // onClick={updateAppriasal}
+            >
+              <FontIcon iconName="RedEye" />
+            </Link>
+            <Link
+              className="link-icons"
+              onClick={updateAppriasal}
+            >
+              <FontIcon iconName="Edit" />
+            </Link>
+            <Link
+              className="link-icons"
+              onClick={() => {
+                console.log("delete=>", item);
+              }}
+            >
+              <FontIcon iconName="Delete" />
+            </Link>
+          </div>
+        ),
+      },
   ];
+
+  const updateAppriasal = (item:any) => {
+    console.log(item)
+  }
+
   const _onBreadcrumbItemClicked = () => {};
   const itemsWithHeading: IBreadcrumbItem[] = [
     { text: "Performance", key: "d1", onClick: _onBreadcrumbItemClicked },
@@ -437,7 +447,7 @@ function Admin(props: any) {
               // marginLeft: "1rem",
             }}
           >
-            <Text variant={"medium"}>Logged Out</Text>
+            <Link>Logged Out</Link>
             {/* <TooltipHost content="Settings">
               <FontIcon iconName="Settings" />
             </TooltipHost> */}
@@ -493,14 +503,14 @@ function Admin(props: any) {
               styles={controlStyles}
             /> */}
           </div>
-          {list.length === 0 ? (
+          {appraisal.length === 0 ? (
             <div>
               <Shimmer />
             </div>
           ) : (
             <DetailsList
               styles={listStyle}
-              items={list}
+              items={appraisal}
               // onRenderRow = {renderRow}
               columns={columns}
               selectionMode={0}
