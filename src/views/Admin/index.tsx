@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   DetailsList,
+  DetailsRow,
   IColumn,
   IDetailsListProps,
   IDetailsListStyles,
+  IDetailsRowStyles,
 } from "office-ui-fabric-react/lib/DetailsList";
 import "office-ui-fabric-react/dist/css/fabric.css";
 import {
@@ -15,18 +17,12 @@ import {
   IDropdownStyles,
   Link,
   FontIcon,
-  TooltipHost,
 } from "office-ui-fabric-react";
 import {
   IBreadcrumbItem,
   IBreadcrumbStyles,
 } from "office-ui-fabric-react/lib/Breadcrumb";
-import { Spinner, SpinnerSize } from "office-ui-fabric-react/lib/Spinner";
-import {
-  Shimmer,
-  ShimmerElementType,
-  IShimmerElement,
-} from "office-ui-fabric-react/lib/Shimmer";
+import { Shimmer } from "office-ui-fabric-react/lib/Shimmer";
 import Header from "../../Header";
 import Panel from "../../components/Panel";
 import WelcomeHeader from "../../components/WelcomeHeader";
@@ -35,13 +31,16 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { Text } from "office-ui-fabric-react/lib/Text";
 
 import "./style.css";
-import { RootState } from '../../redux/reducers'
+import { RootState } from "../../redux/reducers";
 import { fetchAppraisalData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 
+// interface ParamTypes {
+//   id: string
+// }
+
 function Admin(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
-  const [list, setList] = useState([]);
   const [limitStart, setLimitSTart] = useState(0);
   const [limitPageLength, setLimitPageLength] = useState(5);
   const [orderBy, setOrderBy] = useState("asc");
@@ -49,8 +48,9 @@ function Admin(props: any) {
   const [filtersById, setFiltersById] = useState("");
   const [filtersByDescription, setFiltersByDescription] = useState("");
   const [filtersByReviewFreq, setFiltersByReviewFreq] = useState("");
-  const dispatch = useDispatch()
-  const appraisal = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
+  const dispatch = useDispatch();
+  const appraisal =
+    useSelector((state: RootState) => state.appraisal.appraisalList) || [];
 
   useEffect((): void => {
     const filters = [];
@@ -63,12 +63,14 @@ function Admin(props: any) {
     if (filtersByReviewFreq) {
       filters.push(["review_frequency", "=", filtersByReviewFreq]);
     }
-    dispatch(fetchAppraisalData(
-      limitStart,
-      limitPageLength,
-      `${orderByField} ${orderBy}`,
-      JSON.stringify(filters)
-    ))
+    dispatch(
+      fetchAppraisalData(
+        limitStart,
+        limitPageLength,
+        `${orderByField} ${orderBy}`,
+        JSON.stringify(filters)
+      )
+    );
     // fetchAppraisalData(
     //   limitStart,
     //   limitPageLength,
@@ -92,14 +94,18 @@ function Admin(props: any) {
     filtersByReviewFreq,
   ]);
 
+  // const params = useParams<ParamTypes>();
+  // console.log("id => ", params.id);
+
   const columns: IColumn[] = [
     {
       key: "01",
       name: "ID",
       fieldName: "id",
       minWidth: 10,
-      maxWidth: 110,
+      maxWidth: 100,
       isSorted: true,
+      className: "idColumn",
       isSortedDescending: false,
       sortAscendingAriaLabel: "Sorted A to Z",
       isRowHeader: true,
@@ -150,65 +156,71 @@ function Admin(props: any) {
       isResizable: false,
     },
     // {
-      //   key: "07",
-      //   name: "Owner",
-      //   fieldName: "owner",
-      //   minWidth: 10,
-      //   maxWidth: 170,
-      //   isSortedDescending: false,
-      //   sortAscendingAriaLabel: "Sorted A to Z",
-      //   isRowHeader: true,
-      //   onColumnClick: _onColumnClick,
-      //   sortDescendingAriaLabel: "Sorted Z to A",
-      //   isResizable: false,
-      // },
-      {
-        key: "08",
-        name: "Review Frequency",
-        fieldName: "review_frequency",
-        minWidth: 10,
-        maxWidth: 160,
-        isSortedDescending: false,
-        isRowHeader: true,
-        isResizable: false,
-      },
-      {
-        key: "02",
-        name: "Action",
-        fieldName: "action",
-        minWidth: 10,
-        maxWidth: 110,
-        isRowHeader: true,
-        onRender: (item) => (
-          <div>
-            <Link
-              className="link-icons"
-              // onClick={updateAppriasal}
-            >
-              <FontIcon iconName="RedEye" />
-            </Link>
-            <Link
-              className="link-icons"
-              onClick={updateAppriasal}
-            >
-              <FontIcon iconName="Edit" />
-            </Link>
-            <Link
-              className="link-icons"
-              onClick={() => {
-                console.log("delete=>", item);
-              }}
-            >
-              <FontIcon iconName="Delete" />
-            </Link>
-          </div>
-        ),
-      },
+    //   key: "07",
+    //   name: "Owner",
+    //   fieldName: "owner",
+    //   minWidth: 10,
+    //   maxWidth: 170,
+    //   isSortedDescending: false,
+    //   sortAscendingAriaLabel: "Sorted A to Z",
+    //   isRowHeader: true,
+    //   onColumnClick: _onColumnClick,
+    //   sortDescendingAriaLabel: "Sorted Z to A",
+    //   isResizable: false,
+    // },
+    {
+      key: "08",
+      name: "Review Frequency",
+      fieldName: "review_frequency",
+      minWidth: 10,
+      maxWidth: 160,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "02",
+      name: "Action",
+      fieldName: "action",
+      minWidth: 10,
+      maxWidth: 110,
+      isRowHeader: true,
+      onRender: (item) => (
+        <div>
+          <Link
+            className="link-icons"
+            // onClick={updateAppriasal}
+          >
+            <FontIcon
+              style={{ fontSize: "18px", color: "#344f84" }}
+              iconName="RedEye"
+            />
+          </Link>
+          <Link className="link-icons" onClick={updateAppriasal}>
+            <FontIcon
+              style={{ fontSize: "15px", color: "#344f84" }}
+              iconName="Edit"
+            />
+          </Link>
+          <Link
+            className="link-icons"
+            onClick={() => {
+              console.log("delete=>", item);
+            }}
+          >
+            <FontIcon
+              style={{ fontSize: "15px", color: "#FF0000" }}
+              iconName="Delete"
+            />
+          </Link>
+        </div>
+      ),
+    },
   ];
 
-  const updateAppriasal = (item:any) => {
-    console.log(item)
-  }
+  const updateAppriasal = (item: any) => {
+    console.log(item);
+  };
 
   const _onBreadcrumbItemClicked = () => {};
   const itemsWithHeading: IBreadcrumbItem[] = [
@@ -229,8 +241,8 @@ function Admin(props: any) {
     column?: IColumn
   ): void {
     // console.log('column', column)
-    if (column?.fieldName == orderByField) {
-      if (orderBy == "asc") {
+    if (column?.fieldName === orderByField) {
+      if (orderBy === "asc") {
         setOrderBy("desc");
       } else {
         setOrderBy("asc");
@@ -256,18 +268,12 @@ function Admin(props: any) {
     },
   };
 
-  const [itemsLength, setItemsLength] = useState(0);
   const [currentPage, setCurentPage] = useState(0);
 
   const [searchById, setSearchById] = useState("");
   const [searchByDescription, setSearchByDescription] = useState("");
   const [appraisalToSearch, setAppraisalToSearch] = useState("");
   const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
-    key: "",
-    text: "",
-  });
-
-  const [selectRoles, setSelectRoles] = useState<IDropdownOption>({
     key: "",
     text: "",
   });
@@ -387,14 +393,18 @@ function Admin(props: any) {
       fontSize: "20px",
     },
   };
+  const renderRow: IDetailsListProps["onRenderRow"] = (props) => {
+    const customStyles: Partial<IDetailsRowStyles> = {};
+    if (props) {
+      if (props.itemIndex % 2 === 0) {
+        // Every other row renders with a different background color
+        customStyles.root = { backgroundColor: theme.palette.themeLighterAlt };
+      }
 
-  // const renderRow: Partial<IDetailsListProps["onRenderRow"]> = {
-  //   const customStyles: Partial<IDetailsRowStyles> = { };
-  //   if (itemIndex % 2 === 0) {
-  //       // Every other row renders with a different background color
-  //       customStyles.root = { backgroundColor: theme.palette.themeLighterAlt };
-  //     }
-  // };
+      return <DetailsRow {...props} styles={customStyles} />;
+    }
+    return null;
+  };
 
   // console.log("props==>", props.userData.UserData[0].name);
   return (
@@ -447,7 +457,7 @@ function Admin(props: any) {
               // marginLeft: "1rem",
             }}
           >
-            <Link>Logged Out</Link>
+            <Link>Log Out</Link>
             {/* <TooltipHost content="Settings">
               <FontIcon iconName="Settings" />
             </TooltipHost> */}
@@ -484,7 +494,7 @@ function Admin(props: any) {
             <PrimaryButton
               iconProps={{ iconName: "Search" }}
               onClick={handleSearchClick}
-              style={{ marginLeft: "10px", marginTop: "18px" }}
+              style={{ marginLeft: "10px", alignSelf: "center" }}
             />
             <PrimaryButton
               text="New Appraisal"
@@ -511,11 +521,18 @@ function Admin(props: any) {
             <DetailsList
               styles={listStyle}
               items={appraisal}
-              // onRenderRow = {renderRow}
+              className="detail-list"
+              onRenderRow={renderRow}
               columns={columns}
               selectionMode={0}
             />
           )}
+
+          {/* <div>
+            <FontIcon iconName="CaretLeft8" className="" />
+            <FontIcon iconName="CaretLeft8" className="" />
+          </div> */}
+
           <Pagination
             format="buttons"
             selectedPageIndex={currentPage}

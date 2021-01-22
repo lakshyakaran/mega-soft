@@ -1,6 +1,4 @@
 import axios from "axios";
-import base64 from "base-64";
-import { useDispatch } from "react-redux";
 
 export const processAddList = (item: any) => {
   return {
@@ -30,7 +28,12 @@ export const fetchUserList = (item: any) => {
   };
 };
 
-export const fetchAppraisalData = (limit_start = 0, limit_page_length = 10, order_by = "id asc", filters: any) => async (dispatch: any): Promise<any> => {
+export const fetchAppraisalData = (
+  limit_start = 0,
+  limit_page_length = 10,
+  order_by = "id asc",
+  filters: any
+) => async (dispatch: any): Promise<any> => {
   try {
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal`,
@@ -68,8 +71,9 @@ export const fetchAppraisalData = (limit_start = 0, limit_page_length = 10, orde
     });
     return responseBody;
   } catch (error) {
+    // console.log("error in getting data", error);
     return {
       ...error,
     };
   }
-}
+};

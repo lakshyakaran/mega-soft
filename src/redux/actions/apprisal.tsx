@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
 
 export const addApprisal = (item: any) => {
   return {
@@ -8,8 +7,6 @@ export const addApprisal = (item: any) => {
   };
 };
 
-// const dispatch = useDispatch();
-
 export const add_apprisal = async (data: any) => {
   try {
     const response = await axios({
@@ -17,19 +14,19 @@ export const add_apprisal = async (data: any) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": "token ca9378d049d1ab4:a0d4d82db2d186a",
+        Accept: "application/json",
+        Authorization: "token ca9378d049d1ab4:a0d4d82db2d186a",
       },
       data: JSON.stringify(data),
     });
-    return await response.data;
+    return response;
   } catch (error) {
+    console.log("error in catch block=>", error);
     return {
       ...error,
     };
   }
 };
-
 
 export const edit_appraisal = async (data: any) => {
   try {
@@ -38,8 +35,8 @@ export const edit_appraisal = async (data: any) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": "token ca9378d049d1ab4:a0d4d82db2d186a",
+        Accept: "application/json",
+        Authorization: "token ca9378d049d1ab4:a0d4d82db2d186a",
       },
       data: JSON.stringify(data),
     });
@@ -50,5 +47,3 @@ export const edit_appraisal = async (data: any) => {
     };
   }
 };
-
-

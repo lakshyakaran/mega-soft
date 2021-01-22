@@ -9,34 +9,30 @@ import "./style.css";
 import {
   DatePicker,
   DayOfWeek,
-  Dialog,
   Dropdown,
-  DropdownMenuItemType,
-  FontIcon,
   IBreadcrumbItem,
   IBreadcrumbStyles,
-  IColumn,
   IDatePickerStrings,
   IDatePickerStyles,
   IDropdownOption,
   IDropdownStyles,
   Label,
+  Link,
   mergeStyles,
   mergeStyleSets,
   PrimaryButton,
   Separator,
-  TooltipHost,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
 import { useBoolean } from "@uifabric/react-hooks";
 import WelcomeHeader from "../WelcomeHeader";
-import { Text, ITextProps } from "office-ui-fabric-react/lib/Text";
+import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
-import moment from 'moment';
+import moment from "moment";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { addApprisal, add_apprisal } from "../../redux/actions/apprisal";
 
 const formateTypeOptions: IDropdownOption[] = [
@@ -57,43 +53,19 @@ const typeOptions: IDropdownOption[] = [
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: {
-    // width: 170,
+    width: 170,
     border: "0px",
   },
 };
-
-const typeDropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: {
-    width: 150,
-  },
-};
-
-export interface ICheckboxInput {
-  ID?: number;
-  Title: string;
-  isChecked?: boolean;
-}
-
-const checkboxOptions: ICheckboxInput[] = [
-  { ID: 1, Title: "Goals" },
-  { ID: 2, Title: "Competencies" },
-  { ID: 3, Title: "Development Plans" },
-  { ID: 4, Title: "Summary" },
-];
 
 // interface ParamTypes {
 //   id: string
 // }
 
-function Form() {
+function Form(props: any) {
   // const params = useParams<ParamTypes>();
   // console.log("id => ", params.id);
   const stackTokens = { childrenGap: 10 };
-  const stackStyles: Partial<IStackStyles> = {
-    root: {
-      width: 600,
-    },
-  };
 
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
@@ -106,36 +78,7 @@ function Form() {
       },
     },
   };
-  const iconProps = { iconName: "Calendar" };
   const [isChecked, setIsChecked] = React.useState(true);
-  const onChange = React.useCallback(
-    (ev?: React.FormEvent<HTMLElement>, checked?: boolean): void => {
-      setIsChecked(!!checked);
-    },
-    []
-  );
-  // const inputProps: ICheckboxProps["inputProps"] = {
-  //   onFocus: () => console.log("Checkbox is focused"),
-  //   onBlur: () => console.log("Checkbox is blurred"),
-  // };
-
-  const iconClass = mergeStyles({
-    fontSize: 25,
-    height: 50,
-    width: 50,
-    color: "#ff0000",
-    margin: "6px 15px",
-  });
-
-  const itemsToDisplay: any[] = [
-    {
-      and: "",
-      column: "",
-      comparison: "",
-      compareto: "Lorem ipsum dolor sit amet,",
-      action: "20-05-2020",
-    },
-  ];
 
   const DayPickerStrings: IDatePickerStrings = {
     months: [
@@ -192,15 +135,12 @@ function Form() {
 
   const controlClass = mergeStyleSets({
     control: {
-      margin: "0 0 15px 0",
+      // margin: "0 0 15px 0",
       // maxWidth: "150px",
     },
   });
 
   const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
-    true
-  );
 
   const datePickerStyle: Partial<IDatePickerStyles> = {
     icon: {
@@ -222,7 +162,6 @@ function Form() {
     assessmentSummary: false,
   });
 
-  
   const [selectedType, setSelectedType] = useState<IDropdownOption>({
     key: "",
     text: "",
@@ -305,22 +244,25 @@ function Form() {
   ];
 
   const [dateReview, setDateReview] = useState<Date | null | undefined>(null);
-  const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(null);
+  const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(
+    null
+  );
 
   const reviewFromDate = (date: Date | null | undefined): void => {
-    const reviewFrequencyDate :any = moment(date).format('YYYY-MM-DD');
+    const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
     // console.log("date==>", reviewFrequencyDate);
     setDateReview(reviewFrequencyDate);
   };
   const appraisalToDate = (date: Date | null | undefined): void => {
-    const appraisalDate :any = moment(date).format('YYYY-MM-DD');
+    const appraisalDate: any = moment(date).format("YYYY-MM-DD");
     // console.log("date==>", reviewFrequencyDate);
     setdDateAppraisal(appraisalDate);
   };
 
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
-
+  const userName = props.userData.UserData[0].name;
+  const userId = props.userData.UserData[0].id;
   const history = useHistory();
 
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
@@ -332,10 +274,59 @@ function Form() {
     },
   };
 
+  const rolesOption: IDropdownOption[] = [
+    { key: "key1", text: "HR" },
+    { key: "key2", text: "Manager" },
+    { key: "key3", text: "Employee" },
+  ];
+
+  const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
+
+  const handleRoles = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setReviewSearch(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
   // const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(false);
+
+  const [errMsg, setErrMsg] = useState("");
+  const [errMsgDescription, setErrMsgDescription] = useState("");
+  const [errMsgOwner, setErrMsgOwner] = useState("");
+  const [errMsgFormatType, setErrMsgFormatType] = useState("");
+  const [errMsgType, setErrMsgType] = useState("");
+  const [errMsgReviewFrequency, setErrMsgReviewFrequency] = useState("");
+
   const handleAddApprisal = () => {
-    const addQueary = {
+    if (claimsData.id === "") {
+      setErrMsg("ID is required");
+    }
+    if (claimsData.description === "") {
+      setErrMsgDescription("Description is required");
+    }
+    if (claimsData.owner === "") {
+      setErrMsgOwner("Owner is required");
+    }
+    if (formateType.text === "") {
+      setErrMsgFormatType("Select format Type");
+    }
+    if (reviewFrequency.text === "") {
+      setErrMsgReviewFrequency("Select review Frequency");
+    }
+    if (selectedType.text === "") {
+      setErrMsgType("Select type");
+    }
+    const addQuery = {
       id: claimsData.id,
       appraisal_description: claimsData.description,
       description: "22",
@@ -351,53 +342,79 @@ function Form() {
       assessment_tab_development_plan: claimsData.assessmentCompetencies,
       assessment_tab_summary: claimsData.assessmentSummary,
       route: "appraisal/BB00002",
-      review_from:"2020-04-01",
-      appraisal_to:"2020-04-01",
+      review_from: dateReview,
+      appraisal_to: dateAppraisal,
       appraisal_owner: claimsData.owner,
     };
-    // console.log('addQueary=>', addQueary)
-    add_apprisal(addQueary)
-    .then(response => {
-      if(response == 200){
-        console.log("response=>", response)
+    // console.log("addQueary=>", addQuery);
+    add_apprisal(addQuery).then((response) => {
+      console.log("response=>", response.data);
+      if (response?.status === 200) {
         history.push("/");
       }
-      else{
-        console.log("errror=>", response.error)
-      }
-    })
+      // else {
+      //   console.log("then error msg btnClick==>", response);
+      // }
+    });
+    // .catch((err) => {
+    //   console.log("Error in btnClick=>", err);
+    // });
   };
 
   return (
     <div className="view">
       <WelcomeHeader>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <div
             style={{
               display: "flex",
-              // justifyContent: "flex-end",
+              justifyContent: "space-between",
+              alignItems: "center",
               padding: "10px",
             }}
           >
             <Text style={{ marginRight: "10px" }}>
-              Welcome Rahul Sinha(900154)
+              Welcome {userName} ({userId})
             </Text>
-            <div style={{ display: "flex", marginRight: "10px" }}>
+            <Dropdown
+              options={rolesOption}
+              onChange={handleRoles}
+              className="rolesDropDown"
+              styles={dropdownStyles}
+              style={{ marginLeft: "2rem" }}
+            />
+            {/* <div style={{ display: "flex", marginRight: "10px" }}>
               <Text style={{ marginRight: "5px" }}>Date :</Text>
               <Text>{dateNow}</Text>
             </div>
             <Text style={{ marginRight: "5px" }}>Time : </Text>
-            <Text>{timeNow}</Text>
+            <Text>{timeNow}</Text> */}
+            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
+              Logged In:
+            </Text>
+            <Text style={{ marginRight: "5px" }}>
+              {dateNow} {timeNow}
+            </Text>
+            {/* <Text style={{ marginRight: "5px" }}>Time:</Text> */}
+            {/* <Text style={{ marginRight: "5px" }}>{timeNow}</Text> */}
           </div>
           <div
             style={{
               display: "flex",
               padding: "10px",
+              // marginLeft: "1rem",
             }}
           >
-            <TooltipHost content="Settings">
+            <Link>Log Out</Link>
+            {/* <TooltipHost content="Settings">
               <FontIcon iconName="Settings" />
-            </TooltipHost>
+            </TooltipHost> */}
           </div>
         </div>
       </WelcomeHeader>
@@ -409,6 +426,8 @@ function Form() {
               <TextField
                 required
                 placeholder="ID"
+                value={claimsData.id}
+                errorMessage={errMsg}
                 name="id"
                 label="Id"
                 onChange={onChangeInput}
@@ -418,6 +437,8 @@ function Form() {
                 required
                 placeholder="Description"
                 label="Description"
+                value={claimsData.description}
+                errorMessage={errMsgDescription}
                 // styles={textfelidStyle}
                 className="flexGrow"
                 name="description"
@@ -448,17 +469,19 @@ function Form() {
               />
               <Dropdown
                 required
+                errorMessage={errMsgReviewFrequency}
                 label="Review Frequency"
                 placeholder="Select"
                 className="flexGrow"
                 onChange={onChangeReviewFrequency}
                 options={reviewFrequencyOptions}
-                styles={dropdownStyles}
+                // styles={dropdownStyles}
               />
             </div>
             <Dropdown
               required
               label="Type"
+              errorMessage={errMsgType}
               placeholder="Select Type"
               className="type-input"
               options={typeOptions}
@@ -466,7 +489,9 @@ function Form() {
               // styles={typeDropdownStyles}
             />
             <Dropdown
+              required
               label="Format Type"
+              errorMessage={errMsgFormatType}
               className="type-input"
               onChange={onChangeFormateType}
               placeholder="Select Format Type"
@@ -474,9 +499,12 @@ function Form() {
               // styles={typeDropdownStyles}
             />
             <TextField
+              required
               label="Owner"
               placeholder="Owner"
+              value={claimsData.owner}
               styles={textfelidStyle}
+              errorMessage={errMsgOwner}
               name="owner"
               onChange={onChangeInput}
             />
@@ -591,6 +619,6 @@ function Form() {
     </div>
   );
 }
-export default Form;
-
-
+export default connect((state) => ({
+  ...state,
+}))(Form);
