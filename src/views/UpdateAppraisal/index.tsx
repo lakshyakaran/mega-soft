@@ -22,18 +22,21 @@ import {
   mergeStyleSets,
   PrimaryButton,
   Separator,
+  updateA,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
 import { useBoolean } from "@uifabric/react-hooks";
-import WelcomeHeader from "../WelcomeHeader";
+import WelcomeHeader from "../../components/WelcomeHeader";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
-import { addApprisal, add_apprisal } from "../../redux/actions/apprisal";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { addApprisal, edit_appraisal } from "../../redux/actions/apprisal";
+import { RootState } from "../../redux/reducers";
+import { fetchAppraisalData } from "../../redux/actions";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -58,14 +61,45 @@ const dropdownStyles: Partial<IDropdownStyles> = {
   },
 };
 
-// interface ParamTypes {
-//   id: string
-// }
+interface ParamTypes {
+    appraisalId: string
+}
 
-function Form(props: any) {
-  // const params = useParams<ParamTypes>();
-  // console.log("id => ", params.id);
+function UpdateAppraisal(props: any) {
+  const params = useParams<ParamTypes>();
   const stackTokens = { childrenGap: 10 };
+
+  const [limitStart, setLimitSTart] = useState(0);
+  const [limitPageLength, setLimitPageLength] = useState(5);
+  const [orderBy, setOrderBy] = useState("asc");
+  const [orderByField, setOrderByField] = useState("id");
+  const [filtersById, setFiltersById] = useState(params.appraisalId);
+
+  const [updateData, setUpdateData] : any= useState({})
+
+  useEffect(() => {
+    const filters = [];
+    if (filtersById) {
+      filters.push(["id", "like", filtersById]);
+    }
+    fetchAppraisalData(
+          limitStart,
+          limitPageLength,
+          `${orderByField} ${orderBy}`,
+          JSON.stringify(filters)
+        )((response: any) => {
+            console.log('response=>', response.payload)
+            setUpdateData(response.payload[0])
+        })
+  }, [])
+
+//   console.log("upadetdata==>", updateData.id)
+
+  const appraisalList = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
+//   const updateData = appraisalList.find(item => item.id === params.appraisalId);
+
+  const reviewDate :any = new Date(updateData.review_from);
+  const apprisalDateValue :any = new Date(updateData.appraisal_to);
 
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
@@ -149,17 +183,17 @@ function Form(props: any) {
   };
 
   const [claimsData, setClaimsData] = useState({
-    id: "",
-    description: "",
-    owner: "",
-    kraSettingGoal: false,
-    kraSettingCompetencies: false,
-    kraSettingDevelopmentPlan: false,
-    kraSettingSummary: false,
-    assessmentGoal: false,
-    assessmentCompetencies: false,
-    assessmentDevelopmentPlan: false,
-    assessmentSummary: false,
+    id: updateData.id,
+    description: updateData.description,
+    owner: updateData.appraisal_owner,
+    kraSettingGoal: updateData.kra_settings_tab_goals,
+    kraSettingCompetencies: updateData.kra_settings_tab_competencies,
+    kraSettingDevelopmentPlan: updateData.kra_settings_tab_development_plan,
+    kraSettingSummary: updateData.kra_settings_tab_summary,
+    assessmentGoal: updateData.assessment_tab_goals,
+    assessmentCompetencies: updateData.assessment_tab_competencies,
+    assessmentDevelopmentPlan: updateData.assessment_tab_development_plan,
+    assessmentSummary: updateData.assessment_tab_summary,
   });
 
   const [selectedType, setSelectedType] = useState<IDropdownOption>({
@@ -169,7 +203,7 @@ function Form(props: any) {
 
   const [reviewFrequency, setReviewFrequency] = useState<IDropdownOption>({
     key: "",
-    text: "",
+    text: updateData.review_frequency,
   });
 
   const [formateType, setFormateType] = useState<IDropdownOption>({
@@ -182,8 +216,8 @@ function Form(props: any) {
     isChecked?: boolean
   ) {
     const target = ev?.target as HTMLInputElement;
-    setClaimsData({
-      ...claimsData,
+    setUpdateData({
+      ...updateData,
       [target.name]: isChecked || false,
     });
   }
@@ -193,36 +227,13 @@ function Form(props: any) {
     text?: string
   ): void => {
     const target = ev?.target as HTMLInputElement;
-    setClaimsData({
-      ...claimsData,
+    setUpdateData({
+      ...updateData,
       [target.name]: target.value || "",
     });
   };
 
-  const onChangeType = (
-    ev?: React.FormEvent<HTMLDivElement>,
-    item?: IDropdownOption
-  ): void => {
-    setSelectedType(
-      item || {
-        key: "",
-        text: "",
-      }
-    );
-  };
-  // console.log("type==>", selectedType.text )
-
-  const onChangeReviewFrequency = (
-    event?: React.FormEvent<HTMLDivElement>,
-    item?: IDropdownOption
-  ): void => {
-    setReviewFrequency(
-      item || {
-        key: "",
-        text: "",
-      }
-    );
-  };
+  
 
   const onChangeFormateType = (
     event?: React.FormEvent<HTMLDivElement>,
@@ -237,17 +248,17 @@ function Form(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push('/')
+      history.push('/');
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: "Performance", key: "d1" },
-    { text: "Appraisal", key: "d2", isCurrentItem: true, as: "h4", onClick: _onBreadcrumbItemClicked },
-    { text: "Add Appraisal", key: "d3", as: "h4" },
+    { text: "Performance", key: "d1"},
+    { text: "Appraisal", key: "d2", isCurrentItem: true, as: "h4",  onClick: _onBreadcrumbItemClicked  },
+    { text: "Update Appraisal", key: "d3", as: "h4" },
   ];
 
-  const [dateReview, setDateReview] = useState<Date | null | undefined>(null);
+  const [dateReview, setDateReview] = useState<Date | null | undefined>(new Date(updateData.review_from));
   const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(
-    null
+    new Date(updateData.appraisal_to)
   );
 
   const reviewFromDate = (date: Date | null | undefined): void => {
@@ -302,61 +313,24 @@ function Form(props: any) {
 
   const [loading, setLoading] = useState(false);
 
-  const [errMsg, setErrMsg] = useState("");
-  const [errMsgDescription, setErrMsgDescription] = useState("");
-  const [errMsgOwner, setErrMsgOwner] = useState("");
-  const [errMsgFormatType, setErrMsgFormatType] = useState("");
-  const [errMsgType, setErrMsgType] = useState("");
-  const [errMsgReviewFrequency, setErrMsgReviewFrequency] = useState("");
-
-  const handleAddApprisal = () => {
-    if (claimsData.id === "") {
-      setErrMsg("ID is required");
-    }
-    if (claimsData.description === "") {
-      setErrMsgDescription("Description is required");
-    }
-    if (claimsData.owner === "") {
-      setErrMsgOwner("Owner is required");
-    }
-    if (formateType.text === "") {
-      setErrMsgFormatType("Select format Type");
-    }
-    if (reviewFrequency.text === "") {
-      setErrMsgReviewFrequency("Select review Frequency");
-    }
-    if (selectedType.text === "") {
-      setErrMsgType("Select type");
-    }
-    const addQuery = {
-      id: claimsData.id,
-      appraisal_description: claimsData.description,
+  const handleUpdateApprisal = () => {
+    const updateQuery = {
+      ...updateData,
+      review_from: moment(updateData.review_from).format("YYYY-MM-DD"),
+      appraisal_to: moment(updateData.appraisal_to).format("YYYY-MM-DD"),
+      appraisal_owner: updateData.owner,
       description: "22",
-      format_type: formateType.text,
-      review_frequency: reviewFrequency.text,
-      type: selectedType.text,
-      kra_settings_tab_goals: claimsData.kraSettingGoal,
-      kra_settings_tab_competencies: claimsData.kraSettingCompetencies,
-      kra_settings_tab_development_plan: claimsData.kraSettingDevelopmentPlan,
-      kra_settings_tab_summary: claimsData.kraSettingSummary,
-      assessment_tab_goals: claimsData.assessmentGoal,
-      assessment_tab_competencies: claimsData.assessmentCompetencies,
-      assessment_tab_development_plan: claimsData.assessmentCompetencies,
-      assessment_tab_summary: claimsData.assessmentSummary,
       route: "appraisal/BB00002",
-      review_from: dateReview,
-      appraisal_to: dateAppraisal,
-      appraisal_owner: claimsData.owner,
     };
-    // console.log("addQueary=>", addQuery);
-    add_apprisal(addQuery).then((response) => {
-      console.log("response=>", response.data);
+    console.log("addQueary=>", updateQuery);
+    edit_appraisal(updateQuery).then((response) => {
+      console.log("response=>", response);
       if (response?.status === 200) {
         history.push("/");
       }
-      // else {
-      //   console.log("then error msg btnClick==>", response);
-      // }
+      else {
+        console.log("then error msg btnClick==>", response);
+      }
     });
     // .catch((err) => {
     //   console.log("Error in btnClick=>", err);
@@ -426,24 +400,21 @@ function Form(props: any) {
           <div className="form-container">
             <div className="row">
               <TextField
-                required
+                disabled
                 placeholder="ID"
-                value={claimsData.id}
-                errorMessage={errMsg}
+                value={updateData.id}
                 name="id"
                 label="Id"
                 onChange={onChangeInput}
                 className="flexGrowTextInput"
               />
               <TextField
-                required
                 placeholder="Description"
                 label="Description"
-                value={claimsData.description}
-                errorMessage={errMsgDescription}
+                value={updateData.appraisal_description}
                 // styles={textfelidStyle}
                 className="flexGrow"
-                name="description"
+                name="appraisal_description"
                 onChange={onChangeInput}
               />
             </div>
@@ -451,16 +422,19 @@ function Form(props: any) {
             <div className="row">
               <DatePicker
                 label="Review From"
+                // value={updateData.review_from}
                 className={`${controlClass.control} flexGrow`}
                 firstDayOfWeek={firstDayOfWeek}
                 strings={DayPickerStrings}
-                onSelectDate={reviewFromDate}
+                value = {new Date(updateData.review_from)}
+                onSelectDate={(date) => setUpdateData({...updateData, review_from: date})}
                 placeholder="Select a date"
                 ariaLabel="Select a date"
                 styles={datePickerStyle}
               />
               <DatePicker
                 label="Appraisal To"
+                value ={apprisalDateValue}
                 className={`${controlClass.control} flexGrow`}
                 firstDayOfWeek={firstDayOfWeek}
                 strings={DayPickerStrings}
@@ -470,44 +444,39 @@ function Form(props: any) {
                 ariaLabel="Select a date"
               />
               <Dropdown
-                required
-                errorMessage={errMsgReviewFrequency}
+                selectedKey={reviewFrequencyOptions.find((item) => item.text === updateData.review_frequency)?.key}
                 label="Review Frequency"
                 placeholder="Select"
                 className="flexGrow"
-                onChange={onChangeReviewFrequency}
+                onChange={(ev, item) => setUpdateData({ ...updateData, review_frequency: item?.text})}
                 options={reviewFrequencyOptions}
                 // styles={dropdownStyles}
               />
             </div>
             <Dropdown
-              required
+              selectedKey={typeOptions.find((item) => item.text === updateData.type)?.key}
               label="Type"
-              errorMessage={errMsgType}
               placeholder="Select Type"
               className="type-input"
               options={typeOptions}
-              onChange={onChangeType}
+              onChange={(ev, item) => setUpdateData({ ...updateData, type: item?.text})}
               // styles={typeDropdownStyles}
             />
             <Dropdown
-              required
+                selectedKey={formateTypeOptions.find((item) => item.text === updateData.format_type)?.key}
               label="Format Type"
-              errorMessage={errMsgFormatType}
               className="type-input"
-              onChange={onChangeFormateType}
+              onChange={(ev, item) => setUpdateData({ ...updateData, format_type: item?.text})}
               placeholder="Select Format Type"
               options={formateTypeOptions}
               // styles={typeDropdownStyles}
             />
             <TextField
-              required
               label="Owner"
               placeholder="Owner"
-              value={claimsData.owner}
+              value={updateData.appraisal_owner}
               styles={textfelidStyle}
-              errorMessage={errMsgOwner}
-              name="owner"
+              name="appraisal_owner"
               onChange={onChangeInput}
             />
             <Separator />
@@ -517,33 +486,33 @@ function Form(props: any) {
                 <Checkbox
                   label={"Goals"}
                   title={"Goals"}
-                  checked={claimsData.kraSettingGoal}
+                  checked={updateData.kra_settings_tab_goals}
                   className="flexGrowCheckBox"
-                  name="kraSettingGoal"
+                  name="kra_settings_tab_goals"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
                   label={"Competencies"}
                   title={"Competencies"}
-                  checked={claimsData.kraSettingCompetencies}
+                  checked={updateData.kra_settings_tab_competencies}
                   className="flexGrowCheckBox"
-                  name="kraSettingCompetencies"
+                  name="kra_settings_tab_competencies"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
                   label={"Development Plans"}
                   title={"Development Plans"}
-                  checked={claimsData.kraSettingDevelopmentPlan}
+                  checked={updateData.kra_settings_tab_development_plan}
                   className="flexGrowCheckBox"
-                  name="kraSettingDevelopmentPlan"
+                  name="kra_settings_tab_development_plan"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
                   label={"Summary"}
                   title={"Summary"}
-                  checked={claimsData.kraSettingSummary}
+                  checked={updateData.kra_settings_tab_summary}    
                   className="flexGrowCheckBox"
-                  name="kraSettingSummary"
+                  name="kra_settings_tab_summary"
                   onChange={onChangeCheckbox}
                 />
               </div>
@@ -552,33 +521,33 @@ function Form(props: any) {
                 <Checkbox
                   label={"Goals"}
                   title={"Goals"}
-                  checked={claimsData.assessmentGoal}
+                  checked={updateData.assessment_tab_goals}
                   className="flexGrowCheckBox"
-                  name="assessmentGoal"
+                  name="assessment_tab_goals"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
                   label={"Competencies"}
                   title={"Competencies"}
-                  checked={claimsData.assessmentCompetencies}
+                  checked={updateData.assessment_tab_competencies}
                   className="flexGrowCheckBox"
-                  name="assessmentCompetencies"
+                  name="assessment_tab_competencies"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
                   label={"Development Plans"}
                   title={"Development Plans"}
-                  checked={claimsData.assessmentDevelopmentPlan}
+                  checked={updateData.assessment_tab_development_plan}
                   className="flexGrowCheckBox"
-                  name="assessmentSummary"
+                  name="assessment_tab_development_plan"
                   onChange={onChangeCheckbox}
                 />
                 <Checkbox
                   label={"Summary"}
                   title={"Summary"}
-                  checked={claimsData.assessmentSummary}
+                  checked={updateData.assessment_tab_summary}
                   className="flexGrowCheckBox"
-                  name="assessmentSummary"
+                  name="assessment_tab_summary"
                   onChange={onChangeCheckbox}
                 />
               </div>
@@ -594,9 +563,9 @@ function Form(props: any) {
                 }}
               >
                 <PrimaryButton
-                  text="Add Appraisal"
+                  text="Update"
                   allowDisabledFocus
-                  onClick={handleAddApprisal}
+                  onClick={handleUpdateApprisal}
                 />
               </div>
               <div
@@ -623,4 +592,4 @@ function Form(props: any) {
 }
 export default connect((state) => ({
   ...state,
-}))(Form);
+}))(UpdateAppraisal);

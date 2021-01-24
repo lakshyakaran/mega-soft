@@ -21,7 +21,7 @@ export const add_apprisal = async (data: any) => {
     });
     return response;
   } catch (error) {
-    console.log("error in catch block=>", error);
+    console.log("error in catch block=>", JSON.stringify(error));
     return {
       ...error,
     };
@@ -31,8 +31,8 @@ export const add_apprisal = async (data: any) => {
 export const edit_appraisal = async (data: any) => {
   try {
     const response = await axios({
-      url: `http://52.146.0.154/api/resource/Appraisal/`,
-      method: "POST",
+      url: `http://52.146.0.154/api/resource/Appraisal/${data.id}`,
+      method: "put",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -40,7 +40,8 @@ export const edit_appraisal = async (data: any) => {
       },
       data: JSON.stringify(data),
     });
-    return await response.data;
+    // console.log("api response ==>", response)
+    return await response;
   } catch (error) {
     return {
       ...error,

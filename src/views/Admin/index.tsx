@@ -52,6 +52,8 @@ function Admin(props: any) {
   const appraisal =
     useSelector((state: RootState) => state.appraisal.appraisalList) || [];
 
+  // console.log("data=>", appraisal)
+
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
@@ -128,7 +130,7 @@ function Admin(props: any) {
     {
       key: "04",
       name: "Description",
-      fieldName: "description",
+      fieldName: "appraisal_description",
       minWidth: 10,
       maxWidth: 180,
       isSortedDescending: false,
@@ -189,14 +191,13 @@ function Admin(props: any) {
         <div>
           <Link
             className="link-icons"
-            // onClick={updateAppriasal}
           >
             <FontIcon
               style={{ fontSize: "18px", color: "#344f84" }}
               iconName="RedEye"
             />
           </Link>
-          <Link className="link-icons" onClick={updateAppriasal}>
+          <Link className="link-icons" onClick={()=>{updateAppriasal(item)}}>
             <FontIcon
               style={{ fontSize: "15px", color: "#344f84" }}
               iconName="Edit"
@@ -219,7 +220,9 @@ function Admin(props: any) {
   ];
 
   const updateAppriasal = (item: any) => {
-    console.log(item);
+    // localStorage.setItem('apprisal_data', JSON.stringify(item));
+    history.push(`/appraisal/update/${item.id}`)
+    
   };
 
   const _onBreadcrumbItemClicked = () => {};
@@ -467,7 +470,7 @@ function Admin(props: any) {
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="body has-right-panel">
-          <div style={{ display: "flex" }}>
+          <div className="searchBarClass">
             <TextField
               label="ID"
               onChange={itemSearch}
