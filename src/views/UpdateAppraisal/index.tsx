@@ -4,37 +4,40 @@ import {
   ITextFieldStyles,
 } from "office-ui-fabric-react/lib/TextField";
 import { useParams } from "react-router-dom";
-import { Stack, IStackStyles } from "office-ui-fabric-react/lib/Stack";
+import { Stack } from "office-ui-fabric-react/lib/Stack";
 import "./style.css";
 import {
   DatePicker,
   DayOfWeek,
   Dropdown,
+  getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
+  IconButton,
   IDatePickerStrings,
   IDatePickerStyles,
   IDropdownOption,
   IDropdownStyles,
+  IIconProps,
+  IModalStyles,
   Label,
   Link,
-  mergeStyles,
   mergeStyleSets,
+  Modal,
   PrimaryButton,
   Separator,
-  updateA,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
-import { useBoolean } from "@uifabric/react-hooks";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
+import logo_ms from "../../assets/img/logo_ms.png";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { addApprisal, edit_appraisal } from "../../redux/actions/apprisal";
+import { connect } from "react-redux";
+import { edit_appraisal } from "../../redux/actions/apprisal";
 import { RootState } from "../../redux/reducers";
 import { fetchAppraisalData } from "../../redux/actions";
 
@@ -62,20 +65,20 @@ const dropdownStyles: Partial<IDropdownStyles> = {
 };
 
 interface ParamTypes {
-    appraisalId: string
+  appraisalId: string;
 }
 
 function UpdateAppraisal(props: any) {
   const params = useParams<ParamTypes>();
   const stackTokens = { childrenGap: 10 };
 
-  const [limitStart, setLimitSTart] = useState(0);
-  const [limitPageLength, setLimitPageLength] = useState(5);
-  const [orderBy, setOrderBy] = useState("asc");
-  const [orderByField, setOrderByField] = useState("id");
-  const [filtersById, setFiltersById] = useState(params.appraisalId);
+  const [limitStart] = useState(0);
+  const [limitPageLength] = useState(5);
+  const [orderBy] = useState("asc");
+  const [orderByField] = useState("id");
+  const [filtersById] = useState(params.appraisalId);
 
-  const [updateData, setUpdateData] : any= useState({})
+  const [updateData, setUpdateData]: any = useState({});
 
   useEffect(() => {
     const filters = [];
@@ -83,23 +86,20 @@ function UpdateAppraisal(props: any) {
       filters.push(["id", "like", filtersById]);
     }
     fetchAppraisalData(
-          limitStart,
-          limitPageLength,
-          `${orderByField} ${orderBy}`,
-          JSON.stringify(filters)
-        )((response: any) => {
-            console.log('response=>', response.payload)
-            setUpdateData(response.payload[0])
-        })
-  }, [])
+      limitStart,
+      limitPageLength,
+      `${orderByField} ${orderBy}`,
+      JSON.stringify(filters)
+    )((response: any) => {
+      // console.log("response=>", response.payload);
+      setUpdateData(response.payload[0]);
+    });
+  }, []);
 
-//   console.log("upadetdata==>", updateData.id)
+  //   console.log("upadetdata==>", updateData.id)
 
-  const appraisalList = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
-//   const updateData = appraisalList.find(item => item.id === params.appraisalId);
-
-  const reviewDate :any = new Date(updateData.review_from);
-  const apprisalDateValue :any = new Date(updateData.appraisal_to);
+  // const appraisalList = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
+  //   const updateData = appraisalList.find(item => item.id === params.appraisalId);
 
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
@@ -112,7 +112,6 @@ function UpdateAppraisal(props: any) {
       },
     },
   };
-  const [isChecked, setIsChecked] = React.useState(true);
 
   const DayPickerStrings: IDatePickerStrings = {
     months: [
@@ -182,30 +181,6 @@ function UpdateAppraisal(props: any) {
     },
   };
 
-  const [claimsData, setClaimsData] = useState({
-    id: updateData.id,
-    description: updateData.description,
-    owner: updateData.appraisal_owner,
-    kraSettingGoal: updateData.kra_settings_tab_goals,
-    kraSettingCompetencies: updateData.kra_settings_tab_competencies,
-    kraSettingDevelopmentPlan: updateData.kra_settings_tab_development_plan,
-    kraSettingSummary: updateData.kra_settings_tab_summary,
-    assessmentGoal: updateData.assessment_tab_goals,
-    assessmentCompetencies: updateData.assessment_tab_competencies,
-    assessmentDevelopmentPlan: updateData.assessment_tab_development_plan,
-    assessmentSummary: updateData.assessment_tab_summary,
-  });
-
-  const [selectedType, setSelectedType] = useState<IDropdownOption>({
-    key: "",
-    text: "",
-  });
-
-  const [reviewFrequency, setReviewFrequency] = useState<IDropdownOption>({
-    key: "",
-    text: updateData.review_frequency,
-  });
-
   const [formateType, setFormateType] = useState<IDropdownOption>({
     key: "",
     text: "",
@@ -233,8 +208,6 @@ function UpdateAppraisal(props: any) {
     });
   };
 
-  
-
   const onChangeFormateType = (
     event?: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
@@ -248,29 +221,37 @@ function UpdateAppraisal(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-      history.push('/');
+    history.push("/");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: "Performance", key: "d1"},
-    { text: "Appraisal", key: "d2", isCurrentItem: true, as: "h4",  onClick: _onBreadcrumbItemClicked  },
+    { text: "Performance", key: "d1" },
+    {
+      text: "Appraisal",
+      key: "d2",
+      isCurrentItem: true,
+      as: "h4",
+      onClick: _onBreadcrumbItemClicked,
+    },
     { text: "Update Appraisal", key: "d3", as: "h4" },
   ];
 
-  const [dateReview, setDateReview] = useState<Date | null | undefined>(new Date(updateData.review_from));
-  const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(
-    new Date(updateData.appraisal_to)
-  );
+  // const [dateReview, setDateReview] = useState<Date | null | undefined>(
+  //   new Date(updateData.review_from)
+  // );
+  // const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(
+  //   new Date(updateData.appraisal_to)
+  // );
 
-  const reviewFromDate = (date: Date | null | undefined): void => {
-    const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
-    // console.log("date==>", reviewFrequencyDate);
-    setDateReview(reviewFrequencyDate);
-  };
-  const appraisalToDate = (date: Date | null | undefined): void => {
-    const appraisalDate: any = moment(date).format("YYYY-MM-DD");
-    // console.log("date==>", reviewFrequencyDate);
-    setdDateAppraisal(appraisalDate);
-  };
+  // const reviewFromDate = (date: Date | null | undefined): void => {
+  //   const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
+  //   // console.log("date==>", reviewFrequencyDate);
+  //   setDateReview(reviewFrequencyDate);
+  // };
+  // const appraisalToDate = (date: Date | null | undefined): void => {
+  //   const appraisalDate: any = moment(date).format("YYYY-MM-DD");
+  //   // console.log("date==>", reviewFrequencyDate);
+  //   setdDateAppraisal(appraisalDate);
+  // };
 
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
@@ -310,8 +291,31 @@ function UpdateAppraisal(props: any) {
     );
   };
   // const dispatch = useDispatch();
+  const [successModal, setSuccessModal] = useState(false);
+  const [failedModal, setFailedModal] = useState(false);
+  const theme = getTheme();
+  const cancelIcon: IIconProps = { iconName: "Cancel" };
 
-  const [loading, setLoading] = useState(false);
+  const iconButtonStyles = {
+    root: {
+      color: "#FFF",
+      marginLeft: "auto",
+      marginTop: "4px",
+      marginRight: "2px",
+    },
+    rootHovered: {
+      color: theme.palette.neutralDark,
+    },
+  };
+  const modalStyle: Partial<IModalStyles> = {
+    root: {},
+    main: {
+      height: "30%",
+      width: "20%",
+      backgroundColor: "#FFF",
+      // padding: "5px",
+    },
+  };
 
   const handleUpdateApprisal = () => {
     const updateQuery = {
@@ -322,19 +326,299 @@ function UpdateAppraisal(props: any) {
       description: "22",
       route: "appraisal/BB00002",
     };
-    console.log("addQueary=>", updateQuery);
+    // console.log("updateQuery=>", updateQuery);
     edit_appraisal(updateQuery).then((response) => {
       console.log("response=>", response);
       if (response?.status === 200) {
-        history.push("/");
-      }
-      else {
-        console.log("then error msg btnClick==>", response);
+        setSuccessModal(true);
+      } else {
+        setFailedModal(true);
       }
     });
     // .catch((err) => {
     //   console.log("Error in btnClick=>", err);
     // });
+  };
+
+  const renderUpdateForm = () => {
+    return (
+      <React.Fragment>
+        <div className="form-container">
+          <div className="row">
+            <TextField
+              disabled
+              placeholder="ID"
+              value={updateData.id}
+              name="id"
+              label="Id"
+              onChange={onChangeInput}
+              className="flexGrowTextInput"
+            />
+            <TextField
+              placeholder="Description"
+              label="Description"
+              value={updateData.appraisal_description}
+              // styles={textfelidStyle}
+              className="flexGrow"
+              name="appraisal_description"
+              onChange={onChangeInput}
+            />
+          </div>
+          {/* <div className="input-form"></div> */}
+          <div className="row">
+            <DatePicker
+              label="Review From"
+              // value={updateData.review_from}
+              className={`${controlClass.control} flexGrow`}
+              firstDayOfWeek={firstDayOfWeek}
+              strings={DayPickerStrings}
+              value={new Date(updateData.review_from)}
+              onSelectDate={(date) =>
+                setUpdateData({ ...updateData, review_from: date })
+              }
+              placeholder="Select a date"
+              ariaLabel="Select a date"
+              styles={datePickerStyle}
+            />
+            <DatePicker
+              label="Appraisal To"
+              value={new Date(updateData.appraisal_to)}
+              className={`${controlClass.control} flexGrow`}
+              firstDayOfWeek={firstDayOfWeek}
+              strings={DayPickerStrings}
+              onSelectDate={(date) =>
+                setUpdateData({ ...updateData, appraisal_to: date })
+              }
+              styles={datePickerStyle}
+              placeholder="Select a date"
+              ariaLabel="Select a date"
+            />
+            <Dropdown
+              selectedKey={
+                reviewFrequencyOptions.find(
+                  (item) => item.text === updateData.review_frequency
+                )?.key
+              }
+              label="Review Frequency"
+              placeholder="Select"
+              className="flexGrow"
+              onChange={(ev, item) =>
+                setUpdateData({ ...updateData, review_frequency: item?.text })
+              }
+              options={reviewFrequencyOptions}
+              // styles={dropdownStyles}
+            />
+          </div>
+          <Dropdown
+            selectedKey={
+              typeOptions.find((item) => item.text === updateData.type)?.key
+            }
+            label="Type"
+            placeholder="Select Type"
+            className="type-input"
+            options={typeOptions}
+            onChange={(ev, item) =>
+              setUpdateData({ ...updateData, type: item?.text })
+            }
+            // styles={typeDropdownStyles}
+          />
+          <Dropdown
+            selectedKey={
+              formateTypeOptions.find(
+                (item) => item.text === updateData.format_type
+              )?.key
+            }
+            label="Format Type"
+            className="type-input"
+            onChange={(ev, item) =>
+              setUpdateData({ ...updateData, format_type: item?.text })
+            }
+            placeholder="Select Format Type"
+            options={formateTypeOptions}
+            // styles={typeDropdownStyles}
+          />
+          <TextField
+            label="Owner"
+            placeholder="Owner"
+            value={updateData.appraisal_owner}
+            styles={textfelidStyle}
+            name="appraisal_owner"
+            onChange={onChangeInput}
+          />
+          <Separator />
+          <div className="rowCheckBox">
+            <div>
+              <Label>KRA Settings Tabs: </Label>
+              <Checkbox
+                label={"Goals"}
+                title={"Goals"}
+                checked={updateData.kra_settings_tab_goals}
+                className="flexGrowCheckBox"
+                name="kra_settings_tab_goals"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Competencies"}
+                title={"Competencies"}
+                checked={updateData.kra_settings_tab_competencies}
+                className="flexGrowCheckBox"
+                name="kra_settings_tab_competencies"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Development Plans"}
+                title={"Development Plans"}
+                checked={updateData.kra_settings_tab_development_plan}
+                className="flexGrowCheckBox"
+                name="kra_settings_tab_development_plan"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Summary"}
+                title={"Summary"}
+                checked={updateData.kra_settings_tab_summary}
+                className="flexGrowCheckBox"
+                name="kra_settings_tab_summary"
+                onChange={onChangeCheckbox}
+              />
+            </div>
+            <div>
+              <Label>Assessment Tabs: </Label>
+              <Checkbox
+                label={"Goals"}
+                title={"Goals"}
+                checked={updateData.assessment_tab_goals}
+                className="flexGrowCheckBox"
+                name="assessment_tab_goals"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Competencies"}
+                title={"Competencies"}
+                checked={updateData.assessment_tab_competencies}
+                className="flexGrowCheckBox"
+                name="assessment_tab_competencies"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Development Plans"}
+                title={"Development Plans"}
+                checked={updateData.assessment_tab_development_plan}
+                className="flexGrowCheckBox"
+                name="assessment_tab_development_plan"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Summary"}
+                title={"Summary"}
+                checked={updateData.assessment_tab_summary}
+                className="flexGrowCheckBox"
+                name="assessment_tab_summary"
+                onChange={onChangeCheckbox}
+              />
+            </div>
+            <div>
+              <Modal
+                titleAriaId={"Title"}
+                isOpen={successModal}
+                isBlocking={false}
+                styles={modalStyle}
+                // containerClassName={contentStyles.container}
+              >
+                <div className="modal-header">
+                  <div className="modal-title">Appraisal Updated</div>
+                  <IconButton
+                    styles={iconButtonStyles}
+                    iconProps={cancelIcon}
+                    ariaLabel="Close popup modal"
+                    onClick={() => {
+                      history.push("/");
+                    }}
+                  />
+                </div>
+                <div className="modal-content-success">
+                  Appraisal Updated Successfully
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <PrimaryButton
+                    text="OK"
+                    allowDisabledFocus
+                    onClick={() => {
+                      history.push("/");
+                    }}
+                    disabled={false}
+                    checked={false}
+                  />
+                </div>
+              </Modal>
+              <Modal
+                titleAriaId={"Title failed"}
+                isOpen={failedModal}
+                isBlocking={false}
+                styles={modalStyle}
+                // containerClassName={contentStyles.container}
+              >
+                <div className="modal-header">
+                  <div className="modal-title">Error</div>
+                  <IconButton
+                    styles={iconButtonStyles}
+                    iconProps={cancelIcon}
+                    ariaLabel="Close popup modal"
+                    onClick={() => {
+                      setFailedModal(false);
+                    }}
+                  />
+                </div>
+                <div className="modal-content">Somthing went wrong</div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <PrimaryButton
+                    text="Go Back"
+                    allowDisabledFocus
+                    onClick={() => {
+                      setFailedModal(false);
+                    }}
+                    disabled={false}
+                    checked={false}
+                  />
+                </div>
+              </Modal>
+            </div>
+          </div>
+          <Stack
+            horizontal
+            tokens={stackTokens}
+            style={{ justifyContent: "flex-end" }}
+          >
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Update"
+                allowDisabledFocus
+                onClick={handleUpdateApprisal}
+              />
+            </div>
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                disabled={false}
+                onClick={() => {
+                  history.push("/");
+                }}
+                checked={false}
+              />
+            </div>
+          </Stack>
+        </div>
+      </React.Fragment>
+    );
   };
 
   return (
@@ -388,6 +672,7 @@ function UpdateAppraisal(props: any) {
             }}
           >
             <Link>Log Out</Link>
+            <img src={logo_ms} className="ms-logo" />
             {/* <TooltipHost content="Settings">
               <FontIcon iconName="Settings" />
             </TooltipHost> */}
@@ -396,196 +681,8 @@ function UpdateAppraisal(props: any) {
       </WelcomeHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
-        <div className="body has-right-panel">
-          <div className="form-container">
-            <div className="row">
-              <TextField
-                disabled
-                placeholder="ID"
-                value={updateData.id}
-                name="id"
-                label="Id"
-                onChange={onChangeInput}
-                className="flexGrowTextInput"
-              />
-              <TextField
-                placeholder="Description"
-                label="Description"
-                value={updateData.appraisal_description}
-                // styles={textfelidStyle}
-                className="flexGrow"
-                name="appraisal_description"
-                onChange={onChangeInput}
-              />
-            </div>
-            {/* <div className="input-form"></div> */}
-            <div className="row">
-              <DatePicker
-                label="Review From"
-                // value={updateData.review_from}
-                className={`${controlClass.control} flexGrow`}
-                firstDayOfWeek={firstDayOfWeek}
-                strings={DayPickerStrings}
-                value = {new Date(updateData.review_from)}
-                onSelectDate={(date) => setUpdateData({...updateData, review_from: date})}
-                placeholder="Select a date"
-                ariaLabel="Select a date"
-                styles={datePickerStyle}
-              />
-              <DatePicker
-                label="Appraisal To"
-                value ={apprisalDateValue}
-                className={`${controlClass.control} flexGrow`}
-                firstDayOfWeek={firstDayOfWeek}
-                strings={DayPickerStrings}
-                onSelectDate={appraisalToDate}
-                styles={datePickerStyle}
-                placeholder="Select a date"
-                ariaLabel="Select a date"
-              />
-              <Dropdown
-                selectedKey={reviewFrequencyOptions.find((item) => item.text === updateData.review_frequency)?.key}
-                label="Review Frequency"
-                placeholder="Select"
-                className="flexGrow"
-                onChange={(ev, item) => setUpdateData({ ...updateData, review_frequency: item?.text})}
-                options={reviewFrequencyOptions}
-                // styles={dropdownStyles}
-              />
-            </div>
-            <Dropdown
-              selectedKey={typeOptions.find((item) => item.text === updateData.type)?.key}
-              label="Type"
-              placeholder="Select Type"
-              className="type-input"
-              options={typeOptions}
-              onChange={(ev, item) => setUpdateData({ ...updateData, type: item?.text})}
-              // styles={typeDropdownStyles}
-            />
-            <Dropdown
-                selectedKey={formateTypeOptions.find((item) => item.text === updateData.format_type)?.key}
-              label="Format Type"
-              className="type-input"
-              onChange={(ev, item) => setUpdateData({ ...updateData, format_type: item?.text})}
-              placeholder="Select Format Type"
-              options={formateTypeOptions}
-              // styles={typeDropdownStyles}
-            />
-            <TextField
-              label="Owner"
-              placeholder="Owner"
-              value={updateData.appraisal_owner}
-              styles={textfelidStyle}
-              name="appraisal_owner"
-              onChange={onChangeInput}
-            />
-            <Separator />
-            <div className="rowCheckBox">
-              <div>
-                <Label>KRA Settings Tabs: </Label>
-                <Checkbox
-                  label={"Goals"}
-                  title={"Goals"}
-                  checked={updateData.kra_settings_tab_goals}
-                  className="flexGrowCheckBox"
-                  name="kra_settings_tab_goals"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Competencies"}
-                  title={"Competencies"}
-                  checked={updateData.kra_settings_tab_competencies}
-                  className="flexGrowCheckBox"
-                  name="kra_settings_tab_competencies"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Development Plans"}
-                  title={"Development Plans"}
-                  checked={updateData.kra_settings_tab_development_plan}
-                  className="flexGrowCheckBox"
-                  name="kra_settings_tab_development_plan"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Summary"}
-                  title={"Summary"}
-                  checked={updateData.kra_settings_tab_summary}    
-                  className="flexGrowCheckBox"
-                  name="kra_settings_tab_summary"
-                  onChange={onChangeCheckbox}
-                />
-              </div>
-              <div>
-                <Label>Assessment Tabs: </Label>
-                <Checkbox
-                  label={"Goals"}
-                  title={"Goals"}
-                  checked={updateData.assessment_tab_goals}
-                  className="flexGrowCheckBox"
-                  name="assessment_tab_goals"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Competencies"}
-                  title={"Competencies"}
-                  checked={updateData.assessment_tab_competencies}
-                  className="flexGrowCheckBox"
-                  name="assessment_tab_competencies"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Development Plans"}
-                  title={"Development Plans"}
-                  checked={updateData.assessment_tab_development_plan}
-                  className="flexGrowCheckBox"
-                  name="assessment_tab_development_plan"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Summary"}
-                  title={"Summary"}
-                  checked={updateData.assessment_tab_summary}
-                  className="flexGrowCheckBox"
-                  name="assessment_tab_summary"
-                  onChange={onChangeCheckbox}
-                />
-              </div>
-            </div>
-            <Stack
-              horizontal
-              tokens={stackTokens}
-              style={{ justifyContent: "flex-end" }}
-            >
-              <div
-                style={{
-                  marginTop: "15px",
-                }}
-              >
-                <PrimaryButton
-                  text="Update"
-                  allowDisabledFocus
-                  onClick={handleUpdateApprisal}
-                />
-              </div>
-              <div
-                style={{
-                  marginTop: "15px",
-                }}
-              >
-                <PrimaryButton
-                  text="Cancel"
-                  allowDisabledFocus
-                  disabled={false}
-                  onClick={() => {
-                    history.push("/");
-                  }}
-                  checked={false}
-                />
-              </div>
-            </Stack>
-          </div>
-        </div>
+        <div className="data-container">{renderUpdateForm()}</div>
+        <div className="right-container">Right panel shows here.</div>
       </div>
     </div>
   );

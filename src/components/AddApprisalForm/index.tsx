@@ -1,39 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   TextField,
   ITextFieldStyles,
 } from "office-ui-fabric-react/lib/TextField";
-import { useParams } from "react-router-dom";
-import { Stack, IStackStyles } from "office-ui-fabric-react/lib/Stack";
+import { Stack } from "office-ui-fabric-react/lib/Stack";
 import "./style.css";
 import {
   DatePicker,
   DayOfWeek,
   Dropdown,
+  getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
+  IconButton,
   IDatePickerStrings,
   IDatePickerStyles,
   IDropdownOption,
   IDropdownStyles,
+  IIconProps,
+  IModalStyles,
   Label,
   Link,
-  mergeStyles,
   mergeStyleSets,
+  Modal,
   PrimaryButton,
   Separator,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
-import { useBoolean } from "@uifabric/react-hooks";
 import WelcomeHeader from "../WelcomeHeader";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
+import logo_ms from "../../assets/img/logo_ms.png";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
-import { addApprisal, add_apprisal } from "../../redux/actions/apprisal";
+import { connect } from "react-redux";
+import { add_apprisal } from "../../redux/actions/apprisal";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -69,16 +72,16 @@ function Form(props: any) {
 
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
+      borderRadius: "10px",
       ".ms-TextField-wrapper": {
-        borderRadius: "10px",
+        // borderRadius: "10px",
       },
 
       ".ms-TextField-fieldGroup fieldGroup-195": {
-        borderRadius: "10px",
+        // borderRadius: "10px",
       },
     },
   };
-  const [isChecked, setIsChecked] = React.useState(true);
 
   const DayPickerStrings: IDatePickerStrings = {
     months: [
@@ -140,7 +143,7 @@ function Form(props: any) {
     },
   });
 
-  const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
+  const [firstDayOfWeek] = React.useState(DayOfWeek.Sunday);
 
   const datePickerStyle: Partial<IDatePickerStyles> = {
     icon: {
@@ -237,11 +240,17 @@ function Form(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push('/')
+    history.push("/");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
     { text: "Performance", key: "d1" },
-    { text: "Appraisal", key: "d2", isCurrentItem: true, as: "h4", onClick: _onBreadcrumbItemClicked },
+    {
+      text: "Appraisal",
+      key: "d2",
+      isCurrentItem: true,
+      as: "h4",
+      onClick: _onBreadcrumbItemClicked,
+    },
     { text: "Add Appraisal", key: "d3", as: "h4" },
   ];
 
@@ -300,14 +309,38 @@ function Form(props: any) {
   };
   // const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
-
   const [errMsg, setErrMsg] = useState("");
   const [errMsgDescription, setErrMsgDescription] = useState("");
   const [errMsgOwner, setErrMsgOwner] = useState("");
   const [errMsgFormatType, setErrMsgFormatType] = useState("");
   const [errMsgType, setErrMsgType] = useState("");
   const [errMsgReviewFrequency, setErrMsgReviewFrequency] = useState("");
+  const [successModal, setSuccessModal] = useState(false);
+  const [failedModal, setFailedModal] = useState(false);
+
+  const theme = getTheme();
+  const cancelIcon: IIconProps = { iconName: "Cancel" };
+
+  const iconButtonStyles = {
+    root: {
+      color: "#FFF",
+      marginLeft: "auto",
+      marginTop: "4px",
+      marginRight: "2px",
+    },
+    rootHovered: {
+      color: theme.palette.neutralDark,
+    },
+  };
+  const modalStyle: Partial<IModalStyles> = {
+    root: {},
+    main: {
+      height: "30%",
+      width: "20%",
+      backgroundColor: "#FFF",
+      // padding: "5px",
+    },
+  };
 
   const handleAddApprisal = () => {
     if (claimsData.id === "") {
@@ -352,8 +385,13 @@ function Form(props: any) {
     add_apprisal(addQuery).then((response) => {
       console.log("response=>", response.data);
       if (response?.status === 200) {
-        history.push("/");
+        setSuccessModal(true);
+        // history.push("/");
+      } else {
+        // console.log("failed==>", failedModal);
+        setFailedModal(true);
       }
+
       // else {
       //   console.log("then error msg btnClick==>", response);
       // }
@@ -361,6 +399,274 @@ function Form(props: any) {
     // .catch((err) => {
     //   console.log("Error in btnClick=>", err);
     // });
+  };
+
+  const renderForm = () => {
+    return (
+      <React.Fragment>
+        <div className="form-container">
+          <div className="row">
+            <TextField
+              required
+              placeholder="ID"
+              value={claimsData.id}
+              errorMessage={errMsg}
+              name="id"
+              label="Id"
+              onChange={onChangeInput}
+              className="flexGrowTextInput"
+            />
+            <TextField
+              required
+              placeholder="Description"
+              label="Description"
+              value={claimsData.description}
+              errorMessage={errMsgDescription}
+              // styles={textfelidStyle}
+              className="flexGrow"
+              name="description"
+              onChange={onChangeInput}
+            />
+          </div>
+          {/* <div className="input-form"></div> */}
+          <div className="row">
+            <DatePicker
+              label="Review From"
+              className={`${controlClass.control} flexGrow`}
+              firstDayOfWeek={firstDayOfWeek}
+              strings={DayPickerStrings}
+              onSelectDate={reviewFromDate}
+              placeholder="Select a date"
+              ariaLabel="Select a date"
+              styles={datePickerStyle}
+            />
+            <DatePicker
+              label="Appraisal To"
+              className={`${controlClass.control} flexGrow`}
+              firstDayOfWeek={firstDayOfWeek}
+              strings={DayPickerStrings}
+              onSelectDate={appraisalToDate}
+              styles={datePickerStyle}
+              placeholder="Select a date"
+              ariaLabel="Select a date"
+            />
+            <Dropdown
+              required
+              errorMessage={errMsgReviewFrequency}
+              label="Review Frequency"
+              placeholder="Select"
+              className="flexGrow"
+              onChange={onChangeReviewFrequency}
+              options={reviewFrequencyOptions}
+              // styles={dropdownStyles}
+            />
+          </div>
+          <Dropdown
+            required
+            label="Type"
+            errorMessage={errMsgType}
+            placeholder="Select Type"
+            className="type-input"
+            options={typeOptions}
+            onChange={onChangeType}
+            // styles={typeDropdownStyles}
+          />
+          <Dropdown
+            required
+            label="Format Type"
+            errorMessage={errMsgFormatType}
+            className="type-input"
+            onChange={onChangeFormateType}
+            placeholder="Select Format Type"
+            options={formateTypeOptions}
+            // styles={typeDropdownStyles}
+          />
+          <TextField
+            required
+            label="Owner"
+            placeholder="Owner"
+            value={claimsData.owner}
+            // styles={textfelidStyle}
+            errorMessage={errMsgOwner}
+            name="owner"
+            onChange={onChangeInput}
+          />
+          <Separator />
+          <div className="rowCheckBox">
+            <div>
+              <Label>KRA Settings Tabs: </Label>
+              <Checkbox
+                label={"Goals"}
+                title={"Goals"}
+                checked={claimsData.kraSettingGoal}
+                className="flexGrowCheckBox"
+                name="kraSettingGoal"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Competencies"}
+                title={"Competencies"}
+                checked={claimsData.kraSettingCompetencies}
+                className="flexGrowCheckBox"
+                name="kraSettingCompetencies"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Development Plans"}
+                title={"Development Plans"}
+                checked={claimsData.kraSettingDevelopmentPlan}
+                className="flexGrowCheckBox"
+                name="kraSettingDevelopmentPlan"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Summary"}
+                title={"Summary"}
+                checked={claimsData.kraSettingSummary}
+                className="flexGrowCheckBox"
+                name="kraSettingSummary"
+                onChange={onChangeCheckbox}
+              />
+            </div>
+            <div>
+              <Label>Assessment Tabs: </Label>
+              <Checkbox
+                label={"Goals"}
+                title={"Goals"}
+                checked={claimsData.assessmentGoal}
+                className="flexGrowCheckBox"
+                name="assessmentGoal"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Competencies"}
+                title={"Competencies"}
+                checked={claimsData.assessmentCompetencies}
+                className="flexGrowCheckBox"
+                name="assessmentCompetencies"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Development Plans"}
+                title={"Development Plans"}
+                checked={claimsData.assessmentDevelopmentPlan}
+                className="flexGrowCheckBox"
+                name="assessmentSummary"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
+                label={"Summary"}
+                title={"Summary"}
+                checked={claimsData.assessmentSummary}
+                className="flexGrowCheckBox"
+                name="assessmentSummary"
+                onChange={onChangeCheckbox}
+              />
+            </div>
+            <div>
+              <Modal
+                titleAriaId={"Title"}
+                isOpen={successModal}
+                isBlocking={false}
+                styles={modalStyle}
+                // containerClassName={contentStyles.container}
+              >
+                <div className="modal-header">
+                  <div className="modal-title">
+                    Appraisal Added Successfully
+                  </div>
+                  <IconButton
+                    styles={iconButtonStyles}
+                    iconProps={cancelIcon}
+                    ariaLabel="Close popup modal"
+                    onClick={() => {
+                      setSuccessModal(false);
+                    }}
+                  />
+                </div>
+                <div className="modal-content-success">
+                  Appraisal Added Successfully
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <PrimaryButton
+                    text="OK"
+                    allowDisabledFocus
+                    onClick={() => {
+                      history.push("/");
+                    }}
+                    disabled={false}
+                    checked={false}
+                  />
+                </div>
+              </Modal>
+              <Modal
+                titleAriaId={"Title failed"}
+                isOpen={failedModal}
+                isBlocking={false}
+                styles={modalStyle}
+                // containerClassName={contentStyles.container}
+              >
+                <div className="modal-header">
+                  <div className="modal-title">Error</div>
+                  <IconButton
+                    styles={iconButtonStyles}
+                    iconProps={cancelIcon}
+                    ariaLabel="Close popup modal"
+                    onClick={() => {
+                      setFailedModal(false);
+                    }}
+                  />
+                </div>
+                <div className="modal-content">Somthing went wrong</div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <PrimaryButton
+                    text="Go Back"
+                    allowDisabledFocus
+                    onClick={() => {
+                      setFailedModal(false);
+                    }}
+                    disabled={false}
+                    checked={false}
+                  />
+                </div>
+              </Modal>
+            </div>
+          </div>
+          <Stack
+            horizontal
+            tokens={stackTokens}
+            style={{ justifyContent: "flex-end" }}
+          >
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Add Appraisal"
+                allowDisabledFocus
+                onClick={handleAddApprisal}
+              />
+            </div>
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                disabled={false}
+                onClick={() => {
+                  history.push("/");
+                }}
+                checked={false}
+              />
+            </div>
+          </Stack>
+        </div>
+      </React.Fragment>
+    );
   };
 
   return (
@@ -414,6 +720,7 @@ function Form(props: any) {
             }}
           >
             <Link>Log Out</Link>
+            <img src={logo_ms} className="ms-logo" />
             {/* <TooltipHost content="Settings">
               <FontIcon iconName="Settings" />
             </TooltipHost> */}
@@ -422,201 +729,8 @@ function Form(props: any) {
       </WelcomeHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
-        <div className="body has-right-panel">
-          <div className="form-container">
-            <div className="row">
-              <TextField
-                required
-                placeholder="ID"
-                value={claimsData.id}
-                errorMessage={errMsg}
-                name="id"
-                label="Id"
-                onChange={onChangeInput}
-                className="flexGrowTextInput"
-              />
-              <TextField
-                required
-                placeholder="Description"
-                label="Description"
-                value={claimsData.description}
-                errorMessage={errMsgDescription}
-                // styles={textfelidStyle}
-                className="flexGrow"
-                name="description"
-                onChange={onChangeInput}
-              />
-            </div>
-            {/* <div className="input-form"></div> */}
-            <div className="row">
-              <DatePicker
-                label="Review From"
-                className={`${controlClass.control} flexGrow`}
-                firstDayOfWeek={firstDayOfWeek}
-                strings={DayPickerStrings}
-                onSelectDate={reviewFromDate}
-                placeholder="Select a date"
-                ariaLabel="Select a date"
-                styles={datePickerStyle}
-              />
-              <DatePicker
-                label="Appraisal To"
-                className={`${controlClass.control} flexGrow`}
-                firstDayOfWeek={firstDayOfWeek}
-                strings={DayPickerStrings}
-                onSelectDate={appraisalToDate}
-                styles={datePickerStyle}
-                placeholder="Select a date"
-                ariaLabel="Select a date"
-              />
-              <Dropdown
-                required
-                errorMessage={errMsgReviewFrequency}
-                label="Review Frequency"
-                placeholder="Select"
-                className="flexGrow"
-                onChange={onChangeReviewFrequency}
-                options={reviewFrequencyOptions}
-                // styles={dropdownStyles}
-              />
-            </div>
-            <Dropdown
-              required
-              label="Type"
-              errorMessage={errMsgType}
-              placeholder="Select Type"
-              className="type-input"
-              options={typeOptions}
-              onChange={onChangeType}
-              // styles={typeDropdownStyles}
-            />
-            <Dropdown
-              required
-              label="Format Type"
-              errorMessage={errMsgFormatType}
-              className="type-input"
-              onChange={onChangeFormateType}
-              placeholder="Select Format Type"
-              options={formateTypeOptions}
-              // styles={typeDropdownStyles}
-            />
-            <TextField
-              required
-              label="Owner"
-              placeholder="Owner"
-              value={claimsData.owner}
-              styles={textfelidStyle}
-              errorMessage={errMsgOwner}
-              name="owner"
-              onChange={onChangeInput}
-            />
-            <Separator />
-            <div className="rowCheckBox">
-              <div>
-                <Label>KRA Settings Tabs: </Label>
-                <Checkbox
-                  label={"Goals"}
-                  title={"Goals"}
-                  checked={claimsData.kraSettingGoal}
-                  className="flexGrowCheckBox"
-                  name="kraSettingGoal"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Competencies"}
-                  title={"Competencies"}
-                  checked={claimsData.kraSettingCompetencies}
-                  className="flexGrowCheckBox"
-                  name="kraSettingCompetencies"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Development Plans"}
-                  title={"Development Plans"}
-                  checked={claimsData.kraSettingDevelopmentPlan}
-                  className="flexGrowCheckBox"
-                  name="kraSettingDevelopmentPlan"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Summary"}
-                  title={"Summary"}
-                  checked={claimsData.kraSettingSummary}
-                  className="flexGrowCheckBox"
-                  name="kraSettingSummary"
-                  onChange={onChangeCheckbox}
-                />
-              </div>
-              <div>
-                <Label>Assessment Tabs: </Label>
-                <Checkbox
-                  label={"Goals"}
-                  title={"Goals"}
-                  checked={claimsData.assessmentGoal}
-                  className="flexGrowCheckBox"
-                  name="assessmentGoal"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Competencies"}
-                  title={"Competencies"}
-                  checked={claimsData.assessmentCompetencies}
-                  className="flexGrowCheckBox"
-                  name="assessmentCompetencies"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Development Plans"}
-                  title={"Development Plans"}
-                  checked={claimsData.assessmentDevelopmentPlan}
-                  className="flexGrowCheckBox"
-                  name="assessmentSummary"
-                  onChange={onChangeCheckbox}
-                />
-                <Checkbox
-                  label={"Summary"}
-                  title={"Summary"}
-                  checked={claimsData.assessmentSummary}
-                  className="flexGrowCheckBox"
-                  name="assessmentSummary"
-                  onChange={onChangeCheckbox}
-                />
-              </div>
-            </div>
-            <Stack
-              horizontal
-              tokens={stackTokens}
-              style={{ justifyContent: "flex-end" }}
-            >
-              <div
-                style={{
-                  marginTop: "15px",
-                }}
-              >
-                <PrimaryButton
-                  text="Add Appraisal"
-                  allowDisabledFocus
-                  onClick={handleAddApprisal}
-                />
-              </div>
-              <div
-                style={{
-                  marginTop: "15px",
-                }}
-              >
-                <PrimaryButton
-                  text="Cancel"
-                  allowDisabledFocus
-                  disabled={false}
-                  onClick={() => {
-                    history.push("/");
-                  }}
-                  checked={false}
-                />
-              </div>
-            </Stack>
-          </div>
-        </div>
+        <div className="data-container">{renderForm()}</div>
+        <div className="right-container">Right panel shows here.</div>
       </div>
     </div>
   );

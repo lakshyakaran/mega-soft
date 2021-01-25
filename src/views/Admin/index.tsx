@@ -17,6 +17,8 @@ import {
   IDropdownStyles,
   Link,
   FontIcon,
+  Spinner,
+  SpinnerSize,
 } from "office-ui-fabric-react";
 import {
   IBreadcrumbItem,
@@ -29,11 +31,16 @@ import WelcomeHeader from "../../components/WelcomeHeader";
 import { Pagination } from "@uifabric/experiments";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Text } from "office-ui-fabric-react/lib/Text";
+import Icon from "@material-ui/core/Icon";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import CreateIcon from "@material-ui/icons/Create";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import "./style.css";
 import { RootState } from "../../redux/reducers";
 import { fetchAppraisalData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
+import logo_ms from "../../assets/img/logo_ms.png";
 
 // interface ParamTypes {
 //   id: string
@@ -65,6 +72,7 @@ function Admin(props: any) {
     if (filtersByReviewFreq) {
       filters.push(["review_frequency", "=", filtersByReviewFreq]);
     }
+    setLoading(true);
     dispatch(
       fetchAppraisalData(
         limitStart,
@@ -87,6 +95,7 @@ function Admin(props: any) {
     //   // }
     // })
     // console.log("filters==>", filters)
+    setLoading(false);
   }, [
     limitStart,
     limitPageLength,
@@ -191,17 +200,19 @@ function Admin(props: any) {
         <div>
           <Link
             className="link-icons"
+            onClick={() => {
+              viewAppraisal(item);
+            }}
           >
-            <FontIcon
-              style={{ fontSize: "18px", color: "#344f84" }}
-              iconName="RedEye"
-            />
+            <VisibilityIcon style={{ color: "#344f84" }} />
           </Link>
-          <Link className="link-icons" onClick={()=>{updateAppriasal(item)}}>
-            <FontIcon
-              style={{ fontSize: "15px", color: "#344f84" }}
-              iconName="Edit"
-            />
+          <Link
+            className="link-icons"
+            onClick={() => {
+              updateAppriasal(item);
+            }}
+          >
+            <CreateIcon style={{ color: "#344f84" }} />
           </Link>
           <Link
             className="link-icons"
@@ -209,20 +220,20 @@ function Admin(props: any) {
               console.log("delete=>", item);
             }}
           >
-            <FontIcon
-              style={{ fontSize: "15px", color: "#FF0000" }}
-              iconName="Delete"
-            />
+            <DeleteIcon style={{ color: "#FF0000" }} />
           </Link>
         </div>
       ),
     },
   ];
 
+  const viewAppraisal = (item: any) => {
+    history.push(`/appraisal/view/${item.id}`);
+  };
+
   const updateAppriasal = (item: any) => {
     // localStorage.setItem('apprisal_data', JSON.stringify(item));
-    history.push(`/appraisal/update/${item.id}`)
-    
+    history.push(`/appraisal/update/${item.id}`);
   };
 
   const _onBreadcrumbItemClicked = () => {};
@@ -261,7 +272,7 @@ function Admin(props: any) {
     root: {
       margin: "0 10px 20px 0",
       maxWidth: "300px",
-      borderRadius: "5px",
+      // borderRadius: "20px",
     },
 
     wrapper: {
@@ -344,12 +355,11 @@ function Admin(props: any) {
   const listStyle: Partial<IDetailsListStyles> = {
     headerWrapper: {
       ".root-106": {
-        paddingTop: "0px",
-        paddingBottom: "0px",
-        // backgroundColor: "#0337a4",
+        backgroundColor: "#344f84",
       },
     },
     root: {
+      backgroundColor: "#344f84",
       ".ms-Viewport": {
         minWidth: "200px",
       },
@@ -409,6 +419,149 @@ function Admin(props: any) {
     return null;
   };
 
+  const [loading, setLoading] = useState(true);
+
+  const renderNoData = () => {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          textAlign: "center",
+          marginTop: "20px",
+          flexDirection: "column",
+        }}
+      >
+        <PrimaryButton
+          text="New Appraisal"
+          iconProps={{ iconName: "Add" }}
+          allowDisabledFocus
+          onClick={() => {
+            history.push("/addApprisal");
+          }}
+          style={{ marginLeft: "auto", alignSelf: "center" }}
+          disabled={false}
+          checked={false}
+        />
+        <Text
+          style={{
+            color: "#aaa",
+            textAlign: "center",
+            padding: 50,
+            fontSize: 30,
+          }}
+        >
+          No Appraisal Data Found
+        </Text>
+      </div>
+    );
+  };
+
+  const renderData = () => {
+    return loading ? (
+      <Spinner
+        style={{ display: "flex", justifyContent: "center", padding: "50px" }}
+        size={SpinnerSize.large}
+      />
+    ) : (
+      <React.Fragment>
+        <div className="searchBarClass">
+          <TextField
+            label="ID"
+            onChange={itemSearch}
+            placeholder="Enter ID"
+            className="searchInput"
+            styles={controlStyles}
+          />
+          <TextField
+            label="Description"
+            className="searchInput"
+            onChange={itemSearchDescription}
+            placeholder="Enter Description"
+            styles={controlStyles}
+          />
+          <Dropdown
+            label="Review Frequency"
+            placeholder="Select"
+            options={searchOptions}
+            className="reviewFrequency"
+            onChange={itemSearchReview}
+            style={{ padding: "0px" }}
+            styles={dropdownStyles}
+          />
+          <PrimaryButton
+            iconProps={{ iconName: "Search" }}
+            onClick={handleSearchClick}
+            style={{
+              marginLeft: "10px",
+              alignSelf: "center",
+              marginTop: "8px",
+            }}
+          />
+          <PrimaryButton
+            text="New Appraisal"
+            iconProps={{ iconName: "Add" }}
+            allowDisabledFocus
+            onClick={() => {
+              history.push("/addApprisal");
+            }}
+            style={{
+              marginLeft: "auto",
+              alignSelf: "center",
+              marginTop: "8px",
+            }}
+            disabled={false}
+            checked={false}
+          />
+          {/* <TextField
+              onChange={itemSearchApprisalTo}
+              placeholder= "Appraisal To"
+              styles={controlStyles}
+            /> */}
+        </div>
+        <DetailsList
+          styles={listStyle}
+          items={appraisal}
+          className="detail-list"
+          onRenderRow={renderRow}
+          columns={columns}
+          selectionMode={0}
+        />
+        <Pagination
+          format="buttons"
+          selectedPageIndex={currentPage}
+          pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
+          itemsPerPage={limitPageLength}
+          totalItemCount={limitPageLength * 2}
+          previousPageAriaLabel={"previous page"}
+          nextPageAriaLabel={"next page"}
+          lastPageIconProps={{
+            iconName: "DoubleChevronRight",
+            style: { display: "none" },
+          }}
+          firstPageIconProps={{
+            iconName: "ChevronRight",
+            style: { display: "none" },
+          }}
+          firstPageAriaLabel={"first page"}
+          lastPageAriaLabel={"last page"}
+          pageAriaLabel={"page"}
+          selectedAriaLabel={"selected"}
+          onPageChange={(page) => {
+            if (currentPage < page && hasMoreRecord) {
+              setCurentPage(page);
+              setLimitSTart(limitStart + limitPageLength);
+            }
+            if (currentPage > page && limitStart - limitPageLength >= 0) {
+              setLimitSTart(limitStart - limitPageLength);
+              setCurentPage(page);
+            }
+          }}
+        />
+      </React.Fragment>
+    );
+  };
+
   // console.log("props==>", props.userData.UserData[0].name);
   return (
     <div className="view">
@@ -461,6 +614,7 @@ function Admin(props: any) {
             }}
           >
             <Link>Log Out</Link>
+            <img src={logo_ms} className="ms-logo" />
             {/* <TooltipHost content="Settings">
               <FontIcon iconName="Settings" />
             </TooltipHost> */}
@@ -469,121 +623,10 @@ function Admin(props: any) {
       </WelcomeHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
-        <div className="body has-right-panel">
-          <div className="searchBarClass">
-            <TextField
-              label="ID"
-              onChange={itemSearch}
-              placeholder="Enter ID"
-              className="searchInput"
-              styles={controlStyles}
-            />
-            <TextField
-              label="Description"
-              className="searchInput"
-              onChange={itemSearchDescription}
-              placeholder="Enter Description"
-              styles={controlStyles}
-            />
-            <Dropdown
-              label="Review Frequency"
-              placeholder="Select"
-              options={searchOptions}
-              className="reviewFrequency"
-              onChange={itemSearchReview}
-              style={{ padding: "0px" }}
-              styles={dropdownStyles}
-            />
-            <PrimaryButton
-              iconProps={{ iconName: "Search" }}
-              onClick={handleSearchClick}
-              style={{ marginLeft: "10px", alignSelf: "center" }}
-            />
-            <PrimaryButton
-              text="New Appraisal"
-              iconProps={{ iconName: "Add" }}
-              allowDisabledFocus
-              onClick={() => {
-                history.push("/addApprisal");
-              }}
-              style={{ marginLeft: "auto", alignSelf: "center" }}
-              disabled={false}
-              checked={false}
-            />
-            {/* <TextField
-              onChange={itemSearchApprisalTo}
-              placeholder= "Appraisal To"
-              styles={controlStyles}
-            /> */}
-          </div>
-          {appraisal.length === 0 ? (
-            <div>
-              <Shimmer />
-            </div>
-          ) : (
-            <DetailsList
-              styles={listStyle}
-              items={appraisal}
-              className="detail-list"
-              onRenderRow={renderRow}
-              columns={columns}
-              selectionMode={0}
-            />
-          )}
-
-          {/* <div>
-            <FontIcon iconName="CaretLeft8" className="" />
-            <FontIcon iconName="CaretLeft8" className="" />
-          </div> */}
-
-          <Pagination
-            format="buttons"
-            selectedPageIndex={currentPage}
-            pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
-            itemsPerPage={limitPageLength}
-            totalItemCount={limitPageLength * 2}
-            previousPageAriaLabel={"previous page"}
-            nextPageAriaLabel={"next page"}
-            firstPageAriaLabel={"first page"}
-            lastPageAriaLabel={"last page"}
-            pageAriaLabel={"page"}
-            selectedAriaLabel={"selected"}
-            onPageChange={(page) => {
-              if (currentPage < page && hasMoreRecord) {
-                setCurentPage(page);
-                setLimitSTart(limitStart + limitPageLength);
-              }
-              if (currentPage > page && limitStart - limitPageLength >= 0) {
-                setLimitSTart(limitStart - limitPageLength);
-                setCurentPage(page);
-              }
-            }}
-          />
-          {/* <Modal
-            titleAriaId={titleId}
-            isOpen={isModalOpen}
-            onDismiss={hideModal}
-            isModeless={true}
-            // containerClassName={contentStyles.container}
-            styles={modalStyle}
-          >
-            <div className="modal-header">
-              <div className="modal-title">Appraisal</div>
-              <IconButton
-                styles={iconButtonStyles}
-                iconProps={cancelIcon}
-                ariaLabel="Close popup modal"
-                onClick={hideModal}
-              />
-            </div>
-            <Form />
-          </Modal> */}
+        <div className="data-container">
+          {appraisal.length === 0 ? renderNoData() : renderData()}
         </div>
-        {/* <div className="right-panel">
-          <Panel>
-            <h2>Panel</h2>
-          </Panel>
-        </div> */}
+        <div className="right-container">Right panel shows here.</div>
       </div>
     </div>
   );
@@ -599,3 +642,46 @@ export default connect((state) => ({
 //     alignItems: "stretch",
 //   },
 // });
+
+{
+  /* <div
+  class="content"
+  style="
+    width: 100%;
+"
+>
+  <div
+    class="data-container"
+    style="
+    width: 73%;
+    float: left;
+    padding: 1%;
+"
+  >
+    My content shows here
+  </div>
+  <div
+    class="right-panel1"
+    style="
+    width: 23%;
+    float: left;
+    padding: 1%;
+"
+  >
+    Right panel shows here.
+  </div>
+</div>; */
+}
+
+{
+  /* <div className="content">
+  <div className="body">
+    {appraisal.length === 0 ? renderNoData() : renderData()}
+  </div>
+  <div className="right-panel">
+    <Panel>
+      <h2>Panel</h2>
+    </Panel>
+  </div>
+</div>; */
+}

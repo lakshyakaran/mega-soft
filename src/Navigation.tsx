@@ -9,6 +9,7 @@ import { initializeIcons } from "@uifabric/icons";
 import { useHistory, matchPath } from "react-router-dom";
 
 import hrms_logo from "./assets/img/hrms_logo.gif";
+import logo_nuage from "./assets/img/logo_nuage.png";
 
 initializeIcons();
 
@@ -70,7 +71,7 @@ const navLinkGroups: INavLinkGroup[] = [
             key: "key09",
           },
         ],
-        isExpanded: false,
+        isExpanded: true,
       },
       {
         name: "Manage",
@@ -94,8 +95,8 @@ const navLinkGroups: INavLinkGroup[] = [
         isExpanded: false,
       },
       {
-        name: "Comfirmation",
-        url: "/comfirmation",
+        name: "Confirmation",
+        url: "/confirmation",
         key: "key13",
         expandAriaLabel: "Expand Admin section",
         collapseAriaLabel: "Collapse admin section",
@@ -139,8 +140,9 @@ const navLinkGroups: INavLinkGroup[] = [
 
 const navStyles: Partial<INavStyles> = {
   root: {
-    // border: "1px solid black",
-    // selectors:{'&:hover': { color:"#040848" } }
+    overflowY: "auto",
+    // width: 208,
+    height: "100%",
   },
   link: {
     width: "200px",
@@ -149,27 +151,25 @@ const navStyles: Partial<INavStyles> = {
     color: "#FFF",
     // fontSize: 12,
     selectors: {
-      "&:hover": { color: "#FFF" },
+      "&:hover": {
+        color: "#FFF",
+      },
     },
   },
   chevronIcon: {
     color: "#FFF",
   },
-  // navItems: {
-  //     color: '#FFF',
-  //     '&:hover': { color: 'red' },
-  // }
   compositeLink: {
     selectors: {
       "&:hover": {
         ".ms-Button": {
-          background: "#0372c7",
+          background: "#29416f",
         },
         ".ms-Nav-linkText": {
-          color: "#FFF", // your real styling here
+          // color: "#FFF", // your real styling here
         },
         ".ms-Icon": {
-          color: "#FFF", // your real styling here
+          color: "#FFF",
         },
       },
     },
@@ -213,6 +213,9 @@ function Navigation() {
   return (
     <div className="sidebar">
       <div className="main-logo">
+        <img src={logo_nuage} />
+      </div>
+      <div className="footer-logo">
         <img src={hrms_logo} />
       </div>
       <Nav

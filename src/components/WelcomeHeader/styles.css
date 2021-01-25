@@ -10,3 +10,7 @@
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+.welcome-header .ms-Dropdown-container .ms-Dropdown::after {
+    border: 0px solid rgb(0, 120, 212);
+}
