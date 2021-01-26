@@ -24,7 +24,7 @@ const navLinkGroups: INavLinkGroup[] = [
         links: [
           {
             name: "Setup",
-            url: "/apprisal/setup",
+            url: "/",
             icon: "Settings",
             key: "key02",
           },
@@ -75,7 +75,7 @@ const navLinkGroups: INavLinkGroup[] = [
       },
       {
         name: "Manage",
-        url: "/manage",
+        url: "",
         key: "key10",
         // icon:'MedicationAdmin',
         links: [
@@ -96,7 +96,7 @@ const navLinkGroups: INavLinkGroup[] = [
       },
       {
         name: "Confirmation",
-        url: "/confirmation",
+        url: "",
         key: "key13",
         expandAriaLabel: "Expand Admin section",
         collapseAriaLabel: "Collapse admin section",
@@ -140,7 +140,7 @@ const navLinkGroups: INavLinkGroup[] = [
 
 const navStyles: Partial<INavStyles> = {
   root: {
-    overflowY: "auto",
+    // overflowY: "auto",
     // width: 208,
     height: "100%",
   },

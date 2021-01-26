@@ -1,9 +1,11 @@
 interface appraisalType {
-  [key: string]: any[];
+  appraisalList: any[];
+  isLoading: boolean
 } 
 
 const initialState: appraisalType = {
-  appraisalList: []
+  appraisalList: [],
+  isLoading: true,
 }
 
 export default function appraisal(
@@ -11,9 +13,16 @@ export default function appraisal(
   action: { type: string; payload: any[] }
 ){
   switch (action.type) {
+    case "FETCH_APPRAISAL_LIST_START": {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
     case "FETCH_APPRAISAL_LIST_SUCCESS": {
       return {
         appraisalList: action.payload,
+        isLoading: false,
       };
     }
     default:

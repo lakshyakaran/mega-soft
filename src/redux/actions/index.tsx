@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiBase from '../../../src/apiBase.json';
 
 export const processAddList = (item: any) => {
   return {
@@ -35,6 +36,9 @@ export const fetchAppraisalData = (
   filters: any
 ) => async (dispatch: any): Promise<any> => {
   try {
+    dispatch({
+      type: "FETCH_APPRAISAL_LIST_START"
+    });
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal`,
       params: {

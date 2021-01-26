@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Navigation from "./Navigation";
-import Admin from "./views/Admin";
-import Form from "./components/AddApprisalForm";
-import UpdateAppraisal from "./views/UpdateAppraisal";
-import AppraisalDetail from "./views/AppraisalDetail";
+import Admin from "./Views/Appraisal";
+import AddAppraisal from "./Views/AddAppraisal"
+import UpdateAppraisal from "./Views/UpdateAppraisal";
+import AppraisalDetail from "./Views/AppraisalDetail";
 
 import "./App.css";
 
@@ -15,7 +15,7 @@ function App() {
       <div className="container">
         <Switch>
           <Route exact path="/" component={Admin} />
-          <Route exact path="/addApprisal" component={Form} />
+          <Route exact path="/addApprisal" component={AddAppraisal} />
           {/* <Route exact path="/appraisal/add" component={Form} /> */}
           <Route
             exact

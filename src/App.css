@@ -14,6 +14,8 @@ body {
   height: 100%;
   left: 0;
   top: 0;
+  overflow-y: auto;
+  /* overflow:auto; */
 }
 
 .view {
@@ -121,9 +123,9 @@ body {
 
 .sidebar .footer-logo {
   text-align: center;
+  position: fixed;
+  width: 200px;
   bottom: 0;
-  position: absolute;
-  width: 100%;
   background: #344f84;
   z-index: 9;
 }
@@ -163,9 +165,6 @@ body {
   background-color: #29416f;
 }
 
-.ms-Pagination-container.visibleItemLabel-190 {
-  display: none;
-}
 
 .ms-Button.ms-Button--primary {
   background-color: #344f84;
@@ -175,4 +174,12 @@ body {
 .ms-Button.ms-Button--primary:hover {
   background-color: #29416f;
   border: none;
+}
+
+.data-container .ms-Pagination-container .visibleItemLabel-175{
+  display: none !important;
+}
+
+.ms-Nav-chevronButton{
+  background-color: transparent;
 }

@@ -4,7 +4,6 @@ import {
   IBreadcrumbStyles,
   IDropdownOption,
   IDropdownStyles,
-  Link,
 } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
@@ -13,7 +12,6 @@ import WelcomeHeader from "../../components/WelcomeHeader";
 import { fetchAppraisalData } from "../../redux/actions";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
-import logo_ms from "../../assets/img/logo_ms.png";
 
 interface ParamTypes {
   appraisalId: string;
@@ -136,33 +134,12 @@ function AppraisalDetail(props: any) {
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}
             />
-            {/* <div style={{ display: "flex", marginRight: "10px" }}>
-              <Text style={{ marginRight: "5px" }}>Date :</Text>
-              <Text>{dateNow}</Text>
-            </div>
-            <Text style={{ marginRight: "5px" }}>Time : </Text>
-            <Text>{timeNow}</Text> */}
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
             <Text style={{ marginRight: "5px" }}>
               {dateNow} {timeNow}
             </Text>
-            {/* <Text style={{ marginRight: "5px" }}>Time:</Text> */}
-            {/* <Text style={{ marginRight: "5px" }}>{timeNow}</Text> */}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              padding: "10px",
-              // marginLeft: "1rem",
-            }}
-          >
-            <Link>Log Out</Link>
-            <img src={logo_ms} className="ms-logo" />
-            {/* <TooltipHost content="Settings">
-              <FontIcon iconName="Settings" />
-            </TooltipHost> */}
           </div>
         </div>
       </WelcomeHeader>

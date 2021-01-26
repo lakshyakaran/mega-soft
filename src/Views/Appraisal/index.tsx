@@ -16,7 +16,6 @@ import {
   IDropdownOption,
   IDropdownStyles,
   Link,
-  FontIcon,
   Spinner,
   SpinnerSize,
 } from "office-ui-fabric-react";
@@ -24,14 +23,12 @@ import {
   IBreadcrumbItem,
   IBreadcrumbStyles,
 } from "office-ui-fabric-react/lib/Breadcrumb";
-import { Shimmer } from "office-ui-fabric-react/lib/Shimmer";
 import Header from "../../Header";
 import Panel from "../../components/Panel";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import { Pagination } from "@uifabric/experiments";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Text } from "office-ui-fabric-react/lib/Text";
-import Icon from "@material-ui/core/Icon";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -40,13 +37,12 @@ import "./style.css";
 import { RootState } from "../../redux/reducers";
 import { fetchAppraisalData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
-import logo_ms from "../../assets/img/logo_ms.png";
 
 // interface ParamTypes {
 //   id: string
 // }
 
-function Admin(props: any) {
+function Appraisal(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
   const [limitStart, setLimitSTart] = useState(0);
   const [limitPageLength, setLimitPageLength] = useState(5);
@@ -57,7 +53,8 @@ function Admin(props: any) {
   const [filtersByReviewFreq, setFiltersByReviewFreq] = useState("");
   const dispatch = useDispatch();
   const appraisal =
-    useSelector((state: RootState) => state.appraisal.appraisalList) || [];
+    useSelector((state: RootState) => state.appraisal);
+  const { appraisalList, isLoading } = appraisal;
 
   // console.log("data=>", appraisal)
 
@@ -72,7 +69,6 @@ function Admin(props: any) {
     if (filtersByReviewFreq) {
       filters.push(["review_frequency", "=", filtersByReviewFreq]);
     }
-    setLoading(true);
     dispatch(
       fetchAppraisalData(
         limitStart,
@@ -80,7 +76,7 @@ function Admin(props: any) {
         `${orderByField} ${orderBy}`,
         JSON.stringify(filters)
       )
-    );
+    )
     // fetchAppraisalData(
     //   limitStart,
     //   limitPageLength,
@@ -95,7 +91,6 @@ function Admin(props: any) {
     //   // }
     // })
     // console.log("filters==>", filters)
-    setLoading(false);
   }, [
     limitStart,
     limitPageLength,
@@ -113,7 +108,7 @@ function Admin(props: any) {
       key: "01",
       name: "ID",
       fieldName: "id",
-      minWidth: 10,
+      minWidth: 50,
       maxWidth: 100,
       isSorted: true,
       className: "idColumn",
@@ -140,8 +135,8 @@ function Admin(props: any) {
       key: "04",
       name: "Description",
       fieldName: "appraisal_description",
-      minWidth: 10,
-      maxWidth: 180,
+      minWidth: 100,
+      maxWidth: 250,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
@@ -150,8 +145,8 @@ function Admin(props: any) {
       key: "05",
       name: "Review From",
       fieldName: "review_from",
-      minWidth: 10,
-      maxWidth: 110,
+      minWidth: 50,
+      maxWidth: 180,
       isRowHeader: true,
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
@@ -160,8 +155,8 @@ function Admin(props: any) {
       key: "06",
       name: "Appraisal To",
       fieldName: "appraisal_to",
-      minWidth: 10,
-      maxWidth: 110,
+      minWidth: 50,
+      maxWidth: 180,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
@@ -183,7 +178,7 @@ function Admin(props: any) {
       key: "08",
       name: "Review Frequency",
       fieldName: "review_frequency",
-      minWidth: 10,
+      minWidth: 50,
       maxWidth: 160,
       isSortedDescending: false,
       isRowHeader: true,
@@ -193,7 +188,7 @@ function Admin(props: any) {
       key: "02",
       name: "Action",
       fieldName: "action",
-      minWidth: 10,
+      minWidth: 110,
       maxWidth: 110,
       isRowHeader: true,
       onRender: (item) => (
@@ -419,7 +414,7 @@ function Admin(props: any) {
     return null;
   };
 
-  const [loading, setLoading] = useState(true);
+  
 
   const renderNoData = () => {
     return (
@@ -458,111 +453,111 @@ function Admin(props: any) {
   };
 
   const renderData = () => {
-    return loading ? (
+    return isLoading ? (
       <Spinner
-        style={{ display: "flex", justifyContent: "center", padding: "50px" }}
+        style={{ display: "flex", justifyContent: "center", padding: "50px", color:"#344f84" }}
         size={SpinnerSize.large}
       />
     ) : (
-      <React.Fragment>
-        <div className="searchBarClass">
-          <TextField
-            label="ID"
-            onChange={itemSearch}
-            placeholder="Enter ID"
-            className="searchInput"
-            styles={controlStyles}
-          />
-          <TextField
-            label="Description"
-            className="searchInput"
-            onChange={itemSearchDescription}
-            placeholder="Enter Description"
-            styles={controlStyles}
-          />
-          <Dropdown
-            label="Review Frequency"
-            placeholder="Select"
-            options={searchOptions}
-            className="reviewFrequency"
-            onChange={itemSearchReview}
-            style={{ padding: "0px" }}
-            styles={dropdownStyles}
-          />
-          <PrimaryButton
-            iconProps={{ iconName: "Search" }}
-            onClick={handleSearchClick}
-            style={{
-              marginLeft: "10px",
-              alignSelf: "center",
-              marginTop: "8px",
-            }}
-          />
-          <PrimaryButton
-            text="New Appraisal"
-            iconProps={{ iconName: "Add" }}
-            allowDisabledFocus
-            onClick={() => {
-              history.push("/addApprisal");
-            }}
-            style={{
-              marginLeft: "auto",
-              alignSelf: "center",
-              marginTop: "8px",
-            }}
-            disabled={false}
-            checked={false}
-          />
-          {/* <TextField
-              onChange={itemSearchApprisalTo}
-              placeholder= "Appraisal To"
+      appraisalList.length === 0 ? renderNoData() : (
+        <React.Fragment>
+          <div className="searchBarClass">
+            <TextField
+              label="ID"
+              onChange={itemSearch}
+              placeholder="Enter ID"
+              className="searchInput"
               styles={controlStyles}
-            /> */}
-        </div>
-        <DetailsList
-          styles={listStyle}
-          items={appraisal}
-          className="detail-list"
-          onRenderRow={renderRow}
-          columns={columns}
-          selectionMode={0}
-        />
-        <Pagination
-          format="buttons"
-          selectedPageIndex={currentPage}
-          pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
-          itemsPerPage={limitPageLength}
-          totalItemCount={limitPageLength * 2}
-          previousPageAriaLabel={"previous page"}
-          nextPageAriaLabel={"next page"}
-          lastPageIconProps={{
-            iconName: "DoubleChevronRight",
-            style: { display: "none" },
-          }}
-          firstPageIconProps={{
-            iconName: "ChevronRight",
-            style: { display: "none" },
-          }}
-          firstPageAriaLabel={"first page"}
-          lastPageAriaLabel={"last page"}
-          pageAriaLabel={"page"}
-          selectedAriaLabel={"selected"}
-          onPageChange={(page) => {
-            if (currentPage < page && hasMoreRecord) {
-              setCurentPage(page);
-              setLimitSTart(limitStart + limitPageLength);
-            }
-            if (currentPage > page && limitStart - limitPageLength >= 0) {
-              setLimitSTart(limitStart - limitPageLength);
-              setCurentPage(page);
-            }
-          }}
-        />
-      </React.Fragment>
+            />
+            <TextField
+              label="Description"
+              className="searchInput"
+              onChange={itemSearchDescription}
+              placeholder="Enter Description"
+              styles={controlStyles}
+            />
+            <Dropdown
+              label="Review Frequency"
+              placeholder="Select"
+              options={searchOptions}
+              className="reviewFrequency"
+              onChange={itemSearchReview}
+              style={{ padding: "0px" }}
+              styles={dropdownStyles}
+            />
+            <PrimaryButton
+              iconProps={{ iconName: "Search" }}
+              onClick={handleSearchClick}
+              style={{
+                marginLeft: "10px",
+                alignSelf: "center",
+                marginTop: "8px",
+              }}
+            />
+            <PrimaryButton
+              text="New Appraisal"
+              iconProps={{ iconName: "Add" }}
+              allowDisabledFocus
+              onClick={() => {
+                history.push("/addApprisal");
+              }}
+              style={{
+                marginLeft: "auto",
+                alignSelf: "center",
+                marginTop: "8px",
+              }}
+              disabled={false}
+              checked={false}
+            />
+            {/* <TextField
+                onChange={itemSearchApprisalTo}
+                placeholder= "Appraisal To"
+                styles={controlStyles}
+              /> */}
+          </div>
+          <DetailsList
+            styles={listStyle}
+            items={appraisalList}
+            className="detail-list"
+            onRenderRow={renderRow}
+            columns={columns}
+            selectionMode={0}
+          />
+          <Pagination
+            format="buttons"
+            // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+            // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+            selectedPageIndex={currentPage}
+            pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
+            itemsPerPage={limitPageLength}
+            // pageRangeDisplayed= {currentPage}
+            totalItemCount={limitPageLength * 2}
+            numberOfPageButton={2}
+            lastPageIconProps={{
+              iconName: "DoubleChevronRight",
+              style: { display: "none" },
+            }}
+            firstPageIconProps={{
+              iconName: "ChevronRight",
+              style: { display: "none" },
+            }}
+            onPageChange={(page) => {
+              if (currentPage < page && hasMoreRecord) {
+                setCurentPage(page);
+                setLimitSTart(limitStart + limitPageLength);
+              }
+              if (currentPage > page && limitStart - limitPageLength >= 0) {
+                setLimitSTart(limitStart - limitPageLength);
+                setCurentPage(page);
+              }
+            }}
+          />
+        </React.Fragment>
+      )
     );
   };
 
-  // console.log("props==>", props.userData.UserData[0].name);
+  // console.log("data=>", appraisal);
   return (
     <div className="view">
       <WelcomeHeader>
@@ -591,40 +586,19 @@ function Admin(props: any) {
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}
             />
-            {/* <div style={{ display: "flex", marginRight: "10px" }}>
-              <Text style={{ marginRight: "5px" }}>Date :</Text>
-              <Text>{dateNow}</Text>
-            </div>
-            <Text style={{ marginRight: "5px" }}>Time : </Text>
-            <Text>{timeNow}</Text> */}
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
             <Text style={{ marginRight: "5px" }}>
               {dateNow} {timeNow}
             </Text>
-            {/* <Text style={{ marginRight: "5px" }}>Time:</Text> */}
-            {/* <Text style={{ marginRight: "5px" }}>{timeNow}</Text> */}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              padding: "10px",
-              // marginLeft: "1rem",
-            }}
-          >
-            <Link>Log Out</Link>
-            <img src={logo_ms} className="ms-logo" />
-            {/* <TooltipHost content="Settings">
-              <FontIcon iconName="Settings" />
-            </TooltipHost> */}
           </div>
         </div>
       </WelcomeHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">
-          {appraisal.length === 0 ? renderNoData() : renderData()}
+          {renderData()}
         </div>
         <div className="right-container">Right panel shows here.</div>
       </div>
@@ -633,55 +607,5 @@ function Admin(props: any) {
 }
 export default connect((state) => ({
   ...state,
-}))(Admin);
+}))(Appraisal);
 
-// const contentStyles = mergeStyleSets({
-//   container: {
-//     display: "flex",
-//     flexFlow: "column nowrap",
-//     alignItems: "stretch",
-//   },
-// });
-
-{
-  /* <div
-  class="content"
-  style="
-    width: 100%;
-"
->
-  <div
-    class="data-container"
-    style="
-    width: 73%;
-    float: left;
-    padding: 1%;
-"
-  >
-    My content shows here
-  </div>
-  <div
-    class="right-panel1"
-    style="
-    width: 23%;
-    float: left;
-    padding: 1%;
-"
-  >
-    Right panel shows here.
-  </div>
-</div>; */
-}
-
-{
-  /* <div className="content">
-  <div className="body">
-    {appraisal.length === 0 ? renderNoData() : renderData()}
-  </div>
-  <div className="right-panel">
-    <Panel>
-      <h2>Panel</h2>
-    </Panel>
-  </div>
-</div>; */
-}

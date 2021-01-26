@@ -9,8 +9,14 @@
     height: 50px;
     padding-left: 1rem;
     padding-right: 1rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 .welcome-header .ms-Dropdown-container .ms-Dropdown::after {
     border: 0px solid rgb(0, 120, 212);
+}
+.ms-logo {
+    width: 65px;
+    margin-left: 30px;
 }

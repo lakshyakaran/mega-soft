@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   TextField,
   ITextFieldStyles,
 } from "office-ui-fabric-react/lib/TextField";
-import { useParams } from "react-router-dom";
 import { Stack } from "office-ui-fabric-react/lib/Stack";
 import "./style.css";
 import {
@@ -21,25 +20,21 @@ import {
   IIconProps,
   IModalStyles,
   Label,
-  Link,
   mergeStyleSets,
   Modal,
   PrimaryButton,
   Separator,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
-import WelcomeHeader from "../../components/WelcomeHeader";
+import WelcomeHeader from "../../components/WelcomeHeader"
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
-import logo_ms from "../../assets/img/logo_ms.png";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { edit_appraisal } from "../../redux/actions/apprisal";
-import { RootState } from "../../redux/reducers";
-import { fetchAppraisalData } from "../../redux/actions";
+import { add_apprisal } from "../../redux/actions/apprisal";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -64,51 +59,24 @@ const dropdownStyles: Partial<IDropdownStyles> = {
   },
 };
 
-interface ParamTypes {
-  appraisalId: string;
-}
+// interface ParamTypes {
+//   id: string
+// }
 
-function UpdateAppraisal(props: any) {
-  const params = useParams<ParamTypes>();
+function AddAppraisal(props: any) {
+  // const params = useParams<ParamTypes>();
+  // console.log("id => ", params.id);
   const stackTokens = { childrenGap: 10 };
-
-  const [limitStart] = useState(0);
-  const [limitPageLength] = useState(5);
-  const [orderBy] = useState("asc");
-  const [orderByField] = useState("id");
-  const [filtersById] = useState(params.appraisalId);
-
-  const [updateData, setUpdateData]: any = useState({});
-
-  useEffect(() => {
-    const filters = [];
-    if (filtersById) {
-      filters.push(["id", "like", filtersById]);
-    }
-    fetchAppraisalData(
-      limitStart,
-      limitPageLength,
-      `${orderByField} ${orderBy}`,
-      JSON.stringify(filters)
-    )((response: any) => {
-      // console.log("response=>", response.payload);
-      setUpdateData(response.payload[0]);
-    });
-  }, []);
-
-  //   console.log("upadetdata==>", updateData.id)
-
-  // const appraisalList = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
-  //   const updateData = appraisalList.find(item => item.id === params.appraisalId);
 
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
+      borderRadius: "10px",
       ".ms-TextField-wrapper": {
-        borderRadius: "10px",
+        // borderRadius: "10px",
       },
 
       ".ms-TextField-fieldGroup fieldGroup-195": {
-        borderRadius: "10px",
+        // borderRadius: "10px",
       },
     },
   };
@@ -173,13 +141,37 @@ function UpdateAppraisal(props: any) {
     },
   });
 
-  const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
+  const [firstDayOfWeek] = React.useState(DayOfWeek.Sunday);
 
   const datePickerStyle: Partial<IDatePickerStyles> = {
     icon: {
       color: "rgb(111 144 220)",
     },
   };
+
+  const [claimsData, setClaimsData] = useState({
+    id: "",
+    description: "",
+    owner: "",
+    kraSettingGoal: false,
+    kraSettingCompetencies: false,
+    kraSettingDevelopmentPlan: false,
+    kraSettingSummary: false,
+    assessmentGoal: false,
+    assessmentCompetencies: false,
+    assessmentDevelopmentPlan: false,
+    assessmentSummary: false,
+  });
+
+  const [selectedType, setSelectedType] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
+
+  const [reviewFrequency, setReviewFrequency] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
 
   const [formateType, setFormateType] = useState<IDropdownOption>({
     key: "",
@@ -191,8 +183,8 @@ function UpdateAppraisal(props: any) {
     isChecked?: boolean
   ) {
     const target = ev?.target as HTMLInputElement;
-    setUpdateData({
-      ...updateData,
+    setClaimsData({
+      ...claimsData,
       [target.name]: isChecked || false,
     });
   }
@@ -202,10 +194,35 @@ function UpdateAppraisal(props: any) {
     text?: string
   ): void => {
     const target = ev?.target as HTMLInputElement;
-    setUpdateData({
-      ...updateData,
+    setClaimsData({
+      ...claimsData,
       [target.name]: target.value || "",
     });
+  };
+
+  const onChangeType = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setSelectedType(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
+  // console.log("type==>", selectedType.text )
+
+  const onChangeReviewFrequency = (
+    event?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setReviewFrequency(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
   };
 
   const onChangeFormateType = (
@@ -232,26 +249,24 @@ function UpdateAppraisal(props: any) {
       as: "h4",
       onClick: _onBreadcrumbItemClicked,
     },
-    { text: "Update Appraisal", key: "d3", as: "h4" },
+    { text: "Add Appraisal", key: "d3", as: "h4" },
   ];
 
-  // const [dateReview, setDateReview] = useState<Date | null | undefined>(
-  //   new Date(updateData.review_from)
-  // );
-  // const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(
-  //   new Date(updateData.appraisal_to)
-  // );
+  const [dateReview, setDateReview] = useState<Date | null | undefined>(null);
+  const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(
+    null
+  );
 
-  // const reviewFromDate = (date: Date | null | undefined): void => {
-  //   const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
-  //   // console.log("date==>", reviewFrequencyDate);
-  //   setDateReview(reviewFrequencyDate);
-  // };
-  // const appraisalToDate = (date: Date | null | undefined): void => {
-  //   const appraisalDate: any = moment(date).format("YYYY-MM-DD");
-  //   // console.log("date==>", reviewFrequencyDate);
-  //   setdDateAppraisal(appraisalDate);
-  // };
+  const reviewFromDate = (date: Date | null | undefined): void => {
+    const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
+    // console.log("date==>", reviewFrequencyDate);
+    setDateReview(reviewFrequencyDate);
+  };
+  const appraisalToDate = (date: Date | null | undefined): void => {
+    const appraisalDate: any = moment(date).format("YYYY-MM-DD");
+    // console.log("date==>", reviewFrequencyDate);
+    setdDateAppraisal(appraisalDate);
+  };
 
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
@@ -291,8 +306,16 @@ function UpdateAppraisal(props: any) {
     );
   };
   // const dispatch = useDispatch();
+
+  const [errMsg, setErrMsg] = useState("");
+  const [errMsgDescription, setErrMsgDescription] = useState("");
+  const [errMsgOwner, setErrMsgOwner] = useState("");
+  const [errMsgFormatType, setErrMsgFormatType] = useState("");
+  const [errMsgType, setErrMsgType] = useState("");
+  const [errMsgReviewFrequency, setErrMsgReviewFrequency] = useState("");
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
+
   const theme = getTheme();
   const cancelIcon: IIconProps = { iconName: "Cancel" };
 
@@ -317,50 +340,89 @@ function UpdateAppraisal(props: any) {
     },
   };
 
-  const handleUpdateApprisal = () => {
-    const updateQuery = {
-      ...updateData,
-      review_from: moment(updateData.review_from).format("YYYY-MM-DD"),
-      appraisal_to: moment(updateData.appraisal_to).format("YYYY-MM-DD"),
-      appraisal_owner: updateData.owner,
+  const handleAddApprisal = () => {
+    if (claimsData.id === "") {
+      setErrMsg("ID is required");
+    }
+    if (claimsData.description === "") {
+      setErrMsgDescription("Description is required");
+    }
+    if (claimsData.owner === "") {
+      setErrMsgOwner("Owner is required");
+    }
+    if (formateType.text === "") {
+      setErrMsgFormatType("Select format Type");
+    }
+    if (reviewFrequency.text === "") {
+      setErrMsgReviewFrequency("Select review Frequency");
+    }
+    if (selectedType.text === "") {
+      setErrMsgType("Select type");
+    }
+    const addQuery = {
+      id: claimsData.id,
+      appraisal_description: claimsData.description,
       description: "22",
+      format_type: formateType.text,
+      review_frequency: reviewFrequency.text,
+      type: selectedType.text,
+      kra_settings_tab_goals: claimsData.kraSettingGoal,
+      kra_settings_tab_competencies: claimsData.kraSettingCompetencies,
+      kra_settings_tab_development_plan: claimsData.kraSettingDevelopmentPlan,
+      kra_settings_tab_summary: claimsData.kraSettingSummary,
+      assessment_tab_goals: claimsData.assessmentGoal,
+      assessment_tab_competencies: claimsData.assessmentCompetencies,
+      assessment_tab_development_plan: claimsData.assessmentCompetencies,
+      assessment_tab_summary: claimsData.assessmentSummary,
       route: "appraisal/BB00002",
+      review_from: dateReview,
+      appraisal_to: dateAppraisal,
+      appraisal_owner: claimsData.owner,
     };
-    // console.log("updateQuery=>", updateQuery);
-    edit_appraisal(updateQuery).then((response) => {
-      console.log("response=>", response);
+    // console.log("addQueary=>", addQuery);
+    add_apprisal(addQuery).then((response) => {
+      console.log("response=>", response.data);
       if (response?.status === 200) {
         setSuccessModal(true);
+        // history.push("/");
       } else {
+        // console.log("failed==>", failedModal);
         setFailedModal(true);
       }
+
+      // else {
+      //   console.log("then error msg btnClick==>", response);
+      // }
     });
     // .catch((err) => {
     //   console.log("Error in btnClick=>", err);
     // });
   };
 
-  const renderUpdateForm = () => {
+  const renderForm = () => {
     return (
       <React.Fragment>
         <div className="form-container">
           <div className="row">
             <TextField
-              disabled
+              required
               placeholder="ID"
-              value={updateData.id}
+              value={claimsData.id}
+              errorMessage={errMsg}
               name="id"
               label="Id"
               onChange={onChangeInput}
               className="flexGrowTextInput"
             />
             <TextField
+              required
               placeholder="Description"
               label="Description"
-              value={updateData.appraisal_description}
+              value={claimsData.description}
+              errorMessage={errMsgDescription}
               // styles={textfelidStyle}
               className="flexGrow"
-              name="appraisal_description"
+              name="description"
               onChange={onChangeInput}
             />
           </div>
@@ -368,81 +430,63 @@ function UpdateAppraisal(props: any) {
           <div className="row">
             <DatePicker
               label="Review From"
-              // value={updateData.review_from}
               className={`${controlClass.control} flexGrow`}
               firstDayOfWeek={firstDayOfWeek}
               strings={DayPickerStrings}
-              value={new Date(updateData.review_from)}
-              onSelectDate={(date) =>
-                setUpdateData({ ...updateData, review_from: date })
-              }
+              onSelectDate={reviewFromDate}
               placeholder="Select a date"
               ariaLabel="Select a date"
               styles={datePickerStyle}
             />
             <DatePicker
               label="Appraisal To"
-              value={new Date(updateData.appraisal_to)}
               className={`${controlClass.control} flexGrow`}
               firstDayOfWeek={firstDayOfWeek}
               strings={DayPickerStrings}
-              onSelectDate={(date) =>
-                setUpdateData({ ...updateData, appraisal_to: date })
-              }
+              onSelectDate={appraisalToDate}
               styles={datePickerStyle}
               placeholder="Select a date"
               ariaLabel="Select a date"
             />
             <Dropdown
-              selectedKey={
-                reviewFrequencyOptions.find(
-                  (item) => item.text === updateData.review_frequency
-                )?.key
-              }
+              required
+              errorMessage={errMsgReviewFrequency}
               label="Review Frequency"
               placeholder="Select"
               className="flexGrow"
-              onChange={(ev, item) =>
-                setUpdateData({ ...updateData, review_frequency: item?.text })
-              }
+              onChange={onChangeReviewFrequency}
               options={reviewFrequencyOptions}
               // styles={dropdownStyles}
             />
           </div>
           <Dropdown
-            selectedKey={
-              typeOptions.find((item) => item.text === updateData.type)?.key
-            }
+            required
             label="Type"
+            errorMessage={errMsgType}
             placeholder="Select Type"
             className="type-input"
             options={typeOptions}
-            onChange={(ev, item) =>
-              setUpdateData({ ...updateData, type: item?.text })
-            }
+            onChange={onChangeType}
             // styles={typeDropdownStyles}
           />
           <Dropdown
-            selectedKey={
-              formateTypeOptions.find(
-                (item) => item.text === updateData.format_type
-              )?.key
-            }
+            required
             label="Format Type"
+            errorMessage={errMsgFormatType}
             className="type-input"
-            onChange={(ev, item) =>
-              setUpdateData({ ...updateData, format_type: item?.text })
-            }
+            onChange={onChangeFormateType}
             placeholder="Select Format Type"
             options={formateTypeOptions}
             // styles={typeDropdownStyles}
           />
           <TextField
+            required
             label="Owner"
             placeholder="Owner"
-            value={updateData.appraisal_owner}
-            styles={textfelidStyle}
-            name="appraisal_owner"
+            value={claimsData.owner}
+            // styles={textfelidStyle}
+            errorMessage={errMsgOwner}
+            name="owner"
             onChange={onChangeInput}
           />
           <Separator />
@@ -452,33 +496,33 @@ function UpdateAppraisal(props: any) {
               <Checkbox
                 label={"Goals"}
                 title={"Goals"}
-                checked={updateData.kra_settings_tab_goals}
+                checked={claimsData.kraSettingGoal}
                 className="flexGrowCheckBox"
-                name="kra_settings_tab_goals"
+                name="kraSettingGoal"
                 onChange={onChangeCheckbox}
               />
               <Checkbox
                 label={"Competencies"}
                 title={"Competencies"}
-                checked={updateData.kra_settings_tab_competencies}
+                checked={claimsData.kraSettingCompetencies}
                 className="flexGrowCheckBox"
-                name="kra_settings_tab_competencies"
+                name="kraSettingCompetencies"
                 onChange={onChangeCheckbox}
               />
               <Checkbox
                 label={"Development Plans"}
                 title={"Development Plans"}
-                checked={updateData.kra_settings_tab_development_plan}
+                checked={claimsData.kraSettingDevelopmentPlan}
                 className="flexGrowCheckBox"
-                name="kra_settings_tab_development_plan"
+                name="kraSettingDevelopmentPlan"
                 onChange={onChangeCheckbox}
               />
               <Checkbox
                 label={"Summary"}
                 title={"Summary"}
-                checked={updateData.kra_settings_tab_summary}
+                checked={claimsData.kraSettingSummary}
                 className="flexGrowCheckBox"
-                name="kra_settings_tab_summary"
+                name="kraSettingSummary"
                 onChange={onChangeCheckbox}
               />
             </div>
@@ -487,33 +531,33 @@ function UpdateAppraisal(props: any) {
               <Checkbox
                 label={"Goals"}
                 title={"Goals"}
-                checked={updateData.assessment_tab_goals}
+                checked={claimsData.assessmentGoal}
                 className="flexGrowCheckBox"
-                name="assessment_tab_goals"
+                name="assessmentGoal"
                 onChange={onChangeCheckbox}
               />
               <Checkbox
                 label={"Competencies"}
                 title={"Competencies"}
-                checked={updateData.assessment_tab_competencies}
+                checked={claimsData.assessmentCompetencies}
                 className="flexGrowCheckBox"
-                name="assessment_tab_competencies"
+                name="assessmentCompetencies"
                 onChange={onChangeCheckbox}
               />
               <Checkbox
                 label={"Development Plans"}
                 title={"Development Plans"}
-                checked={updateData.assessment_tab_development_plan}
+                checked={claimsData.assessmentDevelopmentPlan}
                 className="flexGrowCheckBox"
-                name="assessment_tab_development_plan"
+                name="assessmentSummary"
                 onChange={onChangeCheckbox}
               />
               <Checkbox
                 label={"Summary"}
                 title={"Summary"}
-                checked={updateData.assessment_tab_summary}
+                checked={claimsData.assessmentSummary}
                 className="flexGrowCheckBox"
-                name="assessment_tab_summary"
+                name="assessmentSummary"
                 onChange={onChangeCheckbox}
               />
             </div>
@@ -526,18 +570,20 @@ function UpdateAppraisal(props: any) {
                 // containerClassName={contentStyles.container}
               >
                 <div className="modal-header">
-                  <div className="modal-title">Appraisal Updated</div>
+                  <div className="modal-title">
+                    Appraisal Added Successfully
+                  </div>
                   <IconButton
                     styles={iconButtonStyles}
                     iconProps={cancelIcon}
                     ariaLabel="Close popup modal"
                     onClick={() => {
-                      history.push("/");
+                      setSuccessModal(false);
                     }}
                   />
                 </div>
                 <div className="modal-content-success">
-                  Appraisal Updated Successfully
+                  Appraisal Added Successfully
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
@@ -595,9 +641,9 @@ function UpdateAppraisal(props: any) {
               }}
             >
               <PrimaryButton
-                text="Update"
+                text="Add Appraisal"
                 allowDisabledFocus
-                onClick={handleUpdateApprisal}
+                onClick={handleAddApprisal}
               />
             </div>
             <div
@@ -649,39 +695,18 @@ function UpdateAppraisal(props: any) {
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}
             />
-            {/* <div style={{ display: "flex", marginRight: "10px" }}>
-              <Text style={{ marginRight: "5px" }}>Date :</Text>
-              <Text>{dateNow}</Text>
-            </div>
-            <Text style={{ marginRight: "5px" }}>Time : </Text>
-            <Text>{timeNow}</Text> */}
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
             <Text style={{ marginRight: "5px" }}>
               {dateNow} {timeNow}
             </Text>
-            {/* <Text style={{ marginRight: "5px" }}>Time:</Text> */}
-            {/* <Text style={{ marginRight: "5px" }}>{timeNow}</Text> */}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              padding: "10px",
-              // marginLeft: "1rem",
-            }}
-          >
-            <Link>Log Out</Link>
-            <img src={logo_ms} className="ms-logo" />
-            {/* <TooltipHost content="Settings">
-              <FontIcon iconName="Settings" />
-            </TooltipHost> */}
           </div>
         </div>
       </WelcomeHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
-        <div className="data-container">{renderUpdateForm()}</div>
+        <div className="data-container">{renderForm()}</div>
         <div className="right-container">Right panel shows here.</div>
       </div>
     </div>
@@ -689,4 +714,4 @@ function UpdateAppraisal(props: any) {
 }
 export default connect((state) => ({
   ...state,
-}))(UpdateAppraisal);
+}))(AddAppraisal);
