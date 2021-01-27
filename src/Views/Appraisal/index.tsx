@@ -47,18 +47,12 @@ function Appraisal(props: any) {
   const [filtersById, setFiltersById] = useState("");
   const [filtersByDescription, setFiltersByDescription] = useState("");
   const [filtersByReviewFreq, setFiltersByReviewFreq] = useState("");
-  const [count, setCount] = useState(0);
-  const [total_count, setTotal_count] = useState(0);
   const dispatch = useDispatch();
   const appraisal = useSelector((state: RootState) => state.appraisal);
-  const { appraisalList, isLoading } = appraisal;
+  const { appraisalList, isLoading, count, total_count } = appraisal;
 
-  let totalCount: number;
-  let currentCount: number;
-
-  console.log("data=>", appraisalList);
-  currentCount = appraisalList.count;
-  totalCount = appraisalList.total_count;
+  
+  console.log("data apppp=>", appraisalList);
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
@@ -469,7 +463,7 @@ function Appraisal(props: any) {
         }}
         size={SpinnerSize.large}
       />
-    ) : appraisalList.data.length === 0 ? (
+    ) : appraisalList.length === 0 ? (
       renderNoData()
     ) : (
       <React.Fragment>
@@ -529,7 +523,7 @@ function Appraisal(props: any) {
         </div>
         <DetailsList
           styles={listStyle}
-          items={appraisalList.data}
+          items={appraisalList}
           className="detail-list"
           onRenderRow={renderRow}
           columns={columns}
@@ -541,40 +535,26 @@ function Appraisal(props: any) {
             // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
             // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
             selectedPageIndex={currentPage}
-            pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
-            // pageCount={currentCount}
+            // pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
+            pageCount={Math.ceil(total_count/limitPageLength)}
             // itemsCount
             itemsPerPage={limitPageLength}
             // itemsPerPage={appraisalList.count}
             // pageRangeDisplayed= {currentPage}
             // totalItemCount={limitPageLength * 2}
-            totalItemCount={totalCount}
+            totalItemCount={total_count}
             // numberOfPageButton={2}
-            lastPageIconProps={{
-              iconName: "DoubleChevronRight",
-              style: { display: "none" },
-            }}
-            firstPageIconProps={{
-              iconName: "ChevronRight",
-              style: { display: "none" },
-            }}
+            // lastPageIconProps={{
+            //   iconName: "DoubleChevronRight",
+            //   style: { display: "none" },
+            // }}
+            // firstPageIconProps={{
+            //   iconName: "ChevronRight",
+            //   style: { display: "none" },
+            // }}
             onPageChange={(page) => {
-              console.log("onPageChange page =>", page);
-              console.log("current page =>", currentPage);
-              console.log("hasmoreRecord =>", hasMoreRecord);
-              if (page > Math.ceil(totalCount / limitPageLength)) {
-                setLimitSTart(Math.ceil(totalCount / limitPageLength));
-              }
-              if (currentPage < page && hasMoreRecord) {
-                console.log("going right ->");
-                setCurentPage(page);
-                setLimitSTart(limitStart + limitPageLength);
-              }
-              if (currentPage > page && limitStart - limitPageLength >= 0) {
-                console.log("going left ->");
-                setLimitSTart(limitStart - limitPageLength);
-                setCurentPage(page);
-              }
+              setLimitSTart(page * limitPageLength);
+              setCurentPage(page);
             }}
           />
         </div>

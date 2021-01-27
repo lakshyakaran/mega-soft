@@ -1,11 +1,15 @@
-interface appraisalType {
+interface employeeType {
   employeeList: any;
   isLoading: boolean;
+  count : number;
+  total_count: number;
 }
 
-const initialState: appraisalType = {
+const initialState: employeeType = {
   employeeList: [],
   isLoading: true,
+  count : 0,
+  total_count: 0,
 };
 
 export default function employeeList(
@@ -21,7 +25,9 @@ export default function employeeList(
     }
     case "FETCH_EMPLOYEE_LIST_SUCCESS": {
       return {
-        employeeList: action.payload,
+        employeeList: action.payload.data,
+        total_count: action.payload.total_count,
+        count: action.payload.count,
         isLoading: false,
       };
     }

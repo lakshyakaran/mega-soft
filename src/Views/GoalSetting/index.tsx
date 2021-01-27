@@ -17,6 +17,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { fetchEmployeeData } from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
+import { Pagination } from "@uifabric/experiments";
 
 function GoalSetting(props: any) {
   const dispatch = useDispatch();
@@ -25,14 +26,20 @@ function GoalSetting(props: any) {
   const [limit_start, setLimitStart] = useState(0);
   const [limit, setLimit] = useState(10);
   const [role, setRole] = useState("Employee");
+  const [currentPage, setCurentPage] = useState(0);
+  const [limitPageLength, setLimitPageLength] = useState(2);
+  const [limitStart, setLimitSTart] = useState(0);
 
-  const employeeList = useSelector(
-    (state: RootState) => state.employeeList.employeeList
+  const employee = useSelector(
+    (state: RootState) => state.employeeList
   );
-  const { employeeListDetails, isLoading } = employeeList;
+  
+  
+  const { employeeList, isLoading, total_count, count } = employee;
+  console.log("employeeList=> ", employeeList);
 
   const [employeData, setEmployeeData]: any = useState({});
-  console.log("employee data=>", employeeList);
+  // console.log("employee data=>", employeeList);
 
   useEffect((): void => {
     dispatch(fetchEmployeeData(doctype, limit_start, limit, role));
@@ -162,7 +169,7 @@ function GoalSetting(props: any) {
     {
       key: "03",
       name: "Employee ID",
-      fieldName: "employeData.employee_id",
+      fieldName: "employee_id",
       minWidth: 50,
       maxWidth: 100,
       isSortedDescending: false,
@@ -172,9 +179,9 @@ function GoalSetting(props: any) {
     {
       key: "04",
       name: "Employee Name",
-      fieldName: "employeData.employee_name",
+      fieldName: "employee_name",
       minWidth: 50,
-      maxWidth: 170,
+      maxWidth: 140,
       isRowHeader: true,
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
@@ -182,7 +189,7 @@ function GoalSetting(props: any) {
     {
       key: "05",
       name: "Manager ID",
-      fieldName: "employeData.manager_id",
+      fieldName: "manager_id",
       minWidth: 50,
       maxWidth: 100,
       isSortedDescending: false,
@@ -192,9 +199,9 @@ function GoalSetting(props: any) {
     {
       key: "06",
       name: "Manager Name",
-      fieldName: "employeData.manager_name",
+      fieldName: "manager_name",
       minWidth: 50,
-      maxWidth: 160,
+      maxWidth: 140,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
@@ -202,7 +209,7 @@ function GoalSetting(props: any) {
     {
       key: "07",
       name: "Status",
-      fieldName: "employeData.status",
+      fieldName: "status",
       minWidth: 50,
       maxWidth: 160,
       isSortedDescending: false,
@@ -212,7 +219,7 @@ function GoalSetting(props: any) {
     {
       key: "08",
       name: "Appraisal Type",
-      fieldName: "employeData.appraisal_type",
+      fieldName: "appraisal_type",
       minWidth: 50,
       maxWidth: 160,
       isSortedDescending: false,
@@ -272,40 +279,6 @@ function GoalSetting(props: any) {
     { text: "Employee", key: "d3", as: "h4" },
     { text: "Goal Setting", key: "d4", isCurrentItem: true, as: "h4" },
   ];
-
-  const renderData = () => {
-    return (
-      <React.Fragment>
-        <div className="top-picker">
-          <Dropdown
-            label="Period"
-            placeholder="Select"
-            options={periodOption}
-            className="reviewFrequency"
-            onChange={onChangePeriod}
-            style={{ padding: "0px" }}
-            styles={dropdownStyles}
-          />
-          <Dropdown
-            label="Status"
-            placeholder="Select"
-            options={statusOption}
-            className="reviewFrequency"
-            onChange={onChangeStatus}
-            style={{ padding: "0px" }}
-            styles={dropdownStyles}
-          />
-        </div>
-        <DetailsList
-          styles={listStyle}
-          items={operations}
-          className="detail-list"
-          columns={columns}
-          selectionMode={0}
-        />
-      </React.Fragment>
-    );
-  };
 
   return (
     <div className="view">
@@ -377,11 +350,26 @@ function GoalSetting(props: any) {
           </div>
           <DetailsList
             styles={listStyle}
-            items={employeData}
+            items={employeeList}
             className="detail-list"
             columns={columns}
             selectionMode={0}
           />
+          <div className="pagination-style">
+          <Pagination
+            format="buttons"
+            // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+            // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+            selectedPageIndex={currentPage}
+            pageCount={Math.ceil(total_count/limitPageLength)}
+            itemsPerPage={limitPageLength}
+            totalItemCount={total_count}
+            onPageChange={(page) => {
+              setLimitSTart(page * limitPageLength);
+              setCurentPage(page);
+            }}
+          />
+        </div>
           {/* <div style={{ marginTop: "10px" }}>
             <PrimaryButton
               text="Export"

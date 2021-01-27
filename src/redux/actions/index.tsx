@@ -38,7 +38,7 @@ export const fetchAppraisalData = (
 ) => async (dispatch: any): Promise<any> => {
   try {
     dispatch({
-      type: "FETCH_EMPOLYEE_LIST_START",
+      type: "FETCH_APPRAISAL_LIST_START",
     });
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal`,
@@ -81,10 +81,10 @@ export const fetchAppraisalData = (
         //   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36",
       },
     });
-    console.log("api response =>", response.data);
     const responseBody = await response.data;
+    console.log("api response =>", responseBody);
     dispatch({
-      type: "FETCH_EMPLOYEE_LIST_SUCCESS",
+      type: "FETCH_APPRAISAL_LIST_SUCCESS",
       payload: responseBody,
     });
     return responseBody;
@@ -129,7 +129,7 @@ export const fetchEmployeeData = (
       },
     });
     console.log("fetch employeee api response =>", response.data);
-    const responseBody = await response.data;
+    const responseBody = await response.data.message;
     dispatch({
       type: "FETCH_EMPLOYEE_LIST_SUCCESS",
       payload: responseBody,
