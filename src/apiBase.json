@@ -1,4 +1,5 @@
 {
-	"apiBase": "http://52.146.0.154/api/resource/Appraisal";
+	"apiBase": "http://52.146.0.154/api/resource/Appraisal",
+	"accessToken" :"token 5ccbc7af363c163:b6060f97664d556"
 }
 

@@ -42,7 +42,7 @@ const navLinkGroups: INavLinkGroup[] = [
           },
           {
             name: "Goals",
-            url: "/apprisal/goals",
+            url: "/appraisal/goalsetting",
             icon: "6PointStar",
             key: "key05",
           },

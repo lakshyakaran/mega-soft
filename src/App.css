@@ -165,7 +165,6 @@ body {
   background-color: #29416f;
 }
 
-
 .ms-Button.ms-Button--primary {
   background-color: #344f84;
   border: none;
@@ -176,10 +175,16 @@ body {
   border: none;
 }
 
-.data-container .ms-Pagination-container .visibleItemLabel-175{
+/* .data-container .ms-Pagination-container .visibleItemLabel-175{
   display: none !important;
+} */
+
+.ms-Nav-chevronButton {
+  background-color: transparent;
 }
 
-.ms-Nav-chevronButton{
-  background-color: transparent;
+.data-container.ms-Pagination-container .root-171 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }

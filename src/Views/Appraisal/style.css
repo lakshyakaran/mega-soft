@@ -105,3 +105,15 @@
 .ms-DetailsList-headerWrapper .ms-DetailsHeader .ms-DetailsHeader-cell .ms-Icon {
     color: #FFF;
 }
+
+.pagination-style {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.ms-Pagination-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}

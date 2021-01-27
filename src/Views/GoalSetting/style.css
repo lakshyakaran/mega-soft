@@ -1,0 +1,23 @@
+.content {
+    width: 100%;
+    height: 100vh;
+}
+
+.data-container {
+    width: 73%;
+    float: left;
+    height: 100%;
+}
+
+.right-container {
+    width: 23%;
+    float: left;
+    padding: 1%;
+    height: 100%;
+    background: #ffffff;
+}
+
+.top-picker {
+    display: flex;
+    justify-content: space-between;
+}

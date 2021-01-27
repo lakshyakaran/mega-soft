@@ -29,9 +29,9 @@ function AppraisalDetail(props: any) {
   const [appraisalDetail, setAppraisalDetail]: any = useState({});
 
   const rolesOption: IDropdownOption[] = [
-    { key: "key1", text: "HR" },
+    { key: "key1", text: "Employee" },
     { key: "key2", text: "Manager" },
-    { key: "key3", text: "Employee" },
+    { key: "key3", text: "HR content" },
   ];
 
   const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
@@ -128,6 +128,7 @@ function AppraisalDetail(props: any) {
               Welcome {userName} ({userId})
             </Text>
             <Dropdown
+              selectedKey={"key1"}
               options={rolesOption}
               onChange={handleRoles}
               className="rolesDropDown"

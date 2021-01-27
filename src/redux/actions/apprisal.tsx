@@ -1,4 +1,5 @@
 import axios from "axios";
+import accessToken from "../../apiBase.json";
 
 export const addApprisal = (item: any) => {
   return {
@@ -15,7 +16,7 @@ export const add_apprisal = async (data: any) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: "token ca9378d049d1ab4:a0d4d82db2d186a",
+        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
       },
       data: JSON.stringify(data),
     });
@@ -36,7 +37,7 @@ export const edit_appraisal = async (data: any) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: "token ca9378d049d1ab4:a0d4d82db2d186a",
+        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
       },
       data: JSON.stringify(data),
     });

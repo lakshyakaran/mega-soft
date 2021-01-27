@@ -1,27 +1,27 @@
 interface appraisalType {
-  appraisalList: any;
+  employeeList: any;
   isLoading: boolean;
 }
 
 const initialState: appraisalType = {
-  appraisalList: [],
+  employeeList: [],
   isLoading: true,
 };
 
-export default function appraisal(
+export default function employeeList(
   state = initialState,
   action: { type: string; payload: any }
 ) {
   switch (action.type) {
-    case "FETCH_APPRAISAL_LIST_START": {
+    case "FETCH_EMPOLYEE_LIST_START": {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case "FETCH_APPRAISAL_LIST_SUCCESS": {
+    case "FETCH_EMPLOYEE_LIST_SUCCESS": {
       return {
-        appraisalList: action.payload,
+        employeeList: action.payload,
         isLoading: false,
       };
     }

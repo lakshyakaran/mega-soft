@@ -26,7 +26,7 @@ import {
   Separator,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
-import WelcomeHeader from "../../components/WelcomeHeader"
+import WelcomeHeader from "../../components/WelcomeHeader";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
@@ -284,13 +284,13 @@ function AddAppraisal(props: any) {
   };
 
   const rolesOption: IDropdownOption[] = [
-    { key: "key1", text: "HR" },
-    { key: "key2", text: "Manager" },
-    { key: "key3", text: "Employee" },
+    { key: "employee", text: "Employee" },
+    { key: "manager", text: "Manager" },
+    { key: "hrContent", text: "HR content" },
   ];
 
-  const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
-    key: "",
+  const [roles, setRoles] = useState<IDropdownOption>({
+    key: "employee",
     text: "",
   });
 
@@ -298,7 +298,7 @@ function AddAppraisal(props: any) {
     ev?: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
   ): void => {
-    setReviewSearch(
+    setRoles(
       item || {
         key: "",
         text: "",
@@ -313,6 +313,8 @@ function AddAppraisal(props: any) {
   const [errMsgFormatType, setErrMsgFormatType] = useState("");
   const [errMsgType, setErrMsgType] = useState("");
   const [errMsgReviewFrequency, setErrMsgReviewFrequency] = useState("");
+  const [errMsgReviewDate, setErrMsgReviewDate] = useState("");
+  const [errMsgAppraisalDate, setErrMsgAppraisalDate] = useState("");
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
 
@@ -333,7 +335,7 @@ function AddAppraisal(props: any) {
   const modalStyle: Partial<IModalStyles> = {
     root: {},
     main: {
-      height: "30%",
+      height: "20%",
       width: "20%",
       backgroundColor: "#FFF",
       // padding: "5px",
@@ -359,6 +361,9 @@ function AddAppraisal(props: any) {
     if (selectedType.text === "") {
       setErrMsgType("Select type");
     }
+    // if (dateReview === ""){
+    //   setErrMsgReviewDate("Select review date")
+    // }
     const addQuery = {
       id: claimsData.id,
       appraisal_description: claimsData.description,
@@ -429,6 +434,7 @@ function AddAppraisal(props: any) {
           {/* <div className="input-form"></div> */}
           <div className="row">
             <DatePicker
+              isRequired
               label="Review From"
               className={`${controlClass.control} flexGrow`}
               firstDayOfWeek={firstDayOfWeek}
@@ -439,6 +445,7 @@ function AddAppraisal(props: any) {
               styles={datePickerStyle}
             />
             <DatePicker
+              isRequired
               label="Appraisal To"
               className={`${controlClass.control} flexGrow`}
               firstDayOfWeek={firstDayOfWeek}
@@ -570,9 +577,7 @@ function AddAppraisal(props: any) {
                 // containerClassName={contentStyles.container}
               >
                 <div className="modal-header">
-                  <div className="modal-title">
-                    Appraisal Added Successfully
-                  </div>
+                  <div className="modal-title">Success</div>
                   <IconButton
                     styles={iconButtonStyles}
                     iconProps={cancelIcon}
@@ -615,7 +620,9 @@ function AddAppraisal(props: any) {
                     }}
                   />
                 </div>
-                <div className="modal-content">Somthing went wrong</div>
+                <div className="modal-content">
+                  Somthing went wrong. Please try again
+                </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
                     text="Go Back"
@@ -691,6 +698,7 @@ function AddAppraisal(props: any) {
             <Dropdown
               options={rolesOption}
               onChange={handleRoles}
+              selectedKey={roles ? roles.key : "employee"}
               className="rolesDropDown"
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}

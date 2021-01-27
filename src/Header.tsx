@@ -83,7 +83,7 @@ function Header(props: { item?: IBreadcrumbItem[]; styles: any }) {
         // items={itemsWithHeading}
         items={props.item || []}
         styles={props.styles}
-        maxDisplayedItems={3}
+        maxDisplayedItems={5}
         ariaLabel="With custom rendered divider and overflow icon"
         dividerAs={_getCustomDivider}
         onRenderOverflowIcon={_getCustomOverflowIcon}

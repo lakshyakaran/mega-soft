@@ -2,9 +2,10 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Navigation from "./Navigation";
 import Admin from "./Views/Appraisal";
-import AddAppraisal from "./Views/AddAppraisal"
+import AddAppraisal from "./Views/AddAppraisal";
 import UpdateAppraisal from "./Views/UpdateAppraisal";
 import AppraisalDetail from "./Views/AppraisalDetail";
+import GoalSetting from "./Views/GoalSetting";
 
 import "./App.css";
 
@@ -27,6 +28,7 @@ function App() {
             path="/appraisal/view/:appraisalId"
             component={AppraisalDetail}
           />
+          <Route exact path="/appraisal/goalsetting" component={GoalSetting} />
         </Switch>
       </div>
     </BrowserRouter>

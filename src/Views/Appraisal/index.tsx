@@ -38,26 +38,27 @@ import { RootState } from "../../redux/reducers";
 import { fetchAppraisalData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 
-// interface ParamTypes {
-//   id: string
-// }
-
 function Appraisal(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
   const [limitStart, setLimitSTart] = useState(0);
-  const [limitPageLength, setLimitPageLength] = useState(5);
+  const [limitPageLength, setLimitPageLength] = useState(10);
   const [orderBy, setOrderBy] = useState("asc");
   const [orderByField, setOrderByField] = useState("id");
   const [filtersById, setFiltersById] = useState("");
   const [filtersByDescription, setFiltersByDescription] = useState("");
   const [filtersByReviewFreq, setFiltersByReviewFreq] = useState("");
+  const [count, setCount] = useState(0);
+  const [total_count, setTotal_count] = useState(0);
   const dispatch = useDispatch();
-  const appraisal =
-    useSelector((state: RootState) => state.appraisal);
+  const appraisal = useSelector((state: RootState) => state.appraisal);
   const { appraisalList, isLoading } = appraisal;
 
-  // console.log("data=>", appraisal)
+  let totalCount: number;
+  let currentCount: number;
 
+  console.log("data=>", appraisalList);
+  currentCount = appraisalList.count;
+  totalCount = appraisalList.total_count;
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
@@ -76,7 +77,7 @@ function Appraisal(props: any) {
         `${orderByField} ${orderBy}`,
         JSON.stringify(filters)
       )
-    )
+    );
     // fetchAppraisalData(
     //   limitStart,
     //   limitPageLength,
@@ -282,6 +283,11 @@ function Appraisal(props: any) {
   const [searchById, setSearchById] = useState("");
   const [searchByDescription, setSearchByDescription] = useState("");
   const [appraisalToSearch, setAppraisalToSearch] = useState("");
+  const [roles, setRoles] = useState<IDropdownOption>({
+    key: "employee",
+    text: "",
+  });
+
   const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
     key: "",
     text: "",
@@ -327,7 +333,7 @@ function Appraisal(props: any) {
     ev?: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
   ): void => {
-    setReviewSearch(
+    setRoles(
       item || {
         key: "",
         text: "",
@@ -373,9 +379,9 @@ function Appraisal(props: any) {
   ];
 
   const rolesOption: IDropdownOption[] = [
-    { key: "key1", text: "HR" },
-    { key: "key2", text: "Manager" },
-    { key: "key3", text: "Employee" },
+    { key: "employee", text: "Employee" },
+    { key: "manager", text: "Manager" },
+    { key: "hrContent", text: "HR content" },
   ];
 
   const dropdownStyles: Partial<IDropdownStyles> = {
@@ -414,8 +420,6 @@ function Appraisal(props: any) {
     return null;
   };
 
-  
-
   const renderNoData = () => {
     return (
       <div
@@ -452,87 +456,100 @@ function Appraisal(props: any) {
     );
   };
 
+  // console.log("appraisal data=>>", appraisalList);
+
   const renderData = () => {
     return isLoading ? (
       <Spinner
-        style={{ display: "flex", justifyContent: "center", padding: "50px", color:"#344f84" }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          padding: "50px",
+          color: "#344f84",
+        }}
         size={SpinnerSize.large}
       />
+    ) : appraisalList.data.length === 0 ? (
+      renderNoData()
     ) : (
-      appraisalList.length === 0 ? renderNoData() : (
-        <React.Fragment>
-          <div className="searchBarClass">
-            <TextField
-              label="ID"
-              onChange={itemSearch}
-              placeholder="Enter ID"
-              className="searchInput"
-              styles={controlStyles}
-            />
-            <TextField
-              label="Description"
-              className="searchInput"
-              onChange={itemSearchDescription}
-              placeholder="Enter Description"
-              styles={controlStyles}
-            />
-            <Dropdown
-              label="Review Frequency"
-              placeholder="Select"
-              options={searchOptions}
-              className="reviewFrequency"
-              onChange={itemSearchReview}
-              style={{ padding: "0px" }}
-              styles={dropdownStyles}
-            />
-            <PrimaryButton
-              iconProps={{ iconName: "Search" }}
-              onClick={handleSearchClick}
-              style={{
-                marginLeft: "10px",
-                alignSelf: "center",
-                marginTop: "8px",
-              }}
-            />
-            <PrimaryButton
-              text="New Appraisal"
-              iconProps={{ iconName: "Add" }}
-              allowDisabledFocus
-              onClick={() => {
-                history.push("/addApprisal");
-              }}
-              style={{
-                marginLeft: "auto",
-                alignSelf: "center",
-                marginTop: "8px",
-              }}
-              disabled={false}
-              checked={false}
-            />
-            {/* <TextField
+      <React.Fragment>
+        <div className="searchBarClass">
+          <TextField
+            label="ID"
+            onChange={itemSearch}
+            placeholder="Enter ID"
+            className="searchInput"
+            styles={controlStyles}
+          />
+          <TextField
+            label="Description"
+            className="searchInput"
+            onChange={itemSearchDescription}
+            placeholder="Enter Description"
+            styles={controlStyles}
+          />
+          <Dropdown
+            label="Review Frequency"
+            placeholder="Select"
+            options={searchOptions}
+            className="reviewFrequency"
+            onChange={itemSearchReview}
+            style={{ padding: "0px" }}
+            styles={dropdownStyles}
+          />
+          <PrimaryButton
+            iconProps={{ iconName: "Search" }}
+            onClick={handleSearchClick}
+            style={{
+              marginLeft: "10px",
+              alignSelf: "center",
+              marginTop: "8px",
+            }}
+          />
+          <PrimaryButton
+            text="New Appraisal"
+            iconProps={{ iconName: "Add" }}
+            allowDisabledFocus
+            onClick={() => {
+              history.push("/addApprisal");
+            }}
+            style={{
+              marginLeft: "auto",
+              alignSelf: "center",
+              marginTop: "8px",
+            }}
+            disabled={false}
+            checked={false}
+          />
+          {/* <TextField
                 onChange={itemSearchApprisalTo}
                 placeholder= "Appraisal To"
                 styles={controlStyles}
               /> */}
-          </div>
-          <DetailsList
-            styles={listStyle}
-            items={appraisalList}
-            className="detail-list"
-            onRenderRow={renderRow}
-            columns={columns}
-            selectionMode={0}
-          />
+        </div>
+        <DetailsList
+          styles={listStyle}
+          items={appraisalList.data}
+          className="detail-list"
+          onRenderRow={renderRow}
+          columns={columns}
+          selectionMode={0}
+        />
+        <div className="pagination-style">
           <Pagination
             format="buttons"
             // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
             // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
             selectedPageIndex={currentPage}
             pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
+            // pageCount={currentCount}
+            // itemsCount
             itemsPerPage={limitPageLength}
+            // itemsPerPage={appraisalList.count}
             // pageRangeDisplayed= {currentPage}
-            totalItemCount={limitPageLength * 2}
-            numberOfPageButton={2}
+            // totalItemCount={limitPageLength * 2}
+            totalItemCount={totalCount}
+            // numberOfPageButton={2}
             lastPageIconProps={{
               iconName: "DoubleChevronRight",
               style: { display: "none" },
@@ -542,18 +559,26 @@ function Appraisal(props: any) {
               style: { display: "none" },
             }}
             onPageChange={(page) => {
+              console.log("onPageChange page =>", page);
+              console.log("current page =>", currentPage);
+              console.log("hasmoreRecord =>", hasMoreRecord);
+              if (page > Math.ceil(totalCount / limitPageLength)) {
+                setLimitSTart(Math.ceil(totalCount / limitPageLength));
+              }
               if (currentPage < page && hasMoreRecord) {
+                console.log("going right ->");
                 setCurentPage(page);
                 setLimitSTart(limitStart + limitPageLength);
               }
               if (currentPage > page && limitStart - limitPageLength >= 0) {
+                console.log("going left ->");
                 setLimitSTart(limitStart - limitPageLength);
                 setCurentPage(page);
               }
             }}
           />
-        </React.Fragment>
-      )
+        </div>
+      </React.Fragment>
     );
   };
 
@@ -582,6 +607,8 @@ function Appraisal(props: any) {
             <Dropdown
               options={rolesOption}
               onChange={handleRoles}
+              selectedKey={roles ? roles.key : "employee"}
+              // defaultSelectedKey={roles ? roles.key : "employee"}
               className="rolesDropDown"
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}
@@ -597,9 +624,7 @@ function Appraisal(props: any) {
       </WelcomeHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
-        <div className="data-container">
-          {renderData()}
-        </div>
+        <div className="data-container">{renderData()}</div>
         <div className="right-container">Right panel shows here.</div>
       </div>
     </div>
@@ -608,4 +633,3 @@ function Appraisal(props: any) {
 export default connect((state) => ({
   ...state,
 }))(Appraisal);
-
