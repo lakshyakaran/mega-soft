@@ -403,28 +403,36 @@ function GoalSetting(props: any) {
             <ul className="progress">
               <li>
                 <div className="node green"></div>
-                <p className="green">Provide your job history</p>
+                <p className="green">
+                  <span>Provide your job history</span>
+                </p>
               </li>
               <li>
                 <div className="divider green"></div>
               </li>
               <li>
                 <div className="node green"></div>
-                <p className="green">Perform goal setting</p>
+                <p className="green">
+                  <span>Perform goal setting</span>
+                </p>
               </li>
               <li>
                 <div className="divider green"></div>
               </li>
               <li>
                 <div className="node grey"></div>
-                <p className="grey">Update your training needs </p>
+                <p className="grey">
+                  <span>Update your training needs</span>
+                </p>
               </li>
               <li>
                 <div className="divider grey"></div>
               </li>
               <li>
                 <div className="node grey"></div>
-                <p className="grey">Create your development plan </p>
+                <p className="grey">
+                  <span>Create your development plan</span>
+                </p>
               </li>
               {/* <li>
                 <div className="divider grey"></div>
