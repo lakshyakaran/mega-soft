@@ -422,7 +422,7 @@ function GoalSetting(props: any) {
               <li>
                 <div className="node grey"></div>
                 <p className="grey">
-                  <span>Update your training needs</span>
+                  <span>Update training needs</span>
                 </p>
               </li>
               <li>
@@ -431,7 +431,7 @@ function GoalSetting(props: any) {
               <li>
                 <div className="node grey"></div>
                 <p className="grey">
-                  <span>Create your development plan</span>
+                  <span>Create development plan</span>
                 </p>
               </li>
               {/* <li>
