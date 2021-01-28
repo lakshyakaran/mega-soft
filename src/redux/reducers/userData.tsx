@@ -1,8 +1,8 @@
 const initialState = {
   UserData: [
     {
-      name: "Rahul Sinha",
-      id: "009234",
+      name: "Ayush Kansal",
+      id: "10075",
     },
   ],
 };

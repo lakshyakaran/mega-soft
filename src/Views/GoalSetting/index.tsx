@@ -132,20 +132,20 @@ function GoalSetting(props: any) {
   ];
 
   const columns: IColumn[] = [
-    {
-      key: "01",
-      name: "S.No",
-      fieldName: "sno",
-      minWidth: 50,
-      maxWidth: 50,
-      isSorted: true,
-      className: "idColumn",
-      isSortedDescending: false,
-      sortAscendingAriaLabel: "Sorted A to Z",
-      isRowHeader: true,
-      sortDescendingAriaLabel: "Sorted Z to A",
-      isResizable: false,
-    },
+    // {
+    //   key: "01",
+    //   name: "S.No",
+    //   fieldName: "sno",
+    //   minWidth: 50,
+    //   maxWidth: 50,
+    //   isSorted: true,
+    //   className: "idColumn",
+    //   isSortedDescending: false,
+    //   sortAscendingAriaLabel: "Sorted A to Z",
+    //   isRowHeader: true,
+    //   sortDescendingAriaLabel: "Sorted Z to A",
+    //   isResizable: false,
+    // },
     {
       key: "02",
       name: "Action",
@@ -159,6 +159,12 @@ function GoalSetting(props: any) {
             text="KRA Setting"
             allowDisabledFocus
             className="action-btn"
+            style={{
+              padding: "0px",
+              fontSize: "0.75rem",
+              height: "24px",
+              borderRadius: "3px",
+            }}
             disabled={false}
             checked={false}
           />
@@ -275,7 +281,7 @@ function GoalSetting(props: any) {
       as: "h4",
       onClick: _onBreadcrumbItemClicked,
     },
-    { text: "Employee", key: "d3", as: "h4" },
+    // { text: "Employee", key: "d3", as: "h4" },
     { text: "Goal Setting", key: "d4", isCurrentItem: true, as: "h4" },
   ];
 

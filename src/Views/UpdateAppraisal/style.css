@@ -78,6 +78,10 @@
     display: flex;
 }
 
+.row .flexGrow:last-child {
+    margin-right: 0rem;
+}
+
 .rolesDropDown .title-85 {
     border: none;
     width: 100px;
@@ -134,7 +138,7 @@
 }
 
 .data-container {
-    width: 73%;
+    width: 76%;
     float: left;
     padding: 1%;
     height: 100%;

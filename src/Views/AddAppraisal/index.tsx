@@ -38,8 +38,8 @@ import { add_apprisal } from "../../redux/actions/apprisal";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
-  { key: "key3", text: "HR" },
-  { key: "key4", text: "Management" },
+  { key: "key3", text: "Non Sales Employees" },
+  // { key: "key4", text: "Management" },
 ];
 
 const reviewFrequencyOptions: IDropdownOption[] = [

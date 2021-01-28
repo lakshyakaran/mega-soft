@@ -43,10 +43,9 @@ import {
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
-  { key: "key3", text: "HR" },
-  { key: "key4", text: "Management" },
+  { key: "key3", text: "Non Sales Employees" },
+  // { key: "key4", text: "Management" },
 ];
-
 const reviewFrequencyOptions: IDropdownOption[] = [
   { key: "key1", text: "Monthly" },
   { key: "key2", text: "Yearly" },
@@ -400,6 +399,7 @@ function UpdateAppraisal(props: any) {
               ariaLabel="Select a date"
             />
             <Dropdown
+              required
               selectedKey={
                 reviewFrequencyOptions.find(
                   (item) => item.text === updateData.review_frequency
@@ -416,6 +416,7 @@ function UpdateAppraisal(props: any) {
             />
           </div>
           <Dropdown
+            required
             selectedKey={
               typeOptions.find((item) => item.text === updateData.type)?.key
             }
@@ -429,6 +430,7 @@ function UpdateAppraisal(props: any) {
             // styles={typeDropdownStyles}
           />
           <Dropdown
+            required
             selectedKey={
               formateTypeOptions.find(
                 (item) => item.text === updateData.format_type
@@ -444,6 +446,7 @@ function UpdateAppraisal(props: any) {
             // styles={typeDropdownStyles}
           />
           <TextField
+            required
             label="Owner"
             placeholder="Owner"
             value={updateData.appraisal_owner}

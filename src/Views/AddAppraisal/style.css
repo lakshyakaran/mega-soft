@@ -56,6 +56,10 @@
     margin-right: 1rem;
 }
 
+.row .flexGrow:last-child {
+    margin-right: 0rem;
+}
+
 .flexGrowTextInput {
     margin-right: 1rem;
 }
@@ -135,7 +139,7 @@
 }
 
 .data-container {
-    width: 73%;
+    width: 76%;
     float: left;
     padding: 1%;
     height: 100%;
