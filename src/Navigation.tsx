@@ -10,6 +10,10 @@ import { useHistory, matchPath } from "react-router-dom";
 
 import hrms_logo from "./assets/img/hrms_logo.gif";
 import logo_nuage from "./assets/img/logo_nuage.png";
+import { fetchNavigationBar } from "./redux/actions/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./redux/reducers";
 
 initializeIcons();
 
@@ -178,6 +182,20 @@ const navStyles: Partial<INavStyles> = {
 
 function Navigation() {
   // const { children } = props;
+  const dispatch = useDispatch();
+  const [doctype, setDoctype] = useState("EmployeeAppraisal");
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
+  console.log("roleType?????=>", roleType);
+
+  const navigation = useSelector(
+    (state: RootState) => state.navigationData.navigationData
+  );
+  // console.log("navigation data=>", navigation.links);
+
+  useEffect((): void => {
+    dispatch(fetchNavigationBar(doctype, roleType ? roleType : "Employee"));
+  }, [doctype, roleType]);
+
   let history = useHistory();
   const [selectedNavKey, setSelectedNavKey] = React.useState("");
   const onLinkClick = (ev?: React.MouseEvent<HTMLElement>, item?: INavLink) => {
@@ -223,7 +241,7 @@ function Navigation() {
         selectedKey={selectedNavKey}
         ariaLabel="Nav basic example"
         styles={navStyles}
-        groups={navLinkGroups}
+        groups={navigation.links}
       />
     </div>
   );

@@ -29,6 +29,7 @@ function App() {
             component={AppraisalDetail}
           />
           <Route exact path="/appraisal/goalsetting" component={GoalSetting} />
+          {/* <Route exact path="appraisal/goalsetting" component={GoalSetting} /> */}
         </Switch>
       </div>
     </BrowserRouter>

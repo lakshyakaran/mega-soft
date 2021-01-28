@@ -9,7 +9,7 @@ body {
 
 .sidebar {
   position: fixed;
-  width: 208;
+  width: 200px;
   background-color: #344f84;
   height: 100%;
   left: 0;
@@ -18,6 +18,9 @@ body {
   /* overflow:auto; */
 }
 
+.sidebar .ms-Nav-chevronButton{
+
+} 
 .view {
   padding-top: 75px;
 }
@@ -175,12 +178,12 @@ body {
   border: none;
 }
 
-
 /* .data-container .ms-Pagination-container .visibleItemLabel-175{
   display: none !important;
 } */
 
 .ms-Nav-chevronButton {
+  color: #FFF;
   background-color: transparent;
 }
 
@@ -188,4 +191,83 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+}
+
+.right-container {
+  width: 23%;
+  float: left;
+  padding: 1%;
+  height: 100%;
+  background: #ffffff;
+  /* border: 1px soild black; */
+}
+
+
+.progress {
+  padding: 0rem;
+}
+
+.top-picker {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stepper {
+  margin-top: 5rem;
+}
+
+.stepper .node {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: all 1000ms ease;
+}
+
+.stepper .activated {
+  box-shadow: 0px 0px 3px 2px #29416f;
+}
+
+.stepper .divider {
+  height: 65px;
+  width: 4px;
+  margin-left: 8px;
+  transition: all 800ms ease;
+}
+
+.stepper li p {
+  display: inline-block;
+  margin-left: 25px;
+  padding: 15px 35px;
+  /* background-color: rgba(201, 201, 201, 1); */
+  clip-path: polygon(20px 0, 100% 0, 100% 100%, 20px 100%, 0 50%);
+  min-width: 260px;
+}
+
+.stepper li p span {
+  font-size: 80%;
+  display: block;
+  margin-top: 16px;
+}
+
+.stepper li {
+  list-style: none;
+  line-height: 1px;
+  margin-top: -32px;
+}
+
+.stepper .blue {
+  background-color: rgba(82, 165, 255, 1);
+}
+
+.stepper .green {
+  background-color: rgba(92, 184, 92, 1)
+}
+
+.stepper .red {
+  background-color: rgba(255, 148, 148, 1);
+}
+
+.stepper .grey {
+  background-color: rgba(201, 201, 201, 1);
 }

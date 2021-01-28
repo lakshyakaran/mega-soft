@@ -36,7 +36,10 @@ import "./style.css";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { edit_appraisal } from "../../redux/actions/apprisal";
-import { fetchAppraisalData } from "../../redux/actions";
+import {
+  fetchAppraisalData,
+  fetchAppraisalDataById,
+} from "../../redux/actions";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -82,18 +85,18 @@ function UpdateAppraisal(props: any) {
     if (filtersById) {
       filters.push(["id", "like", filtersById]);
     }
-    fetchAppraisalData(
+    fetchAppraisalDataById(
       limitStart,
       limitPageLength,
       `${orderByField} ${orderBy}`,
       JSON.stringify(filters)
     )((response: any) => {
-      // console.log("response=>", response.payload);
+      console.log("response=>", response);
       setUpdateData(response.payload[0]);
     });
   }, []);
 
-  //   console.log("upadetdata==>", updateData.id)
+  console.log("upadetdata==>", updateData);
 
   // const appraisalList = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
   //   const updateData = appraisalList.find(item => item.id === params.appraisalId);
@@ -173,6 +176,9 @@ function UpdateAppraisal(props: any) {
   const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
 
   const datePickerStyle: Partial<IDatePickerStyles> = {
+    // root: {
+    //   marginRight: "10px",
+    // },
     icon: {
       color: "rgb(111 144 220)",
     },
@@ -265,28 +271,28 @@ function UpdateAppraisal(props: any) {
     },
   };
 
-  const rolesOption: IDropdownOption[] = [
-    { key: "key1", text: "HR" },
-    { key: "key2", text: "Manager" },
-    { key: "key3", text: "Employee" },
-  ];
+  // const rolesOption: IDropdownOption[] = [
+  //   { key: "key1", text: "HR" },
+  //   { key: "key2", text: "Manager" },
+  //   { key: "key3", text: "Employee" },
+  // ];
 
-  const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
-    key: "",
-    text: "",
-  });
+  // const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
+  //   key: "",
+  //   text: "",
+  // });
 
-  const handleRoles = (
-    ev?: React.FormEvent<HTMLDivElement>,
-    item?: IDropdownOption
-  ): void => {
-    setReviewSearch(
-      item || {
-        key: "",
-        text: "",
-      }
-    );
-  };
+  // const handleRoles = (
+  //   ev?: React.FormEvent<HTMLDivElement>,
+  //   item?: IDropdownOption
+  // ): void => {
+  //   setReviewSearch(
+  //     item || {
+  //       key: "",
+  //       text: "",
+  //     }
+  //   );
+  // };
   // const dispatch = useDispatch();
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
@@ -307,7 +313,7 @@ function UpdateAppraisal(props: any) {
   const modalStyle: Partial<IModalStyles> = {
     root: {},
     main: {
-      height: "30%",
+      height: "20%",
       width: "20%",
       backgroundColor: "#FFF",
       // padding: "5px",
@@ -352,6 +358,7 @@ function UpdateAppraisal(props: any) {
               className="flexGrowTextInput"
             />
             <TextField
+              required
               placeholder="Description"
               label="Description"
               value={updateData.appraisal_description}
@@ -364,6 +371,7 @@ function UpdateAppraisal(props: any) {
           {/* <div className="input-form"></div> */}
           <div className="row">
             <DatePicker
+              isRequired
               label="Review From"
               // value={updateData.review_from}
               className={`${controlClass.control} flexGrow`}
@@ -378,6 +386,7 @@ function UpdateAppraisal(props: any) {
               styles={datePickerStyle}
             />
             <DatePicker
+              isRequired
               label="Appraisal To"
               value={new Date(updateData.appraisal_to)}
               className={`${controlClass.control} flexGrow`}
@@ -447,6 +456,14 @@ function UpdateAppraisal(props: any) {
             <div>
               <Label>KRA Settings Tabs: </Label>
               <Checkbox
+                label={"Job History"}
+                title={"Competencies"}
+                checked={updateData.kra_settings_tab_competencies}
+                className="flexGrowCheckBox"
+                name="kra_settings_tab_competencies"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
                 label={"Goals"}
                 title={"Goals"}
                 checked={updateData.kra_settings_tab_goals}
@@ -455,32 +472,24 @@ function UpdateAppraisal(props: any) {
                 onChange={onChangeCheckbox}
               />
               <Checkbox
-                label={"Competencies"}
-                title={"Competencies"}
-                checked={updateData.kra_settings_tab_competencies}
-                className="flexGrowCheckBox"
-                name="kra_settings_tab_competencies"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Development Plans"}
+                label={"Training/ Development Plan"}
                 title={"Development Plans"}
                 checked={updateData.kra_settings_tab_development_plan}
                 className="flexGrowCheckBox"
                 name="kra_settings_tab_development_plan"
                 onChange={onChangeCheckbox}
               />
-              <Checkbox
+              {/* <Checkbox
                 label={"Summary"}
                 title={"Summary"}
                 checked={updateData.kra_settings_tab_summary}
                 className="flexGrowCheckBox"
                 name="kra_settings_tab_summary"
                 onChange={onChangeCheckbox}
-              />
+              /> */}
             </div>
             <div>
-              <Label>Assessment Tabs: </Label>
+              {/* <Label>Assessment Tabs: </Label>
               <Checkbox
                 label={"Goals"}
                 title={"Goals"}
@@ -512,7 +521,7 @@ function UpdateAppraisal(props: any) {
                 className="flexGrowCheckBox"
                 name="assessment_tab_summary"
                 onChange={onChangeCheckbox}
-              />
+              /> */}
             </div>
             <div>
               <Modal
@@ -523,7 +532,7 @@ function UpdateAppraisal(props: any) {
                 // containerClassName={contentStyles.container}
               >
                 <div className="modal-header">
-                  <div className="modal-title">Appraisal Updated</div>
+                  <div className="modal-title">Success</div>
                   <IconButton
                     styles={iconButtonStyles}
                     iconProps={cancelIcon}
@@ -566,7 +575,9 @@ function UpdateAppraisal(props: any) {
                     }}
                   />
                 </div>
-                <div className="modal-content">Somthing went wrong</div>
+                <div className="modal-content">
+                  Somthing went wrong. Please try again
+                </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
                     text="Go Back"
@@ -639,13 +650,13 @@ function UpdateAppraisal(props: any) {
             <Text style={{ marginRight: "10px" }}>
               Welcome {userName} ({userId})
             </Text>
-            <Dropdown
+            {/* <Dropdown
               options={rolesOption}
               onChange={handleRoles}
               className="rolesDropDown"
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}
-            />
+            /> */}
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
@@ -658,7 +669,7 @@ function UpdateAppraisal(props: any) {
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderUpdateForm()}</div>
-        <div className="right-container">Right panel shows here.</div>
+        <div className="right-container"></div>
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import { fetchEmployeeData } from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { Pagination } from "@uifabric/experiments";
+import { roleType } from "../../redux/actions/roleType";
 
 function GoalSetting(props: any) {
   const dispatch = useDispatch();
@@ -27,23 +28,23 @@ function GoalSetting(props: any) {
   const [limit, setLimit] = useState(10);
   const [role, setRole] = useState("Employee");
   const [currentPage, setCurentPage] = useState(0);
-  const [limitPageLength, setLimitPageLength] = useState(2);
+  const [limitPageLength, setLimitPageLength] = useState(3);
   const [limitStart, setLimitSTart] = useState(0);
 
   const employee = useSelector((state: RootState) => state.employeeList);
-
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const { employeeList, isLoading, total_count, count } = employee;
-  console.log("employeeList=> ", employeeList);
+  // console.log("employeeList=> ", employeeList);
 
   const [employeData, setEmployeeData]: any = useState({});
   // console.log("employee data=>", employeeList);
 
   useEffect((): void => {
-    dispatch(fetchEmployeeData(doctype, limit_start, limit, role));
-  }, [doctype, limit_start, limit, role]);
+    dispatch(fetchEmployeeData(doctype, limit_start, limit, roleType));
+  }, [doctype, limit_start, limit, roleType]);
 
   const [roles, setRoles] = useState<IDropdownOption>({
-    key: "employee",
+    key: "",
     text: "",
   });
 
@@ -63,12 +64,12 @@ function GoalSetting(props: any) {
   const rolesOption: IDropdownOption[] = [
     { key: "employee", text: "Employee" },
     { key: "manager", text: "Manager" },
-    { key: "hrContent", text: "HR content" },
+    { key: "hrContact", text: "HR Contact" },
   ];
 
   const dropdownStyles: Partial<IDropdownStyles> = {
     dropdown: {
-      width: 170,
+      width: 250,
       border: "0px",
     },
   };
@@ -112,9 +113,9 @@ function GoalSetting(props: any) {
   ];
   const statusOption: IDropdownOption[] = [
     { key: "key1", text: "Pending with Employee" },
-    { key: "key2", text: "Pending with Manager" },
-    { key: "key3", text: "Pending with Reviewer" },
-    { key: "key4", text: "Completed" },
+    { key: "key2", text: "Pending with Reviewer" },
+    { key: "key3", text: "Pending Counter Signing" },
+    { key: "key4", text: "Complete" },
   ];
 
   const operations = [
@@ -232,7 +233,7 @@ function GoalSetting(props: any) {
   ): void => {
     setRoles(
       item || {
-        key: "",
+        key: "employee",
         text: "",
       }
     );
@@ -299,7 +300,7 @@ function GoalSetting(props: any) {
             <Text style={{ marginRight: "10px" }}>
               Welcome {userName} ({userId})
             </Text>
-            <Dropdown
+            {/* <Dropdown
               options={rolesOption}
               onChange={handleRoles}
               selectedKey={roles ? roles.key : "employee"}
@@ -307,7 +308,7 @@ function GoalSetting(props: any) {
               className="rolesDropDown"
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}
-            />
+            /> */}
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
@@ -323,7 +324,7 @@ function GoalSetting(props: any) {
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
+              // justifyContent: "space-between",
               marginBottom: "10px",
             }}
           >
@@ -335,6 +336,14 @@ function GoalSetting(props: any) {
               onChange={onChangeStatus}
               style={{ padding: "0px" }}
               styles={dropdownStyles}
+            />
+            <PrimaryButton
+              iconProps={{ iconName: "Search" }}
+              style={{
+                marginLeft: "20px",
+                alignSelf: "center",
+                marginTop: "28px",
+              }}
             />
             {/* <Dropdown
               label="Period"
@@ -383,7 +392,44 @@ function GoalSetting(props: any) {
             />
           </div> */}
         </div>
-        <div className="right-container">Right panel shows here.</div>
+        <div className="right-container">
+          <div className="stepper">
+            <ul className="progress">
+              <li>
+                <div className="node green"></div>
+                <p className="green">Provide your job history</p>
+              </li>
+              <li>
+                <div className="divider green"></div>
+              </li>
+              <li>
+                <div className="node green"></div>
+                <p className="green">Perform goal setting</p>
+              </li>
+              <li>
+                <div className="divider green"></div>
+              </li>
+              <li>
+                <div className="node grey"></div>
+                <p className="grey">Update your training needs </p>
+              </li>
+              <li>
+                <div className="divider grey"></div>
+              </li>
+              <li>
+                <div className="node grey"></div>
+                <p className="grey">Create your development plan </p>
+              </li>
+              {/* <li>
+                <div className="divider grey"></div>
+              </li>
+              <li>
+                <div className="node grey"></div>
+                <p className="grey">Payment Released </p>
+              </li> */}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

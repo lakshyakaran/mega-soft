@@ -16,7 +16,7 @@ export const add_apprisal = async (data: any) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+        Authorization: "token 5ccbc7af363c163:b6060f97664d556",
       },
       data: JSON.stringify(data),
     });

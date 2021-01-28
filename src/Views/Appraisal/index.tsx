@@ -37,6 +37,7 @@ import "./style.css";
 import { RootState } from "../../redux/reducers";
 import { fetchAppraisalData } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
+// import { roleType } from "../../redux/actions/roleType";
 
 function Appraisal(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
@@ -51,7 +52,7 @@ function Appraisal(props: any) {
   const appraisal = useSelector((state: RootState) => state.appraisal);
   const { appraisalList, isLoading, count, total_count } = appraisal;
 
-  console.log("data apppp=>", appraisalList);
+  // console.log("data apppp=>", appraisalList);
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
@@ -276,7 +277,7 @@ function Appraisal(props: any) {
   const [searchById, setSearchById] = useState("");
   const [searchByDescription, setSearchByDescription] = useState("");
   const [appraisalToSearch, setAppraisalToSearch] = useState("");
-  const [roles, setRoles] = useState<IDropdownOption>({
+  const [role, setRole] = useState<IDropdownOption>({
     key: "employee",
     text: "",
   });
@@ -326,7 +327,7 @@ function Appraisal(props: any) {
     ev?: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
   ): void => {
-    setRoles(
+    setRole(
       item || {
         key: "",
         text: "",
@@ -371,11 +372,11 @@ function Appraisal(props: any) {
     { key: "key3", text: "Monthly" },
   ];
 
-  const rolesOption: IDropdownOption[] = [
-    { key: "employee", text: "Employee" },
-    { key: "manager", text: "Manager" },
-    { key: "hrContent", text: "HR content" },
-  ];
+  // const rolesOption: IDropdownOption[] = [
+  //   { key: "employee", text: "Employee" },
+  //   { key: "manager", text: "Manager" },
+  //   { key: "hrContact", text: "HR Contact" },
+  // ];
 
   const dropdownStyles: Partial<IDropdownStyles> = {
     dropdown: {
@@ -583,15 +584,15 @@ function Appraisal(props: any) {
             <Text style={{ marginRight: "10px" }}>
               Welcome {userName} ({userId})
             </Text>
-            <Dropdown
+            {/* <Dropdown
               options={rolesOption}
               onChange={handleRoles}
-              selectedKey={roles ? roles.key : "employee"}
+              selectedKey={role ? role.key : "employee"}
               // defaultSelectedKey={roles ? roles.key : "employee"}
               className="rolesDropDown"
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}
-            />
+            /> */}
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
@@ -604,7 +605,7 @@ function Appraisal(props: any) {
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderData()}</div>
-        <div className="right-container">Right panel shows here.</div>
+        <div className="right-container"></div>
       </div>
     </div>
   );

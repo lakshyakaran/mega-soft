@@ -133,6 +133,58 @@ function AddAppraisal(props: any) {
     monthPickerHeaderAriaLabel: "{0}, select to change the year",
     yearPickerHeaderAriaLabel: "{0}, select to change the month",
   };
+  const DayPickerStringsAppraisal: IDatePickerStrings = {
+    months: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+
+    shortMonths: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+
+    days: [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
+
+    shortDays: ["S", "M", "T", "W", "T", "F", "S"],
+
+    goToToday: "Go to today",
+    prevMonthAriaLabel: "Go to previous month",
+    nextMonthAriaLabel: "Go to next month",
+    prevYearAriaLabel: "Go to previous year",
+    nextYearAriaLabel: "Go to next year",
+    closeButtonAriaLabel: "Close date picker",
+    monthPickerHeaderAriaLabel: "{0}, select to change the year",
+    yearPickerHeaderAriaLabel: "{0}, select to change the month",
+  };
 
   const controlClass = mergeStyleSets({
     control: {
@@ -142,10 +194,11 @@ function AddAppraisal(props: any) {
   });
 
   const [firstDayOfWeek] = React.useState(DayOfWeek.Sunday);
+  const [firstDayOfWeekAppraisal] = React.useState(DayOfWeek.Sunday);
 
   const datePickerStyle: Partial<IDatePickerStyles> = {
     icon: {
-      color: "rgb(111 144 220)",
+      color: "#344f84",
     },
   };
 
@@ -259,12 +312,12 @@ function AddAppraisal(props: any) {
 
   const reviewFromDate = (date: Date | null | undefined): void => {
     const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
-    // console.log("date==>", reviewFrequencyDate);
+    console.log("date review==>", reviewFrequencyDate);
     setDateReview(reviewFrequencyDate);
   };
   const appraisalToDate = (date: Date | null | undefined): void => {
     const appraisalDate: any = moment(date).format("YYYY-MM-DD");
-    // console.log("date==>", reviewFrequencyDate);
+    console.log("date appraisalDate==>", appraisalDate);
     setdDateAppraisal(appraisalDate);
   };
 
@@ -283,28 +336,28 @@ function AddAppraisal(props: any) {
     },
   };
 
-  const rolesOption: IDropdownOption[] = [
-    { key: "employee", text: "Employee" },
-    { key: "manager", text: "Manager" },
-    { key: "hrContent", text: "HR content" },
-  ];
+  // // const rolesOption: IDropdownOption[] = [
+  // //   { key: "employee", text: "Employee" },
+  // //   { key: "manager", text: "Manager" },
+  // //   { key: "hrContent", text: "HR content" },
+  // // ];
 
-  const [roles, setRoles] = useState<IDropdownOption>({
-    key: "employee",
-    text: "",
-  });
+  // const [roles, setRoles] = useState<IDropdownOption>({
+  //   key: "employee",
+  //   text: "",
+  // });
 
-  const handleRoles = (
-    ev?: React.FormEvent<HTMLDivElement>,
-    item?: IDropdownOption
-  ): void => {
-    setRoles(
-      item || {
-        key: "",
-        text: "",
-      }
-    );
-  };
+  // const handleRoles = (
+  //   ev?: React.FormEvent<HTMLDivElement>,
+  //   item?: IDropdownOption
+  // ): void => {
+  //   setRoles(
+  //     item || {
+  //       key: "",
+  //       text: "",
+  //     }
+  //   );
+  // };
   // const dispatch = useDispatch();
 
   const [errMsg, setErrMsg] = useState("");
@@ -361,9 +414,9 @@ function AddAppraisal(props: any) {
     if (selectedType.text === "") {
       setErrMsgType("Select type");
     }
-    // if (dateReview === ""){
-    //   setErrMsgReviewDate("Select review date")
-    // }
+    if (dateReview === null) {
+      setErrMsgReviewDate("Select review date");
+    }
     const addQuery = {
       id: claimsData.id,
       appraisal_description: claimsData.description,
@@ -434,7 +487,7 @@ function AddAppraisal(props: any) {
           {/* <div className="input-form"></div> */}
           <div className="row">
             <DatePicker
-              isRequired
+              isRequired={true}
               label="Review From"
               className={`${controlClass.control} flexGrow`}
               firstDayOfWeek={firstDayOfWeek}
@@ -445,11 +498,11 @@ function AddAppraisal(props: any) {
               styles={datePickerStyle}
             />
             <DatePicker
-              isRequired
+              isRequired={true}
               label="Appraisal To"
               className={`${controlClass.control} flexGrow`}
-              firstDayOfWeek={firstDayOfWeek}
-              strings={DayPickerStrings}
+              firstDayOfWeek={firstDayOfWeekAppraisal}
+              strings={DayPickerStringsAppraisal}
               onSelectDate={appraisalToDate}
               styles={datePickerStyle}
               placeholder="Select a date"
@@ -501,6 +554,14 @@ function AddAppraisal(props: any) {
             <div>
               <Label>KRA Settings Tabs: </Label>
               <Checkbox
+                label={"Job History"}
+                title={"Competencies"}
+                checked={claimsData.kraSettingCompetencies}
+                className="flexGrowCheckBox"
+                name="kraSettingCompetencies"
+                onChange={onChangeCheckbox}
+              />
+              <Checkbox
                 label={"Goals"}
                 title={"Goals"}
                 checked={claimsData.kraSettingGoal}
@@ -509,32 +570,24 @@ function AddAppraisal(props: any) {
                 onChange={onChangeCheckbox}
               />
               <Checkbox
-                label={"Competencies"}
-                title={"Competencies"}
-                checked={claimsData.kraSettingCompetencies}
-                className="flexGrowCheckBox"
-                name="kraSettingCompetencies"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Development Plans"}
+                label={"Training/ Development Plan"}
                 title={"Development Plans"}
                 checked={claimsData.kraSettingDevelopmentPlan}
                 className="flexGrowCheckBox"
                 name="kraSettingDevelopmentPlan"
                 onChange={onChangeCheckbox}
               />
-              <Checkbox
+              {/* <Checkbox
                 label={"Summary"}
                 title={"Summary"}
                 checked={claimsData.kraSettingSummary}
                 className="flexGrowCheckBox"
                 name="kraSettingSummary"
                 onChange={onChangeCheckbox}
-              />
+              /> */}
             </div>
             <div>
-              <Label>Assessment Tabs: </Label>
+              {/* <Label>Assessment Tabs: </Label>
               <Checkbox
                 label={"Goals"}
                 title={"Goals"}
@@ -566,7 +619,7 @@ function AddAppraisal(props: any) {
                 className="flexGrowCheckBox"
                 name="assessmentSummary"
                 onChange={onChangeCheckbox}
-              />
+              /> */}
             </div>
             <div>
               <Modal
@@ -695,14 +748,14 @@ function AddAppraisal(props: any) {
             <Text style={{ marginRight: "10px" }}>
               Welcome {userName} ({userId})
             </Text>
-            <Dropdown
+            {/* <Dropdown
               options={rolesOption}
               onChange={handleRoles}
               selectedKey={roles ? roles.key : "employee"}
               className="rolesDropDown"
               styles={dropdownStyles}
               style={{ marginLeft: "2rem" }}
-            />
+            /> */}
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
@@ -715,7 +768,7 @@ function AddAppraisal(props: any) {
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderForm()}</div>
-        <div className="right-container">Right panel shows here.</div>
+        <div className="right-container"></div>
       </div>
     </div>
   );

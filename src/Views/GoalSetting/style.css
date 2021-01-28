@@ -9,15 +9,3 @@
     height: 100%;
 }
 
-.right-container {
-    width: 23%;
-    float: left;
-    padding: 1%;
-    height: 100%;
-    background: #ffffff;
-}
-
-.top-picker {
-    display: flex;
-    justify-content: space-between;
-}

@@ -1,14 +1,14 @@
 interface employeeType {
   employeeList: any;
   isLoading: boolean;
-  count : number;
+  count: number;
   total_count: number;
 }
 
 const initialState: employeeType = {
   employeeList: [],
   isLoading: true,
-  count : 0,
+  count: 0,
   total_count: 0,
 };
 
@@ -25,6 +25,7 @@ export default function employeeList(
     }
     case "FETCH_EMPLOYEE_LIST_SUCCESS": {
       return {
+        ...state,
         employeeList: action.payload.data,
         total_count: action.payload.total_count,
         count: action.payload.count,
