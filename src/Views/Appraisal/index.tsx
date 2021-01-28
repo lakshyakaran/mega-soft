@@ -210,7 +210,7 @@ function Appraisal(props: any) {
               console.log("delete=>", item);
             }}
           >
-            <DeleteIcon style={{ color: "#FF0000" }} />
+            <DeleteIcon style={{ color: "#f04336" }} />
           </Link>
         </div>
       ),

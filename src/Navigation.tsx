@@ -165,6 +165,10 @@ const navStyles: Partial<INavStyles> = {
   },
   compositeLink: {
     selectors: {
+      "&.is-selected": {
+        background: "#29416f",
+
+      },
       "&:hover": {
         ".ms-Button": {
           background: "#29416f",

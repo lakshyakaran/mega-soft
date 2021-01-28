@@ -305,20 +305,16 @@ function AddAppraisal(props: any) {
     { text: "Add Appraisal", key: "d3", as: "h4" },
   ];
 
-  const [dateReview, setDateReview] = useState<Date | null | undefined>(null);
-  const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(
-    null
-  );
+  const [dateReview, setDateReview] = useState<Date | undefined>();
+  const [dateAppraisal, setdDateAppraisal] = useState<Date | undefined>();
 
   const reviewFromDate = (date: Date | null | undefined): void => {
-    const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
-    console.log("date review==>", reviewFrequencyDate);
-    setDateReview(reviewFrequencyDate);
+    setDateReview(date || undefined);
+    // const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
   };
   const appraisalToDate = (date: Date | null | undefined): void => {
-    const appraisalDate: any = moment(date).format("YYYY-MM-DD");
-    console.log("date appraisalDate==>", appraisalDate);
-    setdDateAppraisal(appraisalDate);
+    setdDateAppraisal(date || undefined);
+    // const appraisalDate: any = moment(date).format("YYYY-MM-DD");
   };
 
   const dateNow = new Date().toLocaleDateString();
@@ -433,8 +429,8 @@ function AddAppraisal(props: any) {
       assessment_tab_development_plan: claimsData.assessmentCompetencies,
       assessment_tab_summary: claimsData.assessmentSummary,
       route: "appraisal/BB00002",
-      review_from: dateReview,
-      appraisal_to: dateAppraisal,
+      review_from: moment(dateReview).format("YYYY-MM-DD"),
+      appraisal_to: moment(dateAppraisal).format("YYYY-MM-DD"),
       appraisal_owner: claimsData.owner,
     };
     // console.log("addQueary=>", addQuery);
@@ -492,6 +488,7 @@ function AddAppraisal(props: any) {
               className={`${controlClass.control} flexGrow`}
               firstDayOfWeek={firstDayOfWeek}
               strings={DayPickerStrings}
+              value={dateReview}
               onSelectDate={reviewFromDate}
               placeholder="Select a date"
               ariaLabel="Select a date"
@@ -505,6 +502,7 @@ function AddAppraisal(props: any) {
               strings={DayPickerStringsAppraisal}
               onSelectDate={appraisalToDate}
               styles={datePickerStyle}
+              value={dateAppraisal}
               placeholder="Select a date"
               ariaLabel="Select a date"
             />

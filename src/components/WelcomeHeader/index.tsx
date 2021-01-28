@@ -9,26 +9,22 @@ import {
 } from "office-ui-fabric-react";
 
 import "./styles.css";
-import { useDispatch } from "react-redux";
-import { roleType } from "../../redux/actions/roleType";
+import { useDispatch, useSelector } from "react-redux";
+import { setRoleType } from "../../redux/actions/roleType";
+import { RootState } from "../../redux/reducers";
+
+const rolesOption: IDropdownOption[] = [
+  { key: "employee", text: "Employee" },
+  { key: "manager", text: "Manager" },
+  { key: "hrContact", text: "HR Contact" },
+];
 
 function WelcomeHeader(props: { children: any }) {
   const { children } = props;
-  const [role, setRole] = useState<any>({
-    key: "employee",
-    text: "",
-  });
+  const roleType = useSelector(
+    (state: RootState) => state.roleType.roleType
+  );
   const dispatch = useDispatch();
-
-  useEffect((): void => {
-    dispatch(roleType(role.text));
-  }, [role.text]);
-
-  const rolesOption: IDropdownOption[] = [
-    { key: "employee", text: "Employee" },
-    { key: "manager", text: "Manager" },
-    { key: "hrContact", text: "HR Contact" },
-  ];
 
   // console.log("role.text===>", role.text);
   const dropdownStyles: Partial<IDropdownStyles> = {
@@ -42,27 +38,21 @@ function WelcomeHeader(props: { children: any }) {
     ev?: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
   ): void => {
-    setRole(
-      item || {
-        key: "",
-        text: "",
-      }
-    );
+    dispatch(setRoleType(item?.text));
   };
 
   return (
     <div className="welcome-header">
-      <div style={{ display: "flex", marginTop: "10px" }}>
+      <div style={{ display: "flex", }}>
         {children}
         <div>
           <Dropdown
             options={rolesOption}
             onChange={handleRoles}
-            selectedKey={role ? role.key : "employee"}
-            // defaultSelectedKey={roles ? roles.key : "employee"}
+            selectedKey={rolesOption.find(item => item.text === roleType)?.key}
             className="rolesDropDown"
             styles={dropdownStyles}
-            style={{ marginLeft: "2rem" }}
+            style={{ marginLeft: "2rem", marginTop:"10px" }}
           />
         </div>
       </div>

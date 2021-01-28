@@ -18,7 +18,6 @@ import { useHistory } from "react-router-dom";
 import { fetchEmployeeData } from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { Pagination } from "@uifabric/experiments";
-import { roleType } from "../../redux/actions/roleType";
 
 function GoalSetting(props: any) {
   const dispatch = useDispatch();
@@ -150,8 +149,8 @@ function GoalSetting(props: any) {
       key: "02",
       name: "Action",
       fieldName: "action",
-      minWidth: 110,
-      maxWidth: 140,
+      minWidth: 80,
+      maxWidth: 110,
       isRowHeader: true,
       onRender: (item) => (
         <div>
@@ -176,7 +175,7 @@ function GoalSetting(props: any) {
       name: "Employee ID",
       fieldName: "employee_id",
       minWidth: 50,
-      maxWidth: 100,
+      maxWidth: 90,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
@@ -186,7 +185,7 @@ function GoalSetting(props: any) {
       name: "Employee Name",
       fieldName: "employee_name",
       minWidth: 50,
-      maxWidth: 140,
+      maxWidth: 120,
       isRowHeader: true,
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
@@ -206,7 +205,7 @@ function GoalSetting(props: any) {
       name: "Manager Name",
       fieldName: "manager_name",
       minWidth: 50,
-      maxWidth: 140,
+      maxWidth: 100,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
@@ -216,7 +215,7 @@ function GoalSetting(props: any) {
       name: "Status",
       fieldName: "status",
       minWidth: 50,
-      maxWidth: 160,
+      maxWidth: 170,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
