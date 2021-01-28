@@ -30,11 +30,8 @@ function GoalSetting(props: any) {
   const [limitPageLength, setLimitPageLength] = useState(2);
   const [limitStart, setLimitSTart] = useState(0);
 
-  const employee = useSelector(
-    (state: RootState) => state.employeeList
-  );
-  
-  
+  const employee = useSelector((state: RootState) => state.employeeList);
+
   const { employeeList, isLoading, total_count, count } = employee;
   console.log("employeeList=> ", employeeList);
 
@@ -114,9 +111,10 @@ function GoalSetting(props: any) {
     { key: "key3", text: "2019-2020" },
   ];
   const statusOption: IDropdownOption[] = [
-    { key: "key1", text: "Pending" },
-    { key: "key2", text: "Success" },
-    { key: "key3", text: "Failed" },
+    { key: "key1", text: "Pending with Employee" },
+    { key: "key2", text: "Pending with Manager" },
+    { key: "key3", text: "Pending with Reviewer" },
+    { key: "key4", text: "Completed" },
   ];
 
   const operations = [
@@ -186,16 +184,16 @@ function GoalSetting(props: any) {
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
-    {
-      key: "05",
-      name: "Manager ID",
-      fieldName: "manager_id",
-      minWidth: 50,
-      maxWidth: 100,
-      isSortedDescending: false,
-      isRowHeader: true,
-      isResizable: false,
-    },
+    // {
+    //   key: "05",
+    //   name: "Manager ID",
+    //   fieldName: "manager_id",
+    //   minWidth: 50,
+    //   maxWidth: 100,
+    //   isSortedDescending: false,
+    //   isRowHeader: true,
+    //   isResizable: false,
+    // },
     {
       key: "06",
       name: "Manager Name",
@@ -330,15 +328,6 @@ function GoalSetting(props: any) {
             }}
           >
             <Dropdown
-              label="Period"
-              placeholder="Select"
-              options={periodOption}
-              className="reviewFrequency"
-              onChange={onChangePeriod}
-              style={{ padding: "0px" }}
-              styles={dropdownStyles}
-            />
-            <Dropdown
               label="Status"
               placeholder="Select"
               options={statusOption}
@@ -347,6 +336,15 @@ function GoalSetting(props: any) {
               style={{ padding: "0px" }}
               styles={dropdownStyles}
             />
+            {/* <Dropdown
+              label="Period"
+              placeholder="Select"
+              options={periodOption}
+              className="reviewFrequency"
+              onChange={onChangePeriod}
+              style={{ padding: "0px" }}
+              styles={dropdownStyles}
+            /> */}
           </div>
           <DetailsList
             styles={listStyle}
@@ -356,20 +354,20 @@ function GoalSetting(props: any) {
             selectionMode={0}
           />
           <div className="pagination-style">
-          <Pagination
-            format="buttons"
-            // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-            // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
-            selectedPageIndex={currentPage}
-            pageCount={Math.ceil(total_count/limitPageLength)}
-            itemsPerPage={limitPageLength}
-            totalItemCount={total_count}
-            onPageChange={(page) => {
-              setLimitSTart(page * limitPageLength);
-              setCurentPage(page);
-            }}
-          />
-        </div>
+            <Pagination
+              format="buttons"
+              // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+              // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+              selectedPageIndex={currentPage}
+              pageCount={Math.ceil(total_count / limitPageLength)}
+              itemsPerPage={limitPageLength}
+              totalItemCount={total_count}
+              onPageChange={(page) => {
+                setLimitSTart(page * limitPageLength);
+                setCurentPage(page);
+              }}
+            />
+          </div>
           {/* <div style={{ marginTop: "10px" }}>
             <PrimaryButton
               text="Export"

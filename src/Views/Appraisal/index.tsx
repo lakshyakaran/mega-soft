@@ -41,7 +41,7 @@ import { useHistory } from "react-router-dom";
 function Appraisal(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
   const [limitStart, setLimitSTart] = useState(0);
-  const [limitPageLength, setLimitPageLength] = useState(10);
+  const [limitPageLength, setLimitPageLength] = useState(5);
   const [orderBy, setOrderBy] = useState("asc");
   const [orderByField, setOrderByField] = useState("id");
   const [filtersById, setFiltersById] = useState("");
@@ -51,7 +51,6 @@ function Appraisal(props: any) {
   const appraisal = useSelector((state: RootState) => state.appraisal);
   const { appraisalList, isLoading, count, total_count } = appraisal;
 
-  
   console.log("data apppp=>", appraisalList);
   useEffect((): void => {
     const filters = [];
@@ -536,7 +535,7 @@ function Appraisal(props: any) {
             // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
             selectedPageIndex={currentPage}
             // pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
-            pageCount={Math.ceil(total_count/limitPageLength)}
+            pageCount={Math.ceil(total_count / limitPageLength)}
             // itemsCount
             itemsPerPage={limitPageLength}
             // itemsPerPage={appraisalList.count}

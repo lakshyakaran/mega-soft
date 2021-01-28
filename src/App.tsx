@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Navigation from "./Navigation";
-import Admin from "./Views/Appraisal";
+import Appraisal from "./Views/Appraisal";
 import AddAppraisal from "./Views/AddAppraisal";
 import UpdateAppraisal from "./Views/UpdateAppraisal";
 import AppraisalDetail from "./Views/AppraisalDetail";
@@ -15,7 +15,7 @@ function App() {
       <Navigation />
       <div className="container">
         <Switch>
-          <Route exact path="/" component={Admin} />
+          <Route exact path="/" component={Appraisal} />
           <Route exact path="/addApprisal" component={AddAppraisal} />
           {/* <Route exact path="/appraisal/add" component={Form} /> */}
           <Route
