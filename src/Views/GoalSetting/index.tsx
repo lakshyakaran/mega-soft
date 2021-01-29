@@ -157,6 +157,9 @@ function GoalSetting(props: any) {
           <PrimaryButton
             text="KRA Setting"
             allowDisabledFocus
+            onClick={() => {
+              handleKraData(item);
+            }}
             className="action-btn"
             style={{
               padding: "0px",
@@ -231,6 +234,11 @@ function GoalSetting(props: any) {
       isResizable: false,
     },
   ];
+
+  const handleKraData = (item: any) => {
+    history.push("/appraisal/goalsetting/view");
+    // history.push(`/appraisal/update/${item.id}`);
+  };
 
   const handleRoles = (
     ev?: React.FormEvent<HTMLDivElement>,

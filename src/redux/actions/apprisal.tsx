@@ -49,3 +49,24 @@ export const edit_appraisal = async (data: any) => {
     };
   }
 };
+
+export const delete_appraisal = async (data: any) => {
+  try {
+    const response = await axios({
+      url: `http://52.146.0.154/api/resource/Appraisal/${data.id}`,
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+      },
+      data: JSON.stringify(data),
+    });
+    console.log("delete api response ==>", response);
+    return await response;
+  } catch (error) {
+    return {
+      ...error,
+    };
+  }
+};

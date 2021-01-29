@@ -90,12 +90,12 @@ function UpdateAppraisal(props: any) {
       `${orderByField} ${orderBy}`,
       JSON.stringify(filters)
     )((response: any) => {
-      console.log("response=>", response);
+      // console.log("response=>", response);
       setUpdateData(response.payload[0]);
     });
   }, []);
 
-  console.log("upadetdata==>", updateData);
+  // console.log("upadetdata==>", updateData);
 
   // const appraisalList = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
   //   const updateData = appraisalList.find(item => item.id === params.appraisalId);
@@ -324,13 +324,12 @@ function UpdateAppraisal(props: any) {
       ...updateData,
       review_from: moment(updateData.review_from).format("YYYY-MM-DD"),
       appraisal_to: moment(updateData.appraisal_to).format("YYYY-MM-DD"),
-      appraisal_owner: updateData.owner,
       description: "22",
       route: "appraisal/BB00002",
     };
     // console.log("updateQuery=>", updateQuery);
     edit_appraisal(updateQuery).then((response) => {
-      console.log("response=>", response);
+      // console.log("response=>", response);
       if (response?.status === 200) {
         setSuccessModal(true);
       } else {

@@ -167,7 +167,6 @@ const navStyles: Partial<INavStyles> = {
     selectors: {
       "&.is-selected": {
         background: "#29416f",
-
       },
       "&:hover": {
         ".ms-Button": {
@@ -189,7 +188,7 @@ function Navigation() {
   const dispatch = useDispatch();
   const [doctype, setDoctype] = useState("EmployeeAppraisal");
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
-  console.log("roleType?????=>", roleType);
+  // console.log("roleType?????=>", roleType);
 
   const navigation = useSelector(
     (state: RootState) => state.navigationData.navigationData

@@ -6,6 +6,7 @@ import AddAppraisal from "./Views/AddAppraisal";
 import UpdateAppraisal from "./Views/UpdateAppraisal";
 import AppraisalDetail from "./Views/AppraisalDetail";
 import GoalSetting from "./Views/GoalSetting";
+import EmployeeDetails from "./Views/EmployeeDetails";
 
 import "./App.css";
 
@@ -16,6 +17,7 @@ function App() {
       <div className="container">
         <Switch>
           <Route exact path="/" component={Appraisal} />
+          <Route exact path="/:appraisalId" component={Appraisal} />
           <Route exact path="/addApprisal" component={AddAppraisal} />
           {/* <Route exact path="/appraisal/add" component={Form} /> */}
           <Route
@@ -29,6 +31,16 @@ function App() {
             component={AppraisalDetail}
           />
           <Route exact path="/appraisal/goalsetting" component={GoalSetting} />
+          <Route
+            exact
+            path="/appraisal/rating:employeeId"
+            component={EmployeeDetails}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view"
+            component={EmployeeDetails}
+          />
           {/* <Route exact path="appraisal/goalsetting" component={GoalSetting} /> */}
         </Switch>
       </div>

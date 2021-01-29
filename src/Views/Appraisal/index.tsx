@@ -18,6 +18,10 @@ import {
   Link,
   Spinner,
   SpinnerSize,
+  Modal,
+  IconButton,
+  IModalStyles,
+  IIconProps,
 } from "office-ui-fabric-react";
 import {
   IBreadcrumbItem,
@@ -36,8 +40,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import "./style.css";
 import { RootState } from "../../redux/reducers";
 import { fetchAppraisalData } from "../../redux/actions";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { delete_appraisal } from "../../redux/actions/apprisal";
 // import { roleType } from "../../redux/actions/roleType";
+
+interface ParamTypes {
+  appraisalId: string;
+}
 
 function Appraisal(props: any) {
   const [hasMoreRecord, setHasMoreRecord] = useState(true);
@@ -51,6 +60,8 @@ function Appraisal(props: any) {
   const dispatch = useDispatch();
   const appraisal = useSelector((state: RootState) => state.appraisal);
   const { appraisalList, isLoading, count, total_count } = appraisal;
+
+  const params = useParams<ParamTypes>();
 
   // console.log("data apppp=>", appraisalList);
   useEffect((): void => {
@@ -207,7 +218,7 @@ function Appraisal(props: any) {
           <Link
             className="link-icons"
             onClick={() => {
-              console.log("delete=>", item);
+              deleteAppraisal(item);
             }}
           >
             <DeleteIcon style={{ color: "#f04336" }} />
@@ -216,6 +227,42 @@ function Appraisal(props: any) {
       ),
     },
   ];
+
+  const [showDelete, setShowDelete] = useState(false);
+  const cancelIcon: IIconProps = { iconName: "Cancel" };
+  const theme = getTheme();
+  const iconButtonStyles = {
+    root: {
+      color: "#FFF",
+      marginLeft: "auto",
+      marginTop: "4px",
+      marginRight: "2px",
+    },
+    rootHovered: {
+      color: theme.palette.neutralDark,
+    },
+  };
+  const modalStyle: Partial<IModalStyles> = {
+    root: {},
+    main: {
+      height: "20%",
+      width: "20%",
+      backgroundColor: "#FFF",
+      // padding: "5px",
+    },
+  };
+
+  const deleteAppraisal = (item: any) => {
+    // history.push(`/${item.id}`);
+    setShowDelete(true);
+  };
+
+  const handleDeleteAppraisal = (item: any) => {
+    console.log("id to delete =>", item.appraisalId);
+    delete_appraisal(item.appraisalId).then((response) => {
+      console.log("response=>", response);
+    });
+  };
 
   const viewAppraisal = (item: any) => {
     history.push(`/appraisal/view/${item.id}`);
@@ -255,8 +302,6 @@ function Appraisal(props: any) {
       setOrderByField(column?.fieldName || "id");
     }
   }
-
-  const theme = getTheme();
 
   const controlStyles = {
     root: {
@@ -557,6 +602,55 @@ function Appraisal(props: any) {
               setCurentPage(page);
             }}
           />
+          <div>
+            <Modal
+              titleAriaId={"Title"}
+              isOpen={showDelete}
+              isBlocking={false}
+              styles={modalStyle}
+              // containerClassName={contentStyles.container}
+            >
+              <div className="modal-header">
+                <div className="modal-title">Delete</div>
+                <IconButton
+                  styles={iconButtonStyles}
+                  iconProps={cancelIcon}
+                  ariaLabel="Close popup modal"
+                  onClick={() => {
+                    setShowDelete(false);
+                  }}
+                />
+              </div>
+              <div className="modal-content-success">
+                Are you sure you want to delete this item?
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "30px",
+                }}
+              >
+                <PrimaryButton
+                  text="Delete"
+                  allowDisabledFocus
+                  onClick={handleDeleteAppraisal}
+                  disabled={false}
+                  checked={false}
+                />
+                <PrimaryButton
+                  text="Cancel"
+                  allowDisabledFocus
+                  onClick={() => {
+                    setShowDelete(false);
+                  }}
+                  style={{ marginLeft: "10px" }}
+                  disabled={false}
+                  checked={false}
+                />
+              </div>
+            </Modal>
+          </div>
         </div>
       </React.Fragment>
     );

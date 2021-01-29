@@ -19,7 +19,7 @@ export const fetchNavigationBar = (
       },
     });
     const responseBody = await response.data.message;
-    console.log("api response navigation bar =>", responseBody);
+    // console.log("api response navigation bar =>", responseBody);
     dispatch({
       type: "FETCH_NAVIGATION_DATA",
       payload: responseBody,
