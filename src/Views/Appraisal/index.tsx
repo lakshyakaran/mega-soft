@@ -235,7 +235,7 @@ function Appraisal(props: any) {
   const handleSearchClick = () => {
     setFiltersById(`${searchById}%`);
     setFiltersByDescription(`${searchByDescription}%`);
-    setFiltersByReviewFreq(`${reviewSearch?.text || ""}`);
+    setFiltersByReviewFreq(`${reviewSearch?.key || ""}`);
     setLimitSTart(0);
     setCurentPage(0);
   };
@@ -367,9 +367,9 @@ function Appraisal(props: any) {
   };
 
   const searchOptions: IDropdownOption[] = [
-    { key: "key1", text: "" },
-    { key: "key2", text: "Yearly" },
-    { key: "key3", text: "Monthly" },
+    { key: "", text: "Select" },
+    { key: "Yearly", text: "Yearly" },
+    { key: "Monthly", text: "Monthly" },
   ];
 
   // const rolesOption: IDropdownOption[] = [
