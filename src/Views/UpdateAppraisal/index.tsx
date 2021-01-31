@@ -36,10 +36,7 @@ import "./style.css";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { edit_appraisal } from "../../redux/actions/apprisal";
-import {
-  fetchAppraisalData,
-  fetchAppraisalDataById,
-} from "../../redux/actions";
+import { fetchAppraisalDataById } from "../../redux/actions/apprisal";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -89,10 +86,9 @@ function UpdateAppraisal(props: any) {
       limitPageLength,
       `${orderByField} ${orderBy}`,
       JSON.stringify(filters)
-    )((response: any) => {
-      // console.log("response=>", response);
-      setUpdateData(response.payload[0]);
-    });
+    ).then(response =>{
+      setUpdateData(response.data[0]);
+    })
   }, []);
 
   // console.log("upadetdata==>", updateData);

@@ -39,7 +39,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import "./style.css";
 import { RootState } from "../../redux/reducers";
-import { fetchAppraisalData } from "../../redux/actions";
+import { fetchAppraisalData } from "../../redux/actions/apprisal";
 import { useHistory, useParams } from "react-router-dom";
 import { delete_appraisal } from "../../redux/actions/apprisal";
 // import { roleType } from "../../redux/actions/roleType";
@@ -229,6 +229,7 @@ function Appraisal(props: any) {
   ];
 
   const [showDelete, setShowDelete] = useState(false);
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const cancelIcon: IIconProps = { iconName: "Cancel" };
   const theme = getTheme();
   const iconButtonStyles = {
@@ -252,15 +253,19 @@ function Appraisal(props: any) {
     },
   };
 
+  const [deleteItemId, setDeleteItemId] = useState(null);
+
   const deleteAppraisal = (item: any) => {
-    // history.push(`/${item.id}`);
+    setDeleteItemId(item.id);
     setShowDelete(true);
   };
 
-  const handleDeleteAppraisal = (item: any) => {
-    console.log("id to delete =>", item.appraisalId);
-    delete_appraisal(item.appraisalId).then((response) => {
+  const handleDeleteAppraisal = () => {
+    delete_appraisal(deleteItemId).then((response) => {
       console.log("response=>", response);
+      setShowDelete(false);
+      setShowDeleteSuccess(true);
+      setDeleteItemId(null);
     });
   };
 
@@ -498,19 +503,7 @@ function Appraisal(props: any) {
   // console.log("appraisal data=>>", appraisalList);
 
   const renderData = () => {
-    return isLoading ? (
-      <Spinner
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          padding: "50px",
-          color: "#344f84",
-        }}
-        size={SpinnerSize.large}
-      />
-    ) : appraisalList.length === 0 ? (
-      renderNoData()
-    ) : (
+    return (
       <React.Fragment>
         <div className="searchBarClass">
           <TextField
@@ -566,14 +559,29 @@ function Appraisal(props: any) {
                 styles={controlStyles}
               /> */}
         </div>
-        <DetailsList
-          styles={listStyle}
-          items={appraisalList}
-          className="detail-list"
-          onRenderRow={renderRow}
-          columns={columns}
-          selectionMode={0}
-        />
+        {isLoading ? (
+          <Spinner
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "50px",
+              color: "#344f84",
+            }}
+            size={SpinnerSize.large}
+          />
+        ) : appraisalList.length === 0 ? (
+          renderNoData()
+        ) : (
+          <DetailsList
+            styles={listStyle}
+            items={appraisalList}
+            className="detail-list"
+            onRenderRow={renderRow}
+            columns={columns}
+            selectionMode={0}
+          />
+        )}
+
         <div className="pagination-style">
           <Pagination
             format="buttons"
@@ -650,10 +658,50 @@ function Appraisal(props: any) {
                 />
               </div>
             </Modal>
+            <Modal
+              titleAriaId={"Title"}
+              isOpen={showDeleteSuccess}
+              isBlocking={false}
+              styles={modalStyle}
+              // containerClassName={contentStyles.container}
+            >
+              <div className="modal-header">
+                <div className="modal-title">Success</div>
+                <IconButton
+                  styles={iconButtonStyles}
+                  iconProps={cancelIcon}
+                  ariaLabel="Close popup modal"
+                  onClick={() => {
+                    setShowDeleteSuccess(false);
+                  }}
+                />
+              </div>
+              <div className="modal-content-success">
+                Item successfully Deleted.
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "30px",
+                }}
+              >
+                <PrimaryButton
+                  text="Cancel"
+                  allowDisabledFocus
+                  onClick={() => {
+                    setShowDeleteSuccess(false);
+                  }}
+                  style={{ marginLeft: "10px" }}
+                  disabled={false}
+                  checked={false}
+                />
+              </div>
+            </Modal>
           </div>
         </div>
       </React.Fragment>
-    );
+    )
   };
 
   // console.log("data=>", appraisal);

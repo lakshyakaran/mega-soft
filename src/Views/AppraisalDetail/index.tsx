@@ -19,10 +19,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import WelcomeHeader from "../../components/WelcomeHeader";
-import {
-  fetchAppraisalData,
-  fetchAppraisalDataById,
-} from "../../redux/actions";
+import { fetchAppraisalDataById } from "../../redux/actions/apprisal";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 
@@ -137,10 +134,9 @@ function AppraisalDetail(props: any) {
       limitPageLength,
       `${orderByField} ${orderBy}`,
       JSON.stringify(filters)
-    )((response: any) => {
-      //   console.log("response=>", response.payload);
-      setAppraisalDetail(response.payload[0]);
-    });
+    ).then(response =>{
+      setAppraisalDetail(response.data[0]);
+    })
   }, []);
 
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {

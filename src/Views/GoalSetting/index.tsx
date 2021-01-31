@@ -15,7 +15,7 @@ import {
   Text,
 } from "office-ui-fabric-react";
 import { useHistory } from "react-router-dom";
-import { fetchEmployeeData } from "../../redux/actions";
+import { fetchEmployeeData } from "../../redux/actions/employeeData";
 import { RootState } from "../../redux/reducers";
 import { Pagination } from "@uifabric/experiments";
 
@@ -236,8 +236,8 @@ function GoalSetting(props: any) {
   ];
 
   const handleKraData = (item: any) => {
-    history.push("/appraisal/goalsetting/view");
-    // history.push(`/appraisal/update/${item.id}`);
+    history.push(`/appraisal/goalsetting/view/${item.employee_id}`);
+    // history.push("/appraisal/goalsetting/view");
   };
 
   const handleRoles = (

@@ -17,7 +17,6 @@ function App() {
       <div className="container">
         <Switch>
           <Route exact path="/" component={Appraisal} />
-          <Route exact path="/:appraisalId" component={Appraisal} />
           <Route exact path="/addApprisal" component={AddAppraisal} />
           {/* <Route exact path="/appraisal/add" component={Form} /> */}
           <Route
@@ -31,17 +30,11 @@ function App() {
             component={AppraisalDetail}
           />
           <Route exact path="/appraisal/goalsetting" component={GoalSetting} />
-          <Route
+         <Route
             exact
-            path="/appraisal/rating:employeeId"
+            path="/appraisal/goalsetting/view/:employeeId"
             component={EmployeeDetails}
           />
-          <Route
-            exact
-            path="/appraisal/goalsetting/view"
-            component={EmployeeDetails}
-          />
-          {/* <Route exact path="appraisal/goalsetting" component={GoalSetting} /> */}
         </Switch>
       </div>
     </BrowserRouter>

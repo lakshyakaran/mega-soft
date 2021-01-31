@@ -3,7 +3,7 @@ interface type {
 }
 
 const initialState: type = {
-  roleType: window.localStorage.getItem('roleType') || "Employee",
+  roleType: window.sessionStorage.getItem('roleType') || "Employee",
 };
 
 export default function roleType(

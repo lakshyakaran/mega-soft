@@ -18,23 +18,39 @@ import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import { fetchJobHistory } from "../../redux/actions/jobHistory";
 import { RootState } from "../../redux/reducers";
+import { fetchEmployeeData } from "../../redux/actions/employeeData";
 
 interface ParamTypes {
   employeeId: string;
 }
 
 function EmployeeDetails(props: any) {
-  const dispatch = useDispatch();
-  const roleType = useSelector((state: RootState) => state.roleType.roleType);
-  const jobHistory = useSelector(
-    (state: RootState) => state.jobHistory.jobHistory
-  );
-  console.log("jobHistory==>", jobHistory);
-  useEffect((): void => {
-    dispatch(fetchJobHistory(roleType));
-  }, [roleType]);
-  const history = useHistory();
   const params = useParams<ParamTypes>();
+  const dispatch = useDispatch();
+  const [doctype] = useState("EmployeeAppraisal");
+  const [limit_start] = useState(0);
+  const [limit] = useState(10);
+  const [filtersById] = useState(params.employeeId);
+  const employee = useSelector((state: RootState) => state.employeeList);
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
+  const { employeeList, isLoading, total_count, count } = employee;
+  // console.log("employeeList===> ", employeeList.find((item:any) => item.employee_id === params.employeeId));
+  const employeeData = employeeList.find((item:any) => item.employee_id === params.employeeId);
+  const history = useHistory();
+  const [employeeDetails, setEmployeeDetails]: any = useState({})
+  useEffect((): void => {
+    dispatch(fetchEmployeeData(doctype, limit_start, limit, roleType));
+  }, [doctype, limit_start, limit, roleType]);
+  useEffect((): void => {
+    const filters = [];
+    if (filtersById) {
+      filters.push(["employee_id", "=", filtersById]);
+    }
+    fetchJobHistory(roleType, JSON.stringify(filters))
+    .then(response => {
+      setEmployeeDetails(response.data[0]);
+    })
+  }, []);
   const onBreadcrumbAppraisalClicked = () => {
     history.push("/");
   };
@@ -102,115 +118,97 @@ function EmployeeDetails(props: any) {
     return (
       <div className="form-conatiner">
         <div className="row-jobHistory">
-          <Label>Employee ID</Label>
           <TextField
+            readOnly={true}
+            value ={employeeData.employee_id}
             placeholder="Employee ID"
+            label="Employee Id"
             name="id"
             styles={textfelidStyle}
-            value={jobHistory[0].employee_id}
-            // label="Employee Id"
+            // value={jobHistory[0].employee_id}
             // onChange={onChangeInput}
             className="flexGrow"
           />
-          <Label>Employee Name</Label>
           <TextField
+            readOnly= {true}
+            value={employeeData.employee_name}
             placeholder="Employee Name"
-            // label="Employee Name"
+            label="Employee Name"
             styles={textfelidStyle}
             className="flexGrow"
             name="appraisal_description"
             // onChange={onChangeInput}
+          />
+          <TextField
+            readOnly={true}
+            value ={employeeData.designation}
+            placeholder="Designation"
+            label="Designation"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="appraisal_description"
           />
         </div>
         <div className="row-jobHistory">
-          <Label>Designation</Label>
           <TextField
-            placeholder="Employee Name"
-            // label="Employee Name"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-            // onChange={onChangeInput}
-          />
-          <Label>Date of Birth</Label>
-          <TextField
-            placeholder="Date of Birth"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-            // onChange={onChangeInput}
-          />
-        </div>
-        <div className="row-jobHistory">
-          <Label>Date of Joining</Label>
-          <TextField
-            placeholder="Date of Joining"
-            // label="Reporting Officer"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-          />
-          <Label>Location</Label>
-          <TextField
+            readOnly={true}
+            value={employeeData.location}
             placeholder="Location"
-            // label="Reporting Officer"
+            label="Reporting Officer"
             styles={textfelidStyle}
             className="flexGrow"
             name="appraisal_description"
           />
-        </div>
-        <div className="row-jobHistory">
-          <Label>Department</Label>
           <TextField
+            readOnly={true}
+            value={employeeData.department}
             placeholder="Department"
+            label="Department"
             name="id"
             // onChange={onChangeInput}
             styles={textfelidStyle}
             className="flexGrow"
           />
-          <Label>Reporting Officer</Label>
           <TextField
+            readOnly={true}
+            value={employeeData.date_of_joining}
+            placeholder="Date of Joining"
+            label="Date of Joining"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="appraisal_description"
+          />
+        </div>
+        <div className="row-jobHistory">
+          <TextField
+            readOnly={true}
+            // value={employeeData.date_of_joining}
             placeholder="Reporting Officer"
+            label="Reporting Officer"
             styles={textfelidStyle}
             className="flexGrow"
             name="appraisal_description"
             // onChange={onChangeInput}
           />
-        </div>
-        <div className="row-jobHistory">
-          <Label>Reviewer</Label>
           <TextField
+            readOnly={true}
+            value={employeeData.reviewer_name}
             placeholder="Reviewer"
+            label="Reviewer"
             name="id"
             styles={textfelidStyle}
             // onChange={onChangeInput}
             className="flexGrow"
           />
-          <Label>Counter Signing</Label>
           <TextField
-            placeholder="Reporting Officer"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-            // onChange={onChangeInput}
-          />
-        </div>
-        <div className="row-jobHistory">
-          <Label>Type</Label>
-          <TextField
-            placeholder="Type"
+            readOnly={true}
+            value={employeeData.counter_signing_name}
+            placeholder="Counter signing"
+            label="Counter signing"
             name="id"
-            // onChange={onChangeInput}
             styles={textfelidStyle}
-            className="flexGrow"
-          />
-          <Label>Period From</Label>
-          <TextField
-            placeholder="Reporting Officer"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
             // onChange={onChangeInput}
+            className="flexGrow"
           />
         </div>
         <div style={{ marginTop: "10px" }}>
