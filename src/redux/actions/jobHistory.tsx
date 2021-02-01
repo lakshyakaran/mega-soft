@@ -16,6 +16,7 @@ export const fetchJobHistory = async (role = "Employee", filters: any) => {
         "place_of_posting",
         "key_responsibilities",
         "qualifications",
+        "name",
       ]),
     },
     method: "GET",

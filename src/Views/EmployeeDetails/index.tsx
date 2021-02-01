@@ -129,6 +129,11 @@ function EmployeeDetails(props: any) {
     },
   ];
 
+
+  const updateJobhistory = (item:any) => {
+    // console.log("unique item==>", item.name)
+  }
+
   const columnsJobHistory: IColumn[] = [
     {
       key: "01",
@@ -142,7 +147,9 @@ function EmployeeDetails(props: any) {
           <Link className="link-icons" onClick={() => {}}>
             <VisibilityIcon style={{ color: "#344f84" }} />
           </Link>
-          <Link className="link-icons" onClick={() => {}}>
+          <Link className="link-icons" onClick={() => {
+           updateJobhistory(item) 
+          }}>
             <CreateIcon style={{ color: "#344f84" }} />
           </Link>
           <Link className="link-icons" onClick={() => {}}>
