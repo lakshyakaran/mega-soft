@@ -1,55 +1,80 @@
 import {
+  DetailsList,
   IBreadcrumbItem,
   IBreadcrumbStyles,
-  IPivotStyles,
-  IStyleSet,
+  IColumn,
+  IDetailsListStyles,
   ITextFieldStyles,
   Label,
+  Link,
   Pivot,
   PivotItem,
-  PivotLinkFormat,
+  PrimaryButton,
+  Stack,
   Text,
   TextField,
 } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import { fetchJobHistory } from "../../redux/actions/jobHistory";
 import { RootState } from "../../redux/reducers";
-import { fetchEmployeeData } from "../../redux/actions/employeeData";
-
+import { fetchEmployeeDataByID } from "../../redux/actions/employeeData";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import CreateIcon from "@material-ui/icons/Create";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { Pagination } from "@uifabric/experiments";
 interface ParamTypes {
   employeeId: string;
 }
 
 function EmployeeDetails(props: any) {
   const params = useParams<ParamTypes>();
-  const dispatch = useDispatch();
   const [doctype] = useState("EmployeeAppraisal");
   const [limit_start] = useState(0);
   const [limit] = useState(10);
   const [filtersById] = useState(params.employeeId);
-  const employee = useSelector((state: RootState) => state.employeeList);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
-  const { employeeList, isLoading, total_count, count } = employee;
-  // console.log("employeeList===> ", employeeList.find((item:any) => item.employee_id === params.employeeId));
-  const employeeData = employeeList.find((item:any) => item.employee_id === params.employeeId);
+
+  const [employeeData, setEmployeeData]: any = useState({});
   const history = useHistory();
-  const [employeeDetails, setEmployeeDetails]: any = useState({})
-  useEffect((): void => {
-    dispatch(fetchEmployeeData(doctype, limit_start, limit, roleType));
-  }, [doctype, limit_start, limit, roleType]);
+  const [employeeDetails, setEmployeeDetails]: any = useState({});
+
+  const [currentPage, setCurentPage] = useState(0);
+  const [limitPageLength] = useState(3);
+  const [limitStart, setLimitSTart] = useState(0);
+  const [count, setCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
       filters.push(["employee_id", "=", filtersById]);
     }
-    fetchJobHistory(roleType, JSON.stringify(filters))
-    .then(response => {
-      setEmployeeDetails(response.data[0]);
-    })
+    fetchEmployeeDataByID(
+      doctype,
+      limit_start,
+      limit,
+      roleType,
+      JSON.stringify(filters)
+    ).then((response) => {
+      setEmployeeData(response.data[0]);
+    });
+  }, [doctype, limit_start, limit, roleType]);
+
+  useEffect((): void => {
+    const filters = [];
+    if (filtersById) {
+      filters.push(["employee_id", "=", filtersById]);
+    }
+    fetchJobHistory(roleType, JSON.stringify(filters)).then((response) => {
+      // console.log("response of job history=>", response);
+      setEmployeeDetails(response.data);
+      setCount(response.count);
+      setTotalCount(response.total_count);
+    });
   }, []);
   const onBreadcrumbAppraisalClicked = () => {
     history.push("/");
@@ -88,39 +113,329 @@ function EmployeeDetails(props: any) {
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
 
-  const pivotStyles: Partial<IStyleSet<IPivotStyles>> = {
-    root: {
-      //   backgroundColor: "red",
-    },
-    linkContent: {
-      //   color: "#FFF",
-    },
-    linkIsSelected: {
-      //   "&.hover": { backgroundColor: "red" },
-      backgroundColor: "#344f84",
-      "&.is-selected": {
-        background: "#29416f",
-      },
-      selectors: {
-        ":before": {
-          height: "80px",
-        },
-      },
-    },
-  };
-
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
       //   width: "50px",
     },
   };
+
+  const operations = [
+    {
+      sno: "01",
+      action: "action1",
+      keyPerformace: "Achievement of relevant MoU target",
+      maxMarks: "",
+      measures: "",
+    },
+  ];
+
+  const columnsJobHistory: IColumn[] = [
+    {
+      key: "01",
+      name: "Action",
+      fieldName: "action",
+      minWidth: 80,
+      maxWidth: 100,
+      isRowHeader: true,
+      onRender: (item) => (
+        <div>
+          <Link className="link-icons" onClick={() => {}}>
+            <VisibilityIcon style={{ color: "#344f84" }} />
+          </Link>
+          <Link className="link-icons" onClick={() => {}}>
+            <CreateIcon style={{ color: "#344f84" }} />
+          </Link>
+          <Link className="link-icons" onClick={() => {}}>
+            <DeleteIcon style={{ color: "#f04336" }} />
+          </Link>
+        </div>
+      ),
+    },
+    // {
+    //   key: "02",
+    //   name: "Appraisal ID",
+    //   fieldName: "appraisal_id",
+    //   minWidth: 50,
+    //   maxWidth: 90,
+    //   isSortedDescending: false,
+    //   isRowHeader: true,
+    //   isResizable: false,
+    // },
+    // {
+    //   key: "03",
+    //   name: "Employee ID",
+    //   fieldName: "employee_id",
+    //   minWidth: 50,
+    //   maxWidth: 80,
+    //   isRowHeader: true,
+    //   sortDescendingAriaLabel: "Sorted Z to A",
+    //   isResizable: false,
+    // },
+    {
+      key: "06",
+      name: "Position Held",
+      fieldName: "position_held",
+      minWidth: 50,
+      maxWidth: 120,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "05",
+      name: "Place of Posting",
+      fieldName: "place_of_posting",
+      minWidth: 50,
+      maxWidth: 110,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "09",
+      name: "From Date",
+      fieldName: "from_date",
+      minWidth: 50,
+      maxWidth: 100,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "08",
+      name: "To Date",
+      fieldName: "to_date",
+      minWidth: 50,
+      maxWidth: 100,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "04",
+      name: "Key Responsibilities",
+      fieldName: "key_responsibilities",
+      minWidth: 60,
+      maxWidth: 290,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    // {
+    //   key: "07",
+    //   name: "Qualifications",
+    //   fieldName: "qualifications",
+    //   minWidth: 50,
+    //   maxWidth: 90,
+    //   isSortedDescending: false,
+    //   isRowHeader: true,
+    //   isResizable: false,
+    // },
+  ];
+
+  const columnsGoal: IColumn[] = [
+    {
+      key: "01",
+      name: "Action",
+      fieldName: "action",
+      minWidth: 80,
+      maxWidth: 250,
+      isRowHeader: true,
+      onRender: (item) => (
+        <div>
+          <Link className="link-icons" onClick={() => {}}>
+            <VisibilityIcon style={{ color: "#344f84" }} />
+          </Link>
+          <Link className="link-icons" onClick={() => {}}>
+            <CreateIcon style={{ color: "#344f84" }} />
+          </Link>
+          <Link className="link-icons" onClick={() => {}}>
+            <DeleteIcon style={{ color: "#f04336" }} />
+          </Link>
+        </div>
+      ),
+    },
+    // {
+    //   key: "02",
+    //   name: "Appraisal ID",
+    //   fieldName: "appraisal_id",
+    //   minWidth: 50,
+    //   maxWidth: 90,
+    //   isSortedDescending: false,
+    //   isRowHeader: true,
+    //   isResizable: false,
+    // },
+    {
+      key: "03",
+      name: "Key Performance Areas",
+      fieldName: "keyPerformace",
+      minWidth: 50,
+      maxWidth: 650,
+      isRowHeader: true,
+      sortDescendingAriaLabel: "Sorted Z to A",
+      isResizable: false,
+    },
+    {
+      key: "04",
+      name: "Max. Marks",
+      fieldName: "maxMarks",
+      minWidth: 60,
+      maxWidth: 100,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "05",
+      name: "Measures/Indicators",
+      fieldName: "measures",
+      minWidth: 50,
+      maxWidth: 100,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+  ];
+
+  const listStyle: Partial<IDetailsListStyles> = {
+    headerWrapper: {
+      ".root-106": {
+        backgroundColor: "#344f84",
+      },
+    },
+    root: {
+      marginTop: "10px",
+      backgroundColor: "#344f84",
+      ".ms-Viewport": {
+        minWidth: "200px",
+      },
+    },
+    contentWrapper: {
+      ".ms-FocusZone css-61 ms-DetailsHeader root-104": {
+        paddingTop: "0px",
+      },
+    },
+  };
+
+  const stackTokens = { childrenGap: 10 };
+  const renderJobHistory = () => {
+    return (
+      <div className="form-conatiner">
+        <DetailsList
+          styles={listStyle}
+          items={employeeDetails}
+          className="detail-list"
+          columns={columnsJobHistory}
+          selectionMode={0}
+        />
+        <div className="pagination-style">
+          <Pagination
+            format="buttons"
+            // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+            // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+            selectedPageIndex={currentPage}
+            pageCount={Math.ceil(totalCount / limitPageLength)}
+            itemsPerPage={limitPageLength}
+            totalItemCount={totalCount}
+            onPageChange={(page) => {
+              setLimitSTart(page * limitPageLength);
+              setCurentPage(page);
+            }}
+          />
+        </div>
+        <Stack
+          horizontal
+          tokens={stackTokens}
+          style={{ justifyContent: "flex-end" }}
+        >
+          <div
+            style={{
+              marginTop: "15px",
+            }}
+          >
+            <PrimaryButton
+              text="Add"
+              allowDisabledFocus
+              onClick={() => {
+                history.push(
+                  `/appraisal/goalsetting/view/jobhistory/${employeeData.employee_id}`
+                );
+              }}
+            />
+          </div>
+          <div
+            style={{
+              marginTop: "15px",
+            }}
+          >
+            <PrimaryButton
+              text="Cancel"
+              allowDisabledFocus
+              onClick={() => {
+                history.push("/appraisal/goalsetting");
+              }}
+            />
+          </div>
+        </Stack>
+      </div>
+    );
+  };
+
+  const renderGoals = () => {
+    return (
+      <div className="form-conatiner">
+        <DetailsList
+          styles={listStyle}
+          items={operations}
+          className="detail-list"
+          columns={columnsGoal}
+          selectionMode={0}
+        />
+        <Stack
+          horizontal
+          tokens={stackTokens}
+          style={{ justifyContent: "flex-end" }}
+        >
+          <div
+            style={{
+              marginTop: "15px",
+            }}
+          >
+            <PrimaryButton
+              text="Add"
+              allowDisabledFocus
+              onClick={() => {
+                history.push(
+                  `/appraisal/goalsetting/view/jobhistory/${employeeDetails[0].employee_id}`
+                );
+              }}
+            />
+          </div>
+          <div
+            style={{
+              marginTop: "15px",
+            }}
+          >
+            <PrimaryButton
+              text="Cancel"
+              allowDisabledFocus
+              onClick={() => {
+                history.push("/appraisal/goalsetting");
+              }}
+            />
+          </div>
+        </Stack>
+      </div>
+    );
+  };
+
   const renderEmployeeDetails = () => {
     return (
       <div className="form-conatiner">
         <div className="row-jobHistory">
           <TextField
             readOnly={true}
-            value ={employeeData.employee_id}
+            value={employeeData.employee_id}
             placeholder="Employee ID"
             label="Employee Id"
             name="id"
@@ -130,7 +445,7 @@ function EmployeeDetails(props: any) {
             className="flexGrow"
           />
           <TextField
-            readOnly= {true}
+            readOnly={true}
             value={employeeData.employee_name}
             placeholder="Employee Name"
             label="Employee Name"
@@ -141,7 +456,7 @@ function EmployeeDetails(props: any) {
           />
           <TextField
             readOnly={true}
-            value ={employeeData.designation}
+            value={employeeData.designation}
             placeholder="Designation"
             label="Designation"
             styles={textfelidStyle}
@@ -212,18 +527,23 @@ function EmployeeDetails(props: any) {
           />
         </div>
         <div style={{ marginTop: "10px" }}>
-          <Pivot styles={pivotStyles} linkFormat={PivotLinkFormat.tabs}>
-            <PivotItem headerText="Job History">
-              <Label>Pivot #1</Label>
+          <Pivot>
+            <PivotItem
+              headerButtonProps={{
+                "data-order": 1,
+                "data-title": "My Files Title",
+              }}
+              headerText="Job History"
+            >
+              {renderJobHistory()}
             </PivotItem>
-            <PivotItem headerText="Goals">
-              <Label>Pivot #2</Label>
-            </PivotItem>
-            <PivotItem headerText="Training / Development Plan">
+            <PivotItem headerText="Goals">{renderGoals()}</PivotItem>
+            <PivotItem headerText="Training/ Development Plan">
               <Label>Pivot #3</Label>
             </PivotItem>
           </Pivot>
         </div>
+        {/* <Separator /> */}
       </div>
     );
   };

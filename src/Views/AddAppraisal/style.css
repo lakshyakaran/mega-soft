@@ -57,6 +57,13 @@
     margin-top: 10px;
 }
 
+.jobHistory-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
 .flexGrow {
     flex-grow: 1;
     margin-right: 1rem;

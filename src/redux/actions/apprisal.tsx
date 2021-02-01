@@ -120,7 +120,6 @@ export const fetchAppraisalDataById = async (
   }
 };
 
-
 export const add_apprisal = async (data: any) => {
   try {
     const response = await axios({
@@ -169,7 +168,7 @@ export const delete_appraisal = async (data: any) => {
       url: `http://52.146.0.154/api/resource/Appraisal/${data}`,
       method: "DELETE",
       headers: {
-        // "Access-Control-Allow-Methods" : "GET, POST, OPTIONS, PUT, DELETE",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
         "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: " token 5ccbc7af363c163:b6060f97664d556",

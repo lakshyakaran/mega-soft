@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const fetchJobHistory = async (role = "Employee",filters: any) => {
+export const fetchJobHistory = async (role = "Employee", filters: any) => {
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/JobHistory`,
     params: {
@@ -14,6 +14,8 @@ export const fetchJobHistory = async (role = "Employee",filters: any) => {
         "to_date",
         "from_date",
         "place_of_posting",
+        "key_responsibilities",
+        "qualifications",
       ]),
     },
     method: "GET",
@@ -25,5 +27,21 @@ export const fetchJobHistory = async (role = "Employee",filters: any) => {
   });
   // console.log("fetch jobhisty api response =>", response.data);
   const responseBody = await response.data;
-  return responseBody
+  return responseBody;
+};
+
+export const add_JobHistory = async (data: any) => {
+  const response = await axios({
+    url: ` http://52.146.0.154/api/resource/JobHistory`,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "token 5ccbc7af363c163:b6060f97664d556",
+    },
+    data: JSON.stringify(data),
+  });
+  // console.log("fetch jobhisty api response =>", response.data);
+  const responseBody = await response.data;
+  return responseBody;
 };

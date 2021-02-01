@@ -28,7 +28,7 @@ import {
   IBreadcrumbStyles,
 } from "office-ui-fabric-react/lib/Breadcrumb";
 import Header from "../../Header";
-import Panel from "../../components/Panel";
+// import Panel from "../../components/Panel";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import { Pagination } from "@uifabric/experiments";
 import { connect, useDispatch, useSelector } from "react-redux";
@@ -49,7 +49,7 @@ interface ParamTypes {
 }
 
 function Appraisal(props: any) {
-  const [hasMoreRecord, setHasMoreRecord] = useState(true);
+  // const [hasMoreRecord, setHasMoreRecord] = useState(true);
   const [limitStart, setLimitSTart] = useState(0);
   const [limitPageLength, setLimitPageLength] = useState(5);
   const [orderBy, setOrderBy] = useState("asc");
@@ -326,11 +326,11 @@ function Appraisal(props: any) {
 
   const [searchById, setSearchById] = useState("");
   const [searchByDescription, setSearchByDescription] = useState("");
-  const [appraisalToSearch, setAppraisalToSearch] = useState("");
-  const [role, setRole] = useState<IDropdownOption>({
-    key: "employee",
-    text: "",
-  });
+  // const [appraisalToSearch, setAppraisalToSearch] = useState("");
+  // const [role, setRole] = useState<IDropdownOption>({
+  //   key: "employee",
+  //   text: "",
+  // });
 
   const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
     key: "",
@@ -373,29 +373,29 @@ function Appraisal(props: any) {
     );
   };
 
-  const handleRoles = (
-    ev?: React.FormEvent<HTMLDivElement>,
-    item?: IDropdownOption
-  ): void => {
-    setRole(
-      item || {
-        key: "",
-        text: "",
-      }
-    );
-  };
+  // const handleRoles = (
+  //   ev?: React.FormEvent<HTMLDivElement>,
+  //   item?: IDropdownOption
+  // ): void => {
+  //   setRole(
+  //     item || {
+  //       key: "",
+  //       text: "",
+  //     }
+  //   );
+  // };
 
-  const itemSearchApprisalTo = (
-    ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-    text?: string
-  ): void => {
-    setAppraisalToSearch(text || "");
-    // if(text === "" && searchById !== "") {
-    //   setFiltersById("");
-    //   setLimitSTart(0);
-    //   setCurentPage(0)
-    // }
-  };
+  // const itemSearchApprisalTo = (
+  //   ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+  //   text?: string
+  // ): void => {
+  //   setAppraisalToSearch(text || "");
+  //   // if(text === "" && searchById !== "") {
+  //   //   setFiltersById("");
+  //   //   setLimitSTart(0);
+  //   //   setCurentPage(0)
+  //   // }
+  // };
 
   const listStyle: Partial<IDetailsListStyles> = {
     headerWrapper: {
@@ -701,7 +701,7 @@ function Appraisal(props: any) {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   };
 
   // console.log("data=>", appraisal);

@@ -1,0 +1,372 @@
+import React, { useEffect, useState } from "react";
+import { connect, useSelector, useDispatch } from "react-redux";
+import WelcomeHeader from "../../components/WelcomeHeader";
+import Header from "../../Header";
+import { useHistory, useParams } from "react-router-dom";
+import {
+  add_JobHistory,
+  fetchJobHistory,
+} from "../../redux/actions/jobHistory";
+import { RootState } from "../../redux/reducers";
+import {
+  DatePicker,
+  getTheme,
+  IBreadcrumbItem,
+  IBreadcrumbStyles,
+  IconButton,
+  IDatePickerStyles,
+  IIconProps,
+  IModalStyles,
+  ITextFieldStyles,
+  mergeStyleSets,
+  Modal,
+  PrimaryButton,
+  Stack,
+  Text,
+  TextField,
+} from "office-ui-fabric-react";
+import moment from "moment";
+
+interface ParamTypes {
+  employeeId: string;
+}
+
+function JobHistory(props: any) {
+  const params = useParams<ParamTypes>();
+  const [filtersById] = useState(params.employeeId);
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
+  const [employeeDetails, setEmployeeDetails]: any = useState({});
+  const [jobHistoryData, setJobHistoryData] = useState({
+    position: "",
+    place: "",
+    responsibilities: "",
+    qualifications: "",
+  });
+  const [toDate, setToDate] = useState<Date | undefined>();
+  const [fromDate, setFromDate] = useState<Date | undefined>();
+  const [successModal, setSuccessModal] = useState(false);
+
+  useEffect((): void => {
+    const filters = [];
+    if (filtersById) {
+      filters.push(["employee_id", "=", filtersById]);
+    }
+    fetchJobHistory(roleType, JSON.stringify(filters)).then((response) => {
+      setEmployeeDetails(response.data[0]);
+    });
+  }, []);
+
+  const theme = getTheme();
+  const cancelIcon: IIconProps = { iconName: "Cancel" };
+  const iconButtonStyles = {
+    root: {
+      color: "#FFF",
+      marginLeft: "auto",
+      marginTop: "4px",
+      marginRight: "2px",
+    },
+    rootHovered: {
+      color: theme.palette.neutralDark,
+    },
+  };
+  const modalStyle: Partial<IModalStyles> = {
+    root: {},
+    main: {
+      height: "20%",
+      width: "20%",
+      backgroundColor: "#FFF",
+      // padding: "5px",
+    },
+  };
+
+  const datePickerStyle: Partial<IDatePickerStyles> = {
+    // root: {
+    //   width: "250px",
+    // },
+    icon: {
+      color: "rgb(111 144 220)",
+    },
+  };
+  const textfelidStyle: Partial<ITextFieldStyles> = {
+    root: {
+      //   width: "50px",
+    },
+  };
+
+  const controlClass = mergeStyleSets({
+    control: {
+      // margin: "0 0 15px 0",
+      // maxWidth: "150px",
+    },
+  });
+
+  const onChangeInput = (
+    ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    text?: string
+  ): void => {
+    const target = ev?.target as HTMLInputElement;
+    setJobHistoryData({
+      ...jobHistoryData,
+      [target.name]: target.value || "",
+    });
+  };
+
+  const onchangeToDate = (date: Date | null | undefined): void => {
+    setToDate(date || undefined);
+    // const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
+  };
+  const onchangeFromDate = (date: Date | null | undefined): void => {
+    setFromDate(date || undefined);
+    // const appraisalDate: any = moment(date).format("YYYY-MM-DD");
+  };
+
+  const history = useHistory();
+  const onBreadcrumbAppraisalClicked = () => {
+    history.push("/");
+  };
+  const onBreadcrumbGoalsettingClicked = () => {
+    history.push("/appraisal/goalsetting");
+  };
+  const itemsWithHeading: IBreadcrumbItem[] = [
+    { text: "Performance", key: "d1" },
+    {
+      text: "Appraisal",
+      key: "d2",
+      as: "h4",
+      onClick: onBreadcrumbAppraisalClicked,
+    },
+    {
+      text: "Goal Setting",
+      key: "d3",
+      as: "h4",
+      onClick: onBreadcrumbGoalsettingClicked,
+    },
+    { text: "Job History", key: "d4", isCurrentItem: true, as: "h4" },
+  ];
+  const breadCrumStyle: Partial<IBreadcrumbStyles> = {
+    root: {
+      margin: "0px",
+      padding: "0px",
+      marginTop: "-10px",
+    },
+    itemLink: {
+      fontSize: "20px",
+    },
+  };
+  const userName = props.userData.UserData[0].name;
+  const userId = props.userData.UserData[0].id;
+  const dateNow = new Date().toLocaleDateString();
+  const timeNow = new Date().toLocaleTimeString();
+
+  const [errMsgResponsibility, setErrMsgResponsibility] = useState("");
+  const [errMsgPlace, setErrMsgPlace] = useState("");
+  const [errMsgPosition, setErrMsgPosition] = useState("");
+  const [errMsgQualifications, setErrMsgQualifications] = useState("");
+
+  const handleAddJobHistory = () => {
+    if (jobHistoryData.responsibilities === "") {
+      setErrMsgResponsibility("Responsibilities is required");
+    }
+    if (jobHistoryData.place === "") {
+      setErrMsgPlace("Place is required");
+    }
+    if (jobHistoryData.position === "") {
+      setErrMsgPosition("Position is required");
+    }
+    if (jobHistoryData.qualifications === "") {
+      setErrMsgQualifications("Qualifications is required");
+    }
+    const addQuery = {
+      appraisal_id: employeeDetails.appraisal_id,
+      employee_id: employeeDetails.employee_id,
+      key_responsibilities: jobHistoryData.responsibilities,
+      place_of_posting: jobHistoryData.place,
+      position_held: jobHistoryData.position,
+      qualifications: jobHistoryData.qualifications,
+      from_date: moment(fromDate).format("YYYY-MM-DD"),
+      to_date: moment(toDate).format("YYYY-MM-DD"),
+    };
+    add_JobHistory(addQuery).then((response: any) => {
+      console.log("job added=>", response.data);
+      setSuccessModal(true);
+    });
+  };
+
+  const stackTokens = { childrenGap: 10 };
+  const renderJobHistoryForm = () => {
+    return (
+      <div className="form-conatiner">
+        <div className="jobHistory-details">
+          <TextField
+            required
+            errorMessage={errMsgPosition}
+            label="Position Held"
+            value={jobHistoryData.position}
+            placeholder="Enter your job position"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="position"
+            onChange={onChangeInput}
+          />
+          <TextField
+            required
+            errorMessage={errMsgPlace}
+            label="Place of Posting"
+            value={jobHistoryData.place}
+            placeholder="Enter your place of posting"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="place"
+            onChange={onChangeInput}
+          />
+          <div style={{ display: "flex" }}>
+            <DatePicker
+              label="From Date"
+              placeholder="Select a date"
+              className={`${controlClass.control} flexGrow`}
+              onSelectDate={onchangeFromDate}
+              value={fromDate}
+              styles={datePickerStyle}
+            />
+            <DatePicker
+              label="To Date"
+              placeholder="Select a date"
+              className={`${controlClass.control} flexGrow`}
+              onSelectDate={onchangeToDate}
+              value={toDate}
+              styles={datePickerStyle}
+            />
+          </div>
+
+          <TextField
+            required
+            errorMessage={errMsgResponsibility}
+            label="Key Responsibilities"
+            value={jobHistoryData.responsibilities}
+            placeholder="Describe your key responsibilities"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="responsibilities"
+            onChange={onChangeInput}
+          />
+          <TextField
+            required
+            errorMessage={errMsgQualifications}
+            label="Qualifications"
+            value={jobHistoryData.qualifications}
+            placeholder="Qualifications"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="qualifications"
+            onChange={onChangeInput}
+          />
+        </div>
+        <div>
+          <Modal
+            titleAriaId={"Title"}
+            isOpen={successModal}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header">
+              <div className="modal-title">Success</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setSuccessModal(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-success">Job History Added.</div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <PrimaryButton
+                text="OK"
+                allowDisabledFocus
+                onClick={() => {
+                  history.goBack();
+                }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+        </div>
+        <Stack
+          horizontal
+          tokens={stackTokens}
+          style={{ justifyContent: "flex-end" }}
+        >
+          <div
+            style={{
+              marginTop: "15px",
+            }}
+          >
+            <PrimaryButton
+              text="Add"
+              allowDisabledFocus
+              onClick={handleAddJobHistory}
+            />
+          </div>
+          <div
+            style={{
+              marginTop: "15px",
+            }}
+          >
+            <PrimaryButton
+              text="Cancel"
+              allowDisabledFocus
+              onClick={() => {
+                history.goBack();
+              }}
+            />
+          </div>
+        </Stack>
+      </div>
+    );
+  };
+
+  return (
+    <div className="view">
+      <WelcomeHeader>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "10px",
+            }}
+          >
+            <Text style={{ marginRight: "10px" }}>
+              Welcome {userName} ({userId})
+            </Text>
+            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
+              Logged In:
+            </Text>
+            <Text style={{ marginRight: "5px" }}>
+              {dateNow} {timeNow}
+            </Text>
+          </div>
+        </div>
+      </WelcomeHeader>
+      <Header item={itemsWithHeading} styles={breadCrumStyle} />
+      <div className="content">
+        <div className="data-container">{renderJobHistoryForm()}</div>
+        <div className="right-container"></div>
+      </div>
+    </div>
+  );
+}
+
+export default connect((state) => ({
+  ...state,
+}))(JobHistory);

@@ -7,6 +7,7 @@ import UpdateAppraisal from "./Views/UpdateAppraisal";
 import AppraisalDetail from "./Views/AppraisalDetail";
 import GoalSetting from "./Views/GoalSetting";
 import EmployeeDetails from "./Views/EmployeeDetails";
+import JobHistory from "./Views/JobHistory";
 
 import "./App.css";
 
@@ -30,10 +31,15 @@ function App() {
             component={AppraisalDetail}
           />
           <Route exact path="/appraisal/goalsetting" component={GoalSetting} />
-         <Route
+          <Route
             exact
             path="/appraisal/goalsetting/view/:employeeId"
             component={EmployeeDetails}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/jobhistory/:employeeId"
+            component={JobHistory}
           />
         </Switch>
       </div>
