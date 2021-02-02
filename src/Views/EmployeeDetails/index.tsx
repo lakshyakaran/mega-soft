@@ -31,6 +31,7 @@ import JobHistoryDetails from "../JobHistoryDetails";
 import { fetchGoalData } from "../../redux/actions/goal";
 interface ParamTypes {
   employeeId: string;
+  appraisalId: string;
 }
 
 function EmployeeDetails(props: any) {
@@ -39,6 +40,7 @@ function EmployeeDetails(props: any) {
   const [limit_start] = useState(0);
   const [limit] = useState(10);
   const [filtersById] = useState(params.employeeId);
+  const [filtersByApprisal] = useState(params.appraisalId);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
 
   const [employeeData, setEmployeeData]: any = useState({});
@@ -57,11 +59,30 @@ function EmployeeDetails(props: any) {
   const [goalData, setGoalData]: any = useState({});
   const [goalCount, setGoalCount] = useState(0);
   const [goalTotalCount, setGoalTotalCount] = useState(0);
+  const [tariningPlan, setTrainingPlan] = useState([{
+    development: '',
+    remark: ''
+  },{
+    development: '',
+    remark: ''
+  },{
+    development: '',
+    remark: ''
+  },{
+    development: '',
+    remark: ''
+  },{
+    development: '',
+    remark: ''
+  }]);
 
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
       filters.push(["employee_id", "=", filtersById]);
+    }
+    if (filtersByApprisal) {
+      filters.push(["appraisal_id", "=", filtersByApprisal]);
     }
     fetchEmployeeDataByID(
       doctype,
@@ -163,6 +184,13 @@ function EmployeeDetails(props: any) {
       `/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/${item.name}`
     );
   };
+
+  const handleDevelopemntChange = (index: number | undefined, value: string | undefined) => {
+    setTrainingPlan(tariningPlan.map((item, i) => index === i ? ({
+      ...item,
+      development: value || ''
+    }) : item))
+  }
 
   const columnsJobHistory: IColumn[] = [
     // {
@@ -272,12 +300,13 @@ function EmployeeDetails(props: any) {
     {
       key: "1",
       name: "S.No.",
-      fieldName: "sno",
+      // fieldName: "sno",
       minWidth: 50,
       maxWidth: 160,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
+      onRender: (item, index) => (index || 0) + 1
     },
     {
       key: "02",
@@ -288,9 +317,9 @@ function EmployeeDetails(props: any) {
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
-      onRender: (item) => (
+      onRender: (item, index) => (
         <div>
-          <TextField multiline rows={3} />
+          <TextField multiline rows={3} value={item.development} onChange={(ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text?: string) => handleDevelopemntChange(index, text)} />
         </div>
       ),
     },
@@ -301,9 +330,9 @@ function EmployeeDetails(props: any) {
       minWidth: 80,
       maxWidth: 350,
       isRowHeader: true,
-      onRender: (item) => (
+      onRender: (item, index) => (
         <div>
-          <TextField readOnly={true} multiline rows={3} />
+          <TextField readOnly={true} multiline rows={3} value={item.remark} />
         </div>
       ),
     },
@@ -526,7 +555,7 @@ function EmployeeDetails(props: any) {
               allowDisabledFocus
               onClick={() => {
                 history.push(
-                  `/appraisal/goalsetting/view/jobhistory/${employeeData.employee_id}`
+                  `/appraisal/goalsetting/view/jobhistory/${params.employeeId}/${params.appraisalId}`
                 );
               }}
             />
@@ -589,7 +618,7 @@ function EmployeeDetails(props: any) {
               allowDisabledFocus
               onClick={() => {
                 history.push(
-                  `/appraisal/goalsetting/view/addgoal/${employeeDetails[0].employee_id}`
+                  `/appraisal/goalsetting/view/addgoal/${params.employeeId}/${params.appraisalId}`
                 );
               }}
             />
@@ -617,7 +646,7 @@ function EmployeeDetails(props: any) {
       <div className="form-conatiner">
         <DetailsList
           styles={listStyle}
-          items={operations}
+          items={tariningPlan}
           className="detail-list"
           columns={columnsTraning}
           selectionMode={0}
@@ -632,7 +661,9 @@ function EmployeeDetails(props: any) {
               marginTop: "15px",
             }}
           >
-            <PrimaryButton text="Add" allowDisabledFocus onClick={() => {}} />
+            <PrimaryButton text="Add" allowDisabledFocus onClick={() => {
+              console.log("tariningPlan=> ", tariningPlan)
+            }} />
           </div>
           <div
             style={{

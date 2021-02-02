@@ -38,12 +38,12 @@ function App() {
           <Route exact path="/appraisal/goalsetting" component={GoalSetting} />
           <Route
             exact
-            path="/appraisal/goalsetting/view/:employeeId"
+            path="/appraisal/goalsetting/view/:employeeId/:appraisalId"
             component={EmployeeDetails}
           />
           <Route
             exact
-            path="/appraisal/goalsetting/view/jobhistory/:employeeId"
+            path="/appraisal/goalsetting/view/jobhistory/:employeeId/:appraisalId"
             component={JobHistory}
           />
           <Route
@@ -59,7 +59,7 @@ function App() {
           />
           <Route
             exact
-            path="/appraisal/goalsetting/view/addgoal/:employeeId"
+            path="/appraisal/goalsetting/view/addgoal/:employeeId/:appraisalId"
             component={AddGoals}
           />
           <Route

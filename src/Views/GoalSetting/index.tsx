@@ -237,7 +237,7 @@ function GoalSetting(props: any) {
   ];
 
   const handleKraData = (item: any) => {
-    history.push(`/appraisal/goalsetting/view/${item.employee_id}`);
+    history.push(`/appraisal/goalsetting/view/${item.employee_id}/${item.appraisal_id}`);
     // history.push("/appraisal/goalsetting/view");
   };
 
