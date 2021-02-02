@@ -8,6 +8,11 @@ import AppraisalDetail from "./Views/AppraisalDetail";
 import GoalSetting from "./Views/GoalSetting";
 import EmployeeDetails from "./Views/EmployeeDetails";
 import JobHistory from "./Views/JobHistory";
+import UpdateJobHistory from "./Views/UpdateJobHistory";
+import JobHistoryDetails from "./Views/JobHistoryDetails";
+import AddGoals from "./Views/AddGoals";
+import UpdateGoals from "./Views/UpdateGoals";
+import GoalDetails from "./Views/GoalDetails";
 
 import "./App.css";
 
@@ -40,6 +45,32 @@ function App() {
             exact
             path="/appraisal/goalsetting/view/jobhistory/:employeeId"
             component={JobHistory}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/jobhistory/updateJobHistory/:name"
+            component={UpdateJobHistory}
+          />
+
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/:name"
+            component={JobHistoryDetails}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/addgoal/:employeeId"
+            component={AddGoals}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/goals/updategoal/:name"
+            component={UpdateGoals}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/goal/goaldetail/:name"
+            component={GoalDetails}
           />
         </Switch>
       </div>

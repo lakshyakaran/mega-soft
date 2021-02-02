@@ -64,6 +64,12 @@
     margin-top: 10px;
 }
 
+.goal-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
 .flexGrow {
     flex-grow: 1;
     margin-right: 1rem;

@@ -145,34 +145,7 @@ function GoalSetting(props: any) {
     //   sortDescendingAriaLabel: "Sorted Z to A",
     //   isResizable: false,
     // },
-    {
-      key: "02",
-      name: "Action",
-      fieldName: "action",
-      minWidth: 80,
-      maxWidth: 110,
-      isRowHeader: true,
-      onRender: (item) => (
-        <div>
-          <PrimaryButton
-            text="KRA Setting"
-            allowDisabledFocus
-            onClick={() => {
-              handleKraData(item);
-            }}
-            className="action-btn"
-            style={{
-              padding: "0px",
-              fontSize: "0.75rem",
-              height: "24px",
-              borderRadius: "3px",
-            }}
-            disabled={false}
-            checked={false}
-          />
-        </div>
-      ),
-    },
+
     {
       key: "03",
       name: "Employee ID",
@@ -228,10 +201,38 @@ function GoalSetting(props: any) {
       name: "Appraisal Type",
       fieldName: "appraisal_type",
       minWidth: 50,
-      maxWidth: 160,
+      maxWidth: 260,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
+    },
+    {
+      key: "02",
+      name: "Action",
+      fieldName: "action",
+      minWidth: 80,
+      maxWidth: 110,
+      isRowHeader: true,
+      onRender: (item) => (
+        <div>
+          <PrimaryButton
+            text="KRA Setting"
+            allowDisabledFocus
+            onClick={() => {
+              handleKraData(item);
+            }}
+            className="action-btn"
+            style={{
+              padding: "0px",
+              fontSize: "0.75rem",
+              height: "24px",
+              borderRadius: "3px",
+            }}
+            disabled={false}
+            checked={false}
+          />
+        </div>
+      ),
     },
   ];
 

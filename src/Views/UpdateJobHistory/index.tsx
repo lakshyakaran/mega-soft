@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import {
   add_JobHistory,
   fetchJobHistory,
+  update_JobHistory,
 } from "../../redux/actions/jobHistory";
 import { RootState } from "../../redux/reducers";
 import {
@@ -28,12 +29,12 @@ import {
 import moment from "moment";
 
 interface ParamTypes {
-  employeeId: string;
+  name: string;
 }
 
-function JobHistory(props: any) {
+function UpdateJobHistory(props: any) {
   const params = useParams<ParamTypes>();
-  const [filtersById] = useState(params.employeeId);
+  const [filtersById] = useState(params.name);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const [employeeDetails, setEmployeeDetails]: any = useState({});
   const [jobHistoryData, setJobHistoryData] = useState({
@@ -46,14 +47,16 @@ function JobHistory(props: any) {
   const [fromDate, setFromDate] = useState<Date | undefined>();
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
+  const [jobHistoryUpdateData, setJobHistoryUpdateData]: any = useState({});
 
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
-      filters.push(["employee_id", "=", filtersById]);
+      filters.push(["name", "=", filtersById]);
     }
     fetchJobHistory(roleType, JSON.stringify(filters)).then((response) => {
-      setEmployeeDetails(response.data[0]);
+      //   console.log("update response =>.>>>", response.data);
+      setJobHistoryUpdateData(response.data[0]);
     });
   }, []);
 
@@ -106,8 +109,8 @@ function JobHistory(props: any) {
     text?: string
   ): void => {
     const target = ev?.target as HTMLInputElement;
-    setJobHistoryData({
-      ...jobHistoryData,
+    setJobHistoryUpdateData({
+      ...jobHistoryUpdateData,
       [target.name]: target.value || "",
     });
   };
@@ -128,6 +131,9 @@ function JobHistory(props: any) {
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");
   };
+  const jobHistoryClicked = () => {
+    history.goBack();
+  };
   const itemsWithHeading: IBreadcrumbItem[] = [
     { text: "Performance", key: "d1" },
     {
@@ -142,7 +148,8 @@ function JobHistory(props: any) {
       as: "h4",
       onClick: onBreadcrumbGoalsettingClicked,
     },
-    { text: "Job History", key: "d4", isCurrentItem: true, as: "h4" },
+    { text: "Job History", key: "d4", as: "h4", onClick: jobHistoryClicked },
+    { text: "Update Job History", key: "d5", isCurrentItem: true, as: "h4" },
   ];
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
     root: {
@@ -164,30 +171,25 @@ function JobHistory(props: any) {
   const [errMsgPosition, setErrMsgPosition] = useState("");
   const [errMsgQualifications, setErrMsgQualifications] = useState("");
 
-  const handleAddJobHistory = () => {
-    if (jobHistoryData.responsibilities === "") {
+  const handleUpdateJobHistory = () => {
+    if (jobHistoryUpdateData.responsibilities === "") {
       setErrMsgResponsibility("Key Responsibilities is required");
     }
-    if (jobHistoryData.place === "") {
-      setErrMsgPlace("Place of posting is required");
+    if (jobHistoryUpdateData.place === "") {
+      setErrMsgPlace("Place of Posting is required");
     }
-    if (jobHistoryData.position === "") {
-      setErrMsgPosition("Position held is required");
+    if (jobHistoryUpdateData.position === "") {
+      setErrMsgPosition("Position Held is required");
     }
-    if (jobHistoryData.qualifications === "") {
+    if (jobHistoryUpdateData.qualifications === "") {
       setErrMsgQualifications("Qualifications is required");
     }
-    const addQuery = {
-      appraisal_id: employeeDetails.appraisal_id,
-      employee_id: employeeDetails.employee_id,
-      key_responsibilities: jobHistoryData.responsibilities,
-      place_of_posting: jobHistoryData.place,
-      position_held: jobHistoryData.position,
-      qualifications: jobHistoryData.qualifications,
-      from_date: moment(fromDate).format("YYYY-MM-DD"),
-      to_date: moment(toDate).format("YYYY-MM-DD"),
+    const updateQuery = {
+      ...jobHistoryUpdateData,
+      from_date: moment(jobHistoryUpdateData.from_date).format("YYYY-MM-DD"),
+      to_date: moment(jobHistoryUpdateData.to_date).format("YYYY-MM-DD"),
     };
-    add_JobHistory(addQuery).then((response: any) => {
+    update_JobHistory(updateQuery).then((response: any) => {
       if (response.status === 200) {
         setSuccessModal(true);
       } else {
@@ -205,11 +207,11 @@ function JobHistory(props: any) {
             required
             errorMessage={errMsgPosition}
             label="Position Held"
-            value={jobHistoryData.position}
+            value={jobHistoryUpdateData.position_held}
             placeholder="Enter your job position"
             styles={textfelidStyle}
             className="flexGrow"
-            name="position"
+            name="position_held"
             onChange={onChangeInput}
           />
           <div style={{ display: "flex" }}>
@@ -217,11 +219,11 @@ function JobHistory(props: any) {
               required
               errorMessage={errMsgPlace}
               label="Place of Posting"
-              value={jobHistoryData.place}
+              value={jobHistoryUpdateData.place_of_posting}
               placeholder="Enter your place of posting"
               styles={textfelidStyle}
               className="flexGrow"
-              name="place"
+              name="place_of_posting"
               onChange={onChangeInput}
             />
             <DatePicker
@@ -229,8 +231,13 @@ function JobHistory(props: any) {
               label="From Date"
               placeholder="Select a date"
               className={`${controlClass.control} flexGrow`}
-              onSelectDate={onchangeFromDate}
-              value={fromDate}
+              value={new Date(jobHistoryUpdateData.from_date)}
+              onSelectDate={(date) =>
+                setJobHistoryUpdateData({
+                  ...jobHistoryUpdateData,
+                  from_date: date,
+                })
+              }
               styles={datePickerStyle}
               // textField={{ errorMessage: "Form date is required" }}
             />
@@ -239,8 +246,13 @@ function JobHistory(props: any) {
               label="To Date"
               placeholder="Select a date"
               className={`${controlClass.control} flexGrow`}
-              onSelectDate={onchangeToDate}
-              value={toDate}
+              value={new Date(jobHistoryUpdateData.to_date)}
+              onSelectDate={(date) =>
+                setJobHistoryUpdateData({
+                  ...jobHistoryUpdateData,
+                  to_date: date,
+                })
+              }
               // textField={{ errorMessage = { errMsgPlace } }}
               styles={datePickerStyle}
             />
@@ -250,18 +262,18 @@ function JobHistory(props: any) {
             required
             errorMessage={errMsgResponsibility}
             label="Key Responsibilities"
-            value={jobHistoryData.responsibilities}
+            value={jobHistoryUpdateData.key_responsibilities}
             placeholder="Describe your key responsibilities"
             styles={textfelidStyle}
             className="flexGrow"
-            name="responsibilities"
+            name="key_responsibilities"
             onChange={onChangeInput}
           />
           <TextField
             required
             errorMessage={errMsgQualifications}
             label="Qualifications"
-            value={jobHistoryData.qualifications}
+            value={jobHistoryUpdateData.qualifications}
             placeholder="Qualifications"
             styles={textfelidStyle}
             className="flexGrow"
@@ -288,7 +300,7 @@ function JobHistory(props: any) {
                 }}
               />
             </div>
-            <div className="modal-content-success">Job History Added.</div>
+            <div className="modal-content-success">Job History Updated.</div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PrimaryButton
                 text="OK"
@@ -346,9 +358,9 @@ function JobHistory(props: any) {
             }}
           >
             <PrimaryButton
-              text="Add"
+              text="Update"
               allowDisabledFocus
-              onClick={handleAddJobHistory}
+              onClick={handleUpdateJobHistory}
             />
           </div>
           <div
@@ -410,4 +422,4 @@ function JobHistory(props: any) {
 
 export default connect((state) => ({
   ...state,
-}))(JobHistory);
+}))(UpdateJobHistory);

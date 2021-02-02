@@ -26,6 +26,9 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Pagination } from "@uifabric/experiments";
+import jobHistory from "../../redux/reducers/jobHistory";
+import JobHistoryDetails from "../JobHistoryDetails";
+import { fetchGoalData } from "../../redux/actions/goal";
 interface ParamTypes {
   employeeId: string;
 }
@@ -43,10 +46,17 @@ function EmployeeDetails(props: any) {
   const [employeeDetails, setEmployeeDetails]: any = useState({});
 
   const [currentPage, setCurentPage] = useState(0);
-  const [limitPageLength] = useState(3);
+  const [currentPageGoal, setCurentPageGoal] = useState(0);
+  const [limitPageLength] = useState(5);
+  const [limitPageLengthGoal] = useState(5);
   const [limitStart, setLimitSTart] = useState(0);
+  const [limitStartGoal, setLimitSTartGoal] = useState(0);
   const [count, setCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+  const [orderBy, setOrderBy] = useState("order_no asc");
+  const [goalData, setGoalData]: any = useState({});
+  const [goalCount, setGoalCount] = useState(0);
+  const [goalTotalCount, setGoalTotalCount] = useState(0);
 
   useEffect((): void => {
     const filters = [];
@@ -69,13 +79,36 @@ function EmployeeDetails(props: any) {
     if (filtersById) {
       filters.push(["employee_id", "=", filtersById]);
     }
-    fetchJobHistory(roleType, JSON.stringify(filters)).then((response) => {
+    fetchJobHistory(
+      roleType,
+      JSON.stringify(filters),
+      limitStart,
+      limitPageLength
+    ).then((response) => {
       // console.log("response of job history=>", response);
       setEmployeeDetails(response.data);
       setCount(response.count);
       setTotalCount(response.total_count);
     });
-  }, []);
+  }, [roleType, limitStart, limitPageLength]);
+
+  useEffect((): void => {
+    const filters = [];
+    if (filtersById) {
+      filters.push(["employee_id", "=", filtersById]);
+    }
+    fetchGoalData(
+      limitStartGoal,
+      limitPageLengthGoal,
+      orderBy,
+      JSON.stringify(filters)
+    ).then((response) => {
+      // console.log("response of Goal===>", response);
+      setGoalData(response.data);
+      setGoalCount(response.count);
+      setGoalTotalCount(response.total_count);
+    });
+  }, [limitStartGoal, limitPageLengthGoal]);
   const onBreadcrumbAppraisalClicked = () => {
     history.push("/");
   };
@@ -119,45 +152,19 @@ function EmployeeDetails(props: any) {
     },
   };
 
-  const operations = [
-    {
-      sno: "01",
-      action: "action1",
-      keyPerformace: "Achievement of relevant MoU target",
-      maxMarks: "",
-      measures: "",
-    },
-  ];
+  const updateJobhistory = (item: any) => {
+    history.push(
+      `/appraisal/goalsetting/view/jobhistory/updateJobHistory/${item.name}`
+    );
+  };
 
-
-  const updateJobhistory = (item:any) => {
-    // console.log("unique item==>", item.name)
-  }
+  const jobHistoryDetails = (item: any) => {
+    history.push(
+      `/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/${item.name}`
+    );
+  };
 
   const columnsJobHistory: IColumn[] = [
-    {
-      key: "01",
-      name: "Action",
-      fieldName: "action",
-      minWidth: 80,
-      maxWidth: 100,
-      isRowHeader: true,
-      onRender: (item) => (
-        <div>
-          <Link className="link-icons" onClick={() => {}}>
-            <VisibilityIcon style={{ color: "#344f84" }} />
-          </Link>
-          <Link className="link-icons" onClick={() => {
-           updateJobhistory(item) 
-          }}>
-            <CreateIcon style={{ color: "#344f84" }} />
-          </Link>
-          <Link className="link-icons" onClick={() => {}}>
-            <DeleteIcon style={{ color: "#f04336" }} />
-          </Link>
-        </div>
-      ),
-    },
     // {
     //   key: "02",
     //   name: "Appraisal ID",
@@ -223,37 +230,34 @@ function EmployeeDetails(props: any) {
       name: "Key Responsibilities",
       fieldName: "key_responsibilities",
       minWidth: 60,
-      maxWidth: 290,
+      maxWidth: 350,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
     },
-    // {
-    //   key: "07",
-    //   name: "Qualifications",
-    //   fieldName: "qualifications",
-    //   minWidth: 50,
-    //   maxWidth: 90,
-    //   isSortedDescending: false,
-    //   isRowHeader: true,
-    //   isResizable: false,
-    // },
-  ];
-
-  const columnsGoal: IColumn[] = [
     {
       key: "01",
       name: "Action",
       fieldName: "action",
       minWidth: 80,
-      maxWidth: 250,
+      maxWidth: 100,
       isRowHeader: true,
       onRender: (item) => (
         <div>
-          <Link className="link-icons" onClick={() => {}}>
+          <Link
+            className="link-icons"
+            onClick={() => {
+              jobHistoryDetails(item);
+            }}
+          >
             <VisibilityIcon style={{ color: "#344f84" }} />
           </Link>
-          <Link className="link-icons" onClick={() => {}}>
+          <Link
+            className="link-icons"
+            onClick={() => {
+              updateJobhistory(item);
+            }}
+          >
             <CreateIcon style={{ color: "#344f84" }} />
           </Link>
           <Link className="link-icons" onClick={() => {}}>
@@ -262,47 +266,204 @@ function EmployeeDetails(props: any) {
         </div>
       ),
     },
-    // {
-    //   key: "02",
-    //   name: "Appraisal ID",
-    //   fieldName: "appraisal_id",
-    //   minWidth: 50,
-    //   maxWidth: 90,
-    //   isSortedDescending: false,
-    //   isRowHeader: true,
-    //   isResizable: false,
-    // },
+  ];
+
+  const columnsTraning: IColumn[] = [
+    {
+      key: "1",
+      name: "S.No.",
+      fieldName: "sno",
+      minWidth: 50,
+      maxWidth: 160,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "02",
+      name: "Development Plan/Training Needs",
+      fieldName: "key_responsibilities",
+      minWidth: 60,
+      maxWidth: 550,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+      onRender: (item) => (
+        <div>
+          <TextField multiline rows={3} />
+        </div>
+      ),
+    },
     {
       key: "03",
-      name: "Key Performance Areas",
-      fieldName: "keyPerformace",
+      name: "Remark by Appraiser",
+      fieldName: "action",
+      minWidth: 80,
+      maxWidth: 350,
+      isRowHeader: true,
+      onRender: (item) => (
+        <div>
+          <TextField readOnly={true} multiline rows={3} />
+        </div>
+      ),
+    },
+  ];
+
+  const columnsGoal: IColumn[] = [
+    {
+      key: "02",
+      name: "Order Number",
+      fieldName: "order_no",
       minWidth: 50,
-      maxWidth: 650,
+      maxWidth: 100,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "03",
+      name: "KRA",
+      fieldName: "kra",
+      minWidth: 50,
+      maxWidth: 120,
       isRowHeader: true,
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
     {
-      key: "04",
-      name: "Max. Marks",
-      fieldName: "maxMarks",
-      minWidth: 60,
-      maxWidth: 100,
+      key: "05",
+      name: "Goal",
+      fieldName: "goal",
+      minWidth: 50,
+      maxWidth: 160,
+      isMultiline: true,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
     },
     {
-      key: "05",
-      name: "Measures/Indicators",
-      fieldName: "measures",
+      key: "04",
+      name: "Goal Type",
+      fieldName: "goal_type",
+      minWidth: 60,
+      maxWidth: 80,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "06",
+      name: "Measure",
+      fieldName: "measure",
       minWidth: 50,
       maxWidth: 100,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
     },
+    {
+      key: "07",
+      name: "Weightage",
+      fieldName: "weightage",
+      minWidth: 50,
+      maxWidth: 80,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "08",
+      name: "Target",
+      fieldName: "target",
+      minWidth: 50,
+      maxWidth: 80,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "09",
+      name: "Threshold",
+      fieldName: "threshold",
+      minWidth: 50,
+      maxWidth: 80,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "10",
+      name: "Stretch",
+      fieldName: "stretch",
+      minWidth: 50,
+      maxWidth: 80,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
+      key: "01",
+      name: "Action",
+      fieldName: "action",
+      minWidth: 80,
+      maxWidth: 80,
+      isRowHeader: true,
+      onRender: (item) => (
+        <div>
+          <Link
+            className="link-icons"
+            onClick={() => {
+              goalDetails(item);
+            }}
+          >
+            <VisibilityIcon style={{ color: "#344f84" }} />
+          </Link>
+          <Link
+            className="link-icons"
+            onClick={() => {
+              updateGoals(item);
+            }}
+          >
+            <CreateIcon style={{ color: "#344f84" }} />
+          </Link>
+          <Link className="link-icons" onClick={() => {}}>
+            <DeleteIcon style={{ color: "#f04336" }} />
+          </Link>
+        </div>
+      ),
+    },
   ];
+
+  const operations = [
+    {
+      sno: "01",
+      action: "action1",
+      employeeID: "145728",
+      employeeName: "PRIYA GUPTA",
+      managerID: "124590",
+      managerName: "PINKO KUMAR",
+      status: "Pending With Employee",
+      apprisalType: "Goal Sheet",
+    },
+    {
+      sno: "02",
+      action: "action1",
+      employeeID: "145728",
+      employeeName: "PRIYA GUPTA",
+      managerID: "124590",
+      managerName: "PINKO KUMAR",
+      status: "Pending With Employee",
+      apprisalType: "Goal Sheet",
+    },
+  ];
+
+  const updateGoals = (item: any) => {
+    history.push(`/appraisal/goalsetting/view/goals/updategoal/${item.name}`);
+  };
+
+  const goalDetails = (item: any) => {
+    history.push(`/appraisal/goalsetting/view/goal/goaldetail/${item.name}`);
+  };
 
   const listStyle: Partial<IDetailsListStyles> = {
     headerWrapper: {
@@ -393,11 +554,26 @@ function EmployeeDetails(props: any) {
       <div className="form-conatiner">
         <DetailsList
           styles={listStyle}
-          items={operations}
+          items={goalData}
           className="detail-list"
           columns={columnsGoal}
           selectionMode={0}
         />
+        <div className="pagination-style">
+          <Pagination
+            format="buttons"
+            // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+            // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+            selectedPageIndex={currentPageGoal}
+            pageCount={Math.ceil(goalTotalCount / limitPageLengthGoal)}
+            itemsPerPage={limitPageLengthGoal}
+            totalItemCount={goalTotalCount}
+            onPageChange={(pageGoal) => {
+              setLimitSTartGoal(pageGoal * limitPageLengthGoal);
+              setCurentPageGoal(pageGoal);
+            }}
+          />
+        </div>
         <Stack
           horizontal
           tokens={stackTokens}
@@ -413,10 +589,50 @@ function EmployeeDetails(props: any) {
               allowDisabledFocus
               onClick={() => {
                 history.push(
-                  `/appraisal/goalsetting/view/jobhistory/${employeeDetails[0].employee_id}`
+                  `/appraisal/goalsetting/view/addgoal/${employeeDetails[0].employee_id}`
                 );
               }}
             />
+          </div>
+          <div
+            style={{
+              marginTop: "15px",
+            }}
+          >
+            <PrimaryButton
+              text="Cancel"
+              allowDisabledFocus
+              onClick={() => {
+                history.push("/appraisal/goalsetting");
+              }}
+            />
+          </div>
+        </Stack>
+      </div>
+    );
+  };
+
+  const renderTrainingDevelopment = () => {
+    return (
+      <div className="form-conatiner">
+        <DetailsList
+          styles={listStyle}
+          items={operations}
+          className="detail-list"
+          columns={columnsTraning}
+          selectionMode={0}
+        />
+        <Stack
+          horizontal
+          tokens={stackTokens}
+          style={{ justifyContent: "flex-end" }}
+        >
+          <div
+            style={{
+              marginTop: "15px",
+            }}
+          >
+            <PrimaryButton text="Add" allowDisabledFocus onClick={() => {}} />
           </div>
           <div
             style={{
@@ -476,7 +692,7 @@ function EmployeeDetails(props: any) {
             readOnly={true}
             value={employeeData.location}
             placeholder="Location"
-            label="Reporting Officer"
+            label="Location"
             styles={textfelidStyle}
             className="flexGrow"
             name="appraisal_description"
@@ -546,7 +762,7 @@ function EmployeeDetails(props: any) {
             </PivotItem>
             <PivotItem headerText="Goals">{renderGoals()}</PivotItem>
             <PivotItem headerText="Training/ Development Plan">
-              <Label>Pivot #3</Label>
+              {renderTrainingDevelopment()}
             </PivotItem>
           </Pivot>
         </div>

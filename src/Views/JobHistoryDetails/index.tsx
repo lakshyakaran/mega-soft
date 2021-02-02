@@ -25,13 +25,12 @@ import {
   Text,
   TextField,
 } from "office-ui-fabric-react";
-import moment from "moment";
 
 interface ParamTypes {
   employeeId: string;
 }
 
-function JobHistory(props: any) {
+function JobHistoryDetails(props: any) {
   const params = useParams<ParamTypes>();
   const [filtersById] = useState(params.employeeId);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
@@ -44,8 +43,6 @@ function JobHistory(props: any) {
   });
   const [toDate, setToDate] = useState<Date | undefined>();
   const [fromDate, setFromDate] = useState<Date | undefined>();
-  const [successModal, setSuccessModal] = useState(false);
-  const [failedModal, setFailedModal] = useState(false);
 
   useEffect((): void => {
     const filters = [];
@@ -164,48 +161,17 @@ function JobHistory(props: any) {
   const [errMsgPosition, setErrMsgPosition] = useState("");
   const [errMsgQualifications, setErrMsgQualifications] = useState("");
 
-  const handleAddJobHistory = () => {
-    if (jobHistoryData.responsibilities === "") {
-      setErrMsgResponsibility("Key Responsibilities is required");
-    }
-    if (jobHistoryData.place === "") {
-      setErrMsgPlace("Place of posting is required");
-    }
-    if (jobHistoryData.position === "") {
-      setErrMsgPosition("Position held is required");
-    }
-    if (jobHistoryData.qualifications === "") {
-      setErrMsgQualifications("Qualifications is required");
-    }
-    const addQuery = {
-      appraisal_id: employeeDetails.appraisal_id,
-      employee_id: employeeDetails.employee_id,
-      key_responsibilities: jobHistoryData.responsibilities,
-      place_of_posting: jobHistoryData.place,
-      position_held: jobHistoryData.position,
-      qualifications: jobHistoryData.qualifications,
-      from_date: moment(fromDate).format("YYYY-MM-DD"),
-      to_date: moment(toDate).format("YYYY-MM-DD"),
-    };
-    add_JobHistory(addQuery).then((response: any) => {
-      if (response.status === 200) {
-        setSuccessModal(true);
-      } else {
-        setFailedModal(true);
-      }
-    });
-  };
-
   const stackTokens = { childrenGap: 10 };
   const renderJobHistoryForm = () => {
     return (
       <div className="form-conatiner">
         <div className="jobHistory-details">
           <TextField
+            disabled={true}
             required
             errorMessage={errMsgPosition}
             label="Position Held"
-            value={jobHistoryData.position}
+            value={employeeDetails.position_held}
             placeholder="Enter your job position"
             styles={textfelidStyle}
             className="flexGrow"
@@ -215,9 +181,10 @@ function JobHistory(props: any) {
           <div style={{ display: "flex" }}>
             <TextField
               required
+              disabled={true}
               errorMessage={errMsgPlace}
               label="Place of Posting"
-              value={jobHistoryData.place}
+              value={employeeDetails.place_of_posting}
               placeholder="Enter your place of posting"
               styles={textfelidStyle}
               className="flexGrow"
@@ -225,32 +192,35 @@ function JobHistory(props: any) {
               onChange={onChangeInput}
             />
             <DatePicker
+              disabled={true}
               isRequired={true}
               label="From Date"
               placeholder="Select a date"
               className={`${controlClass.control} flexGrow`}
               onSelectDate={onchangeFromDate}
-              value={fromDate}
+              value={new Date(employeeDetails.from_date)}
               styles={datePickerStyle}
               // textField={{ errorMessage: "Form date is required" }}
             />
             <DatePicker
               isRequired={true}
+              disabled={true}
               label="To Date"
               placeholder="Select a date"
               className={`${controlClass.control} flexGrow`}
               onSelectDate={onchangeToDate}
-              value={toDate}
+              value={new Date(employeeDetails.to_date)}
               // textField={{ errorMessage = { errMsgPlace } }}
               styles={datePickerStyle}
             />
           </div>
 
           <TextField
+            disabled={true}
             required
             errorMessage={errMsgResponsibility}
             label="Key Responsibilities"
-            value={jobHistoryData.responsibilities}
+            value={employeeDetails.key_responsibilities}
             placeholder="Describe your key responsibilities"
             styles={textfelidStyle}
             className="flexGrow"
@@ -259,81 +229,16 @@ function JobHistory(props: any) {
           />
           <TextField
             required
+            disabled={true}
             errorMessage={errMsgQualifications}
             label="Qualifications"
-            value={jobHistoryData.qualifications}
+            value={employeeDetails.qualifications}
             placeholder="Qualifications"
             styles={textfelidStyle}
             className="flexGrow"
             name="qualifications"
             onChange={onChangeInput}
           />
-        </div>
-        <div>
-          <Modal
-            titleAriaId={"Title"}
-            isOpen={successModal}
-            isBlocking={false}
-            styles={modalStyle}
-            // containerClassName={contentStyles.container}
-          >
-            <div className="modal-header">
-              <div className="modal-title">Success</div>
-              <IconButton
-                styles={iconButtonStyles}
-                iconProps={cancelIcon}
-                ariaLabel="Close popup modal"
-                onClick={() => {
-                  setSuccessModal(false);
-                }}
-              />
-            </div>
-            <div className="modal-content-success">Job History Added.</div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <PrimaryButton
-                text="OK"
-                allowDisabledFocus
-                onClick={() => {
-                  history.goBack();
-                }}
-                disabled={false}
-                checked={false}
-              />
-            </div>
-          </Modal>
-          <Modal
-            titleAriaId={"Title failed"}
-            isOpen={failedModal}
-            isBlocking={false}
-            styles={modalStyle}
-            // containerClassName={contentStyles.container}
-          >
-            <div className="modal-header">
-              <div className="modal-title">Error</div>
-              <IconButton
-                styles={iconButtonStyles}
-                iconProps={cancelIcon}
-                ariaLabel="Close popup modal"
-                onClick={() => {
-                  setFailedModal(false);
-                }}
-              />
-            </div>
-            <div className="modal-content">
-              Somthing went wrong. Please try again
-            </div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <PrimaryButton
-                text="Go Back"
-                allowDisabledFocus
-                onClick={() => {
-                  setFailedModal(false);
-                }}
-                disabled={false}
-                checked={false}
-              />
-            </div>
-          </Modal>
         </div>
         <Stack
           horizontal
@@ -346,18 +251,7 @@ function JobHistory(props: any) {
             }}
           >
             <PrimaryButton
-              text="Add"
-              allowDisabledFocus
-              onClick={handleAddJobHistory}
-            />
-          </div>
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Cancel"
+              text="Back"
               allowDisabledFocus
               onClick={() => {
                 history.goBack();
@@ -410,4 +304,4 @@ function JobHistory(props: any) {
 
 export default connect((state) => ({
   ...state,
-}))(JobHistory);
+}))(JobHistoryDetails);

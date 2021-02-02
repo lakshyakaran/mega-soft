@@ -3,18 +3,15 @@ import { connect, useSelector, useDispatch } from "react-redux";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
-import {
-  add_JobHistory,
-  fetchJobHistory,
-} from "../../redux/actions/jobHistory";
 import { RootState } from "../../redux/reducers";
 import {
-  DatePicker,
+  Dropdown,
   getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
   IconButton,
   IDatePickerStyles,
+  IDropdownOption,
   IIconProps,
   IModalStyles,
   ITextFieldStyles,
@@ -25,35 +22,44 @@ import {
   Text,
   TextField,
 } from "office-ui-fabric-react";
-import moment from "moment";
+import { fetchGoalData, update_goals } from "../../redux/actions/goal";
 
 interface ParamTypes {
   employeeId: string;
+  name: string;
 }
 
-function JobHistory(props: any) {
+const goalOptions: IDropdownOption[] = [
+  { key: "key1", text: "Goal" },
+  { key: "key2", text: "Sub-Goal" },
+];
+
+function UpdateGoals(props: any) {
   const params = useParams<ParamTypes>();
   const [filtersById] = useState(params.employeeId);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
-  const [employeeDetails, setEmployeeDetails]: any = useState({});
-  const [jobHistoryData, setJobHistoryData] = useState({
-    position: "",
-    place: "",
-    responsibilities: "",
-    qualifications: "",
-  });
-  const [toDate, setToDate] = useState<Date | undefined>();
-  const [fromDate, setFromDate] = useState<Date | undefined>();
+  const [limitPageLength] = useState(5);
+  const [limit_start] = useState(0);
+  const [orderBy, setOrderBy] = useState("order_no asc");
+
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
+  const [goalData, setGoalData]: any = useState({});
+  const [updateGoalData, setUpdateGoalData]: any = useState({});
 
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
       filters.push(["employee_id", "=", filtersById]);
     }
-    fetchJobHistory(roleType, JSON.stringify(filters)).then((response) => {
-      setEmployeeDetails(response.data[0]);
+    fetchGoalData(
+      limit_start,
+      limitPageLength,
+      orderBy,
+      JSON.stringify(filters)
+    ).then((response) => {
+      // console.log("response of Goal===>", response);
+      setUpdateGoalData(response.data[0]);
     });
   }, []);
 
@@ -106,19 +112,10 @@ function JobHistory(props: any) {
     text?: string
   ): void => {
     const target = ev?.target as HTMLInputElement;
-    setJobHistoryData({
-      ...jobHistoryData,
+    setUpdateGoalData({
+      ...updateGoalData,
       [target.name]: target.value || "",
     });
-  };
-
-  const onchangeToDate = (date: Date | null | undefined): void => {
-    setToDate(date || undefined);
-    // const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
-  };
-  const onchangeFromDate = (date: Date | null | undefined): void => {
-    setFromDate(date || undefined);
-    // const appraisalDate: any = moment(date).format("YYYY-MM-DD");
   };
 
   const history = useHistory();
@@ -142,7 +139,7 @@ function JobHistory(props: any) {
       as: "h4",
       onClick: onBreadcrumbGoalsettingClicked,
     },
-    { text: "Job History", key: "d4", isCurrentItem: true, as: "h4" },
+    { text: "Update Goals", key: "d4", isCurrentItem: true, as: "h4" },
   ];
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
     root: {
@@ -159,35 +156,53 @@ function JobHistory(props: any) {
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
 
-  const [errMsgResponsibility, setErrMsgResponsibility] = useState("");
-  const [errMsgPlace, setErrMsgPlace] = useState("");
-  const [errMsgPosition, setErrMsgPosition] = useState("");
-  const [errMsgQualifications, setErrMsgQualifications] = useState("");
+  const [errMsgOrder, setErrMsgOrder] = useState("");
+  const [errMsgGoal, setErrMsgGoal] = useState("");
+  const [errMsgGoalType, setErrMsgGoalType] = useState("");
+  const [errMsgMeasure, setErrMsgMeasure] = useState("");
+  const [errMsgWeightage, setErrMsgWeightage] = useState("");
+  const [errMsgKra, setErrMsgKra] = useState("");
 
-  const handleAddJobHistory = () => {
-    if (jobHistoryData.responsibilities === "") {
-      setErrMsgResponsibility("Key Responsibilities is required");
-    }
-    if (jobHistoryData.place === "") {
-      setErrMsgPlace("Place of posting is required");
-    }
-    if (jobHistoryData.position === "") {
-      setErrMsgPosition("Position held is required");
-    }
-    if (jobHistoryData.qualifications === "") {
-      setErrMsgQualifications("Qualifications is required");
-    }
+  const [goalType, setGoalType] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
+
+  const onChangeGoalType = (
+    event?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setGoalType(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
+
+  const handleUpdateGoal = () => {
+    // if (goalInputData.order_no === "") {
+    //   setErrMsgOrder("Order number is required");
+    // }
+    // if (goalInputData.kra === "") {
+    //   setErrMsgKra("KRA is required");
+    // }
+    // if (goalInputData.goal === "") {
+    //   setErrMsgGoal("Goal is required");
+    // }
+    // if (goalInputData.measure === "") {
+    //   setErrMsgMeasure("Measure is required");
+    // }
+    // if (goalInputData.weightage === "") {
+    //   setErrMsgWeightage("Weightage is required");
+    // }
+    // if (goalType.text === "") {
+    //   setErrMsgGoalType("Select goal type");
+    // }
     const addQuery = {
-      appraisal_id: employeeDetails.appraisal_id,
-      employee_id: employeeDetails.employee_id,
-      key_responsibilities: jobHistoryData.responsibilities,
-      place_of_posting: jobHistoryData.place,
-      position_held: jobHistoryData.position,
-      qualifications: jobHistoryData.qualifications,
-      from_date: moment(fromDate).format("YYYY-MM-DD"),
-      to_date: moment(toDate).format("YYYY-MM-DD"),
+      ...updateGoalData,
     };
-    add_JobHistory(addQuery).then((response: any) => {
+    update_goals(addQuery).then((response: any) => {
       if (response.status === 200) {
         setSuccessModal(true);
       } else {
@@ -200,72 +215,134 @@ function JobHistory(props: any) {
   const renderJobHistoryForm = () => {
     return (
       <div className="form-conatiner">
-        <div className="jobHistory-details">
+        <div className="goal-details">
           <TextField
-            required
-            errorMessage={errMsgPosition}
-            label="Position Held"
-            value={jobHistoryData.position}
+            readOnly={true}
+            label="ID"
+            value={params.name}
             placeholder="Enter your job position"
             styles={textfelidStyle}
             className="flexGrow"
             name="position"
             onChange={onChangeInput}
           />
-          <div style={{ display: "flex" }}>
-            <TextField
-              required
-              errorMessage={errMsgPlace}
-              label="Place of Posting"
-              value={jobHistoryData.place}
-              placeholder="Enter your place of posting"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="place"
-              onChange={onChangeInput}
-            />
-            <DatePicker
-              isRequired={true}
-              label="From Date"
-              placeholder="Select a date"
-              className={`${controlClass.control} flexGrow`}
-              onSelectDate={onchangeFromDate}
-              value={fromDate}
-              styles={datePickerStyle}
-              // textField={{ errorMessage: "Form date is required" }}
-            />
-            <DatePicker
-              isRequired={true}
-              label="To Date"
-              placeholder="Select a date"
-              className={`${controlClass.control} flexGrow`}
-              onSelectDate={onchangeToDate}
-              value={toDate}
-              // textField={{ errorMessage = { errMsgPlace } }}
-              styles={datePickerStyle}
-            />
-          </div>
-
           <TextField
             required
-            errorMessage={errMsgResponsibility}
-            label="Key Responsibilities"
-            value={jobHistoryData.responsibilities}
-            placeholder="Describe your key responsibilities"
+            errorMessage={errMsgOrder}
+            label="Order Number"
+            value={updateGoalData.order_no}
+            placeholder="Enter order number"
             styles={textfelidStyle}
             className="flexGrow"
-            name="responsibilities"
+            name="order_no"
+            onChange={onChangeInput}
+          />
+          <Dropdown
+            required
+            errorMessage={errMsgGoalType}
+            label="Goal Type"
+            placeholder="Select goal type"
+            className="flexGrow"
+            selectedKey={
+              goalOptions.find((item) => item.text === updateGoalData.goal_type)
+                ?.key
+            }
+            onChange={(ev, item) =>
+              setUpdateGoalData({
+                ...updateGoalData,
+                goal_type: item?.text,
+              })
+            }
+            options={goalOptions}
+            // styles={dropdownStyles}
+          />
+          <TextField
+            disabled={updateGoalData.goal_type === "Goal" ? true : false}
+            label="Parent Goal"
+            value={updateGoalData.parent_goal_id}
+            placeholder="Enter KRA"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="parent_goal_id"
+            onChange={onChangeInput}
+          />
+        </div>
+        <div className="goal-details"></div>
+        <div>
+          <TextField
+            required
+            errorMessage={errMsgKra}
+            label="KRA"
+            value={updateGoalData.kra}
+            placeholder="Enter KRA"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="kra"
+            onChange={onChangeInput}
+          />
+          <div className="goal-details"></div>
+          <TextField
+            required
+            errorMessage={errMsgGoal}
+            label="Goal"
+            value={updateGoalData.goal}
+            placeholder="Enter Goal"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="goal"
+            onChange={onChangeInput}
+          />
+        </div>
+        <div className="goal-details">
+          <TextField
+            required
+            errorMessage={errMsgMeasure}
+            label="Measure"
+            value={updateGoalData.measure}
+            placeholder="Enter Measure"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="measure"
             onChange={onChangeInput}
           />
           <TextField
             required
-            errorMessage={errMsgQualifications}
-            label="Qualifications"
-            value={jobHistoryData.qualifications}
-            placeholder="Qualifications"
+            errorMessage={errMsgWeightage}
+            label="Weightage"
+            value={updateGoalData.weightage}
+            placeholder="Enter Weightage"
             styles={textfelidStyle}
             className="flexGrow"
-            name="qualifications"
+            name="weightage"
+            onChange={onChangeInput}
+          />
+          <TextField
+            label="Target"
+            value={updateGoalData.target}
+            placeholder="Enter Target"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="target"
+            onChange={onChangeInput}
+          />
+        </div>
+        <div className="goal-details">
+          <TextField
+            label="Threshold"
+            value={updateGoalData.threshold}
+            placeholder="Enter Threshold"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="threshold"
+            onChange={onChangeInput}
+          />
+          <TextField
+            label="Stretch"
+            value={updateGoalData.stretch}
+            placeholder="Enter Stretch"
+            styles={textfelidStyle}
+            className="flexGrow"
+            name="stretch"
             onChange={onChangeInput}
           />
         </div>
@@ -288,7 +365,9 @@ function JobHistory(props: any) {
                 }}
               />
             </div>
-            <div className="modal-content-success">Job History Added.</div>
+            <div className="modal-content-success">
+              Goal successfully Updated.
+            </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PrimaryButton
                 text="OK"
@@ -346,9 +425,9 @@ function JobHistory(props: any) {
             }}
           >
             <PrimaryButton
-              text="Add"
+              text="Update"
               allowDisabledFocus
-              onClick={handleAddJobHistory}
+              onClick={handleUpdateGoal}
             />
           </div>
           <div
@@ -410,4 +489,4 @@ function JobHistory(props: any) {
 
 export default connect((state) => ({
   ...state,
-}))(JobHistory);
+}))(UpdateGoals);
