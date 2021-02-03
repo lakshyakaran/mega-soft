@@ -12,7 +12,7 @@ import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setRoleType } from "../../redux/actions/roleType";
 import { RootState } from "../../redux/reducers";
-import { auth } from "../../redux/actions/auth";
+import { auth, logout } from "../../redux/actions/auth";
 
 const rolesOption: IDropdownOption[] = [
   { key: "employee", text: "Employee" },
@@ -40,9 +40,9 @@ function WelcomeHeader(props: { children: any }) {
     dispatch(setRoleType(item?.text));
   };
 
-  // const handleLogout = () => {
-  //   dispatch(auth(false));
-  // };
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className="welcome-header">
@@ -62,7 +62,7 @@ function WelcomeHeader(props: { children: any }) {
         </div>
       </div>
       <div style={{ display: "flex", padding: "10px" }}>
-        <Link>Log Out</Link>
+        <Link onClick = {handleLogout}>Log Out</Link>
         <img src={logo_ms} className="ms-logo" />
       </div>
     </div>

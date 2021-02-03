@@ -1,9 +1,32 @@
 import axios from "axios";
 
-export const auth = (item: any) => {
+export const validateLogin = () => {
+  const accessToken = sessionStorage.getItem('accessToken')
+  const user = {}
+  if(accessToken) {
+    return {
+      type: "LOGIN_SUCCESS",
+      payload: user,
+    };
+  } else {
+    return {
+      type: "LOGOUT_SUCCESS",
+    };
+  }
+}
+
+export const auth = (accessToken: any, user: any) => {
+  sessionStorage.setItem('accessToken', accessToken)
   return {
     type: "LOGIN_SUCCESS",
-    payload: item,
+    payload: user,
+  };
+};
+
+export const logout = () => {
+  sessionStorage.removeItem('accessToken')
+  return {
+    type: "LOGOUT_SUCCESS",
   };
 };
 

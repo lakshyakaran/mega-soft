@@ -19,7 +19,7 @@ function Login() {
   const handleLogin = () => {
     login().then((response) => {
       if (response.message == true) {
-        dispatch(auth(true));
+        dispatch(auth('uayuyauyuyauyuay', {}));
       }
     });
   };

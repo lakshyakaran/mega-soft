@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Navigation from "./Navigation";
 import Appraisal from "./Views/Appraisal";
 import AddAppraisal from "./Views/AddAppraisal";
@@ -15,15 +15,29 @@ import UpdateGoals from "./Views/UpdateGoals";
 import GoalDetails from "./Views/GoalDetails";
 import Login from "./Views/Login";
 
+import { validateLogin } from "./redux/actions/auth";
+
 import "./App.css";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./redux/reducers";
 
 function App(props: any) {
   // console.log("props==>", props.Auth.isLoggedIn);
+  const dispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.Auth);
+  
+  useEffect(() => {
+    dispatch(validateLogin());
+  }, [])
+
+  if(auth.isLoading) {
+    return null
+  }
+
   return (
     <BrowserRouter>
-      <Switch>
-        {props.Auth.isLoggedIn == true ? (
+      {auth.isLoggedIn == true ? (
+        <Switch>
           <div className="container">
             <Navigation />
             <Route exact path="/" component={Appraisal} />
@@ -51,20 +65,20 @@ function App(props: any) {
             />
             <Route
               exact
-              path="/appraisal/goalsetting/view/jobhistory/:employeeId/:appraisalId"
-              component={JobHistory}
-            />
-            <Route
-              exact
               path="/appraisal/goalsetting/view/jobhistory/updateJobHistory/:name"
               component={UpdateJobHistory}
             />
-
             <Route
               exact
               path="/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/:name"
               component={JobHistoryDetails}
             />
+            <Route
+              exact
+              path="/appraisal/goalsetting/view/jobhistory/:employeeId/:appraisalId"
+              component={JobHistory}
+            />
+
             <Route
               exact
               path="/appraisal/goalsetting/view/addgoal/:employeeId/:appraisalId"
@@ -81,14 +95,15 @@ function App(props: any) {
               component={GoalDetails}
             />
           </div>
-        ) : (
+        </Switch>
+      ) : (
+        <Switch>
           <Route exact path="/" component={Login} />
-        )}
-      </Switch>
+          <Route path="/*" render={() => <Redirect to="/" />} />
+        </Switch>
+      )}
     </BrowserRouter>
   );
 }
 
-export default connect((state) => ({
-  ...state,
-}))(App);
+export default App;
