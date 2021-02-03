@@ -6,6 +6,7 @@ import employeeList from "./employeeList";
 import navigationData from "./navigationData";
 import roleType from "./roleType";
 import jobHistory from "./jobHistory";
+import Auth from "./auth";
 
 const reducer = combineReducers({
   tasks,
@@ -15,6 +16,7 @@ const reducer = combineReducers({
   navigationData,
   roleType,
   jobHistory,
+  Auth,
 });
 
 export default reducer;

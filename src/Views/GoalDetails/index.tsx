@@ -22,7 +22,7 @@ import {
   Text,
   TextField,
 } from "office-ui-fabric-react";
-import { fetchGoalData } from "../../redux/actions/goal";
+import { fetchGoalData, fetchGoalDataName } from "../../redux/actions/goal";
 
 interface ParamTypes {
   employeeId: string;
@@ -37,6 +37,7 @@ const goalOptions: IDropdownOption[] = [
 function GoalDetails(props: any) {
   const params = useParams<ParamTypes>();
   const [filtersById] = useState(params.employeeId);
+  const [filtersByName] = useState(params.name);
   const [limitPageLength] = useState(5);
   //   console.log(params.name);
   const [limit_start] = useState(0);
@@ -46,16 +47,16 @@ function GoalDetails(props: any) {
 
   useEffect((): void => {
     const filters = [];
-    if (filtersById) {
-      filters.push(["employee_id", "=", filtersById]);
+    if (filtersByName) {
+      filters.push(["name", "=", filtersByName]);
     }
-    fetchGoalData(
+    fetchGoalDataName(
       limit_start,
       limitPageLength,
       orderBy,
       JSON.stringify(filters)
     ).then((response) => {
-      // console.log("response of Goal===>", response);
+      // console.log("response of Goal===>", response.data);
       setGoalDetails(response.data[0]);
     });
   }, []);

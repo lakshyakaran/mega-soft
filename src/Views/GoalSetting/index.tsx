@@ -145,6 +145,34 @@ function GoalSetting(props: any) {
     //   sortDescendingAriaLabel: "Sorted Z to A",
     //   isResizable: false,
     // },
+    {
+      key: "02",
+      name: "Action",
+      fieldName: "action",
+      minWidth: 80,
+      maxWidth: 110,
+      isRowHeader: true,
+      onRender: (item) => (
+        <div>
+          <PrimaryButton
+            text="KRA Setting"
+            allowDisabledFocus
+            onClick={() => {
+              handleKraData(item);
+            }}
+            className="action-btn"
+            style={{
+              padding: "0px",
+              fontSize: "0.75rem",
+              height: "24px",
+              borderRadius: "3px",
+            }}
+            disabled={false}
+            checked={false}
+          />
+        </div>
+      ),
+    },
 
     {
       key: "03",
@@ -206,38 +234,12 @@ function GoalSetting(props: any) {
       isRowHeader: true,
       isResizable: false,
     },
-    {
-      key: "02",
-      name: "Action",
-      fieldName: "action",
-      minWidth: 80,
-      maxWidth: 110,
-      isRowHeader: true,
-      onRender: (item) => (
-        <div>
-          <PrimaryButton
-            text="KRA Setting"
-            allowDisabledFocus
-            onClick={() => {
-              handleKraData(item);
-            }}
-            className="action-btn"
-            style={{
-              padding: "0px",
-              fontSize: "0.75rem",
-              height: "24px",
-              borderRadius: "3px",
-            }}
-            disabled={false}
-            checked={false}
-          />
-        </div>
-      ),
-    },
   ];
 
   const handleKraData = (item: any) => {
-    history.push(`/appraisal/goalsetting/view/${item.employee_id}/${item.appraisal_id}`);
+    history.push(
+      `/appraisal/goalsetting/view/${item.employee_id}/${item.appraisal_id}`
+    );
     // history.push("/appraisal/goalsetting/view");
   };
 

@@ -32,6 +32,7 @@ import { add_goals, fetchGoalData } from "../../redux/actions/goal";
 
 interface ParamTypes {
   employeeId: string;
+  appraisalId: string;
 }
 
 const goalOptions: IDropdownOption[] = [
@@ -226,8 +227,8 @@ function AddGoals(props: any) {
       setErrMsgGoalType("Select goal type");
     }
     const addQuery = {
-      appraisal_id: goalData.appraisal_id,
-      employee_id: goalData.employee_id,
+      appraisal_id: params.appraisalId,
+      employee_id: params.employeeId,
       goal_type: goalType.text,
       goal: goalInputData.goal,
       kra: goalInputData.kra,

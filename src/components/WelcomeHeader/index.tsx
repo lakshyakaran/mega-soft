@@ -12,6 +12,7 @@ import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setRoleType } from "../../redux/actions/roleType";
 import { RootState } from "../../redux/reducers";
+import { auth } from "../../redux/actions/auth";
 
 const rolesOption: IDropdownOption[] = [
   { key: "employee", text: "Employee" },
@@ -21,9 +22,7 @@ const rolesOption: IDropdownOption[] = [
 
 function WelcomeHeader(props: { children: any }) {
   const { children } = props;
-  const roleType = useSelector(
-    (state: RootState) => state.roleType.roleType
-  );
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const dispatch = useDispatch();
 
   // console.log("role.text===>", role.text);
@@ -41,18 +40,24 @@ function WelcomeHeader(props: { children: any }) {
     dispatch(setRoleType(item?.text));
   };
 
+  // const handleLogout = () => {
+  //   dispatch(auth(false));
+  // };
+
   return (
     <div className="welcome-header">
-      <div style={{ display: "flex", }}>
+      <div style={{ display: "flex" }}>
         {children}
         <div>
           <Dropdown
             options={rolesOption}
             onChange={handleRoles}
-            selectedKey={rolesOption.find(item => item.text === roleType)?.key}
+            selectedKey={
+              rolesOption.find((item) => item.text === roleType)?.key
+            }
             className="rolesDropDown"
             styles={dropdownStyles}
-            style={{ marginLeft: "2rem", marginTop:"10px" }}
+            style={{ marginLeft: "2rem", marginTop: "10px" }}
           />
         </div>
       </div>

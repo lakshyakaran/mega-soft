@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import {
   add_JobHistory,
   fetchJobHistory,
+  fetchJobHistoryByName,
 } from "../../redux/actions/jobHistory";
 import { RootState } from "../../redux/reducers";
 import {
@@ -28,11 +29,13 @@ import {
 
 interface ParamTypes {
   employeeId: string;
+  name: string;
 }
 
 function JobHistoryDetails(props: any) {
   const params = useParams<ParamTypes>();
   const [filtersById] = useState(params.employeeId);
+  const [filtersByName] = useState(params.name);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const [employeeDetails, setEmployeeDetails]: any = useState({});
   const [jobHistoryData, setJobHistoryData] = useState({
@@ -46,12 +49,14 @@ function JobHistoryDetails(props: any) {
 
   useEffect((): void => {
     const filters = [];
-    if (filtersById) {
-      filters.push(["employee_id", "=", filtersById]);
+    if (filtersByName) {
+      filters.push(["name", "=", filtersByName]);
     }
-    fetchJobHistory(roleType, JSON.stringify(filters)).then((response) => {
-      setEmployeeDetails(response.data[0]);
-    });
+    fetchJobHistoryByName(roleType, JSON.stringify(filters)).then(
+      (response) => {
+        setEmployeeDetails(response.data[0]);
+      }
+    );
   }, []);
 
   const theme = getTheme();
