@@ -64,26 +64,26 @@ export const initSideBar = function () {
     $(".nav_employee").show();
     $(".nav_manager").hide();
     $(".nav_hr_contact").hide();
-    $("#nav_employee").addClass("active");
-    $("#nav_manager").removeClass("active");
-    $("#nav_hr_contact").removeClass("active");
+    // $("#nav_employee").addClass("active");
+    // $("#nav_manager").removeClass("active");
+    // $("#nav_hr").removeClass("active");
   });
 
   $("#nav_manager").click(function () {
     $(".nav_employee").hide();
     $(".nav_manager").show();
     $(".nav_hr_contact").hide();
-    $("#nav_manager").addClass("active");
-    $("#nav_employee").removeClass("active");
-    $("#nav_hr_contact").removeClass("active");
+    // $("#nav_manager").addClass("active");
+    // $("#nav_employee").removeClass("active");
+    // $("#nav_hr").removeClass("active");
   });
 
   $("#nav_hr_contact").click(function () {
     $(".nav_employee").hide();
     $(".nav_manager").hide();
     $(".nav_hr_contact").show();
-    $("#nav_hr_contact").addClass("active");
-    $("#nav_employee").removeClass("active");
-    $("#nav_manager").removeClass("active");
+    // $("#nav_hr").addClass("active");
+    // $("#nav_employee").removeClass("active");
+    // $("#nav_manager").removeClass("active");
   });
 };

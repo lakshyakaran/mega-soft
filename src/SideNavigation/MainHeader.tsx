@@ -52,7 +52,7 @@ function MainHeader(props: any) {
             className="navbar-brand"
             href=""
             onClick={() => {
-              history.push("/");
+              history.push("/home");
             }}
           >
             <b className="logo-icon p-l-10">

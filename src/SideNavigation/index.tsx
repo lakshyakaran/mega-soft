@@ -14,10 +14,10 @@ function SideNavigation() {
   const [navData, setNavData]: any = useState();
   const [doctype, setDoctype] = useState("Appraisal");
 
-  useEffect(() => {
-    initSideBar();
-    // customSideBar();
-  }, []);
+  // useEffect(() => {
+  //   initSideBar();
+  //   customSideBar();
+  // }, []);
 
   function route2page(path: any) {
     console.log("route==>", path);
@@ -28,6 +28,8 @@ function SideNavigation() {
     sideNavigationData(doctype).then((response) => {
       console.log("side nav response", response.message);
       setNavData(response.message);
+      initSideBar();
+      customSideBar();
     });
   }, [doctype]);
 
