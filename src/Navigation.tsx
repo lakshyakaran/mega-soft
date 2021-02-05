@@ -10,10 +10,15 @@ import { useHistory, matchPath } from "react-router-dom";
 
 import hrms_logo from "./assets/img/hrms_logo.gif";
 import logo_nuage from "./assets/img/logo_nuage.png";
-import { fetchNavigationBar } from "./redux/actions/navigation";
+import {
+  fetchNavigationBar,
+  sideNavigationData,
+} from "./redux/actions/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
+import SideNavigation from "./SideNavigation";
+import MainHeader from "./SideNavigation/MainHeader";
 
 initializeIcons();
 
@@ -188,7 +193,8 @@ function Navigation() {
   const dispatch = useDispatch();
   const [doctype, setDoctype] = useState("EmployeeAppraisal");
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
-  // console.log("roleType?????=>", roleType);
+  const [navData, setNavData]: any = useState();
+  // console.log("navData?????=>", navData);
 
   const navigation = useSelector(
     (state: RootState) => state.navigationData.navigationData
@@ -198,6 +204,13 @@ function Navigation() {
   useEffect((): void => {
     dispatch(fetchNavigationBar(doctype, roleType ? roleType : "Employee"));
   }, [doctype, roleType]);
+
+  // useEffect((): void => {
+  //   sideNavigationData(doctype).then((response) => {
+  //     console.log("side nav response", response.message);
+  //     setNavData(response.message);
+  //   });
+  // }, [doctype]);
 
   let history = useHistory();
   const [selectedNavKey, setSelectedNavKey] = React.useState("");
@@ -232,20 +245,25 @@ function Navigation() {
     });
   }, [history.location.pathname]);
   return (
-    <div className="sidebar">
-      <div className="main-logo">
-        <img src={logo_nuage} />
+    <div id="main-wrapper">
+      <MainHeader />
+      <div className="sidebar left-sidebar">
+        {/* <div className="main-logo">
+          <img src={logo_nuage} />
+        </div> */}
+        <div className="footer-logo">
+          <img src={hrms_logo} />
+        </div>
+        {/* <Nav
+          onLinkClick={onLinkClick}
+          selectedKey={selectedNavKey}
+          ariaLabel="Nav basic example"
+          styles={navStyles}
+          groups={navigation.links}
+        /> */}
+        <SideNavigation />
+        {/* <div dangerouslySetInnerHTML={{ __html: navData }} /> */}
       </div>
-      <div className="footer-logo">
-        <img src={hrms_logo} />
-      </div>
-      <Nav
-        onLinkClick={onLinkClick}
-        selectedKey={selectedNavKey}
-        ariaLabel="Nav basic example"
-        styles={navStyles}
-        groups={navigation.links}
-      />
     </div>
   );
 }

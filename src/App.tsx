@@ -25,83 +25,80 @@ function App(props: any) {
   // console.log("props==>", props.Auth.isLoggedIn);
   const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.Auth);
-  
-  useEffect(() => {
-    dispatch(validateLogin());
-  }, [])
 
-  if(auth.isLoading) {
-    return null
-  }
+  // useEffect(() => {
+  //   dispatch(validateLogin());
+  // }, []);
+
+  // if (auth.isLoading) {
+  //   return null;
+  // }
 
   return (
     <BrowserRouter>
-      {auth.isLoggedIn == true ? (
-        <Switch>
-          <div className="container">
-            <Navigation />
-            <Route exact path="/" component={Appraisal} />
-            <Route exact path="/addApprisal" component={AddAppraisal} />
-            {/* <Route exact path="/appraisal/add" component={Form} /> */}
-            <Route
-              exact
-              path="/appraisal/update/:appraisalId"
-              component={UpdateAppraisal}
-            />
-            <Route
-              exact
-              path="/appraisal/view/:appraisalId"
-              component={AppraisalDetail}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting"
-              component={GoalSetting}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/:employeeId/:appraisalId"
-              component={EmployeeDetails}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/jobhistory/updateJobHistory/:name"
-              component={UpdateJobHistory}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/:name"
-              component={JobHistoryDetails}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/jobhistory/:employeeId/:appraisalId"
-              component={JobHistory}
-            />
+      {/* {auth.isLoggedIn == true ? ( */}
+      <Switch>
+        <div className="page-wrapper">
+          <Navigation />
+          <Route exact path="/" component={Login} />
+          <Route exact path="/home" component={Appraisal} />
+          <Route exact path="/addApprisal" component={AddAppraisal} />
+          {/* <Route exact path="/appraisal/add" component={Form} /> */}
+          <Route
+            exact
+            path="/appraisal/update/:appraisalId"
+            component={UpdateAppraisal}
+          />
+          <Route
+            exact
+            path="/appraisal/view/:appraisalId"
+            component={AppraisalDetail}
+          />
+          <Route exact path="/appraisal/goalsetting" component={GoalSetting} />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/:employeeId/:appraisalId"
+            component={EmployeeDetails}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/jobhistory/updateJobHistory/:name"
+            component={UpdateJobHistory}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/:name"
+            component={JobHistoryDetails}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/jobhistory/:employeeId/:appraisalId"
+            component={JobHistory}
+          />
 
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/addgoal/:employeeId/:appraisalId"
-              component={AddGoals}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/goals/updategoal/:name"
-              component={UpdateGoals}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/goal/goaldetail/:name"
-              component={GoalDetails}
-            />
-          </div>
-        </Switch>
-      ) : (
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/addgoal/:employeeId/:appraisalId"
+            component={AddGoals}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/goals/updategoal/:name"
+            component={UpdateGoals}
+          />
+          <Route
+            exact
+            path="/appraisal/goalsetting/view/goal/goaldetail/:name"
+            component={GoalDetails}
+          />
+        </div>
+      </Switch>
+      {/* ) : (
         <Switch>
           <Route exact path="/" component={Login} />
           <Route path="/*" render={() => <Redirect to="/" />} />
         </Switch>
-      )}
+      )} */}
     </BrowserRouter>
   );
 }

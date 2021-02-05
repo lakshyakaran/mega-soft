@@ -1,10 +1,15 @@
-.header {
+/* .header {
     background-color: #FFF;
     position: fixed;
     z-index: 999;
-    top: 50px;
+    top: 80px;
     width: calc(100% - 200px);
     left: 200px;
-    /* box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28); */
     height: 50px;
+    display: flex;
+    align-items: center;
+} */
+
+.header{
+    margin-top: 65px;
 }

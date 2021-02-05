@@ -32,3 +32,21 @@ export const fetchNavigationBar = (
     };
   }
 };
+
+export const sideNavigationData = async (doctype = "Appraisal") => {
+  const response = await axios({
+    url: `http://52.146.0.154/api/method/megasoft_hrms.pm.pm_collapsible_menu`,
+    params: {
+      doctype,
+    },
+    method: "GET",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Accept: "multipart/form-data",
+      Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+    },
+  });
+  // console.log("side nav api response =>", response.data);
+  const responseBody = await response.data;
+  return responseBody;
+};

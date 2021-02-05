@@ -86,9 +86,9 @@ function UpdateAppraisal(props: any) {
       limitPageLength,
       `${orderByField} ${orderBy}`,
       JSON.stringify(filters)
-    ).then(response =>{
+    ).then((response) => {
       setUpdateData(response.data[0]);
-    })
+    });
   }, []);
 
   // console.log("upadetdata==>", updateData);
@@ -629,7 +629,7 @@ function UpdateAppraisal(props: any) {
 
   return (
     <div className="view">
-      <WelcomeHeader>
+      {/* <WelcomeHeader>
         <div
           style={{
             display: "flex",
@@ -648,13 +648,7 @@ function UpdateAppraisal(props: any) {
             <Text style={{ marginRight: "10px" }}>
               Welcome {userName} ({userId})
             </Text>
-            {/* <Dropdown
-              options={rolesOption}
-              onChange={handleRoles}
-              className="rolesDropDown"
-              styles={dropdownStyles}
-              style={{ marginLeft: "2rem" }}
-            /> */}
+            
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
@@ -663,11 +657,11 @@ function UpdateAppraisal(props: any) {
             </Text>
           </div>
         </div>
-      </WelcomeHeader>
+      </WelcomeHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderUpdateForm()}</div>
-        <div className="right-container"></div>
+        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );

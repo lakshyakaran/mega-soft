@@ -16,13 +16,17 @@ function Login() {
     },
   };
 
-  const handleLogin = () => {
-    login().then((response) => {
-      if (response.message == true) {
-        dispatch(auth('uayuyauyuyauyuay', {}));
-      }
-    });
-  };
+  // const handleLogin = () => {
+  //   login().then((response) => {
+  //     if (response.message == true) {
+  //       dispatch(auth('uayuyauyuyauyuay', {}));
+  //     }
+  //   });
+  // };
+
+  // const handleLogin = () => {
+  //    window.open( 'https://id.nuagebiz.tech/auth/realms/megasoft/protocol/openid-connect/auth?redirect_uri=http%3A%2F%2Flocalhost%3A3000&state=eyJzaXRlIjogImh0dHA6Ly81Mi4xNDYuMC4xNTQ6ODAwMSIsICJ0b2tlbiI6ICIzNWQxYTc3MDk4MGNiODY3Yzg2ZjM3ZTllNDlkYWM3YTc2MTM4Y2FhYzM4YTI2OTc3MTQzNDhjYiIsICJyZWRpcmVjdF90byI6IG51bGx9&scope=openid&response_type=code&client_id=ms-hrms')}
+  // };
 
   return (
     <div className="login-header">
@@ -69,7 +73,11 @@ function Login() {
           text="Login"
           style={{ marginTop: "20px" }}
           allowDisabledFocus
-          onClick={handleLogin}
+          onClick={() => {
+            window.open(
+              "https://id.nuagebiz.tech/auth/realms/megasoft/protocol/openid-connect/auth?redirect_uri=http%3A%2F%2Flocalhost%3A3000&state=eyJzaXRlIjogImh0dHA6Ly81Mi4xNDYuMC4xNTQ6ODAwMSIsICJ0b2tlbiI6ICIzNWQxYTc3MDk4MGNiODY3Yzg2ZjM3ZTllNDlkYWM3YTc2MTM4Y2FhYzM4YTI2OTc3MTQzNDhjYiIsICJyZWRpcmVjdF90byI6IG51bGx9&scope=openid&response_type=code&client_id=ms-hrms"
+            );
+          }}
         />
       </div>
     </div>

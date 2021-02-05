@@ -903,7 +903,7 @@ function EmployeeDetails(props: any) {
 
   return (
     <div className="view">
-      <WelcomeHeader>
+      {/* <WelcomeHeader>
         <div
           style={{
             display: "flex",
@@ -930,11 +930,11 @@ function EmployeeDetails(props: any) {
             </Text>
           </div>
         </div>
-      </WelcomeHeader>
+      </WelcomeHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderEmployeeDetails()}</div>
-        <div className="right-container">
+        {/* <div className="right-container">
           <div className="stepper">
             <ul className="progress">
               <li>
@@ -972,7 +972,7 @@ function EmployeeDetails(props: any) {
               </li>
             </ul>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

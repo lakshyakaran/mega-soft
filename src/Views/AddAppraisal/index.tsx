@@ -727,7 +727,7 @@ function AddAppraisal(props: any) {
 
   return (
     <div className="view">
-      <WelcomeHeader>
+      {/* <WelcomeHeader>
         <div
           style={{
             display: "flex",
@@ -746,14 +746,6 @@ function AddAppraisal(props: any) {
             <Text style={{ marginRight: "10px" }}>
               Welcome {userName} ({userId})
             </Text>
-            {/* <Dropdown
-              options={rolesOption}
-              onChange={handleRoles}
-              selectedKey={roles ? roles.key : "employee"}
-              className="rolesDropDown"
-              styles={dropdownStyles}
-              style={{ marginLeft: "2rem" }}
-            /> */}
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
@@ -762,11 +754,11 @@ function AddAppraisal(props: any) {
             </Text>
           </div>
         </div>
-      </WelcomeHeader>
+      </WelcomeHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderForm()}</div>
-        <div className="right-container"></div>
+        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );

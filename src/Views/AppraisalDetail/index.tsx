@@ -134,9 +134,9 @@ function AppraisalDetail(props: any) {
       limitPageLength,
       `${orderByField} ${orderBy}`,
       JSON.stringify(filters)
-    ).then(response =>{
+    ).then((response) => {
       setAppraisalDetail(response.data[0]);
-    })
+    });
   }, []);
 
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
@@ -383,7 +383,7 @@ function AppraisalDetail(props: any) {
 
   return (
     <div className="view">
-      <WelcomeHeader>
+      {/* <WelcomeHeader>
         <div
           style={{
             display: "flex",
@@ -402,14 +402,7 @@ function AppraisalDetail(props: any) {
             <Text style={{ marginRight: "10px" }}>
               Welcome {userName} ({userId})
             </Text>
-            {/* <Dropdown
-              selectedKey={"key1"}
-              options={rolesOption}
-              onChange={handleRoles}
-              className="rolesDropDown"
-              styles={dropdownStyles}
-              style={{ marginLeft: "2rem" }}
-            /> */}
+            
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
@@ -418,11 +411,11 @@ function AppraisalDetail(props: any) {
             </Text>
           </div>
         </div>
-      </WelcomeHeader>
+      </WelcomeHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderData()} </div>
-        <div className="right-container"></div>
+        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );

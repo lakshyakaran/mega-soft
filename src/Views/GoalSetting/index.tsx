@@ -297,7 +297,7 @@ function GoalSetting(props: any) {
 
   return (
     <div className="view">
-      <WelcomeHeader>
+      {/* <WelcomeHeader>
         <div
           style={{
             display: "flex",
@@ -316,15 +316,7 @@ function GoalSetting(props: any) {
             <Text style={{ marginRight: "10px" }}>
               Welcome {userName} ({userId})
             </Text>
-            {/* <Dropdown
-              options={rolesOption}
-              onChange={handleRoles}
-              selectedKey={roles ? roles.key : "employee"}
-              // defaultSelectedKey={roles ? roles.key : "employee"}
-              className="rolesDropDown"
-              styles={dropdownStyles}
-              style={{ marginLeft: "2rem" }}
-            /> */}
+            
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
               Logged In:
             </Text>
@@ -333,7 +325,7 @@ function GoalSetting(props: any) {
             </Text>
           </div>
         </div>
-      </WelcomeHeader>
+      </WelcomeHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">
@@ -408,7 +400,7 @@ function GoalSetting(props: any) {
             />
           </div> */}
         </div>
-        <div className="right-container">
+        {/* <div className="right-container">
           <div className="stepper">
             <ul className="progress">
               <li>
@@ -444,16 +436,9 @@ function GoalSetting(props: any) {
                   <span>Create development plan</span>
                 </p>
               </li>
-              {/* <li>
-                <div className="divider grey"></div>
-              </li>
-              <li>
-                <div className="node grey"></div>
-                <p className="grey">Payment Released </p>
-              </li> */}
             </ul>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

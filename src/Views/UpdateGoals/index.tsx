@@ -450,7 +450,7 @@ function UpdateGoals(props: any) {
 
   return (
     <div className="view">
-      <WelcomeHeader>
+      {/* <WelcomeHeader>
         <div
           style={{
             display: "flex",
@@ -477,11 +477,11 @@ function UpdateGoals(props: any) {
             </Text>
           </div>
         </div>
-      </WelcomeHeader>
+      </WelcomeHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderJobHistoryForm()}</div>
-        <div className="right-container"></div>
+        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );
