@@ -311,7 +311,7 @@ function Appraisal(props: any) {
 
   const handleDeleteAppraisal = () => {
     const deleteQuery={
-      ...updateData,
+      id : updateData.id,
       is_deleted : 1
     }
     edit_appraisal(deleteQuery).then((response) => {
