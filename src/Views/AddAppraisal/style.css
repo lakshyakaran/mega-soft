@@ -116,7 +116,7 @@
     border-bottom: solid 1px #605e5c;
 }
 
-.modal-header {
+/* .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -124,7 +124,7 @@
     font-weight: 700;
     color: #FFF;
     background-color: #344f84;
-}
+} */
 
 .modal-title {
     padding: 5px;

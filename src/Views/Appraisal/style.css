@@ -49,12 +49,12 @@
     border-radius: 4px;
 }
 
-@media only screen and (max-width: 1200px) {
+/* @media only screen and (max-width: 1200px) {
     .searchBarClass {
         display: flex;
         flex-direction: column;
     }
-}
+} */
 
 .detail-list {
     width: 100%;
@@ -117,3 +117,12 @@
     display: flex;
     flex-direction: row;
 }
+
+.advanceSearch{
+    display: flex;
+}
+
+.advanceSearchNull{
+    display: none;
+}
+

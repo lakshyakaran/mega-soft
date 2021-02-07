@@ -149,7 +149,7 @@ function AppraisalDetail(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push("/");
+    history.push("/home");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
     { text: "Performance", key: "d1" },
@@ -370,7 +370,7 @@ function AppraisalDetail(props: any) {
                 allowDisabledFocus
                 disabled={false}
                 onClick={() => {
-                  history.push("/");
+                  history.push("/home");
                 }}
                 checked={false}
               />

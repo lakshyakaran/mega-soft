@@ -163,7 +163,7 @@ function EmployeeDetails(props: any) {
     });
   }, [limitStartGoal, limitPageLengthGoal]);
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/");
+    history.push("/home");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");
@@ -612,28 +612,30 @@ function EmployeeDetails(props: any) {
   const stackTokens = { childrenGap: 10 };
   const renderJobHistory = () => {
     return (
-      <div className="form-conatiner">
-        <DetailsList
-          styles={listStyle}
-          items={employeeDetails}
-          className="detail-list"
-          columns={columnsJobHistory}
-          selectionMode={0}
-        />
-        <div className="pagination-style">
-          <Pagination
-            format="buttons"
-            // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-            // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
-            selectedPageIndex={currentPage}
-            pageCount={Math.ceil(totalCount / limitPageLength)}
-            itemsPerPage={limitPageLength}
-            totalItemCount={totalCount}
-            onPageChange={(page) => {
-              setLimitSTart(page * limitPageLength);
-              setCurentPage(page);
-            }}
+      <div>
+        <div>
+          <DetailsList
+            styles={listStyle}
+            items={employeeDetails}
+            className="detail-list"
+            columns={columnsJobHistory}
+            selectionMode={0}
           />
+          <div className="pagination-style">
+            <Pagination
+              format="buttons"
+              // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+              // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+              selectedPageIndex={currentPage}
+              pageCount={Math.ceil(totalCount / limitPageLength)}
+              itemsPerPage={limitPageLength}
+              totalItemCount={totalCount}
+              onPageChange={(page) => {
+                setLimitSTart(page * limitPageLength);
+                setCurentPage(page);
+              }}
+            />
+          </div>
         </div>
         <Stack
           horizontal
@@ -784,102 +786,105 @@ function EmployeeDetails(props: any) {
 
   const renderEmployeeDetails = () => {
     return (
-      <div className="form-conatiner">
-        <div className="row-jobHistory">
-          <TextField
-            readOnly={true}
-            value={employeeData.employee_id}
-            placeholder="Employee ID"
-            label="Employee Id"
-            name="id"
-            styles={textfelidStyle}
-            // value={jobHistory[0].employee_id}
-            // onChange={onChangeInput}
-            className="flexGrow"
-          />
-          <TextField
-            readOnly={true}
-            value={employeeData.employee_name}
-            placeholder="Employee Name"
-            label="Employee Name"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-            // onChange={onChangeInput}
-          />
-          <TextField
-            readOnly={true}
-            value={employeeData.designation}
-            placeholder="Designation"
-            label="Designation"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-          />
+      <div>
+        <div className="card">
+          <div className="row-jobHistory">
+            <TextField
+              readOnly={true}
+              value={employeeData.employee_id}
+              placeholder="Employee ID"
+              label="Employee Id"
+              name="id"
+              styles={textfelidStyle}
+              // value={jobHistory[0].employee_id}
+              // onChange={onChangeInput}
+              className="flexGrow"
+            />
+            <TextField
+              readOnly={true}
+              value={employeeData.employee_name}
+              placeholder="Employee Name"
+              label="Employee Name"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="appraisal_description"
+              // onChange={onChangeInput}
+            />
+            <TextField
+              readOnly={true}
+              value={employeeData.designation}
+              placeholder="Designation"
+              label="Designation"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="appraisal_description"
+            />
+          </div>
+          <div className="row-jobHistory">
+            <TextField
+              readOnly={true}
+              value={employeeData.location}
+              placeholder="Location"
+              label="Location"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="appraisal_description"
+            />
+            <TextField
+              readOnly={true}
+              value={employeeData.department}
+              placeholder="Department"
+              label="Department"
+              name="id"
+              // onChange={onChangeInput}
+              styles={textfelidStyle}
+              className="flexGrow"
+            />
+            <TextField
+              readOnly={true}
+              value={employeeData.date_of_joining}
+              placeholder="Date of Joining"
+              label="Date of Joining"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="appraisal_description"
+            />
+          </div>
+          <div className="row-jobHistory">
+            <TextField
+              readOnly={true}
+              // value={employeeData.date_of_joining}
+              placeholder="Reporting Officer"
+              label="Reporting Officer"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="appraisal_description"
+              // onChange={onChangeInput}
+            />
+            <TextField
+              readOnly={true}
+              value={employeeData.reviewer_name}
+              placeholder="Reviewer"
+              label="Reviewer"
+              name="id"
+              styles={textfelidStyle}
+              // onChange={onChangeInput}
+              className="flexGrow"
+            />
+            <TextField
+              readOnly={true}
+              value={employeeData.counter_signing_name}
+              placeholder="Counter signing"
+              label="Counter signing"
+              name="id"
+              styles={textfelidStyle}
+              // onChange={onChangeInput}
+              className="flexGrow"
+            />
+          </div>
+          {/* <Separator /> */}
         </div>
-        <div className="row-jobHistory">
-          <TextField
-            readOnly={true}
-            value={employeeData.location}
-            placeholder="Location"
-            label="Location"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-          />
-          <TextField
-            readOnly={true}
-            value={employeeData.department}
-            placeholder="Department"
-            label="Department"
-            name="id"
-            // onChange={onChangeInput}
-            styles={textfelidStyle}
-            className="flexGrow"
-          />
-          <TextField
-            readOnly={true}
-            value={employeeData.date_of_joining}
-            placeholder="Date of Joining"
-            label="Date of Joining"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-          />
-        </div>
-        <div className="row-jobHistory">
-          <TextField
-            readOnly={true}
-            // value={employeeData.date_of_joining}
-            placeholder="Reporting Officer"
-            label="Reporting Officer"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="appraisal_description"
-            // onChange={onChangeInput}
-          />
-          <TextField
-            readOnly={true}
-            value={employeeData.reviewer_name}
-            placeholder="Reviewer"
-            label="Reviewer"
-            name="id"
-            styles={textfelidStyle}
-            // onChange={onChangeInput}
-            className="flexGrow"
-          />
-          <TextField
-            readOnly={true}
-            value={employeeData.counter_signing_name}
-            placeholder="Counter signing"
-            label="Counter signing"
-            name="id"
-            styles={textfelidStyle}
-            // onChange={onChangeInput}
-            className="flexGrow"
-          />
-        </div>
-        <div style={{ marginTop: "10px" }}>
+        <div style={{ marginTop: "10px" }} className="card">
           <Pivot>
             <PivotItem
               headerButtonProps={{
@@ -896,7 +901,6 @@ function EmployeeDetails(props: any) {
             </PivotItem>
           </Pivot>
         </div>
-        {/* <Separator /> */}
       </div>
     );
   };

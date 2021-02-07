@@ -35,13 +35,24 @@ body {
   height: 100%;
 }
 
+.modal-header-local {
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFF;
+    background-color: #344f84;
+}
+
 .modal-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 20px;
-  font-weight: 700;
-  color: #FFF;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFF;
+    background-color: #344f84;
 }
 
 .root-110 {

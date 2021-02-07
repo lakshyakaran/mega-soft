@@ -36,10 +36,11 @@ import { Text } from "office-ui-fabric-react/lib/Text";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import "./style.css";
 import { RootState } from "../../redux/reducers";
-import { fetchAppraisalData } from "../../redux/actions/apprisal";
+import { edit_appraisal, fetchAppraisalData, fetchAppraisalDataById } from "../../redux/actions/apprisal";
 import { useHistory, useParams } from "react-router-dom";
 import { delete_appraisal } from "../../redux/actions/apprisal";
 // import { roleType } from "../../redux/actions/roleType";
@@ -57,6 +58,8 @@ function Appraisal(props: any) {
   const [filtersById, setFiltersById] = useState("");
   const [filtersByDescription, setFiltersByDescription] = useState("");
   const [filtersByReviewFreq, setFiltersByReviewFreq] = useState("");
+  const [filtersByAppraisal, setFiltersByAppraisal] = useState("");
+  const [filtersByFormat, setFiltersByFormat] = useState("");
   const dispatch = useDispatch();
   const appraisal = useSelector((state: RootState) => state.appraisal);
   const { appraisalList, isLoading, count, total_count } = appraisal;
@@ -74,6 +77,12 @@ function Appraisal(props: any) {
     }
     if (filtersByReviewFreq) {
       filters.push(["review_frequency", "=", filtersByReviewFreq]);
+    }
+    if (filtersByAppraisal) {
+      filters.push(["type", "=", filtersByAppraisal]);
+    }
+    if (filtersByFormat) {
+      filters.push(["format_type", "=", filtersByFormat]);
     }
     dispatch(
       fetchAppraisalData(
@@ -104,6 +113,8 @@ function Appraisal(props: any) {
     filtersById,
     filtersByDescription,
     filtersByReviewFreq,
+    filtersByAppraisal,
+    filtersByFormat
   ]);
 
   // const params = useParams<ParamTypes>();
@@ -159,6 +170,26 @@ function Appraisal(props: any) {
     },
     {
       key: "06",
+      name: "Appraisal Type",
+      fieldName: "type",
+      minWidth: 50,
+      maxWidth: 160,
+      isRowHeader: true,
+      sortDescendingAriaLabel: "Sorted Z to A",
+      isResizable: false,
+    },
+    {
+      key: "07",
+      name: "Format Type",
+      fieldName: "format_type",
+      minWidth: 50,
+      maxWidth: 160,
+      isRowHeader: true,
+      sortDescendingAriaLabel: "Sorted Z to A",
+      isResizable: false,
+    },
+    {
+      key: "08",
       name: "Appraisal To",
       fieldName: "appraisal_to",
       minWidth: 50,
@@ -181,7 +212,7 @@ function Appraisal(props: any) {
     //   isResizable: false,
     // },
     {
-      key: "08",
+      key: "09",
       name: "Review Frequency",
       fieldName: "review_frequency",
       minWidth: 50,
@@ -254,18 +285,41 @@ function Appraisal(props: any) {
   };
 
   const [deleteItemId, setDeleteItemId] = useState(null);
+  const [updateData, setUpdateData]: any = useState({});
 
   const deleteAppraisal = (item: any) => {
-    setDeleteItemId(item.id);
-    setShowDelete(true);
+    // setDeleteItemId(item.id);
+    // console.log("item id", item)
+    const filters = [];
+    if (item.name) {
+      filters.push(["id", "like", item.name]);
+    }
+    fetchAppraisalDataById(
+      limitStart,
+      limitPageLength,
+      `${orderByField} ${orderBy}`,
+      JSON.stringify(filters)
+      ).then((response) => {
+        // console.log(response.data)
+        setUpdateData(response.data[0]);
+      });
+      setShowDelete(true);
   };
 
+  // console.log("deleteItemId=>", updateData)
+
+
   const handleDeleteAppraisal = () => {
-    delete_appraisal(deleteItemId).then((response) => {
-      console.log("response=>", response);
+    const deleteQuery={
+      ...updateData,
+      is_deleted : 1
+    }
+    edit_appraisal(deleteQuery).then((response) => {
+      // console.log("response=>", response);
       setShowDelete(false);
       setShowDeleteSuccess(true);
       setDeleteItemId(null);
+      setUpdateData(null);
     });
   };
 
@@ -288,6 +342,8 @@ function Appraisal(props: any) {
     setFiltersById(`${searchById}%`);
     setFiltersByDescription(`${searchByDescription}%`);
     setFiltersByReviewFreq(`${reviewSearch?.key || ""}`);
+    setFiltersByAppraisal(`${AppraisalSearch?.key || ""}`);
+    setFiltersByFormat(`${formatSearch?.key || ""}`);
     setLimitSTart(0);
     setCurentPage(0);
   };
@@ -336,6 +392,16 @@ function Appraisal(props: any) {
     key: "",
     text: "",
   });
+  
+  const [AppraisalSearch, setAppraisalSearch] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
+  
+  const [formatSearch, setForamtSearch] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
 
   const itemSearch = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -366,6 +432,31 @@ function Appraisal(props: any) {
     item?: IDropdownOption
   ): void => {
     setReviewSearch(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
+
+
+  const itemSearchAppraisal = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setAppraisalSearch(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
+
+  const itemSearchFormatType = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setForamtSearch(
       item || {
         key: "",
         text: "",
@@ -421,6 +512,18 @@ function Appraisal(props: any) {
     { key: "Yearly", text: "Yearly" },
     { key: "Monthly", text: "Monthly" },
   ];
+  
+  const searchFormatType: IDropdownOption[] = [
+    { key: "", text: "Select" },
+    { key: "Sales Employees", text: "Sales Employees" },
+    { key: "Non Sales Employees", text: "Non Sales Employees" },
+  ];
+  
+  const searchAppraisal: IDropdownOption[] = [
+    { key: "", text: "Select" },
+    { key: "Annual Appraisal", text: "Annual Appraisal" },
+    { key: "Quarterly Appraisal", text: "Quarterly Appraisal" },
+  ];
 
   // const rolesOption: IDropdownOption[] = [
   //   { key: "employee", text: "Employee" },
@@ -440,6 +543,7 @@ function Appraisal(props: any) {
   const history = useHistory();
   const userName = props.userData.UserData[0].name;
   const userId = props.userData.UserData[0].id;
+  const [advanceSearch , setAdvanceSearch] = useState(false);
 
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
     root: {
@@ -505,60 +609,90 @@ function Appraisal(props: any) {
   const renderData = () => {
     return (
       <React.Fragment>
-        <div className="searchBarClass">
-          <TextField
-            label="ID"
-            onChange={itemSearch}
-            placeholder="Enter ID"
-            className="searchInput"
-            styles={controlStyles}
-          />
-          <TextField
-            label="Description"
-            className="searchInput"
-            onChange={itemSearchDescription}
-            placeholder="Enter Description"
-            styles={controlStyles}
-          />
-          <Dropdown
-            label="Review Frequency"
-            placeholder="Select"
-            options={searchOptions}
-            className="reviewFrequency"
-            onChange={itemSearchReview}
-            style={{ padding: "0px" }}
-            styles={dropdownStyles}
-          />
-          <PrimaryButton
-            iconProps={{ iconName: "Search" }}
-            onClick={handleSearchClick}
-            style={{
-              marginLeft: "10px",
-              alignSelf: "center",
-              marginTop: "8px",
-            }}
-          />
-          <PrimaryButton
-            text="New Appraisal"
-            iconProps={{ iconName: "Add" }}
-            allowDisabledFocus
-            onClick={() => {
-              history.push("/addApprisal");
-            }}
-            style={{
-              marginLeft: "auto",
-              alignSelf: "center",
-              marginTop: "8px",
-            }}
-            disabled={false}
-            checked={false}
-          />
-          {/* <TextField
-                onChange={itemSearchApprisalTo}
-                placeholder= "Appraisal To"
-                styles={controlStyles}
-              /> */}
-        </div>
+        <div className="card">
+          <div className="searchBarClass">
+            <TextField
+              label="ID"
+              onChange={itemSearch}
+              placeholder="Enter ID"
+              className="searchInput"
+              styles={controlStyles}
+            />
+            <TextField
+              label="Description"
+              className="searchInput"
+              onChange={itemSearchDescription}
+              placeholder="Enter Description"
+              styles={controlStyles}
+            />
+            <Dropdown
+              label="Review Frequency"
+              placeholder="Select"
+              options={searchOptions}
+              className="reviewFrequency"
+              onChange={itemSearchReview}
+              style={{ padding: "0px" }}
+              styles={dropdownStyles}
+            />
+            <div
+              style={{marginTop:"30px", cursor:"pointer"}}
+              onClick={() => {
+                setAdvanceSearch(true);
+                // setAdvanceSearch(false);
+              }}
+            >
+              <MoreHorizIcon style={{ color: "#344f84", marginLeft:"20px" }} />
+            </div>
+            <PrimaryButton
+              iconProps={{ iconName: "Search" }}
+              onClick={handleSearchClick}
+              style={{
+                marginLeft: "10px",
+                alignSelf: "center",
+                marginTop: "8px",
+              }}
+            />
+            <PrimaryButton
+              text="New Appraisal"
+              iconProps={{ iconName: "Add" }}
+              allowDisabledFocus
+              onClick={() => {
+                history.push("/addApprisal");
+              }}
+              style={{
+                marginLeft: "auto",
+                alignSelf: "center",
+                marginTop: "8px",
+              }}
+              disabled={false}
+              checked={false}
+            />
+          </div>  
+            <div className={advanceSearch == true ? `advanceSearch` : `advanceSearchNull`}>
+              <Dropdown
+                label="Appraisal Type"
+                placeholder="Select"
+                options={searchAppraisal}
+                className="reviewFrequency"
+                onChange={itemSearchAppraisal}
+                style={{ padding: "0px" ,marginRight:"20px" }}
+                styles={dropdownStyles}
+              />
+              <Dropdown
+                label="Format Type"
+                placeholder="Select"
+                options={searchFormatType}
+                className="reviewFrequency"
+                onChange={itemSearchFormatType}
+                style={{ padding: "0px", marginRight:"10px" }}
+                styles={dropdownStyles}
+                />
+
+            </div>
+            
+          </div>
+
+        
         {isLoading ? (
           <Spinner
             style={{
@@ -572,133 +706,136 @@ function Appraisal(props: any) {
         ) : appraisalList.length === 0 ? (
           renderNoData()
         ) : (
-          <DetailsList
-            styles={listStyle}
-            items={appraisalList}
-            className="detail-list"
-            onRenderRow={renderRow}
-            columns={columns}
-            selectionMode={0}
-          />
+          <div className="card">
+            <DetailsList
+              styles={listStyle}
+              items={appraisalList}
+              className="detail-list"
+              // onRenderRow={renderRow}
+              columns={columns}
+              selectionMode={0}
+            />
+            <div className="pagination-style">
+              <Pagination
+                format="buttons"
+                // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+                // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+                selectedPageIndex={currentPage}
+                // pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
+                pageCount={Math.ceil(total_count / limitPageLength)}
+                // itemsCount
+                itemsPerPage={limitPageLength}
+                // itemsPerPage={appraisalList.count}
+                // pageRangeDisplayed= {currentPage}
+                // totalItemCount={limitPageLength * 2}
+                totalItemCount={total_count}
+                // numberOfPageButton={2}
+                // lastPageIconProps={{
+                //   iconName: "DoubleChevronRight",
+                //   style: { display: "none" },
+                // }}
+                // firstPageIconProps={{
+                //   iconName: "ChevronRight",
+                //   style: { display: "none" },
+                // }}
+                onPageChange={(page) => {
+                  setLimitSTart(page * limitPageLength);
+                  setCurentPage(page);
+                }}
+              />
+            </div>
+
+          </div>
         )}
 
-        <div className="pagination-style">
-          <Pagination
-            format="buttons"
-            // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-            // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
-            selectedPageIndex={currentPage}
-            // pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
-            pageCount={Math.ceil(total_count / limitPageLength)}
-            // itemsCount
-            itemsPerPage={limitPageLength}
-            // itemsPerPage={appraisalList.count}
-            // pageRangeDisplayed= {currentPage}
-            // totalItemCount={limitPageLength * 2}
-            totalItemCount={total_count}
-            // numberOfPageButton={2}
-            // lastPageIconProps={{
-            //   iconName: "DoubleChevronRight",
-            //   style: { display: "none" },
-            // }}
-            // firstPageIconProps={{
-            //   iconName: "ChevronRight",
-            //   style: { display: "none" },
-            // }}
-            onPageChange={(page) => {
-              setLimitSTart(page * limitPageLength);
-              setCurentPage(page);
-            }}
-          />
-          <div>
-            <Modal
-              titleAriaId={"Title"}
-              isOpen={showDelete}
-              isBlocking={false}
-              styles={modalStyle}
-              // containerClassName={contentStyles.container}
-            >
-              <div className="modal-header">
-                <div className="modal-title">Delete</div>
-                <IconButton
-                  styles={iconButtonStyles}
-                  iconProps={cancelIcon}
-                  ariaLabel="Close popup modal"
-                  onClick={() => {
-                    setShowDelete(false);
-                  }}
-                />
-              </div>
-              <div className="modal-content-success">
-                Are you sure you want to delete this item?
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "30px",
+        <div>
+          <Modal
+            titleAriaId={"Title"}
+            isOpen={showDelete}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header">
+              <div className="modal-title">Delete</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setShowDelete(false);
                 }}
-              >
-                <PrimaryButton
-                  text="Delete"
-                  allowDisabledFocus
-                  onClick={handleDeleteAppraisal}
-                  disabled={false}
-                  checked={false}
-                />
-                <PrimaryButton
-                  text="Cancel"
-                  allowDisabledFocus
-                  onClick={() => {
-                    setShowDelete(false);
-                  }}
-                  style={{ marginLeft: "10px" }}
-                  disabled={false}
-                  checked={false}
-                />
-              </div>
-            </Modal>
-            <Modal
-              titleAriaId={"Title"}
-              isOpen={showDeleteSuccess}
-              isBlocking={false}
-              styles={modalStyle}
-              // containerClassName={contentStyles.container}
+              />
+            </div>
+            <div className="modal-content-success">
+              Are you sure you want to delete this item?
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
             >
-              <div className="modal-header">
-                <div className="modal-title">Success</div>
-                <IconButton
-                  styles={iconButtonStyles}
-                  iconProps={cancelIcon}
-                  ariaLabel="Close popup modal"
-                  onClick={() => {
-                    setShowDeleteSuccess(false);
-                  }}
-                />
-              </div>
-              <div className="modal-content-success">
-                Item successfully Deleted.
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "30px",
+              <PrimaryButton
+                text="Delete"
+                allowDisabledFocus
+                onClick={handleDeleteAppraisal}
+                disabled={false}
+                checked={false}
+              />
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                onClick={() => {
+                  setShowDelete(false);
                 }}
-              >
-                <PrimaryButton
-                  text="Cancel"
-                  allowDisabledFocus
-                  onClick={() => {
-                    setShowDeleteSuccess(false);
-                  }}
-                  style={{ marginLeft: "10px" }}
-                  disabled={false}
-                  checked={false}
-                />
-              </div>
-            </Modal>
-          </div>
+                style={{ marginLeft: "10px" }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+          <Modal
+            titleAriaId={"Title"}
+            isOpen={showDeleteSuccess}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header">
+              <div className="modal-title">Success</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setShowDeleteSuccess(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-success">
+              Item successfully Deleted.
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
+            >
+              <PrimaryButton
+                text="Okay"
+                allowDisabledFocus
+                onClick={() => {
+                  setShowDeleteSuccess(false);
+                }}
+                style={{ marginLeft: "10px" }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
         </div>
       </React.Fragment>
     );
@@ -747,3 +884,10 @@ function Appraisal(props: any) {
 export default connect((state) => ({
   ...state,
 }))(Appraisal);
+
+
+// const styles = {
+//   advanceSearch:{
+//     dispaly:"flex"
+//   }
+// }

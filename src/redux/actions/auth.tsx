@@ -1,9 +1,10 @@
 import axios from "axios";
 
 export const validateLogin = () => {
-  const accessToken = sessionStorage.getItem('accessToken')
+  const sessionState = sessionStorage.getItem('sessionState')
+  const state = sessionStorage.getItem('state')
   const user = {}
-  if(accessToken) {
+  if(sessionState && state) {
     return {
       type: "LOGIN_SUCCESS",
       payload: user,
@@ -15,31 +16,32 @@ export const validateLogin = () => {
   }
 }
 
-export const auth = (accessToken: any, user: any) => {
-  sessionStorage.setItem('accessToken', accessToken)
+export const login = (sessionState: any, state: any) => {
+  sessionStorage.setItem('sessionState', sessionState)
+  sessionStorage.setItem('state', state)
   return {
     type: "LOGIN_SUCCESS",
-    payload: user,
+    payload: {},
   };
 };
 
 export const logout = () => {
-  sessionStorage.removeItem('accessToken')
+  sessionStorage.removeItem('sessionState')
   return {
     type: "LOGOUT_SUCCESS",
   };
 };
 
-export const login = async () => {
-  const response = await axios({
-    url: `http://52.146.0.154/api/method/megasoft_hrms.pm.ms_hrms_login`,
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: " token 5ccbc7af363c163:b6060f97664d556",
-    },
-  });
-  const responseBody = await response.data;
-  return responseBody;
-};
+// export const login = async () => {
+//   const response = await axios({
+//     url: `http://52.146.0.154/api/method/megasoft_hrms.pm.ms_hrms_login`,
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Accept: "application/json",
+//       Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+//     },
+//   });
+//   const responseBody = await response.data;
+//   return responseBody;
+// };

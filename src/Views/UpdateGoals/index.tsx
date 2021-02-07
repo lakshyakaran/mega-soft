@@ -22,7 +22,7 @@ import {
   Text,
   TextField,
 } from "office-ui-fabric-react";
-import { fetchGoalData, update_goals } from "../../redux/actions/goal";
+import { fetchGoalData, fetchGoalDataName, update_goals } from "../../redux/actions/goal";
 
 interface ParamTypes {
   employeeId: string;
@@ -41,7 +41,8 @@ function UpdateGoals(props: any) {
   const [limitPageLength] = useState(5);
   const [limit_start] = useState(0);
   const [orderBy, setOrderBy] = useState("order_no asc");
-
+  const [filtersByName] = useState(params.name);
+  
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
   const [goalData, setGoalData]: any = useState({});
@@ -49,16 +50,16 @@ function UpdateGoals(props: any) {
 
   useEffect((): void => {
     const filters = [];
-    if (filtersById) {
-      filters.push(["employee_id", "=", filtersById]);
+    if (filtersByName) {
+      filters.push(["name", "=", filtersByName]);
     }
-    fetchGoalData(
+    fetchGoalDataName(
       limit_start,
       limitPageLength,
       orderBy,
       JSON.stringify(filters)
-    ).then((response) => {
-      // console.log("response of Goal===>", response);
+    ).then((response:any) => {
+      // console.log("response of Goal===>", response.data);
       setUpdateGoalData(response.data[0]);
     });
   }, []);
@@ -120,7 +121,7 @@ function UpdateGoals(props: any) {
 
   const history = useHistory();
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/");
+    history.push("/home");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");
@@ -490,3 +491,4 @@ function UpdateGoals(props: any) {
 export default connect((state) => ({
   ...state,
 }))(UpdateGoals);
+

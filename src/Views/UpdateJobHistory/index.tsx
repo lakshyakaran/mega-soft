@@ -126,7 +126,7 @@ function UpdateJobHistory(props: any) {
 
   const history = useHistory();
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/");
+    history.push("/home");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");

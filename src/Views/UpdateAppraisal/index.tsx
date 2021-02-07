@@ -219,7 +219,7 @@ function UpdateAppraisal(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push("/");
+    history.push("/home");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
     { text: "Performance", key: "d1" },
@@ -536,7 +536,7 @@ function UpdateAppraisal(props: any) {
                     iconProps={cancelIcon}
                     ariaLabel="Close popup modal"
                     onClick={() => {
-                      history.push("/");
+                      history.push("/home");
                     }}
                   />
                 </div>
@@ -548,7 +548,7 @@ function UpdateAppraisal(props: any) {
                     text="OK"
                     allowDisabledFocus
                     onClick={() => {
-                      history.push("/");
+                      history.push("/home");
                     }}
                     disabled={false}
                     checked={false}
@@ -616,7 +616,7 @@ function UpdateAppraisal(props: any) {
                 allowDisabledFocus
                 disabled={false}
                 onClick={() => {
-                  history.push("/");
+                  history.push("/home");
                 }}
                 checked={false}
               />

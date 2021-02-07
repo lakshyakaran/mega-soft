@@ -280,7 +280,7 @@ function GoalSetting(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push("/");
+    history.push("/home");
   };
 
   const itemsWithHeading: IBreadcrumbItem[] = [

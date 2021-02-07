@@ -291,7 +291,7 @@ function AddAppraisal(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push("/");
+    history.push("/home");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
     { text: "Performance", key: "d1" },
@@ -438,7 +438,7 @@ function AddAppraisal(props: any) {
       console.log("response=>", response.data);
       if (response?.status === 200) {
         setSuccessModal(true);
-        // history.push("/");
+        // history.push("/home");
       } else {
         // console.log("failed==>", failedModal);
         setFailedModal(true);
@@ -627,7 +627,7 @@ function AddAppraisal(props: any) {
                 styles={modalStyle}
                 // containerClassName={contentStyles.container}
               >
-                <div className="modal-header">
+                <div className="modal-header-local">
                   <div className="modal-title">Success</div>
                   <IconButton
                     styles={iconButtonStyles}
@@ -646,7 +646,7 @@ function AddAppraisal(props: any) {
                     text="OK"
                     allowDisabledFocus
                     onClick={() => {
-                      history.push("/");
+                      history.push("/home");
                     }}
                     disabled={false}
                     checked={false}
@@ -660,7 +660,7 @@ function AddAppraisal(props: any) {
                 styles={modalStyle}
                 // containerClassName={contentStyles.container}
               >
-                <div className="modal-header">
+                <div className="modal-header-local">
                   <div className="modal-title">Error</div>
                   <IconButton
                     styles={iconButtonStyles}
@@ -714,7 +714,7 @@ function AddAppraisal(props: any) {
                 allowDisabledFocus
                 disabled={false}
                 onClick={() => {
-                  history.push("/");
+                  history.push("/home");
                 }}
                 checked={false}
               />

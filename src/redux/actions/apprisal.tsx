@@ -44,6 +44,7 @@ export const fetchAppraisalData = (
           "assessment_tab_competencies",
           "assessment_tab_development_plan",
           "assessment_tab_summary",
+          "is_deleted", 
         ]),
       },
       method: "GET",
@@ -101,6 +102,7 @@ export const fetchAppraisalDataById = async (
           "assessment_tab_competencies",
           "assessment_tab_development_plan",
           "assessment_tab_summary",
+          "is_deleted"
         ]),
       },
       method: "GET",
@@ -111,6 +113,7 @@ export const fetchAppraisalDataById = async (
       },
     });
     const responseBody = await response.data;
+    // console.log("api data by id", responseBody)
     return responseBody;
   } catch (error) {
     // console.log("error in getting data", error);

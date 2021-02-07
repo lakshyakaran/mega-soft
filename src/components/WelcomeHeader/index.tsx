@@ -12,7 +12,7 @@ import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setRoleType } from "../../redux/actions/roleType";
 import { RootState } from "../../redux/reducers";
-import { auth, logout } from "../../redux/actions/auth";
+import { logout } from "../../redux/actions/auth";
 
 const rolesOption: IDropdownOption[] = [
   { key: "employee", text: "Employee" },

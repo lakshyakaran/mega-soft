@@ -5813,7 +5813,7 @@ button.close {
     min-height: calc(100% - (0.5rem * 2))
 }
 
-.modal-content {
+/* .modal-content {
     position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -5829,7 +5829,7 @@ button.close {
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;
     outline: 0
-}
+} */
 
 .modal-backdrop {
     position: fixed;
@@ -5849,7 +5849,7 @@ button.close {
     opacity: 0.5
 }
 
-.modal-header {
+/* .modal-header {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -5863,7 +5863,7 @@ button.close {
     border-bottom: 1px solid #e9ecef;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px
-}
+} */
 
 .modal-header .close {
     padding: 1rem;
@@ -9990,7 +9990,8 @@ ul.list-style-none li a:hover {
 }
 
 .card {
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    padding: 1rem;
 }
 
 .card .card-subtitle {
