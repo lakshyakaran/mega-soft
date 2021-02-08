@@ -5,6 +5,8 @@ import { initSideBar } from "./sideBar";
 import { customSideBar } from "./custom";
 import { useHistory } from "react-router-dom";
 import { sideNavigationData } from "../redux/actions/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/reducers";
 
 const handleSideBar = () => {
   initSideBar();
@@ -14,6 +16,7 @@ function SideNavigation() {
   const [navData, setNavData]: any = useState();
   const [doctype, setDoctype] = useState("Appraisal");
   const [home_menu, setHomeMenu] = useState(0);
+  const menuType = useSelector((state: RootState) => state.menuType.menuType);
 
   // useEffect(() => {
   //   initSideBar();
@@ -26,7 +29,7 @@ function SideNavigation() {
   }
 
   useEffect((): void => {
-    sideNavigationData(home_menu).then((response) => {
+    sideNavigationData(menuType ? menuType : 1).then((response) => {
       console.log("side nav response", response.message);
       setNavData(response.message);
       initSideBar();

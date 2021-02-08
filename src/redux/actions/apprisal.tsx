@@ -19,6 +19,7 @@ export const fetchAppraisalData = (
   if (token === null) {
     return false;
   }
+
   const accessToken = "bearer " + token;
   try {
     dispatch({

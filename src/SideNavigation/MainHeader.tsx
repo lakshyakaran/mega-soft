@@ -7,11 +7,12 @@ import { customSideBar } from "./custom";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { Link, Text } from "office-ui-fabric-react";
 import { logout } from "../redux/actions/auth";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 import logo_ms from "../assets/img/logo_ms.png";
 import logo_nuage from "../assets/img/logo_nuage.png";
 import { useHistory } from "react-router-dom";
+import { RootState } from "../redux/reducers";
 
 function MainHeader(props: any) {
   useEffect(() => {
@@ -31,6 +32,8 @@ function MainHeader(props: any) {
   };
 
   const history = useHistory();
+
+  const menuType = useSelector((state: RootState) => state.menuType.menuType);
 
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
@@ -57,9 +60,11 @@ function MainHeader(props: any) {
             <b className="logo-icon p-l-10">
               <img src={logo_icon} alt="homepage" className="light-logo" />
             </b>
-            <span className="logo-text">
-              <img src={logo_text} alt="homepage" className="light-logo" />
-            </span>
+            {menuType !== 0 ? (
+              <span className="logo-text">
+                <img src={logo_text} alt="homepage" className="light-logo" />
+              </span>
+            ) : null}
           </a>
           <a
             className="topbartoggler d-block d-md-none waves-effect waves-light"
