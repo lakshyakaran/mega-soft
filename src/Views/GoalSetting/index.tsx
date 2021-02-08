@@ -32,15 +32,20 @@ function GoalSetting(props: any) {
 
   const employee = useSelector((state: RootState) => state.employeeList);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
+  // console.log("roleTYpe==>", roleType)
   const { employeeList, isLoading, total_count, count } = employee;
   // console.log("employeeList=> ", employeeList);
 
   const [employeData, setEmployeeData]: any = useState({});
   // console.log("employee data=>", employeeList);
 
+  // const newRoleType = sessionStorage.getItem("roleType")
+
+  
   useEffect((): void => {
-    dispatch(fetchEmployeeData(doctype, limit_start, limit, roleType));
-  }, [doctype, limit_start, limit, roleType]);
+    const newRoleType = sessionStorage.getItem("roleType");
+    dispatch(fetchEmployeeData(doctype, limit_start, limit, newRoleType));
+  }, [doctype, limit_start, limit]);
 
   const [roles, setRoles] = useState<IDropdownOption>({
     key: "",

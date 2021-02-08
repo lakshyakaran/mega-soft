@@ -13,6 +13,7 @@ import logo_ms from "../assets/img/logo_ms.png";
 import logo_nuage from "../assets/img/logo_nuage.png";
 import { useHistory } from "react-router-dom";
 import { RootState } from "../redux/reducers";
+import { setMenuType } from "../redux/actions/roleType";
 
 function MainHeader(props: any) {
   useEffect(() => {
@@ -40,6 +41,16 @@ function MainHeader(props: any) {
   const userName = props.userData.UserData[0].name;
   const userId = props.userData.UserData[0].id;
 
+  const renderMenuLogo = () => {
+      return(
+        <span className="logo-text">
+          <img src={logo_text} alt="homepage" className="light-logo" />
+        </span>
+      )
+    
+  }
+
+
   return (
     <header className="topbar" data-navbarbg="skin5">
       <nav className="navbar top-navbar navbar-expand-md navbar-dark">
@@ -54,17 +65,19 @@ function MainHeader(props: any) {
             className="navbar-brand"
             href=""
             onClick={() => {
+              dispatch(setMenuType(0))
               history.push("/home");
             }}
           >
             <b className="logo-icon p-l-10">
               <img src={logo_icon} alt="homepage" className="light-logo" />
             </b>
-            {menuType !== 0 ? (
+            {renderMenuLogo()}
+            {/* {menuType !== 0 ? (
               <span className="logo-text">
                 <img src={logo_text} alt="homepage" className="light-logo" />
               </span>
-            ) : null}
+            ) : null} */}
           </a>
           <a
             className="topbartoggler d-block d-md-none waves-effect waves-light"

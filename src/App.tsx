@@ -21,25 +21,7 @@ import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
 
-const getQueryParms = (variable: string) => {
-  // console.log("variable===>", variable);
-  var query = window.location.search.substring(1);
-  // console.log("query==>", query); //"app=article&act=news_content&aid=160990"
-  var vars = query.split("&");
-  console.log(vars); //[ 'app=article', 'act=news_content', 'aid=160990' ]
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
-    console.log(pair); //[ 'app', 'article' ][ 'act', 'news_content' ][ 'aid', '160990' ]
-    if (pair[0] == variable) {
-      return pair[1];
-    }
-  }
-  return false;
-};
-
-function App(props: any) {
-  // console.log("props==>", props.Auth.isLoggedIn);
-  const getAccessToken = () => {
+const getQueryParms = () => {
     const url = window.location.href;
     console.log("url ==", url);
     const str = url;
@@ -52,12 +34,30 @@ function App(props: any) {
     }
     n += param.length;
     let access_token = res[0].substr(n);
-    console.log("access_token on load==>", access_token);
-    sessionStorage.setItem("access_token", access_token);
-  };
-  useEffect(() => {
-    getAccessToken();
-  }, []);
+    return access_token;
+};
+
+function App(props: any) {
+  // console.log("props==>", props.Auth.isLoggedIn);
+  // const getAccessToken = () => {
+  //   const url = window.location.href;
+  //   console.log("url ==", url);
+  //   const str = url;
+  //   const param = "access_token=";
+  //   let res = str.split("&", 1);
+  //   let n = res[0].search(param);
+
+  //   if (n < 0) {
+  //     return;
+  //   }
+  //   n += param.length;
+  //   let access_token = res[0].substr(n);
+  //   console.log("access_token on load==>", access_token);
+  //   sessionStorage.setItem("access_token", access_token);
+  // };
+  // useEffect(() => {
+  //   getAccessToken();
+  // }, []);
   const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.Auth);
 
@@ -65,16 +65,18 @@ function App(props: any) {
     dispatch(validateLogin());
   }, []);
 
+  sessionStorage.setItem("roleType","Employee");
+  sessionStorage.setItem("menuType",'1');
+
   useEffect(() => {
     // const stateValue = getQueryParms("state");
     // const sessionStateValue = getQueryParms("session_state");
-    // const access_token = getQueryParms("access_token");
+    const access_token = getQueryParms();
     // console.log("access_token main==>", access_token);
     // if (stateValue && sessionStateValue && access_token) {
     //   dispatch(login(sessionStateValue, stateValue, access_token));
     // }
 
-    const access_token = sessionStorage.getItem("access_token");
     if (access_token) {
       dispatch(login(access_token));
     }

@@ -29,8 +29,9 @@ function SideNavigation() {
   }
 
   useEffect((): void => {
-    sideNavigationData(menuType ? menuType : 1).then((response) => {
-      console.log("side nav response", response.message);
+    const menu_type = sessionStorage.getItem("menuType")
+    sideNavigationData(menu_type).then((response) => {
+      // console.log("side nav response", response.message);
       setNavData(response.message);
       initSideBar();
       customSideBar();

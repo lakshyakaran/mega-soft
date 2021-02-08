@@ -58,18 +58,11 @@ export const logout = () => async (dispatch: any): Promise<any> => {
   console.log("Token=", token);
   const accessToken = "bearer " + token;
   if (token === null) {
+    dispatch({
+      type: "LOGOUT_SUCCESS",
+    });
     return false;
   }
-  // const responseKeyCloak = await axios({
-  //   url: `https://id.nuagebiz.tech/auth/realms/megasoft/protocol/openid-connect/logout?redirect_uri=http://localhost:3000/`,
-  //   method: "GET",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Accept: "application/json",
-  //   },
-  // });
-  // const responseKey = responseKeyCloak.data;
-  // console.log("responseKey==>", responseKey);
   const response = await axios({
     url: `http://52.146.0.154/api/method/logout`,
     method: "GET",
@@ -80,13 +73,11 @@ export const logout = () => async (dispatch: any): Promise<any> => {
     },
   });
   const responseBody = await response.data;
+  sessionStorage.removeItem("access_token");
   dispatch({
     type: "LOGOUT_SUCCESS",
-    payload: responseBody,
   });
-  console.log("logout api", response);
-  return responseBody;
-
+  return false;
   // sessionStorage.removeItem("access_token");
   // return {
   //   type: "LOGOUT_SUCCESS",

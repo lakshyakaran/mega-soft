@@ -1092,35 +1092,35 @@ function EmployeeDetails(props: any) {
           <div className="emp-details-section">
             <div className="row">
               <div className="col-md-4">
-                <span>Employee Id</span> : 10075
+                <span>Employee Id</span> : {employeeData.employee_id}
               </div>
               <div className="col-md-4">
-                <span>Employee Name</span> : Ayush Kansal
+                <span>Employee Name</span> : {employeeData.employee_name}
               </div>
               <div className="col-md-4">
-                <span>Designation</span> : Project Manager
+                <span>Designation</span> : {employeeData.designation}
               </div>
               <div className="col-md-4">
-                <span>Location</span> : NOIDA
+                <span>Location</span> : {employeeData.location}
               </div>
               <div className="col-md-4">
-                <span>Department</span> : Delivery
+                <span>Department</span> : {employeeData.department}
               </div>
               <div className="col-md-4">
-                <span>Date of Joining</span> : 2020-11-11
+                <span>Date of Joining</span> : {employeeData.date_of_joining}
               </div>
               <div className="col-md-4">
                 <span>Reporting Officer</span> : Reporting Officer
               </div>
               <div className="col-md-4">
-                <span>Reviewer</span> : Piyush Rakhecha
+                <span>Reviewer</span> : {employeeData.reviewer_name}
               </div>
               <div className="col-md-4">
-                <span>Counter signing</span> : Munmun Some
+                <span>Counter signing</span> : {employeeData.counter_signing_name}
               </div>
             </div>
           </div>
-          <div className="row-jobHistory d-none">
+          {/* <div className="row-jobHistory d-none">
             <TextField
               readOnly={true}
               value={employeeData.employee_id}
@@ -1213,7 +1213,7 @@ function EmployeeDetails(props: any) {
               // onChange={onChangeInput}
               className="flexGrow"
             />
-          </div>
+          </div> */}
         </div>
         <div
           style={{ marginTop: "10px" }}

@@ -202,7 +202,7 @@ function UpdateJobHistory(props: any) {
   const renderJobHistoryForm = () => {
     return (
       <div className="form-conatiner">
-        <div className="jobHistory-details">
+        <div className="card jobHistory-details">
           <TextField
             required
             errorMessage={errMsgPosition}

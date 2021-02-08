@@ -4,7 +4,7 @@ export const fetchEmployeeData = (
   doctype = "EmployeeAppraisal",
   limit_start = 0,
   limit = 10,
-  role = "Employee"
+  role: any
 ) => async (dispatch: any): Promise<any> => {
   try {
     dispatch({

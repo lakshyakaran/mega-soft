@@ -170,7 +170,7 @@ function JobHistoryDetails(props: any) {
   const renderJobHistoryForm = () => {
     return (
       <div className="form-conatiner">
-        <div className="jobHistory-details">
+        <div className="card jobHistory-details">
           <TextField
             disabled={true}
             required

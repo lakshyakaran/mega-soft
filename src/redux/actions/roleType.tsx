@@ -1,5 +1,5 @@
 export const setRoleType = (item: any) => {
-  window.sessionStorage.setItem("roleType", item);
+  window.sessionStorage.setItem("roleType", "Employee");
   return {
     type: "ROLE_TYPE",
     payload: item,

@@ -8,8 +8,14 @@ File: js
 // Auto select left navbar
 // ==============================================================
 import $ from "jquery";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/reducers";
+
+
 
 export const initSideBar = function () {
+  
+
   ("use strict");
   var url = window.location + "";
   var path = url.replace(
@@ -60,14 +66,18 @@ export const initSideBar = function () {
   $(".nav_manager").hide();
   $(".nav_hr_contact").hide();
 
-  $("#nav_employee").click(function () {
+  $("#nav_employee").click(function (x) {
     $(".nav_employee").show();
     $(".nav_manager").hide();
     $(".nav_hr_contact").hide();
+
+    sessionStorage.setItem('roleType', "Employee")
+    
     // $("#nav_employee").addClass("active");
     // $("#nav_manager").removeClass("active");
     // $("#nav_hr").removeClass("active");
   });
+
 
   $("#nav_manager").click(function () {
     $(".nav_employee").hide();
@@ -76,6 +86,9 @@ export const initSideBar = function () {
     // $("#nav_manager").addClass("active");
     // $("#nav_employee").removeClass("active");
     // $("#nav_hr").removeClass("active");
+
+    sessionStorage.setItem('roleType', "Manager")
+
   });
 
   $("#nav_hr_contact").click(function () {
@@ -85,5 +98,8 @@ export const initSideBar = function () {
     // $("#nav_hr").addClass("active");
     // $("#nav_employee").removeClass("active");
     // $("#nav_manager").removeClass("active");
+
+    sessionStorage.setItem('roleType', "HR Contact")
+
   });
 };
