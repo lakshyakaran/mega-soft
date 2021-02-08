@@ -15,20 +15,19 @@ import { useHistory } from "react-router-dom";
 
 function MainHeader(props: any) {
   useEffect(() => {
-    console.log("header page ==>");
     customSideBar();
     initSideBar();
   }, []);
 
   const dispatch = useDispatch();
 
-  const handleCustomSidebar = () => {
-    console.log("clicked ==>");
-    customSideBar();
-  };
-
   const handleLogout = () => {
     dispatch(logout());
+  };
+
+  const handleCustomSidebar = () => {
+    customSideBar();
+    initSideBar();
   };
 
   const history = useHistory();
@@ -64,7 +63,7 @@ function MainHeader(props: any) {
           </a>
           <a
             className="topbartoggler d-block d-md-none waves-effect waves-light"
-            href="#"
+            href=""
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
@@ -85,7 +84,7 @@ function MainHeader(props: any) {
                 className="nav-link sidebartoggler waves-effect waves-light"
                 href="#"
                 data-sidebartype="mini-sidebar"
-                // onClick={handleCustomSidebar}
+                onClick={handleCustomSidebar}
               >
                 <i className="mdi mdi-chevron-left font-24"></i>
               </a>

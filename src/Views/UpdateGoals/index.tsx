@@ -22,7 +22,11 @@ import {
   Text,
   TextField,
 } from "office-ui-fabric-react";
-import { fetchGoalData, fetchGoalDataName, update_goals } from "../../redux/actions/goal";
+import {
+  fetchGoalData,
+  fetchGoalDataName,
+  update_goals,
+} from "../../redux/actions/goal";
 
 interface ParamTypes {
   employeeId: string;
@@ -42,7 +46,7 @@ function UpdateGoals(props: any) {
   const [limit_start] = useState(0);
   const [orderBy, setOrderBy] = useState("order_no asc");
   const [filtersByName] = useState(params.name);
-  
+
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
   const [goalData, setGoalData]: any = useState({});
@@ -58,8 +62,8 @@ function UpdateGoals(props: any) {
       limitPageLength,
       orderBy,
       JSON.stringify(filters)
-    ).then((response:any) => {
-      // console.log("response of Goal===>", response.data);
+    ).then((response: any) => {
+      console.log("response of Goal===>", response.data);
       setUpdateGoalData(response.data[0]);
     });
   }, []);
@@ -491,4 +495,3 @@ function UpdateGoals(props: any) {
 export default connect((state) => ({
   ...state,
 }))(UpdateGoals);
-

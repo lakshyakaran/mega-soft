@@ -36,11 +36,16 @@ import { Text } from "office-ui-fabric-react/lib/Text";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import ZoomInIcon from "@material-ui/icons/ZoomIn";
 
 import "./style.css";
 import { RootState } from "../../redux/reducers";
-import { edit_appraisal, fetchAppraisalData, fetchAppraisalDataById } from "../../redux/actions/apprisal";
+import {
+  edit_appraisal,
+  fetchAppraisalData,
+  fetchAppraisalDataById,
+} from "../../redux/actions/apprisal";
 import { useHistory, useParams } from "react-router-dom";
 import { delete_appraisal } from "../../redux/actions/apprisal";
 // import { roleType } from "../../redux/actions/roleType";
@@ -114,7 +119,7 @@ function Appraisal(props: any) {
     filtersByDescription,
     filtersByReviewFreq,
     filtersByAppraisal,
-    filtersByFormat
+    filtersByFormat,
   ]);
 
   // const params = useParams<ParamTypes>();
@@ -231,7 +236,7 @@ function Appraisal(props: any) {
       onRender: (item) => (
         <div>
           <Link
-            className="link-icons"
+            className="link-icons mr-3"
             onClick={() => {
               viewAppraisal(item);
             }}
@@ -239,7 +244,7 @@ function Appraisal(props: any) {
             <VisibilityIcon style={{ color: "#344f84" }} />
           </Link>
           <Link
-            className="link-icons"
+            className="link-icons mr-3"
             onClick={() => {
               updateAppriasal(item);
             }}
@@ -299,21 +304,20 @@ function Appraisal(props: any) {
       limitPageLength,
       `${orderByField} ${orderBy}`,
       JSON.stringify(filters)
-      ).then((response) => {
-        // console.log(response.data)
-        setUpdateData(response.data[0]);
-      });
-      setShowDelete(true);
+    ).then((response) => {
+      // console.log(response.data)
+      setUpdateData(response.data[0]);
+    });
+    setShowDelete(true);
   };
 
   // console.log("deleteItemId=>", updateData)
 
-
   const handleDeleteAppraisal = () => {
-    const deleteQuery={
-      id : updateData.id,
-      is_deleted : 1
-    }
+    const deleteQuery = {
+      id: updateData.id,
+      is_deleted: 1,
+    };
     edit_appraisal(deleteQuery).then((response) => {
       // console.log("response=>", response);
       setShowDelete(false);
@@ -392,12 +396,12 @@ function Appraisal(props: any) {
     key: "",
     text: "",
   });
-  
+
   const [AppraisalSearch, setAppraisalSearch] = useState<IDropdownOption>({
     key: "",
     text: "",
   });
-  
+
   const [formatSearch, setForamtSearch] = useState<IDropdownOption>({
     key: "",
     text: "",
@@ -438,7 +442,6 @@ function Appraisal(props: any) {
       }
     );
   };
-
 
   const itemSearchAppraisal = (
     ev?: React.FormEvent<HTMLDivElement>,
@@ -512,13 +515,13 @@ function Appraisal(props: any) {
     { key: "Yearly", text: "Yearly" },
     { key: "Monthly", text: "Monthly" },
   ];
-  
+
   const searchFormatType: IDropdownOption[] = [
     { key: "", text: "Select" },
     { key: "Sales Employees", text: "Sales Employees" },
     { key: "Non Sales Employees", text: "Non Sales Employees" },
   ];
-  
+
   const searchAppraisal: IDropdownOption[] = [
     { key: "", text: "Select" },
     { key: "Annual Appraisal", text: "Annual Appraisal" },
@@ -543,7 +546,16 @@ function Appraisal(props: any) {
   const history = useHistory();
   const userName = props.userData.UserData[0].name;
   const userId = props.userData.UserData[0].id;
-  const [advanceSearch , setAdvanceSearch] = useState(false);
+  const [advanceSearch, setAdvanceSearch] = useState(false);
+
+  const handleAdvanceSearch = () => {
+    if (advanceSearch == false) {
+      setAdvanceSearch(true);
+    }
+    if (advanceSearch == true) {
+      setAdvanceSearch(false);
+    }
+  };
 
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
     root: {
@@ -609,7 +621,7 @@ function Appraisal(props: any) {
   const renderData = () => {
     return (
       <React.Fragment>
-        <div className="card">
+        <div className="card advance-search-section">
           <div className="searchBarClass">
             <TextField
               label="ID"
@@ -635,13 +647,14 @@ function Appraisal(props: any) {
               styles={dropdownStyles}
             />
             <div
-              style={{marginTop:"30px", cursor:"pointer"}}
+              style={{ marginTop: "30px", cursor: "pointer" }}
               onClick={() => {
-                setAdvanceSearch(true);
+                handleAdvanceSearch();
+                // setAdvanceSearch(true);
                 // setAdvanceSearch(false);
               }}
             >
-              <MoreHorizIcon style={{ color: "#344f84", marginLeft:"20px" }} />
+              <MoreHorizIcon style={{ color: "#344f84", marginLeft: "20px" }} />
             </div>
             <PrimaryButton
               iconProps={{ iconName: "Search" }}
@@ -667,32 +680,33 @@ function Appraisal(props: any) {
               disabled={false}
               checked={false}
             />
-          </div>  
-            <div className={advanceSearch == true ? `advanceSearch` : `advanceSearchNull`}>
-              <Dropdown
-                label="Appraisal Type"
-                placeholder="Select"
-                options={searchAppraisal}
-                className="reviewFrequency"
-                onChange={itemSearchAppraisal}
-                style={{ padding: "0px" ,marginRight:"20px" }}
-                styles={dropdownStyles}
-              />
-              <Dropdown
-                label="Format Type"
-                placeholder="Select"
-                options={searchFormatType}
-                className="reviewFrequency"
-                onChange={itemSearchFormatType}
-                style={{ padding: "0px", marginRight:"10px" }}
-                styles={dropdownStyles}
-                />
-
-            </div>
-            
           </div>
+          <div
+            className={
+              advanceSearch == true ? `advanceSearch` : `advanceSearchNull`
+            }
+          >
+            <Dropdown
+              label="Appraisal Type"
+              placeholder="Select"
+              options={searchAppraisal}
+              className="reviewFrequency"
+              onChange={itemSearchAppraisal}
+              style={{ padding: "0px", marginRight: "10px" }}
+              styles={dropdownStyles}
+            />
+            <Dropdown
+              label="Format Type"
+              placeholder="Select"
+              options={searchFormatType}
+              className="reviewFrequency"
+              onChange={itemSearchFormatType}
+              style={{ padding: "0px" }}
+              styles={dropdownStyles}
+            />
+          </div>
+        </div>
 
-        
         {isLoading ? (
           <Spinner
             style={{
@@ -744,7 +758,6 @@ function Appraisal(props: any) {
                 }}
               />
             </div>
-
           </div>
         )}
 
@@ -884,7 +897,6 @@ function Appraisal(props: any) {
 export default connect((state) => ({
   ...state,
 }))(Appraisal);
-
 
 // const styles = {
 //   advanceSearch:{

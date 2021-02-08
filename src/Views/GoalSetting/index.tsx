@@ -330,9 +330,9 @@ function GoalSetting(props: any) {
       <div className="content">
         <div className="data-container">
           <div
+            // className="card"
             style={{
               display: "flex",
-              // justifyContent: "space-between",
               marginBottom: "10px",
             }}
           >
@@ -350,7 +350,7 @@ function GoalSetting(props: any) {
               style={{
                 marginLeft: "20px",
                 alignSelf: "center",
-                marginTop: "28px",
+                marginTop: "30px",
               }}
             />
             {/* <Dropdown
@@ -363,27 +363,29 @@ function GoalSetting(props: any) {
               styles={dropdownStyles}
             /> */}
           </div>
-          <DetailsList
-            styles={listStyle}
-            items={employeeList}
-            className="detail-list"
-            columns={columns}
-            selectionMode={0}
-          />
-          <div className="pagination-style">
-            <Pagination
-              format="buttons"
-              // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-              // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
-              selectedPageIndex={currentPage}
-              pageCount={Math.ceil(total_count / limitPageLength)}
-              itemsPerPage={limitPageLength}
-              totalItemCount={total_count}
-              onPageChange={(page) => {
-                setLimitSTart(page * limitPageLength);
-                setCurentPage(page);
-              }}
+          <div className="card">
+            <DetailsList
+              styles={listStyle}
+              items={employeeList}
+              className="detail-list"
+              columns={columns}
+              selectionMode={0}
             />
+            <div className="pagination-style">
+              <Pagination
+                format="buttons"
+                // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+                // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+                selectedPageIndex={currentPage}
+                pageCount={Math.ceil(total_count / limitPageLength)}
+                itemsPerPage={limitPageLength}
+                totalItemCount={total_count}
+                onPageChange={(page) => {
+                  setLimitSTart(page * limitPageLength);
+                  setCurentPage(page);
+                }}
+              />
+            </div>
           </div>
           {/* <div style={{ marginTop: "10px" }}>
             <PrimaryButton

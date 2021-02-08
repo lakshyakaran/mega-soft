@@ -3,3 +3,25 @@
     justify-content: space-between;
     margin-top: 10px;
 }
+
+.emp-details-section span {
+    font-weight: 700;
+}
+
+.employee-details-tabs .ms-Button--action {
+    height: 36px;
+}
+
+.employee-details-tabs .ms-Button--action:hover {
+    color: rgb(50 49 103);
+    background-color: rgb(238 238 238);
+}
+
+.employee-details-tabs .ms-Button--action.is-selected {
+    background-color: rgb(52 79 132);
+}
+
+.employee-details-tabs .ms-Button--action.is-selected:hover {
+    color: #FFF;
+    background-color: rgb(41 65 111);
+}

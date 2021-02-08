@@ -201,9 +201,9 @@ function Navigation() {
   );
   // console.log("navigation data=>", navigation.links);
 
-  useEffect((): void => {
-    dispatch(fetchNavigationBar(doctype, roleType ? roleType : "Employee"));
-  }, [doctype, roleType]);
+  // useEffect((): void => {
+  //   dispatch(fetchNavigationBar(doctype, roleType ? roleType : "Employee"));
+  // }, [doctype, roleType]);
 
   // useEffect((): void => {
   //   sideNavigationData(doctype).then((response) => {

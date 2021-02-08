@@ -37,22 +37,22 @@ body {
 
 .modal-header-local {
   display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 20px;
-    font-weight: 700;
-    color: #FFF;
-    background-color: #344f84;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #FFF;
+  background-color: #344f84;
 }
 
 .modal-header {
   display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 20px;
-    font-weight: 700;
-    color: #FFF;
-    background-color: #344f84;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #FFF;
+  background-color: #344f84;
 }
 
 .root-110 {
@@ -316,3 +316,13 @@ body {
   font-size: .9rem;
   font-weight: 600;
 }
+
+.MuiSvgIcon-root {
+  fill: currentColor;
+  width: 0.75em;
+  height: 0.75em;
+}
+
+/* .ms-DetailsRow-cell {
+  padding-bottom: 0px;
+} */

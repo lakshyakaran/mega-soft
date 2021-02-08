@@ -13,9 +13,15 @@
     border-radius: 10px;
 }
 
-.link-icons {
+/* .link-icons {
     margin-right: .5rem;
     color: black;
+} */
+
+.link-icons svg.MuiSvgIcon-root {
+    fill: currentColor;
+    width: 0.75em;
+    height: 0.75em;
 }
 
 .ms-TextField-wrapper .ms-TextField-fieldGroup .fieldGroup-97 .feild-98 {
@@ -58,6 +64,21 @@
 
 .detail-list {
     width: 100%;
+    /* margin-top: 0px; */
+}
+
+.ms-DetailsRow:hover {
+    background: rgb(249 249 249);
+}
+
+.ms-DetailsRow-cell {
+    line-height: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.ms-Pivot--tabs {
+    border-bottom: solid 2px rgb(52 79 132);
 }
 
 .searchBarClass {
@@ -90,27 +111,26 @@
 }
 
 .ms-DetailsList-headerWrapper .ms-DetailsHeader {
-    background: #344f84;
+    background: #eeeeee;
     padding-top: 0;
 }
 
-.ms-DetailsList-headerWrapper .ms-DetailsHeader .ms-DetailsHeader-cell {
+/* .ms-DetailsList-headerWrapper .ms-DetailsHeader .ms-DetailsHeader-cell {
     color: #ffffff;
-}
+} */
 
-.ms-DetailsList-headerWrapper .ms-DetailsHeader .ms-DetailsHeader-cell:hover {
+/* .ms-DetailsList-headerWrapper .ms-DetailsHeader .ms-DetailsHeader-cell:hover {
     background: #29416f;
-}
+} */
 
-.ms-DetailsList-headerWrapper .ms-DetailsHeader .ms-DetailsHeader-cell .ms-Icon {
+/* .ms-DetailsList-headerWrapper .ms-DetailsHeader .ms-DetailsHeader-cell .ms-Icon {
     color: #FFF;
-}
+} */
 
 .pagination-style {
     display: flex;
     justify-content: flex-end;
 }
-
 
 .ms-Pagination-container {
     margin-top: 10px;
@@ -118,11 +138,14 @@
     flex-direction: row;
 }
 
-.advanceSearch{
+.advanceSearch {
     display: flex;
 }
 
-.advanceSearchNull{
+.advanceSearchNull {
     display: none;
 }
 
+.advance-search-section input, .advance-search-section .ms-Dropdown {
+    min-width: 180px;
+}

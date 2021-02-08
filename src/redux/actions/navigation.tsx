@@ -33,11 +33,11 @@ export const fetchNavigationBar = (
   }
 };
 
-export const sideNavigationData = async (doctype = "Appraisal") => {
+export const sideNavigationData = async (home_menu = 0) => {
   const response = await axios({
     url: `http://52.146.0.154/api/method/megasoft_hrms.pm.pm_collapsible_menu`,
     params: {
-      doctype,
+      home_menu,
     },
     method: "GET",
     headers: {

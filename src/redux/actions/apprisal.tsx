@@ -14,6 +14,12 @@ export const fetchAppraisalData = (
   order_by = "id asc",
   filters: any
 ) => async (dispatch: any): Promise<any> => {
+  const token = sessionStorage.getItem("access_token");
+  console.log("Token=", token);
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   try {
     dispatch({
       type: "FETCH_APPRAISAL_LIST_START",
@@ -44,14 +50,14 @@ export const fetchAppraisalData = (
           "assessment_tab_competencies",
           "assessment_tab_development_plan",
           "assessment_tab_summary",
-          "is_deleted", 
+          "is_deleted",
         ]),
       },
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+        Authorization: accessToken,
       },
     });
     const responseBody = await response.data;
@@ -102,7 +108,7 @@ export const fetchAppraisalDataById = async (
           "assessment_tab_competencies",
           "assessment_tab_development_plan",
           "assessment_tab_summary",
-          "is_deleted"
+          "is_deleted",
         ]),
       },
       method: "GET",

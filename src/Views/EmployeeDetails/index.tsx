@@ -1,14 +1,20 @@
 import {
   DetailsList,
+  getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
   IColumn,
+  IconButton,
   IDetailsListStyles,
+  IIconProps,
+  IModalStyles,
   ITextFieldStyles,
   Label,
   Link,
+  Modal,
   Pivot,
   PivotItem,
+  PivotLinkFormat,
   PrimaryButton,
   Stack,
   Text,
@@ -19,7 +25,10 @@ import { connect, useSelector } from "react-redux";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
-import { fetchJobHistory } from "../../redux/actions/jobHistory";
+import {
+  fetchJobHistory,
+  update_JobHistory,
+} from "../../redux/actions/jobHistory";
 import { RootState } from "../../redux/reducers";
 import { fetchEmployeeDataByID } from "../../redux/actions/employeeData";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -30,8 +39,14 @@ import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import { Pagination } from "@uifabric/experiments";
 import jobHistory from "../../redux/reducers/jobHistory";
 import JobHistoryDetails from "../JobHistoryDetails";
-import { fetchGoalData } from "../../redux/actions/goal";
+import {
+  fetchGoalData,
+  fetchGoalDataName,
+  update_goals,
+} from "../../redux/actions/goal";
 import { fetchDevelopmentPlan } from "../../redux/actions/developmentPlan";
+import "./style.css";
+
 interface ParamTypes {
   employeeId: string;
   appraisalId: string;
@@ -314,7 +329,7 @@ function EmployeeDetails(props: any) {
       onRender: (item) => (
         <div>
           <Link
-            className="link-icons"
+            className="link-icons mr-3"
             onClick={() => {
               jobHistoryDetails(item);
             }}
@@ -322,20 +337,60 @@ function EmployeeDetails(props: any) {
             <VisibilityIcon style={{ color: "#344f84" }} />
           </Link>
           <Link
-            className="link-icons"
+            className="link-icons mr-3"
             onClick={() => {
               updateJobhistory(item);
             }}
           >
             <CreateIcon style={{ color: "#344f84" }} />
           </Link>
-          <Link className="link-icons" onClick={() => {}}>
+          <Link
+            className="link-icons "
+            onClick={() => {
+              deleteJobHistoryData(item);
+            }}
+          >
             <DeleteIcon style={{ color: "#f04336" }} />
           </Link>
         </div>
       ),
     },
   ];
+
+  const [jobHistoryUpdate, setJobHistoryUpdateData]: any = useState({});
+  const [showDeleteSuccessJob, setShowDeleteSuccessJob] = useState(false);
+  const [showDeleteJob, setShowDeleteJob] = useState(false);
+  const [deleteItemJobName, setDeleteItemJobName] = useState(null);
+
+  const deleteJobHistoryData = (item: any) => {
+    setDeleteItemId(item.name);
+    // console.log("item id", item.name);
+    const filters = [];
+    if (item.name) {
+      filters.push(["name", "=", item.name]);
+    }
+    fetchJobHistory(roleType, JSON.stringify(filters)).then((response) => {
+      //   console.log("update response =>.>>>", response.data);
+      setJobHistoryUpdateData(response.data[0]);
+    });
+    setShowDeleteJob(true);
+  };
+
+  // console.log("deleteItemId=>", updateData)
+
+  const handleDeleteJobhistory = () => {
+    const deleteQuery = {
+      name: jobHistoryUpdate.name,
+      is_deleted: 1,
+    };
+    update_JobHistory(deleteQuery).then((response) => {
+      // console.log("response=>", response);
+      setShowDeleteJob(false);
+      setShowDeleteSuccessJob(true);
+      setDeleteItemJobName(null);
+      setJobHistoryUpdateData(null);
+    });
+  };
 
   const columnsTraning: IColumn[] = [
     {
@@ -535,7 +590,7 @@ function EmployeeDetails(props: any) {
       onRender: (item) => (
         <div>
           <Link
-            className="link-icons"
+            className="link-icons mr-3"
             onClick={() => {
               goalDetails(item);
             }}
@@ -543,20 +598,87 @@ function EmployeeDetails(props: any) {
             <VisibilityIcon style={{ color: "#344f84" }} />
           </Link>
           <Link
-            className="link-icons"
+            className="link-icons mr-3"
             onClick={() => {
               updateGoals(item);
             }}
           >
             <CreateIcon style={{ color: "#344f84" }} />
           </Link>
-          <Link className="link-icons" onClick={() => {}}>
+          <Link
+            className="link-icons"
+            onClick={() => {
+              deleteGoalData(item);
+            }}
+          >
             <DeleteIcon style={{ color: "#f04336" }} />
           </Link>
         </div>
       ),
     },
   ];
+
+  const [deleteItemId, setDeleteItemId] = useState(null);
+  const [updateData, setUpdateData]: any = useState({});
+  const [showDelete, setShowDelete] = useState(false);
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+  const cancelIcon: IIconProps = { iconName: "Cancel" };
+  const theme = getTheme();
+  const iconButtonStyles = {
+    root: {
+      color: "#FFF",
+      marginLeft: "auto",
+      marginTop: "4px",
+      marginRight: "2px",
+    },
+    rootHovered: {
+      color: theme.palette.neutralDark,
+    },
+  };
+  const modalStyle: Partial<IModalStyles> = {
+    root: {},
+    main: {
+      height: "20%",
+      width: "20%",
+      backgroundColor: "#FFF",
+      // padding: "5px",
+    },
+  };
+
+  const deleteGoalData = (item: any) => {
+    setDeleteItemId(item.name);
+    // console.log("item id", item.name);
+    const filters = [];
+    if (item.name) {
+      filters.push(["name", "=", item.name]);
+    }
+    fetchGoalDataName(
+      limit_start,
+      limitPageLength,
+      orderBy,
+      JSON.stringify(filters)
+    ).then((response: any) => {
+      // console.log(response.data);
+      setUpdateData(response.data[0]);
+    });
+    setShowDelete(true);
+  };
+
+  // console.log("deleteItemId=>", updateData)
+
+  const handleDeleteGoal = () => {
+    const deleteQuery = {
+      name: updateData.name,
+      is_deleted: 1,
+    };
+    update_goals(deleteQuery).then((response) => {
+      // console.log("response=>", response);
+      setShowDelete(false);
+      setShowDeleteSuccess(true);
+      setDeleteItemId(null);
+      setUpdateData(null);
+    });
+  };
 
   const operations = [
     {
@@ -598,6 +720,7 @@ function EmployeeDetails(props: any) {
     root: {
       marginTop: "10px",
       backgroundColor: "#344f84",
+      paddingBottom: "0px",
       ".ms-Viewport": {
         minWidth: "200px",
       },
@@ -652,7 +775,7 @@ function EmployeeDetails(props: any) {
               allowDisabledFocus
               onClick={() => {
                 history.push(
-                  `/appraisal/goalsetting/view/jobhistory/${params.employeeId}/${params.appraisalId}`
+                  `/appraisal/goalsetting/view/addjobhistory/${params.employeeId}/${params.appraisalId}`
                 );
               }}
             />
@@ -671,6 +794,95 @@ function EmployeeDetails(props: any) {
             />
           </div>
         </Stack>
+        <div>
+          <Modal
+            titleAriaId={"Title"}
+            isOpen={showDeleteJob}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header">
+              <div className="modal-title">Delete</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setShowDeleteJob(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-success">
+              Are you sure you want to delete this item?
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
+            >
+              <PrimaryButton
+                text="Delete"
+                allowDisabledFocus
+                onClick={handleDeleteJobhistory}
+                disabled={false}
+                checked={false}
+              />
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                onClick={() => {
+                  setShowDelete(false);
+                }}
+                style={{ marginLeft: "10px" }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+          <Modal
+            titleAriaId={"Title"}
+            isOpen={showDeleteSuccessJob}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header">
+              <div className="modal-title">Success</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setShowDeleteSuccessJob(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-success">
+              Item successfully Deleted.
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
+            >
+              <PrimaryButton
+                text="Okay"
+                allowDisabledFocus
+                onClick={() => {
+                  setShowDeleteSuccessJob(false);
+                }}
+                style={{ marginLeft: "10px" }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+        </div>
       </div>
     );
   };
@@ -734,6 +946,95 @@ function EmployeeDetails(props: any) {
             />
           </div>
         </Stack>
+        <div>
+          <Modal
+            titleAriaId={"Title"}
+            isOpen={showDelete}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header">
+              <div className="modal-title">Delete</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setShowDelete(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-success">
+              Are you sure you want to delete this item?
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
+            >
+              <PrimaryButton
+                text="Delete"
+                allowDisabledFocus
+                onClick={handleDeleteGoal}
+                disabled={false}
+                checked={false}
+              />
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                onClick={() => {
+                  setShowDelete(false);
+                }}
+                style={{ marginLeft: "10px" }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+          <Modal
+            titleAriaId={"Title"}
+            isOpen={showDeleteSuccess}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header">
+              <div className="modal-title">Success</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setShowDeleteSuccess(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-success">
+              Item successfully Deleted.
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
+            >
+              <PrimaryButton
+                text="Okay"
+                allowDisabledFocus
+                onClick={() => {
+                  setShowDeleteSuccess(false);
+                }}
+                style={{ marginLeft: "10px" }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+        </div>
       </div>
     );
   };
@@ -788,7 +1089,38 @@ function EmployeeDetails(props: any) {
     return (
       <div>
         <div className="card">
-          <div className="row-jobHistory">
+          <div className="emp-details-section">
+            <div className="row">
+              <div className="col-md-4">
+                <span>Employee Id</span> : 10075
+              </div>
+              <div className="col-md-4">
+                <span>Employee Name</span> : Ayush Kansal
+              </div>
+              <div className="col-md-4">
+                <span>Designation</span> : Project Manager
+              </div>
+              <div className="col-md-4">
+                <span>Location</span> : NOIDA
+              </div>
+              <div className="col-md-4">
+                <span>Department</span> : Delivery
+              </div>
+              <div className="col-md-4">
+                <span>Date of Joining</span> : 2020-11-11
+              </div>
+              <div className="col-md-4">
+                <span>Reporting Officer</span> : Reporting Officer
+              </div>
+              <div className="col-md-4">
+                <span>Reviewer</span> : Piyush Rakhecha
+              </div>
+              <div className="col-md-4">
+                <span>Counter signing</span> : Munmun Some
+              </div>
+            </div>
+          </div>
+          <div className="row-jobHistory d-none">
             <TextField
               readOnly={true}
               value={employeeData.employee_id}
@@ -820,7 +1152,7 @@ function EmployeeDetails(props: any) {
               name="appraisal_description"
             />
           </div>
-          <div className="row-jobHistory">
+          <div className="row-jobHistory d-none">
             <TextField
               readOnly={true}
               value={employeeData.location}
@@ -850,7 +1182,7 @@ function EmployeeDetails(props: any) {
               name="appraisal_description"
             />
           </div>
-          <div className="row-jobHistory">
+          <div className="row-jobHistory d-none">
             <TextField
               readOnly={true}
               // value={employeeData.date_of_joining}
@@ -882,10 +1214,12 @@ function EmployeeDetails(props: any) {
               className="flexGrow"
             />
           </div>
-          {/* <Separator /> */}
         </div>
-        <div style={{ marginTop: "10px" }} className="card">
-          <Pivot>
+        <div
+          style={{ marginTop: "10px" }}
+          className="card employee-details-tabs"
+        >
+          <Pivot linkFormat={PivotLinkFormat.tabs}>
             <PivotItem
               headerButtonProps={{
                 "data-order": 1,

@@ -1,5 +1,61 @@
-.login-header{
+/* .login-header {
     width: 100%;
     height: 200px;
     border: 1px solid red;
+} */
+
+html, body, #root, .login-section, .login-banner-image, .login-section .row {
+    height: 100%;
 }
+
+.login-banner-image {
+    background: url("../../assets/img/megasoft_hrms.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: right;
+}
+
+.login-banner-image-overlay {
+    background: rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+.overlay-text-alignment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.login-banner-text {
+    width: 60%;
+    color: #FFF;
+}
+
+.login-banner-text h2 {
+    font-size: 70px;
+    font-weight: 800;
+}
+
+.login-banner-text p {
+    font-size: 21px;
+}
+
+.login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+.login-form .ms-Button {
+    margin-top: 0;
+    padding: 1rem;
+    height: auto;
+}
+
+.login-form .ms-Button .ms-Button-label {
+    font-size: 1rem;
+}
+
+.ms-logo-login {}

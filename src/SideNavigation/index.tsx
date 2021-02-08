@@ -13,6 +13,7 @@ const handleSideBar = () => {
 function SideNavigation() {
   const [navData, setNavData]: any = useState();
   const [doctype, setDoctype] = useState("Appraisal");
+  const [home_menu, setHomeMenu] = useState(0);
 
   // useEffect(() => {
   //   initSideBar();
@@ -25,7 +26,7 @@ function SideNavigation() {
   }
 
   useEffect((): void => {
-    sideNavigationData(doctype).then((response) => {
+    sideNavigationData(home_menu).then((response) => {
       console.log("side nav response", response.message);
       setNavData(response.message);
       initSideBar();
