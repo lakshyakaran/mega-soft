@@ -7,6 +7,11 @@ export const fetchEmployeeData = (
   role: any
 ) => async (dispatch: any): Promise<any> => {
   try {
+    const token = sessionStorage.getItem("access_token");
+    if (token === null) {
+      return false;
+    }
+    const accessToken = "bearer " + token;
     dispatch({
       type: "FETCH_EMPOLYEE_LIST_START",
     });
@@ -23,7 +28,7 @@ export const fetchEmployeeData = (
       headers: {
         "Content-Type": "multipart/form-data",
         Accept: "multipart/form-data",
-        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+        Authorization: accessToken,
       },
     });
     // console.log("fetch employeee api response =>", response.data);
@@ -48,6 +53,11 @@ export const fetchEmployeeDataByID = async (
   role = "Employee",
   filters: any
 ) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: `http://52.146.0.154/api/method/megasoft_hrms.pm.employee_appraisals`,
     params: {
@@ -62,7 +72,7 @@ export const fetchEmployeeDataByID = async (
     headers: {
       "Content-Type": "multipart/form-data",
       Accept: "multipart/form-data",
-      Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
   });
   // console.log("fetch employeee api response =>", response.data);

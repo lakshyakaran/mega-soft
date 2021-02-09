@@ -15,11 +15,9 @@ export const fetchAppraisalData = (
   filters: any
 ) => async (dispatch: any): Promise<any> => {
   const token = sessionStorage.getItem("access_token");
-  console.log("Token=", token);
   if (token === null) {
     return false;
   }
-
   const accessToken = "bearer " + token;
   try {
     dispatch({
@@ -83,6 +81,11 @@ export const fetchAppraisalDataById = async (
   filters: any
 ) => {
   try {
+    const token = sessionStorage.getItem("access_token");
+    if (token === null) {
+      return false;
+    }
+    const accessToken = "bearer " + token;
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal`,
       params: {
@@ -116,7 +119,7 @@ export const fetchAppraisalDataById = async (
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+        Authorization: accessToken,
       },
     });
     const responseBody = await response.data;
@@ -132,13 +135,18 @@ export const fetchAppraisalDataById = async (
 
 export const add_apprisal = async (data: any) => {
   try {
+    const token = sessionStorage.getItem("access_token");
+    if (token === null) {
+      return false;
+    }
+    const accessToken = "bearer " + token;
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: "token 5ccbc7af363c163:b6060f97664d556",
+        Authorization: accessToken,
       },
       data: JSON.stringify(data),
     });
@@ -153,13 +161,18 @@ export const add_apprisal = async (data: any) => {
 
 export const edit_appraisal = async (data: any) => {
   try {
+    const token = sessionStorage.getItem("access_token");
+    if (token === null) {
+      return false;
+    }
+    const accessToken = "bearer " + token;
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal/${data.id}`,
       method: "put",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+        Authorization: accessToken,
       },
       data: JSON.stringify(data),
     });

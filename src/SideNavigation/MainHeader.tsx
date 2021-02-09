@@ -35,6 +35,7 @@ function MainHeader(props: any) {
   const history = useHistory();
 
   const menuType = useSelector((state: RootState) => state.menuType.menuType);
+  // console.log("menuType", menuType);
 
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
@@ -42,14 +43,14 @@ function MainHeader(props: any) {
   const userId = props.userData.UserData[0].id;
 
   const renderMenuLogo = () => {
-      return(
+    if (menuType == 0) {
+      return (
         <span className="logo-text">
           <img src={logo_text} alt="homepage" className="light-logo" />
         </span>
-      )
-    
-  }
-
+      );
+    }
+  };
 
   return (
     <header className="topbar" data-navbarbg="skin5">
@@ -65,7 +66,7 @@ function MainHeader(props: any) {
             className="navbar-brand"
             href=""
             onClick={() => {
-              dispatch(setMenuType(0))
+              dispatch(setMenuType("1"));
               history.push("/home");
             }}
           >

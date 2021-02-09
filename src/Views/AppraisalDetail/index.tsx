@@ -169,7 +169,7 @@ function AppraisalDetail(props: any) {
     return (
       <React.Fragment>
         <div className="form-container">
-          <div className="row">
+          <div className="goal-details">
             <TextField
               disabled={true}
               placeholder="ID"
@@ -191,7 +191,7 @@ function AppraisalDetail(props: any) {
             />
           </div>
           {/* <div className="input-form"></div> */}
-          <div className="row">
+          <div className="goal-details">
             <DatePicker
               disabled={true}
               label="Review From"

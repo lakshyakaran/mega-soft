@@ -29,11 +29,13 @@ import moment from "moment";
 
 interface ParamTypes {
   employeeId: string;
+  appraisalId: string;
 }
 
 function JobHistory(props: any) {
   const params = useParams<ParamTypes>();
   const [filtersById] = useState(params.employeeId);
+  const [appraisalId] = useState(params.appraisalId);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const [employeeDetails, setEmployeeDetails]: any = useState({});
   const [jobHistoryData, setJobHistoryData] = useState({
@@ -178,8 +180,8 @@ function JobHistory(props: any) {
       setErrMsgQualifications("Qualifications is required");
     }
     const addQuery = {
-      appraisal_id: employeeDetails.appraisal_id,
-      employee_id: employeeDetails.employee_id,
+      appraisal_id: appraisalId,
+      employee_id: filtersById,
       key_responsibilities: jobHistoryData.responsibilities,
       place_of_posting: jobHistoryData.place,
       position_held: jobHistoryData.position,
@@ -200,7 +202,7 @@ function JobHistory(props: any) {
   const renderJobHistoryForm = () => {
     return (
       <div className="form-conatiner">
-        <div className="jobHistory-details">
+        <div className="jobHistory-details card">
           <TextField
             required
             errorMessage={errMsgPosition}
@@ -268,6 +270,36 @@ function JobHistory(props: any) {
             name="qualifications"
             onChange={onChangeInput}
           />
+          <Stack
+            horizontal
+            tokens={stackTokens}
+            style={{ justifyContent: "flex-end" }}
+          >
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Add"
+                allowDisabledFocus
+                onClick={handleAddJobHistory}
+              />
+            </div>
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                onClick={() => {
+                  history.goBack();
+                }}
+              />
+            </div>
+          </Stack>
         </div>
         <div>
           <Modal
@@ -335,36 +367,6 @@ function JobHistory(props: any) {
             </div>
           </Modal>
         </div>
-        <Stack
-          horizontal
-          tokens={stackTokens}
-          style={{ justifyContent: "flex-end" }}
-        >
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Add"
-              allowDisabledFocus
-              onClick={handleAddJobHistory}
-            />
-          </div>
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Cancel"
-              allowDisabledFocus
-              onClick={() => {
-                history.goBack();
-              }}
-            />
-          </div>
-        </Stack>
       </div>
     );
   };

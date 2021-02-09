@@ -457,7 +457,7 @@ function AddAppraisal(props: any) {
     return (
       <React.Fragment>
         <div className="form-container">
-          <div className="row">
+          <div className="goal-details">
             <TextField
               required
               placeholder="ID"
@@ -481,7 +481,7 @@ function AddAppraisal(props: any) {
             />
           </div>
           {/* <div className="input-form"></div> */}
-          <div className="row">
+          <div className="goal-details">
             <DatePicker
               isRequired={true}
               label="Review From"

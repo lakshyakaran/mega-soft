@@ -5,8 +5,10 @@ import { initSideBar } from "./sideBar";
 import { customSideBar } from "./custom";
 import { useHistory } from "react-router-dom";
 import { sideNavigationData } from "../redux/actions/navigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/reducers";
+import { setMenuType } from "../redux/actions/roleType";
+import React from "react";
 
 const handleSideBar = () => {
   initSideBar();
@@ -17,439 +19,262 @@ function SideNavigation() {
   const [doctype, setDoctype] = useState("Appraisal");
   const [home_menu, setHomeMenu] = useState(0);
   const menuType = useSelector((state: RootState) => state.menuType.menuType);
-
   // useEffect(() => {
   //   initSideBar();
   //   customSideBar();
   // }, []);
 
-  function route2page(path: any) {
-    console.log("route==>", path);
-    return true;
-  }
-
   useEffect((): void => {
-    const menu_type = sessionStorage.getItem("menuType")
-    sideNavigationData(menu_type).then((response) => {
-      // console.log("side nav response", response.message);
-      setNavData(response.message);
-      initSideBar();
-      customSideBar();
-    });
-  }, [doctype]);
+    if (menuType == 1) {
+      sideMenuLocal();
+    } else {
+      sideNavigationData(menuType).then((response) => {
+        // console.log("side nav response==>", response.message);
+        setNavData(response.message);
+        initSideBar();
+        customSideBar();
+      });
+    }
+  }, [menuType]);
+
+  const sideMenuLocal = () => {
+    return (
+      <aside className="left-sidebar" data-sidebarbg="skin5">
+        <div
+          className="scroll-sidebar leftpanel-scrollbar"
+          id="style-scrollbar"
+        >
+          <nav className="sidebar-nav">
+            <button className="btn btn-link btn-nav-left" id="nav_employee">
+              Employee
+            </button>
+            <ul id="sidebarnav" className="p-t-30 nav_employee">
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Profile");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Profile</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="/#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Leave");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Leave</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="/home"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Performance");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Performance</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Payroll");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Payroll</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Travel Desk");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Travel Desk</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Mediclaim");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Mediclaim</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Leaving Us?");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Leaving Us?</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Help Desk");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Help Desk</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Policies & Forms");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Policies & Forms</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Reports");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Reports</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Forms");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-chart-bar"></i>
+                  <span className="hide-menu">Forms</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+    );
+  };
 
   const renderNavData = () => {
     // return <div dangerouslySetInnerHTML={{ __html: navData }} />;
     return { __html: navData };
   };
 
+  const dispatch = useDispatch();
+
   const history = useHistory();
-  const handleGoalPage = () => {
-    history.push("/appraisal/goalsetting");
+
+  const handleMainMenu = (e: any, item: any) => {
+    e.preventDefault();
+    console.log("inside function  handleMainMenu==>", item);
+    dispatch(setMenuType("0"));
   };
+
   return (
-    <aside className="left-sidebar" data-sidebarbg="skin5">
-      <div className="scroll-sidebar leftpanel-scrollbar" id="style-scrollbar">
-        <nav className="sidebar-nav">
-          <div dangerouslySetInnerHTML={renderNavData()} />
-
-          {/* {renderNavData()} */}
-
-          {/* <button className="btn btn-link btn-nav-left" id="nav_employee">
-            Employee
-          </button>
-          <ul id="sidebarnav" className="p-t-30 nav_Employee">
-            <li className="sidebar-item">
-              <a
-                className="sidebar-link has-arrow waves-effect waves-dark"
-                href="#"
-                aria-expanded="false"
-              >
-                <i className="mdi mdi-chart-bar"></i>
-                <span className="hide-menu">Appraisal</span>
-              </a>
-              <ul aria-expanded="false" className="collapse  first-level">
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/appraisal/goalsetting');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi ti-settings"></i>
-                    <span className="hide-menu">Goal Setting</span>
-                  </a>
-                </li>
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/appraisal/self-assessment');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-note-plus"></i>
-                    <span className="hide-menu">Self Assessment</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="sidebar-item">
-              <a
-                className="sidebar-link has-arrow waves-effect waves-dark"
-                href="#"
-                aria-expanded="false"
-              >
-                <i className="mdi mdi-chart-bar"></i>
-                <span className="hide-menu">Confirmation</span>
-              </a>
-              <ul aria-expanded="false" className="collapse  first-level">
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/confirmation-letter');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-chart-bar"></i>
-                    <span className="hide-menu">Confirmation Letter</span>
-                  </a>
-                </li>
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/probation');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-chart-bar"></i>
-                    <span className="hide-menu">Probation</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <button className="btn btn-link btn-nav-left" id="nav_hr contact">
-            HR Contact
-          </button>
-          <ul id="sidebarnav" className="p-t-30 nav_HR Contact">
-            <li className="sidebar-item">
-              <a
-                className="sidebar-link has-arrow waves-effect waves-dark"
-                href="#"
-                aria-expanded="false"
-              >
-                <i className="mdi mdi-chart-bar"></i>
-                <span className="hide-menu">Appraisal</span>
-              </a>
-              <ul aria-expanded="false" className="collapse  first-level">
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/appraisal/goalsetting');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi ti-settings"></i>
-                    <span className="hide-menu">Goal Setting</span>
-                  </a>
-                </li>
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/appraisal/self-assessment');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-note-plus"></i>
-                    <span className="hide-menu">Self Assessment</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="sidebar-item">
-              <a
-                className="sidebar-link has-arrow waves-effect waves-dark"
-                href="#"
-                aria-expanded="false"
-              >
-                <i className="mdi mdi-chart-bar"></i>
-                <span className="hide-menu">Confirmation</span>
-              </a>
-              <ul aria-expanded="false" className="collapse  first-level">
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/confirmation-letter');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-chart-bar"></i>
-                    <span className="hide-menu">Confirmation Letter</span>
-                  </a>
-                </li>
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/probation');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-chart-bar"></i>
-                    <span className="hide-menu">Probation</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <button className="btn btn-link btn-nav-left" id="nav_manager">
-            Manager
-          </button>
-          <ul id="sidebarnav" className="p-t-30 nav_Manager">
-            <li className="sidebar-item">
-              <a
-                className="sidebar-link has-arrow waves-effect waves-dark"
-                href="#"
-                aria-expanded="false"
-              >
-                <i className="mdi mdi-chart-bar"></i>
-                <span className="hide-menu">Appraisal</span>
-              </a>
-              <ul aria-expanded="false" className="collapse  first-level">
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/appraisal/goalsetting');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi ti-settings"></i>
-                    <span className="hide-menu">Goal Setting</span>
-                  </a>
-                </li>
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/appraisal/self-assessment');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-note-plus"></i>
-                    <span className="hide-menu">Self Assessment</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="sidebar-item">
-              <a
-                className="sidebar-link has-arrow waves-effect waves-dark"
-                href="#"
-                aria-expanded="false"
-              >
-                <i className="mdi mdi-chart-bar"></i>
-                <span className="hide-menu">Confirmation</span>
-              </a>
-              <ul aria-expanded="false" className="collapse  first-level">
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/confirmation-letter');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-chart-bar"></i>
-                    <span className="hide-menu">Confirmation Letter</span>
-                  </a>
-                </li>
-                <li className="sidebar-item">
-                  <a
-                    className="sidebar-link  waves-effect waves-dark"
-                    href="#"
-                    // onClick="return route2page('/probation');"
-                    aria-expanded="false"
-                  >
-                    <i className="mdi mdi-chart-bar"></i>
-                    <span className="hide-menu">Probation</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul> */}
-        </nav>
-      </div>
-    </aside>
-
-    // <aside className="left-sidebar" data-sidebarbg="skin5">
-    //   <div className="scroll-sidebar">
-    //     <nav className="sidebar-nav">
-    //       <button className="btn btn-link btn-nav-left" id="nav_employee">
-    //         Employee
-    //       </button>
-    //       <ul id="sidebarnav" className="p-t-30 nav_employee">
-    //         <li className="sidebar-item">
-    //           <a
-    //             className="sidebar-link has-arrow waves-effect waves-dark"
-    //             href="#"
-    //             aria-expanded="false"
-    //           >
-    //             <i className="mdi mdi-chart-bar"></i>
-    //             <span className="hide-menu">Appraisal </span>
-    //           </a>
-    //           <ul aria-expanded="false" className="collapse  first-level">
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="ti-settings"></i>
-    //                 <span className="hide-menu" onClick={handleGoalPage}>
-    //                   Goal Settings
-    //                 </span>
-    //               </a>
-    //             </li>
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link" href="#">
-    //                 <i className="mdi mdi-note-plus"></i>
-    //                 <span className="hide-menu"> Self Assessment </span>
-    //               </a>
-    //             </li>
-    //           </ul>
-    //         </li>
-    //         <li className="sidebar-item">
-    //           <a
-    //             className="sidebar-link has-arrow waves-effect waves-dark"
-    //             href="#"
-    //             aria-expanded="false"
-    //           >
-    //             <i className="mdi mdi-face"></i>
-    //             <span className="hide-menu">Confirmation </span>
-    //           </a>
-    //           <ul aria-expanded="false" className="collapse  first-level">
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link" href="#">
-    //                 <i className="mdi mdi-emoticon"></i>
-    //                 <span className="hide-menu"> Confirmation Status </span>
-    //               </a>
-    //             </li>
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link" href="#">
-    //                 <i className="mdi mdi-emoticon-cool"></i>
-    //                 <span className="hide-menu"> Confirmation Letter </span>
-    //               </a>
-    //             </li>
-    //           </ul>
-    //         </li>
-    //       </ul>
-    //     </nav>
-    //   </div>
-    // </aside>
-
-    //       <button className="btn btn-link btn-nav-left" id="nav_manager">
-    //         Manager
-    //       </button>
-    //       <ul id="sidebarnav" className="p-t-30 nav_manager">
-    //         <li className="sidebar-item">
-    //           <a
-    //             className="sidebar-link has-arrow waves-effect waves-dark"
-    //             aria-expanded="false"
-    //           >
-    //             <i className="mdi mdi-chart-bar"></i>
-    //             <span className="hide-menu">Appraisal </span>
-    //           </a>
-    //           <ul aria-expanded="false" className="collapse  first-level">
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="ti-settings"></i>
-    //                 <span className="hide-menu" onClick={handleGoalPage}>
-    //                   Goal Settings
-    //                 </span>
-    //               </a>
-    //             </li>
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="mdi mdi-note-plus"></i>
-    //                 <span className="hide-menu"> Self Assessment </span>
-    //               </a>
-    //             </li>
-    //           </ul>
-    //         </li>
-    //         <li className="sidebar-item">
-    //           <a
-    //             className="sidebar-link has-arrow waves-effect waves-dark"
-    //             aria-expanded="false"
-    //           >
-    //             <i className="mdi mdi-face"></i>
-    //             <span className="hide-menu">Confirmation </span>
-    //           </a>
-    //           <ul aria-expanded="false" className="collapse  first-level">
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="mdi mdi-emoticon"></i>
-    //                 <span className="hide-menu"> Confirmation Status </span>
-    //               </a>
-    //             </li>
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="mdi mdi-emoticon-cool"></i>
-    //                 <span className="hide-menu"> Confirmation Letter </span>
-    //               </a>
-    //             </li>
-    //           </ul>
-    //         </li>
-    //       </ul>
-
-    //       <button className="btn btn-link btn-nav-left" id="nav_hr_contact">
-    //         HR Contact
-    //       </button>
-    //       <ul id="sidebarnav" className="p-t-30 nav_hr_contact">
-    //         <li className="sidebar-item">
-    //           <a
-    //             className="sidebar-link has-arrow waves-effect waves-dark"
-    //             aria-expanded="false"
-    //           >
-    //             <i className="mdi mdi-chart-bar"></i>
-    //             <span className="hide-menu">Appraisal </span>
-    //           </a>
-    //           <ul aria-expanded="false" className="collapse  first-level">
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="ti-settings"></i>
-    //                 <span className="hide-menu" onClick={handleGoalPage}>
-    //                   Goal Settings
-    //                 </span>
-    //               </a>
-    //             </li>
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="mdi mdi-note-plus"></i>
-    //                 <span className="hide-menu"> Self Assessment </span>
-    //               </a>
-    //             </li>
-    //           </ul>
-    //         </li>
-    //         <li className="sidebar-item">
-    //           <a
-    //             className="sidebar-link has-arrow waves-effect waves-dark"
-    //             aria-expanded="false"
-    //           >
-    //             <i className="mdi mdi-face"></i>
-    //             <span className="hide-menu">Confirmation </span>
-    //           </a>
-    //           <ul aria-expanded="false" className="collapse  first-level">
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="mdi mdi-emoticon"></i>
-    //                 <span className="hide-menu"> Confirmation Status </span>
-    //               </a>
-    //             </li>
-    //             <li className="sidebar-item">
-    //               <a className="sidebar-link">
-    //                 <i className="mdi mdi-emoticon-cool"></i>
-    //                 <span className="hide-menu"> Confirmation Letter </span>
-    //               </a>
-    //             </li>
-    //           </ul>
-    //         </li>
-    //       </ul>
-    //     </nav>
-    //   </div>
-    // </aside>
+    <React.Fragment>
+      {menuType == 0 ? (
+        <aside className="left-sidebar" data-sidebarbg="skin5">
+          <div
+            className="scroll-sidebar leftpanel-scrollbar"
+            id="style-scrollbar"
+          >
+            <nav className="sidebar-nav">
+              <div dangerouslySetInnerHTML={renderNavData()} />
+            </nav>
+          </div>
+        </aside>
+      ) : (
+        sideMenuLocal()
+      )}
+    </React.Fragment>
   );
 }
 

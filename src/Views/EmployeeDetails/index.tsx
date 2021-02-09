@@ -83,7 +83,9 @@ function EmployeeDetails(props: any) {
 
   const [goalData, setGoalData]: any = useState({});
   const [goalCount, setGoalCount] = useState(0);
+  const [EmployeeCount, setEmployeeCount] = useState(0);
   const [goalTotalCount, setGoalTotalCount] = useState(0);
+  const [developmentCount, setDevelopmentCount] = useState(0);
   const [tariningPlan, setTrainingPlan] = useState([
     {
       development: "",
@@ -122,6 +124,8 @@ function EmployeeDetails(props: any) {
       roleType,
       JSON.stringify(filters)
     ).then((response) => {
+      // console.log("employee response ==>", response);
+      // setEmployeeCount(response.count);
       setEmployeeData(response.data[0]);
     });
   }, [doctype, limit_start, limit, roleType]);
@@ -174,6 +178,7 @@ function EmployeeDetails(props: any) {
       JSON.stringify(filters)
     ).then((response) => {
       // console.log("response of Development===>", response);
+      setDevelopmentCount(response.count);
       setDevelopmentData(response.data);
     });
   }, [limitStartGoal, limitPageLengthGoal]);
@@ -732,34 +737,63 @@ function EmployeeDetails(props: any) {
     },
   };
 
+  const renderNoData = () => {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          textAlign: "center",
+          marginTop: "20px",
+          flexDirection: "column",
+        }}
+      >
+        <Text
+          style={{
+            color: "#aaa",
+            textAlign: "center",
+            padding: 50,
+            fontSize: 30,
+          }}
+        >
+          No Data Found
+        </Text>
+      </div>
+    );
+  };
+
   const stackTokens = { childrenGap: 10 };
   const renderJobHistory = () => {
     return (
       <div>
-        <div>
-          <DetailsList
-            styles={listStyle}
-            items={employeeDetails}
-            className="detail-list"
-            columns={columnsJobHistory}
-            selectionMode={0}
-          />
-          <div className="pagination-style">
-            <Pagination
-              format="buttons"
-              // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-              // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
-              selectedPageIndex={currentPage}
-              pageCount={Math.ceil(totalCount / limitPageLength)}
-              itemsPerPage={limitPageLength}
-              totalItemCount={totalCount}
-              onPageChange={(page) => {
-                setLimitSTart(page * limitPageLength);
-                setCurentPage(page);
-              }}
+        {count === 0 ? (
+          renderNoData()
+        ) : (
+          <div>
+            <DetailsList
+              styles={listStyle}
+              items={employeeDetails}
+              className="detail-list"
+              columns={columnsJobHistory}
+              selectionMode={0}
             />
+            <div className="pagination-style">
+              <Pagination
+                format="buttons"
+                // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+                // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+                selectedPageIndex={currentPage}
+                pageCount={Math.ceil(totalCount / limitPageLength)}
+                itemsPerPage={limitPageLength}
+                totalItemCount={totalCount}
+                onPageChange={(page) => {
+                  setLimitSTart(page * limitPageLength);
+                  setCurentPage(page);
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <Stack
           horizontal
           tokens={stackTokens}
@@ -890,28 +924,34 @@ function EmployeeDetails(props: any) {
   const renderGoals = () => {
     return (
       <div className="form-conatiner">
-        <DetailsList
-          styles={listStyle}
-          items={goalData}
-          className="detail-list"
-          columns={columnsGoal}
-          selectionMode={0}
-        />
-        <div className="pagination-style">
-          <Pagination
-            format="buttons"
-            // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-            // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
-            selectedPageIndex={currentPageGoal}
-            pageCount={Math.ceil(goalTotalCount / limitPageLengthGoal)}
-            itemsPerPage={limitPageLengthGoal}
-            totalItemCount={goalTotalCount}
-            onPageChange={(pageGoal) => {
-              setLimitSTartGoal(pageGoal * limitPageLengthGoal);
-              setCurentPageGoal(pageGoal);
-            }}
-          />
-        </div>
+        {goalCount === 0 ? (
+          renderNoData()
+        ) : (
+          <div>
+            <DetailsList
+              styles={listStyle}
+              items={goalData}
+              className="detail-list"
+              columns={columnsGoal}
+              selectionMode={0}
+            />
+            <div className="pagination-style">
+              <Pagination
+                format="buttons"
+                // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+                // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+                selectedPageIndex={currentPageGoal}
+                pageCount={Math.ceil(goalTotalCount / limitPageLengthGoal)}
+                itemsPerPage={limitPageLengthGoal}
+                totalItemCount={goalTotalCount}
+                onPageChange={(pageGoal) => {
+                  setLimitSTartGoal(pageGoal * limitPageLengthGoal);
+                  setCurentPageGoal(pageGoal);
+                }}
+              />
+            </div>
+          </div>
+        )}
         <Stack
           horizontal
           tokens={stackTokens}
@@ -1042,45 +1082,51 @@ function EmployeeDetails(props: any) {
   const renderTrainingDevelopment = () => {
     return (
       <div className="form-conatiner">
-        <DetailsList
-          styles={listStyle}
-          items={developmentData}
-          className="detail-list"
-          columns={columnsTraning}
-          selectionMode={0}
-        />
-        <Stack
-          horizontal
-          tokens={stackTokens}
-          style={{ justifyContent: "flex-end" }}
-        >
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Save"
-              allowDisabledFocus
-              onClick={() => {
-                console.log("tariningPlan=> ", tariningPlan);
-              }}
+        {developmentCount === 0 ? (
+          renderNoData()
+        ) : (
+          <div>
+            <DetailsList
+              styles={listStyle}
+              items={developmentData}
+              className="detail-list"
+              columns={columnsTraning}
+              selectionMode={0}
             />
+            <Stack
+              horizontal
+              tokens={stackTokens}
+              style={{ justifyContent: "flex-end" }}
+            >
+              <div
+                style={{
+                  marginTop: "15px",
+                }}
+              >
+                <PrimaryButton
+                  text="Save"
+                  allowDisabledFocus
+                  onClick={() => {
+                    console.log("tariningPlan=> ", tariningPlan);
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  marginTop: "15px",
+                }}
+              >
+                <PrimaryButton
+                  text="Cancel"
+                  allowDisabledFocus
+                  onClick={() => {
+                    history.push("/appraisal/goalsetting");
+                  }}
+                />
+              </div>
+            </Stack>
           </div>
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Cancel"
-              allowDisabledFocus
-              onClick={() => {
-                history.push("/appraisal/goalsetting");
-              }}
-            />
-          </div>
-        </Stack>
+        )}
       </div>
     );
   };
@@ -1116,7 +1162,8 @@ function EmployeeDetails(props: any) {
                 <span>Reviewer</span> : {employeeData.reviewer_name}
               </div>
               <div className="col-md-4">
-                <span>Counter signing</span> : {employeeData.counter_signing_name}
+                <span>Counter signing</span> :{" "}
+                {employeeData.counter_signing_name}
               </div>
             </div>
           </div>

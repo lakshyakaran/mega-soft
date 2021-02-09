@@ -6,6 +6,11 @@ export const fetchGoalData = async (
   order_by = "order_no asc",
   filters: any
 ) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/AppraisalGoals`,
     params: {
@@ -35,7 +40,7 @@ export const fetchGoalData = async (
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
   });
   //   console.log("fetch GOAL api response =>", response.data);
@@ -49,6 +54,11 @@ export const fetchGoalDataName = async (
   order_by = "order_no asc",
   filters: any
 ) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/AppraisalGoals`,
     params: {
@@ -78,7 +88,7 @@ export const fetchGoalDataName = async (
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
   });
   //   console.log("fetch GOAL api response =>", response.data);
@@ -87,13 +97,18 @@ export const fetchGoalDataName = async (
 };
 
 export const add_goals = async (data: any) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/AppraisalGoals`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
     data: JSON.stringify(data),
   });
@@ -103,13 +118,18 @@ export const add_goals = async (data: any) => {
 };
 
 export const update_goals = async (data: any) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/AppraisalGoals/${data.name}`,
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
     data: JSON.stringify(data),
   });

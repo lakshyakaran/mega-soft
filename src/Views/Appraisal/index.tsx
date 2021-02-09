@@ -591,7 +591,7 @@ function Appraisal(props: any) {
           flexDirection: "column",
         }}
       >
-        <PrimaryButton
+        {/* <PrimaryButton
           text="New Appraisal"
           iconProps={{ iconName: "Add" }}
           allowDisabledFocus
@@ -601,7 +601,7 @@ function Appraisal(props: any) {
           style={{ marginLeft: "auto", alignSelf: "center" }}
           disabled={false}
           checked={false}
-        />
+        /> */}
         <Text
           style={{
             color: "#aaa",

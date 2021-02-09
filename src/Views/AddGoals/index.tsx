@@ -253,126 +253,158 @@ function AddGoals(props: any) {
   const renderJobHistoryForm = () => {
     return (
       <div className="form-conatiner">
-        <div className="goal-details">
-          <TextField
-            disabled={true}
-            label="ID"
-            // value={goalData.name}
-            placeholder="New"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="position"
-            onChange={onChangeInput}
-          />
-          <TextField
-            required
-            errorMessage={errMsgOrder}
-            label="Order Number"
-            value={goalInputData.order_no}
-            placeholder="Enter order number"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="order_no"
-            onChange={onChangeInput}
-          />
-          <Dropdown
-            required
-            errorMessage={errMsgGoalType}
-            label="Goal Type"
-            placeholder="Select goal type"
-            className="flexGrow"
-            onChange={onChangeGoalType}
-            options={goalOptions}
-            // styles={dropdownStyles}
-          />
-          <TextField
-            disabled={goalType.text === "Goal" ? true : false}
-            label="Parent Goal"
-            value={goalInputData.parent_goal_id}
-            placeholder="Enter parent goal ID "
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="parent_goal_id"
-            onChange={onChangeInput}
-          />
-        </div>
-        <div className="goal-details"></div>
-        <div>
-          <TextField
-            required
-            errorMessage={errMsgKra}
-            label="KRA"
-            value={goalInputData.kra}
-            placeholder="Enter KRA"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="kra"
-            onChange={onChangeInput}
-          />
-          <TextField
-            required
-            errorMessage={errMsgGoal}
-            label="Goal"
-            value={goalInputData.goal}
-            placeholder="Enter Goal"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="goal"
-            onChange={onChangeInput}
-          />
-        </div>
-        <div className="goal-details">
-          <TextField
-            required
-            errorMessage={errMsgMeasure}
-            label="Measure"
-            value={goalInputData.measure}
-            placeholder="Enter Measure"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="measure"
-            onChange={onChangeInput}
-          />
-          <TextField
-            required
-            errorMessage={errMsgWeightage}
-            label="Weightage"
-            value={goalInputData.weightage}
-            placeholder="Enter Weightage"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="weightage"
-            onChange={onChangeInput}
-          />
-          <TextField
-            label="Target"
-            value={goalInputData.target}
-            placeholder="Enter Target"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="target"
-            onChange={onChangeInput}
-          />
-        </div>
-        <div className="goal-details">
-          <TextField
-            label="Threshold"
-            value={goalInputData.threshold}
-            placeholder="Enter Threshold"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="threshold"
-            onChange={onChangeInput}
-          />
-          <TextField
-            label="Stretch"
-            value={goalInputData.stretch}
-            placeholder="Enter Stretch"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="stretch"
-            onChange={onChangeInput}
-          />
+        <div className="card">
+          <div className="goal-details">
+            <TextField
+              disabled={true}
+              label="ID"
+              // value={goalData.name}
+              placeholder="New"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="position"
+              onChange={onChangeInput}
+            />
+            <TextField
+              required
+              errorMessage={errMsgOrder}
+              label="Order Number"
+              value={goalInputData.order_no}
+              placeholder="Enter order number"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="order_no"
+              onChange={onChangeInput}
+            />
+            <Dropdown
+              required
+              errorMessage={errMsgGoalType}
+              label="Goal Type"
+              placeholder="Select goal type"
+              className="flexGrow"
+              onChange={onChangeGoalType}
+              options={goalOptions}
+              // styles={dropdownStyles}
+            />
+            <TextField
+              disabled={goalType.text === "Goal" ? true : false}
+              label="Parent Goal"
+              value={goalInputData.parent_goal_id}
+              placeholder="Enter parent goal ID "
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="parent_goal_id"
+              onChange={onChangeInput}
+            />
+          </div>
+          <div className="goal-details"></div>
+          <div>
+            <TextField
+              required
+              errorMessage={errMsgKra}
+              label="KRA"
+              value={goalInputData.kra}
+              placeholder="Enter KRA"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="kra"
+              onChange={onChangeInput}
+            />
+            <TextField
+              required
+              errorMessage={errMsgGoal}
+              label="Goal"
+              value={goalInputData.goal}
+              placeholder="Enter Goal"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="goal"
+              onChange={onChangeInput}
+            />
+          </div>
+          <div className="goal-details">
+            <TextField
+              required
+              errorMessage={errMsgMeasure}
+              label="Measure"
+              value={goalInputData.measure}
+              placeholder="Enter Measure"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="measure"
+              onChange={onChangeInput}
+            />
+            <TextField
+              required
+              errorMessage={errMsgWeightage}
+              label="Weightage"
+              value={goalInputData.weightage}
+              placeholder="Enter Weightage"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="weightage"
+              onChange={onChangeInput}
+            />
+            <TextField
+              label="Target"
+              value={goalInputData.target}
+              placeholder="Enter Target"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="target"
+              onChange={onChangeInput}
+            />
+          </div>
+          <div className="goal-details">
+            <TextField
+              label="Threshold"
+              value={goalInputData.threshold}
+              placeholder="Enter Threshold"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="threshold"
+              onChange={onChangeInput}
+            />
+            <TextField
+              label="Stretch"
+              value={goalInputData.stretch}
+              placeholder="Enter Stretch"
+              styles={textfelidStyle}
+              className="flexGrow"
+              name="stretch"
+              onChange={onChangeInput}
+            />
+          </div>
+          <Stack
+            horizontal
+            tokens={stackTokens}
+            style={{ justifyContent: "flex-end" }}
+          >
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Add"
+                allowDisabledFocus
+                onClick={handleAddJobHistory}
+              />
+            </div>
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                onClick={() => {
+                  history.goBack();
+                }}
+              />
+            </div>
+          </Stack>
         </div>
         <div>
           <Modal
@@ -442,36 +474,6 @@ function AddGoals(props: any) {
             </div>
           </Modal>
         </div>
-        <Stack
-          horizontal
-          tokens={stackTokens}
-          style={{ justifyContent: "flex-end" }}
-        >
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Add"
-              allowDisabledFocus
-              onClick={handleAddJobHistory}
-            />
-          </div>
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Cancel"
-              allowDisabledFocus
-              onClick={() => {
-                history.goBack();
-              }}
-            />
-          </div>
-        </Stack>
       </div>
     );
   };

@@ -19,7 +19,7 @@ import axios from "axios";
 
 export const validateLogin = () => {
   const access_token = sessionStorage.getItem("access_token");
-  console.log("access_token ==>", access_token);
+  // console.log("access_token ==>", access_token);
   const user = {};
   if (access_token) {
     return {
@@ -53,35 +53,61 @@ export const login = (access_token: any) => {
   };
 };
 
+// export const logout = () => async (dispatch: any): Promise<any> => {
+//   const token = sessionStorage.getItem("access_token");
+//   const accessToken = "bearer " + token;
+//   if (token === null) {
+//     dispatch({
+//       type: "LOGOUT_SUCCESS",
+//     });
+//     return false;
+//   }
+//   const response = await axios({
+//     url: `http://52.146.0.154/api/method/frappe.integrations.oauth2.revoke_token`,
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Accept: "application/json",
+//       Authorization: accessToken,
+//     },
+//   });
+//   const responseBody = await response.data;
+//   sessionStorage.removeItem("access_token");
+//   dispatch({
+//     type: "LOGOUT_SUCCESS",
+//   });
+//   return false;
+
+// };
+
 export const logout = () => async (dispatch: any): Promise<any> => {
-  const token = sessionStorage.getItem("access_token");
-  console.log("Token=", token);
-  const accessToken = "bearer " + token;
-  if (token === null) {
+  try {
+    const token = sessionStorage.getItem("access_token");
+    if (token === null) {
+      return false;
+    }
+    const formData = new FormData();
+    formData.append("token", token);
+    const response = await axios({
+      url: `http://52.146.0.154/api/method/frappe.integrations.oauth2.revoke_token`,
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "multipart/form-data",
+      },
+      data: formData,
+    });
+    sessionStorage.removeItem("access_token");
     dispatch({
       type: "LOGOUT_SUCCESS",
     });
-    return false;
+    return response;
+  } catch (error) {
+    console.log("error in catch block=>", JSON.stringify(error));
+    return {
+      ...error,
+    };
   }
-  const response = await axios({
-    url: `http://52.146.0.154/api/method/logout`,
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: accessToken,
-    },
-  });
-  const responseBody = await response.data;
-  sessionStorage.removeItem("access_token");
-  dispatch({
-    type: "LOGOUT_SUCCESS",
-  });
-  return false;
-  // sessionStorage.removeItem("access_token");
-  // return {
-  //   type: "LOGOUT_SUCCESS",
-  // };
 };
 
 // export const login = async () => {

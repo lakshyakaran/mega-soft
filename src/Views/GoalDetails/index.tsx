@@ -263,27 +263,26 @@ function GoalDetails(props: any) {
             />
           </div>
 
-
-        </div>
-        <Stack
-          horizontal
-          tokens={stackTokens}
-          style={{ justifyContent: "flex-end" }}
-        >
-          <div
-            style={{
-              marginTop: "15px",
-            }}
+          <Stack
+            horizontal
+            tokens={stackTokens}
+            style={{ justifyContent: "flex-end" }}
           >
-            <PrimaryButton
-              text="Back"
-              allowDisabledFocus
-              onClick={() => {
-                history.goBack();
+            <div
+              style={{
+                marginTop: "15px",
               }}
-            />
-          </div>
-        </Stack>
+            >
+              <PrimaryButton
+                text="Back"
+                allowDisabledFocus
+                onClick={() => {
+                  history.goBack();
+                }}
+              />
+            </div>
+          </Stack>
+        </div>
       </div>
     );
   };

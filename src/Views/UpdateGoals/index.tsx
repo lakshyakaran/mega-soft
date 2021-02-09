@@ -250,8 +250,9 @@ function UpdateGoals(props: any) {
               placeholder="Select goal type"
               className="flexGrow"
               selectedKey={
-                goalOptions.find((item) => item.text === updateGoalData.goal_type)
-                  ?.key
+                goalOptions.find(
+                  (item) => item.text === updateGoalData.goal_type
+                )?.key
               }
               onChange={(ev, item) =>
                 setUpdateGoalData({
@@ -352,8 +353,37 @@ function UpdateGoals(props: any) {
               onChange={onChangeInput}
             />
           </div>
-        
 
+          <Stack
+            horizontal
+            tokens={stackTokens}
+            style={{ justifyContent: "flex-end" }}
+          >
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Update"
+                allowDisabledFocus
+                onClick={handleUpdateGoal}
+              />
+            </div>
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                onClick={() => {
+                  history.goBack();
+                }}
+              />
+            </div>
+          </Stack>
         </div>
         <div>
           <Modal
@@ -423,36 +453,6 @@ function UpdateGoals(props: any) {
             </div>
           </Modal>
         </div>
-        <Stack
-          horizontal
-          tokens={stackTokens}
-          style={{ justifyContent: "flex-end" }}
-        >
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Update"
-              allowDisabledFocus
-              onClick={handleUpdateGoal}
-            />
-          </div>
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Cancel"
-              allowDisabledFocus
-              onClick={() => {
-                history.goBack();
-              }}
-            />
-          </div>
-        </Stack>
       </div>
     );
   };

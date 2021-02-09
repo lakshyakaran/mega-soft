@@ -341,7 +341,7 @@ function UpdateAppraisal(props: any) {
     return (
       <React.Fragment>
         <div className="form-container">
-          <div className="row">
+          <div className="goal-details">
             <TextField
               disabled
               placeholder="ID"
@@ -363,7 +363,7 @@ function UpdateAppraisal(props: any) {
             />
           </div>
           {/* <div className="input-form"></div> */}
-          <div className="row">
+          <div className="goal-details">
             <DatePicker
               isRequired
               label="Review From"

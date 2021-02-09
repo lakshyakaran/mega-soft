@@ -3,15 +3,15 @@ interface type {
 }
 
 const initialState: type = {
-  menuType: window.sessionStorage.getItem("menuType") || 1,
+  menuType: window.sessionStorage.getItem("menuType") || 0,
 };
 
 export default function menuType(
   state = initialState,
-  action: { type: string; payload: any }
+  action: { type: any; payload: any }
 ) {
   switch (action.type) {
-    case "ROLE_TYPE": {
+    case "MENU_TYPE": {
       return {
         ...state,
         menuType: action.payload,

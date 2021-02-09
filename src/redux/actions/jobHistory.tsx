@@ -6,6 +6,11 @@ export const fetchJobHistory = async (
   limit_start = 0,
   limit_page_length = 10
 ) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/JobHistory`,
     params: {
@@ -30,7 +35,7 @@ export const fetchJobHistory = async (
     headers: {
       "Content-Type": "multipart/form-data",
       Accept: "multipart/form-data",
-      Authorization: " token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
   });
   // console.log("fetch jobhisty api response =>", response.data);
@@ -42,6 +47,11 @@ export const fetchJobHistoryByName = async (
   role = "Employee",
   filters: any
 ) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/JobHistory`,
     params: {
@@ -64,7 +74,7 @@ export const fetchJobHistoryByName = async (
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
   });
   // console.log("fetch jobhisty api response =>", response.data);
@@ -73,13 +83,18 @@ export const fetchJobHistoryByName = async (
 };
 
 export const add_JobHistory = async (data: any) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/JobHistory`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
     data: JSON.stringify(data),
   });
@@ -89,13 +104,18 @@ export const add_JobHistory = async (data: any) => {
 };
 
 export const update_JobHistory = async (data: any) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
   const response = await axios({
     url: ` http://52.146.0.154/api/resource/JobHistory/${data.name}`,
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "token 5ccbc7af363c163:b6060f97664d556",
+      Authorization: accessToken,
     },
     data: JSON.stringify(data),
   });

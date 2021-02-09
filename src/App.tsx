@@ -22,19 +22,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
 
 const getQueryParms = () => {
-    const url = window.location.href;
-    console.log("url ==", url);
-    const str = url;
-    const param = "access_token=";
-    let res = str.split("&", 1);
-    let n = res[0].search(param);
+  const url = window.location.href;
+  const str = url;
+  const param = "access_token=";
+  let res = str.split("&", 1);
+  let n = res[0].search(param);
 
-    if (n < 0) {
-      return;
-    }
-    n += param.length;
-    let access_token = res[0].substr(n);
-    return access_token;
+  if (n < 0) {
+    return;
+  }
+  n += param.length;
+  let access_token = res[0].substr(n);
+  return access_token;
 };
 
 function App(props: any) {
@@ -65,8 +64,8 @@ function App(props: any) {
     dispatch(validateLogin());
   }, []);
 
-  sessionStorage.setItem("roleType","Employee");
-  sessionStorage.setItem("menuType",'1');
+  sessionStorage.setItem("roleType", "Employee");
+  // sessionStorage.setItem("menuType", "0");
 
   useEffect(() => {
     // const stateValue = getQueryParms("state");

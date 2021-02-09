@@ -2,7 +2,7 @@ import $ from "jquery";
 
 export const customSideBar = function () {
   ("use strict");
-  console.log("inside customside bar==>");
+  // console.log("inside customside bar==>");
 
   $(".preloader").fadeOut();
   // ==============================================================
@@ -38,7 +38,7 @@ export const customSideBar = function () {
   // ==============================================================
   // Right sidebar options
   // ==============================================================
-  console.log("custom side bar2==>");
+  // console.log("custom side bar2==>");
   $(function () {
     $(".service-panel-toggle").on("click", function () {
       $(".customizer").toggleClass("show-service-panel");
@@ -98,7 +98,7 @@ export const customSideBar = function () {
   //****************************
   /* This is for the mini-sidebar if width is less then 1170*/
   //****************************
-  console.log("custom side bar3==>");
+  // console.log("custom side bar3==>");
   var setsidebartype = function () {
     // var width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width;
     // if (width < 1170) {
@@ -113,7 +113,7 @@ export const customSideBar = function () {
   /* This is for sidebartoggler*/
   //****************************
   $(".sidebartoggler").on("click", function () {
-    console.log("Sidebar toggle inner function ==>");
+    // console.log("Sidebar toggle inner function ==>");
     $("#main-wrapper").toggleClass("mini-sidebar");
     if ($("#main-wrapper").hasClass("mini-sidebar")) {
       $(".sidebartoggler").prop("checked", !0);

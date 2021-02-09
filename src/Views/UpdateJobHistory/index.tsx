@@ -280,6 +280,36 @@ function UpdateJobHistory(props: any) {
             name="qualifications"
             onChange={onChangeInput}
           />
+          <Stack
+            horizontal
+            tokens={stackTokens}
+            style={{ justifyContent: "flex-end" }}
+          >
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Update"
+                allowDisabledFocus
+                onClick={handleUpdateJobHistory}
+              />
+            </div>
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                onClick={() => {
+                  history.goBack();
+                }}
+              />
+            </div>
+          </Stack>
         </div>
         <div>
           <Modal
@@ -347,36 +377,6 @@ function UpdateJobHistory(props: any) {
             </div>
           </Modal>
         </div>
-        <Stack
-          horizontal
-          tokens={stackTokens}
-          style={{ justifyContent: "flex-end" }}
-        >
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Update"
-              allowDisabledFocus
-              onClick={handleUpdateJobHistory}
-            />
-          </div>
-          <div
-            style={{
-              marginTop: "15px",
-            }}
-          >
-            <PrimaryButton
-              text="Cancel"
-              allowDisabledFocus
-              onClick={() => {
-                history.goBack();
-              }}
-            />
-          </div>
-        </Stack>
       </div>
     );
   };
