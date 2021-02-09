@@ -41,7 +41,6 @@ function GoalSetting(props: any) {
 
   // const newRoleType = sessionStorage.getItem("roleType")
 
-  
   useEffect((): void => {
     const newRoleType = sessionStorage.getItem("roleType");
     dispatch(fetchEmployeeData(doctype, limit_start, limit, newRoleType));

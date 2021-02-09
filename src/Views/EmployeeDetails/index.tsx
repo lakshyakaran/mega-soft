@@ -496,7 +496,7 @@ function EmployeeDetails(props: any) {
       isResizable: false,
       onRender: (item) => (
         <div>
-          {item.goal_type == "Sub-Goal" ? (
+          {item.goal_type == "Goal" ? (
             <Link
               className="link-icons"
               onClick={() => {

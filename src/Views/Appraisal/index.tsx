@@ -293,7 +293,7 @@ function Appraisal(props: any) {
   const [updateData, setUpdateData]: any = useState({});
 
   const deleteAppraisal = (item: any) => {
-    // setDeleteItemId(item.id);
+    setDeleteItemId(item.id);
     // console.log("item id", item)
     const filters = [];
     if (item.name) {
@@ -311,13 +311,14 @@ function Appraisal(props: any) {
     setShowDelete(true);
   };
 
-  // console.log("deleteItemId=>", updateData)
+  // console.log("deleteItemId=>", deleteItemId);
 
   const handleDeleteAppraisal = () => {
     const deleteQuery = {
-      id: updateData.id,
+      id: deleteItemId,
       is_deleted: 1,
     };
+    // console.log("deleteQuery==>", deleteQuery);
     edit_appraisal(deleteQuery).then((response) => {
       // console.log("response=>", response);
       setShowDelete(false);

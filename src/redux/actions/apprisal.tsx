@@ -168,7 +168,7 @@ export const edit_appraisal = async (data: any) => {
     const accessToken = "bearer " + token;
     const response = await axios({
       url: `http://52.146.0.154/api/resource/Appraisal/${data.id}`,
-      method: "put",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

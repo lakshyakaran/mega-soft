@@ -58,7 +58,7 @@ function SideNavigation() {
                   }}
                   aria-expanded="false"
                 >
-                  <i className="mdi mdi-chart-bar"></i>
+                  <i className="mdi mdi-face-profile"></i>
                   <span className="hide-menu">Profile</span>
                 </a>
                 <ul
@@ -75,7 +75,7 @@ function SideNavigation() {
                   }}
                   aria-expanded="false"
                 >
-                  <i className="mdi mdi-chart-bar"></i>
+                  <i className="mdi mdi-book"></i>
                   <span className="hide-menu">Leave</span>
                 </a>
                 <ul

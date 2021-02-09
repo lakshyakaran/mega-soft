@@ -189,12 +189,13 @@ body {
 }
 
 .ms-Button.ms-Button--primary {
-  background-color: #344f84;
+  /* background-color: #344f84; */
+  background-color: #006994;
   border: none;
 }
 
 .ms-Button.ms-Button--primary:hover {
-  background-color: #29416f;
+  background-color: #035a7d;
   border: none;
 }
 
@@ -299,7 +300,7 @@ body {
 /* breadcrumb css */
 
 .header ol.ms-Breadcrumb-list {
-  background: #ffffff;
+  background: #eeeeee;
   padding: 5px;
 }
 
