@@ -29,8 +29,8 @@ function MainHeader(props: any) {
   };
 
   const handleCustomSidebar = () => {
-    customSideBar();
     initSideBar();
+    customSideBar();
   };
 
   const history = useHistory();

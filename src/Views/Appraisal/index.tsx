@@ -78,7 +78,7 @@ function Appraisal(props: any) {
       filters.push(["id", "like", filtersById]);
     }
     if (filtersByDescription) {
-      filters.push(["description", "like", filtersByDescription]);
+      filters.push(["appraisal_description", "like", filtersByDescription]);
     }
     if (filtersByReviewFreq) {
       filters.push(["review_frequency", "=", filtersByReviewFreq]);
@@ -526,7 +526,7 @@ function Appraisal(props: any) {
   const searchAppraisal: IDropdownOption[] = [
     { key: "", text: "Select" },
     { key: "Annual Appraisal", text: "Annual Appraisal" },
-    { key: "Quarterly Appraisal", text: "Quarterly Appraisal" },
+    { key: "Confirmation Appraisal", text: "Confirmation Appraisal" },
   ];
 
   // const rolesOption: IDropdownOption[] = [

@@ -50,7 +50,7 @@ const reviewFrequencyOptions: IDropdownOption[] = [
 
 const typeOptions: IDropdownOption[] = [
   { key: "key1", text: "Annual Appraisal" },
-  { key: "key2", text: "Quarterly Appraisal" },
+  { key: "key2", text: "Confirmation Appraisal" },
 ];
 
 const dropdownStyles: Partial<IDropdownStyles> = {

@@ -9624,7 +9624,7 @@ html[dir=ltr] body .p-l-0 {
 #main-wrapper {}
 
 #main-wrapper .topbar .top-navbar .navbar-header[data-logobg=skin5] {
-    background: #006994
+    background: #00597d
 }
 
 #main-wrapper .topbar .navbar-collapse[data-navbarbg=skin5], #main-wrapper .topbar[data-navbarbg=skin5] {
@@ -9633,7 +9633,7 @@ html[dir=ltr] body .p-l-0 {
 
 #main-wrapper .left-sidebar[data-sidebarbg=skin5], #main-wrapper .left-sidebar[data-sidebarbg=skin5] ul {
     /* background: #1F262D; */
-    background: #006994;
+    background: #00597d;
 }
 
 #main-wrapper .left-sidebar[data-sidebarbg=skin5] .create-btn, #main-wrapper .left-sidebar[data-sidebarbg=skin5] ul .create-btn {
@@ -14982,7 +14982,12 @@ label {
     color: #ffffff;
     width: 100%;
     text-align: left;
+    font-weight: 700;
     /* box-shadow: inset 0 0 10px #000000; */
+}
+
+.btn-nav-left:focus {
+    text-decoration: none;
 }
 
 .btn-nav-left:hover {
@@ -15047,7 +15052,7 @@ label {
 } */
 
 #style-scrollbar::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
     background-color: transparent;
 }
 
@@ -15057,5 +15062,5 @@ label {
 }
 
 #style-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #434d56;
+    background-color: #037daf;
 }

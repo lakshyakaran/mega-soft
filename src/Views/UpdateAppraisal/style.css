@@ -56,6 +56,10 @@
     margin-right: 1rem;
 }
 
+.goal-details .flexGrow:last-child {
+    margin-right: 0rem;
+}
+
 .flexGrowTextInput {
     margin-right: 1rem;
 }

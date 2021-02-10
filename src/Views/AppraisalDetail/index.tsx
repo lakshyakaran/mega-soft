@@ -168,7 +168,7 @@ function AppraisalDetail(props: any) {
   const renderData = () => {
     return (
       <React.Fragment>
-        <div className="form-container">
+        <div className="form-container card">
           <div className="goal-details">
             <TextField
               disabled={true}

@@ -67,7 +67,7 @@
 .goal-details {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }
 
 .flexGrow {
@@ -171,3 +171,7 @@
     height: 100%;
     background: #ffffff;
 } */
+
+.w33 {
+    width: 33.33%;
+}

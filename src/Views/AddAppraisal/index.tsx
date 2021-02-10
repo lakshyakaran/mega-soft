@@ -49,7 +49,7 @@ const reviewFrequencyOptions: IDropdownOption[] = [
 
 const typeOptions: IDropdownOption[] = [
   { key: "key1", text: "Annual Appraisal" },
-  { key: "key2", text: "Quarterly Appraisal" },
+  { key: "key2", text: "Confirmation Appraisal" },
 ];
 
 const dropdownStyles: Partial<IDropdownStyles> = {
@@ -456,7 +456,7 @@ function AddAppraisal(props: any) {
   const renderForm = () => {
     return (
       <React.Fragment>
-        <div className="form-container">
+        <div className="form-container card">
           <div className="goal-details">
             <TextField
               required
@@ -485,7 +485,7 @@ function AddAppraisal(props: any) {
             <DatePicker
               isRequired={true}
               label="Review From"
-              className={`${controlClass.control} flexGrow`}
+              className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeek}
               strings={DayPickerStrings}
               value={dateReview}
@@ -497,7 +497,7 @@ function AddAppraisal(props: any) {
             <DatePicker
               isRequired={true}
               label="Appraisal To"
-              className={`${controlClass.control} flexGrow`}
+              className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeekAppraisal}
               strings={DayPickerStringsAppraisal}
               onSelectDate={appraisalToDate}
@@ -511,42 +511,46 @@ function AddAppraisal(props: any) {
               errorMessage={errMsgReviewFrequency}
               label="Review Frequency"
               placeholder="Select"
-              className="flexGrow"
+              className="flexGrow w33"
               onChange={onChangeReviewFrequency}
               options={reviewFrequencyOptions}
               // styles={dropdownStyles}
             />
           </div>
-          <Dropdown
-            required
-            label="Type"
-            errorMessage={errMsgType}
-            placeholder="Select Type"
-            className="type-input"
-            options={typeOptions}
-            onChange={onChangeType}
-            // styles={typeDropdownStyles}
-          />
-          <Dropdown
-            required
-            label="Format Type"
-            errorMessage={errMsgFormatType}
-            className="type-input"
-            onChange={onChangeFormateType}
-            placeholder="Select Format Type"
-            options={formateTypeOptions}
-            // styles={typeDropdownStyles}
-          />
-          <TextField
-            required
-            label="Owner"
-            placeholder="Owner"
-            value={claimsData.owner}
-            // styles={textfelidStyle}
-            errorMessage={errMsgOwner}
-            name="owner"
-            onChange={onChangeInput}
-          />
+
+          <div className="goal-details">
+            <Dropdown
+              required
+              label="Type"
+              errorMessage={errMsgType}
+              placeholder="Select Type"
+              className="flexGrow w33"
+              options={typeOptions}
+              onChange={onChangeType}
+              // styles={typeDropdownStyles}
+            />
+            <Dropdown
+              required
+              label="Format Type"
+              errorMessage={errMsgFormatType}
+              className="flexGrow w33"
+              onChange={onChangeFormateType}
+              placeholder="Select Format Type"
+              options={formateTypeOptions}
+              // styles={typeDropdownStyles}
+            />
+            <TextField
+              required
+              label="Owner"
+              placeholder="Owner"
+              value={claimsData.owner}
+              className="flexGrow w33"
+              // styles={textfelidStyle}
+              errorMessage={errMsgOwner}
+              name="owner"
+              onChange={onChangeInput}
+            />
+          </div>
           <Separator />
           <div className="rowCheckBox">
             <div>
@@ -691,7 +695,7 @@ function AddAppraisal(props: any) {
           <Stack
             horizontal
             tokens={stackTokens}
-            style={{ justifyContent: "flex-end" }}
+            style={{ justifyContent: "flex-end", marginBottom: "1rem" }}
           >
             <div
               style={{

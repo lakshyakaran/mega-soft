@@ -45,7 +45,10 @@ function SideNavigation() {
           id="style-scrollbar"
         >
           <nav className="sidebar-nav">
-            <button className="btn btn-link btn-nav-left" id="nav_employee">
+            <button
+              className="btn btn-link btn-nav-left hide-menu"
+              id="nav_employee"
+            >
               Employee
             </button>
             <ul id="sidebarnav" className="p-t-30 nav_employee">
