@@ -228,7 +228,7 @@ function UpdateGoals(props: any) {
               value={params.name}
               placeholder="Enter your job position"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrowTextInput"
               name="position"
               onChange={onChangeInput}
             />
@@ -239,7 +239,7 @@ function UpdateGoals(props: any) {
               value={updateGoalData.order_no}
               placeholder="Enter order number"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w25"
               name="order_no"
               onChange={onChangeInput}
             />
@@ -248,7 +248,7 @@ function UpdateGoals(props: any) {
               errorMessage={errMsgGoalType}
               label="Goal Type"
               placeholder="Select goal type"
-              className="flexGrow"
+              className="flexGrow w25"
               selectedKey={
                 goalOptions.find(
                   (item) => item.text === updateGoalData.goal_type
@@ -269,7 +269,7 @@ function UpdateGoals(props: any) {
               value={updateGoalData.parent_goal_id}
               placeholder="Enter KRA"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w25"
               name="parent_goal_id"
               onChange={onChangeInput}
             />
@@ -283,7 +283,7 @@ function UpdateGoals(props: any) {
               value={updateGoalData.kra}
               placeholder="Enter KRA"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w100"
               name="kra"
               onChange={onChangeInput}
             />
@@ -295,7 +295,7 @@ function UpdateGoals(props: any) {
               value={updateGoalData.goal}
               placeholder="Enter Goal"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w100"
               name="goal"
               onChange={onChangeInput}
             />
@@ -308,7 +308,7 @@ function UpdateGoals(props: any) {
               value={updateGoalData.measure}
               placeholder="Enter Measure"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w50"
               name="measure"
               onChange={onChangeInput}
             />
@@ -319,27 +319,27 @@ function UpdateGoals(props: any) {
               value={updateGoalData.weightage}
               placeholder="Enter Weightage"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w50"
               name="weightage"
-              onChange={onChangeInput}
-            />
-            <TextField
-              label="Target"
-              value={updateGoalData.target}
-              placeholder="Enter Target"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="target"
               onChange={onChangeInput}
             />
           </div>
           <div className="goal-details">
             <TextField
+              label="Target"
+              value={updateGoalData.target}
+              placeholder="Enter Target"
+              styles={textfelidStyle}
+              className="flexGrow w33"
+              name="target"
+              onChange={onChangeInput}
+            />
+            <TextField
               label="Threshold"
               value={updateGoalData.threshold}
               placeholder="Enter Threshold"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w33"
               name="threshold"
               onChange={onChangeInput}
             />
@@ -348,7 +348,7 @@ function UpdateGoals(props: any) {
               value={updateGoalData.stretch}
               placeholder="Enter Stretch"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w33"
               name="stretch"
               onChange={onChangeInput}
             />

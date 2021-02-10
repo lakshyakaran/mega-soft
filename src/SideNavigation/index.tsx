@@ -45,12 +45,12 @@ function SideNavigation() {
           id="style-scrollbar"
         >
           <nav className="sidebar-nav">
-            <button
+            {/* <button
               className="btn btn-link btn-nav-left hide-menu"
               id="nav_employee"
             >
               Employee
-            </button>
+            </button> */}
             <ul id="sidebarnav" className="p-t-30 nav_employee">
               <li className="sidebar-item">
                 <a

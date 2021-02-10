@@ -90,28 +90,6 @@ function EmployeeDetails(props: any) {
   const [EmployeeCount, setEmployeeCount] = useState(0);
   const [goalTotalCount, setGoalTotalCount] = useState(0);
   const [developmentCount, setDevelopmentCount] = useState(0);
-  const [tariningPlan, setTrainingPlan] = useState([
-    {
-      development: "",
-      remark: "",
-    },
-    {
-      development: "",
-      remark: "",
-    },
-    {
-      development: "",
-      remark: "",
-    },
-    {
-      development: "",
-      remark: "",
-    },
-    {
-      development: "",
-      remark: "",
-    },
-  ]);
 
   useEffect((): void => {
     const filters = [];
@@ -533,8 +511,9 @@ function EmployeeDetails(props: any) {
       onRender: (item) => (
         <div>
           {item.goal_type == "Goal" ? (
-            <Link
+            <div
               className="link-icons"
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 // console.log("item", item);
               }}
@@ -542,10 +521,11 @@ function EmployeeDetails(props: any) {
               <ArrowDropDownIcon
                 style={{ color: "#344f84", fontSize: "30px" }}
               />
-            </Link>
+            </div>
           ) : (
-            <Link
+            <div
               className="link-icons"
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 // console.log("item", item);
               }}
@@ -557,7 +537,7 @@ function EmployeeDetails(props: any) {
                   marginLeft: "25px",
                 }}
               />
-            </Link>
+            </div>
           )}
         </div>
       ),

@@ -210,11 +210,11 @@ function JobHistory(props: any) {
             value={jobHistoryData.position}
             placeholder="Enter your job position"
             styles={textfelidStyle}
-            className="flexGrow"
+            className="flexGrow w100"
             name="position"
             onChange={onChangeInput}
           />
-          <div style={{ display: "flex" }}>
+          <div className="goal-details">
             <TextField
               required
               errorMessage={errMsgPlace}
@@ -222,7 +222,7 @@ function JobHistory(props: any) {
               value={jobHistoryData.place}
               placeholder="Enter your place of posting"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w33"
               name="place"
               onChange={onChangeInput}
             />
@@ -230,7 +230,7 @@ function JobHistory(props: any) {
               isRequired={true}
               label="From Date"
               placeholder="Select a date"
-              className={`${controlClass.control} flexGrow`}
+              className={`${controlClass.control} flexGrow w33`}
               onSelectDate={onchangeFromDate}
               value={fromDate}
               styles={datePickerStyle}
@@ -240,7 +240,7 @@ function JobHistory(props: any) {
               isRequired={true}
               label="To Date"
               placeholder="Select a date"
-              className={`${controlClass.control} flexGrow`}
+              className={`${controlClass.control} flexGrow w33`}
               onSelectDate={onchangeToDate}
               value={toDate}
               // textField={{ errorMessage = { errMsgPlace } }}
@@ -255,7 +255,7 @@ function JobHistory(props: any) {
             value={jobHistoryData.responsibilities}
             placeholder="Describe your key responsibilities"
             styles={textfelidStyle}
-            className="flexGrow"
+            className="flexGrow w100"
             name="responsibilities"
             onChange={onChangeInput}
           />
@@ -266,7 +266,7 @@ function JobHistory(props: any) {
             value={jobHistoryData.qualifications}
             placeholder="Qualifications"
             styles={textfelidStyle}
-            className="flexGrow"
+            className="flexGrow w100"
             name="qualifications"
             onChange={onChangeInput}
           />

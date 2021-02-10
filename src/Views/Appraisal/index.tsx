@@ -537,7 +537,7 @@ function Appraisal(props: any) {
 
   const dropdownStyles: Partial<IDropdownStyles> = {
     dropdown: {
-      width: 170,
+      // width: 170,
       border: "0px",
     },
   };
@@ -663,7 +663,7 @@ function Appraisal(props: any) {
               style={{
                 marginLeft: "10px",
                 alignSelf: "center",
-                marginTop: "8px",
+                marginTop: "14px",
               }}
             />
             <PrimaryButton
@@ -676,7 +676,7 @@ function Appraisal(props: any) {
               style={{
                 marginLeft: "auto",
                 alignSelf: "center",
-                marginTop: "8px",
+                marginTop: "14px",
               }}
               disabled={false}
               checked={false}

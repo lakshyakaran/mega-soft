@@ -126,143 +126,45 @@ function GoalDetails(props: any) {
   const stackTokens = { childrenGap: 10 };
   const renderJobHistoryForm = () => {
     return (
-      <div className="form-conatiner">
-        <div className="card">
-          <div className="goal-details">
-            <TextField
-              disabled={true}
-              label="ID"
-              value={params.name}
-              placeholder="Enter your job position"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="position"
-              onChange={onChangeInput}
-            />
-            <TextField
-              disabled={true}
-              errorMessage={errMsgOrder}
-              label="Order Number"
-              value={goalDetails.order_no}
-              placeholder="Enter order number"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="order_no"
-              onChange={onChangeInput}
-            />
-            <Dropdown
-              disabled={true}
-              errorMessage={errMsgGoalType}
-              label="Goal Type"
-              placeholder="Select goal type"
-              className="flexGrow"
-              selectedKey={
-                goalOptions.find((item) => item.text === goalDetails.goal_type)
-                  ?.key
-              }
-              // onChange={(ev, item) =>
-              //   setUpdateGoalData({
-              //     ...updateGoalData,
-              //     goal_type: item?.text,
-              //   })
-              // }
-              options={goalOptions}
-              // styles={dropdownStyles}
-            />
-            <TextField
-              disabled={true}
-              label="Parent Goal"
-              value={goalDetails.parent_goal_id}
-              placeholder="Enter KRA"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="parent_goal_id"
-              onChange={onChangeInput}
-            />
+      <div className="card">
+        <div className="emp-details-section">
+          <div className="row">
+            <div className="col-md-4">
+              <span>ID</span> : {params.name}
+            </div>
+            <div className="col-md-4">
+              <span>Order Number</span> : {goalDetails.order_no}
+            </div>
+            <div className="col-md-4">
+              <span>Goal Type</span> : {goalDetails.goal_type}
+            </div>
+            <div className="col-md-4">
+              <span>Parent Goal</span> : {goalDetails.parent_goal_id}
+            </div>
+            <div className="col-md-4">
+              <span>KRA</span> : {goalDetails.kra}
+            </div>
+            <div className="col-md-4">
+              <span>Goal</span> : {goalDetails.goal}
+            </div>
+            <div className="col-md-4">
+              <span>Measure</span> : {goalDetails.measure}
+            </div>
+            <div className="col-md-4">
+              <span>Weightage</span> : {goalDetails.weightage}
+            </div>
+            <div className="col-md-4">
+              <span>Target</span> : {goalDetails.target}
+            </div>
+            <div className="col-md-4">
+              <span>Threshold</span> : {goalDetails.threshold}
+            </div>
+            <div className="col-md-8">
+              <span>Stretch</span> :{" "}
+              {/* {goalDetails.stretch == "" ? "N/A" : goalDetails.stretch} */}
+              {goalDetails.stretch}
+            </div>
           </div>
-          <div className="goal-details"></div>
-          <div>
-            <TextField
-              disabled={true}
-              errorMessage={errMsgKra}
-              label="KRA"
-              value={goalDetails.kra}
-              placeholder="Enter KRA"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="kra"
-              onChange={onChangeInput}
-            />
-            <div className="goal-details"></div>
-            <TextField
-              disabled={true}
-              errorMessage={errMsgGoal}
-              label="Goal"
-              value={goalDetails.goal}
-              placeholder="Enter Goal"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="goal"
-              onChange={onChangeInput}
-            />
-          </div>
-          <div className="goal-details">
-            <TextField
-              disabled={true}
-              errorMessage={errMsgMeasure}
-              label="Measure"
-              value={goalDetails.measure}
-              placeholder="Enter Measure"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="measure"
-              onChange={onChangeInput}
-            />
-            <TextField
-              disabled={true}
-              errorMessage={errMsgWeightage}
-              label="Weightage"
-              value={goalDetails.weightage}
-              placeholder="Enter Weightage"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="weightage"
-              onChange={onChangeInput}
-            />
-            <TextField
-              disabled={true}
-              label="Target"
-              value={goalDetails.target}
-              placeholder="Enter Target"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="target"
-              onChange={onChangeInput}
-            />
-          </div>
-          <div className="goal-details">
-            <TextField
-              label="Threshold"
-              disabled={true}
-              value={goalDetails.threshold}
-              placeholder="Enter Threshold"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="threshold"
-              onChange={onChangeInput}
-            />
-            <TextField
-              label="Stretch"
-              disabled={true}
-              value={goalDetails.stretch}
-              placeholder="Enter Stretch"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="stretch"
-              onChange={onChangeInput}
-            />
-          </div>
-
           <Stack
             horizontal
             tokens={stackTokens}

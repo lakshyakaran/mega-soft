@@ -333,30 +333,31 @@ function GoalSetting(props: any) {
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">
-          <div
-            // className="card"
-            style={{
-              display: "flex",
-              marginBottom: "10px",
-            }}
-          >
-            <Dropdown
-              label="Status"
-              placeholder="Select"
-              options={statusOption}
-              className="reviewFrequency"
-              onChange={onChangeStatus}
-              style={{ padding: "0px" }}
-              styles={dropdownStyles}
-            />
-            <PrimaryButton
-              iconProps={{ iconName: "Search" }}
+          <div className="card advance-search-section">
+            <div
+              // className="card"
               style={{
-                marginLeft: "20px",
-                alignSelf: "center",
-                marginTop: "30px",
+                display: "flex",
               }}
-            />
+            >
+              <Dropdown
+                label="Status"
+                placeholder="Select"
+                options={statusOption}
+                className="reviewFrequency"
+                onChange={onChangeStatus}
+                style={{ padding: "0px" }}
+                styles={dropdownStyles}
+              />
+              <PrimaryButton
+                iconProps={{ iconName: "Search" }}
+                style={{
+                  marginLeft: "20px",
+                  alignSelf: "center",
+                  marginTop: "24px",
+                }}
+              />
+            </div>
             {/* <Dropdown
               label="Period"
               placeholder="Select"

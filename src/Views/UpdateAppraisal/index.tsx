@@ -340,7 +340,7 @@ function UpdateAppraisal(props: any) {
   const renderUpdateForm = () => {
     return (
       <React.Fragment>
-        <div className="form-container">
+        <div className="form-container card">
           <div className="goal-details">
             <TextField
               disabled
@@ -368,7 +368,7 @@ function UpdateAppraisal(props: any) {
               isRequired
               label="Review From"
               // value={updateData.review_from}
-              className={`${controlClass.control} flexGrow`}
+              className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeek}
               strings={DayPickerStrings}
               value={new Date(updateData.review_from)}
@@ -383,7 +383,7 @@ function UpdateAppraisal(props: any) {
               isRequired
               label="Appraisal To"
               value={new Date(updateData.appraisal_to)}
-              className={`${controlClass.control} flexGrow`}
+              className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeek}
               strings={DayPickerStrings}
               onSelectDate={(date) =>
@@ -402,7 +402,7 @@ function UpdateAppraisal(props: any) {
               }
               label="Review Frequency"
               placeholder="Select"
-              className="flexGrow"
+              className="flexGrow w33"
               onChange={(ev, item) =>
                 setUpdateData({ ...updateData, review_frequency: item?.text })
               }
@@ -410,45 +410,48 @@ function UpdateAppraisal(props: any) {
               // styles={dropdownStyles}
             />
           </div>
-          <Dropdown
-            required
-            selectedKey={
-              typeOptions.find((item) => item.text === updateData.type)?.key
-            }
-            label="Type"
-            placeholder="Select Type"
-            className="type-input"
-            options={typeOptions}
-            onChange={(ev, item) =>
-              setUpdateData({ ...updateData, type: item?.text })
-            }
-            // styles={typeDropdownStyles}
-          />
-          <Dropdown
-            required
-            selectedKey={
-              formateTypeOptions.find(
-                (item) => item.text === updateData.format_type
-              )?.key
-            }
-            label="Format Type"
-            className="type-input"
-            onChange={(ev, item) =>
-              setUpdateData({ ...updateData, format_type: item?.text })
-            }
-            placeholder="Select Format Type"
-            options={formateTypeOptions}
-            // styles={typeDropdownStyles}
-          />
-          <TextField
-            required
-            label="Owner"
-            placeholder="Owner"
-            value={updateData.appraisal_owner}
-            styles={textfelidStyle}
-            name="appraisal_owner"
-            onChange={onChangeInput}
-          />
+          <div className="goal-details">
+            <Dropdown
+              required
+              selectedKey={
+                typeOptions.find((item) => item.text === updateData.type)?.key
+              }
+              label="Type"
+              placeholder="Select Type"
+              className="flexGrow w33"
+              options={typeOptions}
+              onChange={(ev, item) =>
+                setUpdateData({ ...updateData, type: item?.text })
+              }
+              // styles={typeDropdownStyles}
+            />
+            <Dropdown
+              required
+              selectedKey={
+                formateTypeOptions.find(
+                  (item) => item.text === updateData.format_type
+                )?.key
+              }
+              label="Format Type"
+              className="flexGrow w33"
+              onChange={(ev, item) =>
+                setUpdateData({ ...updateData, format_type: item?.text })
+              }
+              placeholder="Select Format Type"
+              options={formateTypeOptions}
+              // styles={typeDropdownStyles}
+            />
+            <TextField
+              required
+              label="Owner"
+              placeholder="Owner"
+              value={updateData.appraisal_owner}
+              styles={textfelidStyle}
+              name="appraisal_owner"
+              className="flexGrow w33"
+              onChange={onChangeInput}
+            />
+          </div>
           <Separator />
           <div className="rowCheckBox">
             <div>

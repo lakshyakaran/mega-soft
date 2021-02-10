@@ -169,81 +169,29 @@ function JobHistoryDetails(props: any) {
   const stackTokens = { childrenGap: 10 };
   const renderJobHistoryForm = () => {
     return (
-      <div className="form-conatiner">
-        <div className="card jobHistory-details">
-          <TextField
-            disabled={true}
-            required
-            errorMessage={errMsgPosition}
-            label="Position Held"
-            value={employeeDetails.position_held}
-            placeholder="Enter your job position"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="position"
-            onChange={onChangeInput}
-          />
-          <div style={{ display: "flex" }}>
-            <TextField
-              required
-              disabled={true}
-              errorMessage={errMsgPlace}
-              label="Place of Posting"
-              value={employeeDetails.place_of_posting}
-              placeholder="Enter your place of posting"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="place"
-              onChange={onChangeInput}
-            />
-            <DatePicker
-              disabled={true}
-              isRequired={true}
-              label="From Date"
-              placeholder="Select a date"
-              className={`${controlClass.control} flexGrow`}
-              onSelectDate={onchangeFromDate}
-              value={new Date(employeeDetails.from_date)}
-              styles={datePickerStyle}
-              // textField={{ errorMessage: "Form date is required" }}
-            />
-            <DatePicker
-              isRequired={true}
-              disabled={true}
-              label="To Date"
-              placeholder="Select a date"
-              className={`${controlClass.control} flexGrow`}
-              onSelectDate={onchangeToDate}
-              value={new Date(employeeDetails.to_date)}
-              // textField={{ errorMessage = { errMsgPlace } }}
-              styles={datePickerStyle}
-            />
+      <div className="card">
+        <div className="emp-details-section">
+          <div className="row">
+            <div className="col-md-4">
+              <span>Position Held</span> : {employeeDetails.position_held}
+            </div>
+            <div className="col-md-8">
+              <span>Place of Posting</span> : {employeeDetails.place_of_posting}
+            </div>
+            <div className="col-md-4">
+              <span>From Date</span> : {employeeDetails.from_date}
+            </div>
+            <div className="col-md-8">
+              <span>To Date</span> : {employeeDetails.to_date}
+            </div>
+            <div className="col-md-4">
+              <span>Key Responsibilities</span> :{" "}
+              {employeeDetails.key_responsibilities}
+            </div>
+            <div className="col-md-8">
+              <span>Qualifications</span> : {employeeDetails.qualifications}
+            </div>
           </div>
-
-          <TextField
-            disabled={true}
-            required
-            errorMessage={errMsgResponsibility}
-            label="Key Responsibilities"
-            value={employeeDetails.key_responsibilities}
-            placeholder="Describe your key responsibilities"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="responsibilities"
-            onChange={onChangeInput}
-          />
-          <TextField
-            required
-            disabled={true}
-            errorMessage={errMsgQualifications}
-            label="Qualifications"
-            value={employeeDetails.qualifications}
-            placeholder="Qualifications"
-            styles={textfelidStyle}
-            className="flexGrow"
-            name="qualifications"
-            onChange={onChangeInput}
-          />
           <Stack
             horizontal
             tokens={stackTokens}

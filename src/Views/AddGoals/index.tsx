@@ -261,7 +261,7 @@ function AddGoals(props: any) {
               // value={goalData.name}
               placeholder="New"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrowTextInput"
               name="position"
               onChange={onChangeInput}
             />
@@ -272,7 +272,7 @@ function AddGoals(props: any) {
               value={goalInputData.order_no}
               placeholder="Enter order number"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w25"
               name="order_no"
               onChange={onChangeInput}
             />
@@ -281,7 +281,7 @@ function AddGoals(props: any) {
               errorMessage={errMsgGoalType}
               label="Goal Type"
               placeholder="Select goal type"
-              className="flexGrow"
+              className="flexGrow w25"
               onChange={onChangeGoalType}
               options={goalOptions}
               // styles={dropdownStyles}
@@ -292,12 +292,11 @@ function AddGoals(props: any) {
               value={goalInputData.parent_goal_id}
               placeholder="Enter parent goal ID "
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w25"
               name="parent_goal_id"
               onChange={onChangeInput}
             />
           </div>
-          <div className="goal-details"></div>
           <div>
             <TextField
               required
@@ -306,7 +305,7 @@ function AddGoals(props: any) {
               value={goalInputData.kra}
               placeholder="Enter KRA"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w100"
               name="kra"
               onChange={onChangeInput}
             />
@@ -317,7 +316,7 @@ function AddGoals(props: any) {
               value={goalInputData.goal}
               placeholder="Enter Goal"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w100"
               name="goal"
               onChange={onChangeInput}
             />
@@ -330,7 +329,7 @@ function AddGoals(props: any) {
               value={goalInputData.measure}
               placeholder="Enter Measure"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w50"
               name="measure"
               onChange={onChangeInput}
             />
@@ -341,27 +340,27 @@ function AddGoals(props: any) {
               value={goalInputData.weightage}
               placeholder="Enter Weightage"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w50"
               name="weightage"
-              onChange={onChangeInput}
-            />
-            <TextField
-              label="Target"
-              value={goalInputData.target}
-              placeholder="Enter Target"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="target"
               onChange={onChangeInput}
             />
           </div>
           <div className="goal-details">
             <TextField
+              label="Target"
+              value={goalInputData.target}
+              placeholder="Enter Target"
+              styles={textfelidStyle}
+              className="flexGrow w33"
+              name="target"
+              onChange={onChangeInput}
+            />
+            <TextField
               label="Threshold"
               value={goalInputData.threshold}
               placeholder="Enter Threshold"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w33"
               name="threshold"
               onChange={onChangeInput}
             />
@@ -370,7 +369,7 @@ function AddGoals(props: any) {
               value={goalInputData.stretch}
               placeholder="Enter Stretch"
               styles={textfelidStyle}
-              className="flexGrow"
+              className="flexGrow w33"
               name="stretch"
               onChange={onChangeInput}
             />

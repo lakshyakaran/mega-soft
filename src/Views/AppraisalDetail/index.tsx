@@ -29,54 +29,6 @@ interface ParamTypes {
 
 const stackTokens = { childrenGap: 10 };
 
-const textfelidStyle: Partial<ITextFieldStyles> = {
-  root: {
-    ".ms-TextField-wrapper": {
-      borderRadius: "10px",
-    },
-
-    ".ms-TextField-fieldGroup fieldGroup-195": {
-      borderRadius: "10px",
-    },
-  },
-};
-
-const formateTypeOptions: IDropdownOption[] = [
-  { key: "key1", text: "Sales Employees" },
-  { key: "key3", text: "HR" },
-  { key: "key4", text: "Management" },
-];
-
-const controlClass = mergeStyleSets({
-  control: {
-    // margin: "0 0 15px 0",
-    // maxWidth: "150px",
-  },
-});
-
-const reviewFrequencyOptions: IDropdownOption[] = [
-  { key: "key1", text: "Monthly" },
-  { key: "key2", text: "Yearly" },
-];
-
-const typeOptions: IDropdownOption[] = [
-  { key: "key1", text: "Annual Appraisal" },
-  { key: "key2", text: "Quarterly Appraisal" },
-];
-
-const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: {
-    width: 170,
-    border: "0px",
-  },
-};
-
-const datePickerStyle: Partial<IDatePickerStyles> = {
-  icon: {
-    color: "rgb(111 144 220)",
-  },
-};
-
 function AppraisalDetail(props: any) {
   const params = useParams<ParamTypes>();
 
@@ -88,40 +40,6 @@ function AppraisalDetail(props: any) {
 
   const [appraisalDetail, setAppraisalDetail]: any = useState({});
 
-  // const rolesOption: IDropdownOption[] = [
-  //   { key: "key1", text: "Employee" },
-  //   { key: "key2", text: "Manager" },
-  //   { key: "key3", text: "HR content" },
-  // ];
-
-  // const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
-  //   key: "",
-  //   text: "",
-  // });
-
-  // const handleRoles = (
-  //   ev?: React.FormEvent<HTMLDivElement>,
-  //   item?: IDropdownOption
-  // ): void => {
-  //   setReviewSearch(
-  //     item || {
-  //       key: "",
-  //       text: "",
-  //     }
-  //   );
-  // };
-
-  const dropdownStyles: Partial<IDropdownStyles> = {
-    dropdown: {
-      width: 170,
-      border: "0px",
-    },
-  };
-
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
   const history = useHistory();
 
   useEffect(() => {
@@ -163,120 +81,44 @@ function AppraisalDetail(props: any) {
     { text: "Appraisal Details", key: "d3", as: "h4" },
   ];
 
-  console.log("local data data=>", appraisalDetail);
-
   const renderData = () => {
     return (
       <React.Fragment>
-        <div className="form-container card">
-          <div className="goal-details">
-            <TextField
-              disabled={true}
-              placeholder="ID"
-              value={appraisalDetail.id}
-              name="id"
-              label="Id"
-              // onChange={onChangeInput}
-              className="flexGrowTextInput"
-            />
-            <TextField
-              disabled={true}
-              placeholder="Description"
-              label="Description"
-              value={appraisalDetail.appraisal_description}
-              // styles={textfelidStyle}
-              className="flexGrow"
-              name="appraisal_description"
-              // onChange={onChangeInput}
-            />
+        <div className="card">
+          <div className="emp-details-section">
+            <div className="row">
+              <div className="col-md-4">
+                <span>ID</span> : {appraisalDetail.id}
+              </div>
+              <div className="col-md-4">
+                <span>Description</span> :{" "}
+                {appraisalDetail.appraisal_description}
+              </div>
+              <div className="col-md-4">
+                <span>Review From</span> : {appraisalDetail.review_from}
+              </div>
+              <div className="col-md-4">
+                <span>Appraisal To</span> : {appraisalDetail.appraisal_to}
+              </div>
+              <div className="col-md-4">
+                <span>Review Frequency</span> :{" "}
+                {appraisalDetail.review_frequency}
+              </div>
+              <div className="col-md-4">
+                <span>Type</span> : {appraisalDetail.type}
+              </div>
+              <div className="col-md-4">
+                <span>Format Type</span> : {appraisalDetail.format_type}
+              </div>
+              <div className="col-md-8">
+                <span>Owner</span> : {appraisalDetail.appraisal_owner}
+              </div>
+              {/* <div className="col-md-4">
+                <span>Counter signing</span> :{" "}
+                {appraisalDetail.counter_signing_name}
+              </div> */}
+            </div>
           </div>
-          {/* <div className="input-form"></div> */}
-          <div className="goal-details">
-            <DatePicker
-              disabled={true}
-              label="Review From"
-              // value={updateData.review_from}
-              className={`${controlClass.control} flexGrow`}
-              // firstDayOfWeek={firstDayOfWeek}
-              // strings={DayPickerStrings}
-              value={new Date(appraisalDetail.review_from)}
-              // onSelectDate={(date) =>
-              //   setUpdateData({ ...updateData, review_from: date })
-              // }
-              placeholder="Select a date"
-              ariaLabel="Select a date"
-              styles={datePickerStyle}
-            />
-            <DatePicker
-              disabled={true}
-              label="Appraisal To"
-              value={new Date(appraisalDetail.appraisal_to)}
-              className={`${controlClass.control} flexGrow`}
-              // firstDayOfWeek={firstDayOfWeek}
-              // strings={DayPickerStrings}
-              // onSelectDate={(date) =>
-              //   setUpdateData({ ...updateData, appraisal_to: date })
-              // }
-              styles={datePickerStyle}
-              placeholder="Select a date"
-              ariaLabel="Select a date"
-            />
-            <Dropdown
-              disabled={true}
-              selectedKey={
-                reviewFrequencyOptions.find(
-                  (item) => item.text === appraisalDetail.review_frequency
-                )?.key
-              }
-              label="Review Frequency"
-              placeholder="Select"
-              className="flexGrow"
-              // onChange={(ev, item) =>
-              //   setUpdateData({ ...updateData, review_frequency: item?.text })
-              // }
-              options={reviewFrequencyOptions}
-              // styles={dropdownStyles}
-            />
-          </div>
-          <Dropdown
-            disabled={true}
-            selectedKey={
-              typeOptions.find((item) => item.text === appraisalDetail.type)
-                ?.key
-            }
-            label="Type"
-            placeholder="Select Type"
-            className="type-input"
-            options={typeOptions}
-            // onChange={(ev, item) =>
-            //   setUpdateData({ ...appraisalDetail, type: item?.text })
-            // }
-            // styles={typeDropdownStyles}
-          />
-          <Dropdown
-            disabled={true}
-            selectedKey={
-              formateTypeOptions.find(
-                (item) => item.text === appraisalDetail.format_type
-              )?.key
-            }
-            label="Format Type"
-            className="type-input"
-            // onChange={(ev, item) =>
-            //   setUpdateData({ ...updateData, format_type: item?.text })
-            // }
-            placeholder="Select Format Type"
-            options={formateTypeOptions}
-            // styles={typeDropdownStyles}
-          />
-          <TextField
-            disabled={true}
-            label="Owner"
-            placeholder="Owner"
-            value={appraisalDetail.appraisal_owner}
-            styles={textfelidStyle}
-            name="appraisal_owner"
-          />
           <Separator />
           <div className="rowCheckBox">
             <div>
@@ -311,41 +153,6 @@ function AppraisalDetail(props: any) {
                 checked={updateData.kra_settings_tab_summary}
                 className="flexGrowCheckBox"
                 name="kra_settings_tab_summary"
-                onChange={onChangeCheckbox}
-              /> */}
-            </div>
-            <div>
-              {/* <Label>Assessment Tabs: </Label>
-              <Checkbox
-                label={"Goals"}
-                title={"Goals"}
-                checked={updateData.assessment_tab_goals}
-                className="flexGrowCheckBox"
-                name="assessment_tab_goals"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Competencies"}
-                title={"Competencies"}
-                checked={updateData.assessment_tab_competencies}
-                className="flexGrowCheckBox"
-                name="assessment_tab_competencies"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Development Plans"}
-                title={"Development Plans"}
-                checked={updateData.assessment_tab_development_plan}
-                className="flexGrowCheckBox"
-                name="assessment_tab_development_plan"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Summary"}
-                title={"Summary"}
-                checked={updateData.assessment_tab_summary}
-                className="flexGrowCheckBox"
-                name="assessment_tab_summary"
                 onChange={onChangeCheckbox}
               /> */}
             </div>
