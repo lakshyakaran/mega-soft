@@ -426,7 +426,7 @@ function AddGoals(props: any) {
               />
             </div>
             <div className="modal-content-success">
-              Goal successfully Added.
+              Goal added successfully.
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PrimaryButton

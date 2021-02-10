@@ -92,8 +92,25 @@ function SideNavigation() {
                   }}
                   aria-expanded="false"
                 >
-                  <i className="mdi mdi-chart-bar"></i>
+                  <i className="mdi mdi-chart-areaspline"></i>
                   <span className="hide-menu">Performance</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="/home"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Training");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-wunderlist"></i>
+                  <span className="hide-menu">Training</span>
                 </a>
                 <ul
                   aria-expanded="false"
@@ -109,7 +126,7 @@ function SideNavigation() {
                   }}
                   aria-expanded="false"
                 >
-                  <i className="mdi mdi-chart-bar"></i>
+                  <i className="mdi mdi-currency-inr"></i>
                   <span className="hide-menu">Payroll</span>
                 </a>
                 <ul
@@ -117,7 +134,25 @@ function SideNavigation() {
                   className="collapse  first-level"
                 ></ul>
               </li>
+
               <li className="sidebar-item">
+                <a
+                  className="sidebar-link  waves-effect waves-dark"
+                  href="#"
+                  onClick={(event) => {
+                    handleMainMenu(event, "Separation");
+                  }}
+                  aria-expanded="false"
+                >
+                  <i className="mdi mdi-export"></i>
+                  <span className="hide-menu">Separation</span>
+                </a>
+                <ul
+                  aria-expanded="false"
+                  className="collapse  first-level"
+                ></ul>
+              </li>
+              {/* <li className="sidebar-item">
                 <a
                   className="sidebar-link  waves-effect waves-dark"
                   href="#"
@@ -235,7 +270,7 @@ function SideNavigation() {
                   aria-expanded="false"
                   className="collapse  first-level"
                 ></ul>
-              </li>
+              </li> */}
             </ul>
           </nav>
         </div>

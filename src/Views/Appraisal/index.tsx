@@ -788,7 +788,7 @@ function Appraisal(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "30px",
+                marginTop: "10px",
               }}
             >
               <PrimaryButton
@@ -829,17 +829,17 @@ function Appraisal(props: any) {
               />
             </div>
             <div className="modal-content-success">
-              Item successfully Deleted.
+              Item deleted successfully.
             </div>
             <div
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "30px",
+                marginTop: "10px",
               }}
             >
               <PrimaryButton
-                text="Okay"
+                text="Ok"
                 allowDisabledFocus
                 onClick={() => {
                   setShowDeleteSuccess(false);

@@ -405,7 +405,7 @@ function UpdateGoals(props: any) {
               />
             </div>
             <div className="modal-content-success">
-              Goal successfully Updated.
+              Goal updated successfully.
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PrimaryButton

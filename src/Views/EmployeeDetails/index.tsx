@@ -36,6 +36,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { Pagination } from "@uifabric/experiments";
 import jobHistory from "../../redux/reducers/jobHistory";
 import JobHistoryDetails from "../JobHistoryDetails";
@@ -44,7 +45,10 @@ import {
   fetchGoalDataName,
   update_goals,
 } from "../../redux/actions/goal";
-import { fetchDevelopmentPlan } from "../../redux/actions/developmentPlan";
+import {
+  fetchDevelopmentPlan,
+  handleDevelopmentDataChange,
+} from "../../redux/actions/developmentPlan";
 import "./style.css";
 
 interface ParamTypes {
@@ -79,7 +83,7 @@ function EmployeeDetails(props: any) {
   const [totalCount, setTotalCount] = useState(0);
   const [orderBy, setOrderBy] = useState("order_no asc");
   const [limitPageLengthDevelopment] = useState(5);
-  const [developmentData, setDevelopmentData]: any = useState({});
+  const [developmentData, setDevelopmentData]: any = useState([]);
 
   const [goalData, setGoalData]: any = useState({});
   const [goalCount, setGoalCount] = useState(0);
@@ -177,9 +181,22 @@ function EmployeeDetails(props: any) {
       orderByDevelopment,
       JSON.stringify(filters)
     ).then((response) => {
-      // console.log("response of Development===>", response);
+      // console.log("response of Development===>", response.data);
       setDevelopmentCount(response.count);
-      setDevelopmentData(response.data);
+      let res = response.data;
+      for (let i = response.count; i < 5; i++) {
+        let emptyPlan = {
+          name: "",
+          appraisal_id: params.appraisalId,
+          employee_id: params.employeeId,
+          serial_no: i + 1,
+          development_plan: "",
+          reviewer_remarks: "",
+          frozen: 0,
+        };
+        res.push(emptyPlan);
+      }
+      setDevelopmentData(res);
     });
   }, [limitStartGoal, limitPageLengthGoal]);
   const onBreadcrumbAppraisalClicked = () => {
@@ -241,12 +258,28 @@ function EmployeeDetails(props: any) {
     index: number | undefined,
     value: string | undefined
   ) => {
-    setTrainingPlan(
-      tariningPlan.map((item, i) =>
+    setDevelopmentData(
+      developmentData.map((item: any, i: any) =>
         index === i
           ? {
               ...item,
-              development: value || "",
+              development_plan: value || "",
+            }
+          : item
+      )
+    );
+  };
+
+  const handleRemarkChange = (
+    index: number | undefined,
+    value: string | undefined
+  ) => {
+    setDevelopmentData(
+      developmentData.map((item: any, i: any) =>
+        index === i
+          ? {
+              ...item,
+              reviewer_remarks: value || "",
             }
           : item
       )
@@ -398,17 +431,17 @@ function EmployeeDetails(props: any) {
   };
 
   const columnsTraning: IColumn[] = [
-    {
-      key: "1",
-      name: "S.No.",
-      fieldName: "serial_no",
-      minWidth: 20,
-      maxWidth: 40,
-      isSortedDescending: false,
-      isRowHeader: true,
-      isResizable: false,
-      // onRender: (item, index) => (index || 0) + 1,
-    },
+    // {
+    //   key: "1",
+    //   name: "S.No.",
+    //   fieldName: "serial_no",
+    //   minWidth: 20,
+    //   maxWidth: 40,
+    //   isSortedDescending: false,
+    //   isRowHeader: true,
+    //   isResizable: false,
+    //   // onRender: (item, index) => (index || 0) + 1,
+    // },
     {
       key: "02",
       name: "Development Plan/Training Needs",
@@ -443,9 +476,12 @@ function EmployeeDetails(props: any) {
       onRender: (item, index) => (
         <div>
           <TextField
-            readOnly={true}
             multiline
             rows={3}
+            onChange={(
+              ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+              text?: string
+            ) => handleRemarkChange(index, text)}
             value={item.reviewer_remarks}
             resizable={false}
           />
@@ -503,7 +539,9 @@ function EmployeeDetails(props: any) {
                 // console.log("item", item);
               }}
             >
-              <ArrowRightIcon style={{ color: "#344f84", fontSize: "30px" }} />
+              <ArrowDropDownIcon
+                style={{ color: "#344f84", fontSize: "30px" }}
+              />
             </Link>
           ) : (
             <Link
@@ -708,6 +746,24 @@ function EmployeeDetails(props: any) {
     },
   ];
 
+  const [showDevelopment, setShowDevelopment] = useState(false);
+
+  const handleDevelpmentDatachange = () => {
+    // console.log("developmentData=> ", developmentData);
+    const devPlan = [...developmentData];
+    // console.log("devPlan=>", devPlan);
+    const changedQuery = {
+      doctype: "EmployeeDevelopmentPlan",
+      data: {
+        dev_plans: devPlan,
+      },
+    };
+    handleDevelopmentDataChange(changedQuery).then((response: any) => {
+      // console.log("update successfully =>", response);
+      setShowDevelopment(true);
+    });
+  };
+
   const updateGoals = (item: any) => {
     history.push(`/appraisal/goalsetting/view/goals/updategoal/${item.name}`);
   };
@@ -905,7 +961,7 @@ function EmployeeDetails(props: any) {
               }}
             >
               <PrimaryButton
-                text="Okay"
+                text="Ok"
                 allowDisabledFocus
                 onClick={() => {
                   setShowDeleteSuccessJob(false);
@@ -1063,7 +1119,7 @@ function EmployeeDetails(props: any) {
               }}
             >
               <PrimaryButton
-                text="Okay"
+                text="Ok"
                 allowDisabledFocus
                 onClick={() => {
                   setShowDeleteSuccess(false);
@@ -1082,51 +1138,89 @@ function EmployeeDetails(props: any) {
   const renderTrainingDevelopment = () => {
     return (
       <div className="form-conatiner">
-        {developmentCount === 0 ? (
-          renderNoData()
-        ) : (
-          <div>
-            <DetailsList
-              styles={listStyle}
-              items={developmentData}
-              className="detail-list"
-              columns={columnsTraning}
-              selectionMode={0}
-            />
-            <Stack
-              horizontal
-              tokens={stackTokens}
-              style={{ justifyContent: "flex-end" }}
+        <div>
+          <DetailsList
+            styles={listStyle}
+            items={developmentData}
+            className="detail-list"
+            columns={columnsTraning}
+            selectionMode={0}
+          />
+          <Stack
+            horizontal
+            tokens={stackTokens}
+            style={{ justifyContent: "flex-end" }}
+          >
+            <div
+              style={{
+                marginTop: "15px",
+              }}
             >
-              <div
-                style={{
-                  marginTop: "15px",
+              <PrimaryButton
+                text="Save"
+                allowDisabledFocus
+                onClick={() => {
+                  handleDevelpmentDatachange();
                 }}
-              >
-                <PrimaryButton
-                  text="Save"
-                  allowDisabledFocus
-                  onClick={() => {
-                    console.log("tariningPlan=> ", tariningPlan);
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  marginTop: "15px",
+              />
+            </div>
+            <div
+              style={{
+                marginTop: "15px",
+              }}
+            >
+              <PrimaryButton
+                text="Cancel"
+                allowDisabledFocus
+                onClick={() => {
+                  history.push("/appraisal/goalsetting");
                 }}
-              >
-                <PrimaryButton
-                  text="Cancel"
-                  allowDisabledFocus
-                  onClick={() => {
-                    history.push("/appraisal/goalsetting");
-                  }}
-                />
-              </div>
-            </Stack>
-          </div>
-        )}
+              />
+            </div>
+          </Stack>
+        </div>
+        <div>
+          <Modal
+            titleAriaId={"Title"}
+            isOpen={showDevelopment}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header">
+              <div className="modal-title">Success</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setShowDevelopment(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-success">
+              Development data saved successfully.
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
+            >
+              <PrimaryButton
+                text="Ok"
+                allowDisabledFocus
+                onClick={() => {
+                  setShowDevelopment(false);
+                }}
+                style={{ marginLeft: "10px" }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+        </div>
       </div>
     );
   };
@@ -1156,7 +1250,7 @@ function EmployeeDetails(props: any) {
                 <span>Date of Joining</span> : {employeeData.date_of_joining}
               </div>
               <div className="col-md-4">
-                <span>Reporting Officer</span> : Reporting Officer
+                <span>Reporting Officer</span> : {employeeData.manager_name}
               </div>
               <div className="col-md-4">
                 <span>Reviewer</span> : {employeeData.reviewer_name}

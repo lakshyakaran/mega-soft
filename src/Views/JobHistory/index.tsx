@@ -320,7 +320,9 @@ function JobHistory(props: any) {
                 }}
               />
             </div>
-            <div className="modal-content-success">Job History Added.</div>
+            <div className="modal-content-success">
+              Job History added successfully.
+            </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PrimaryButton
                 text="OK"

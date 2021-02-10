@@ -39,3 +39,24 @@ export const fetchDevelopmentPlan = async (
   const responseBody = await response.data;
   return responseBody;
 };
+
+export const handleDevelopmentDataChange = async (data: any) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
+  const response = await axios({
+    url: `http://52.146.0.154/api/method/megasoft_hrms.pm.employee_development_plan`,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: accessToken,
+    },
+    data: JSON.stringify(data),
+  });
+  // console.log("Development data changed =>", response);
+  const responseBody = await response.data;
+  return responseBody;
+};

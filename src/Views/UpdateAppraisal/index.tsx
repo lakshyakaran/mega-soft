@@ -541,7 +541,7 @@ function UpdateAppraisal(props: any) {
                   />
                 </div>
                 <div className="modal-content-success">
-                  Appraisal Updated Successfully
+                  Appraisal updated Successfully
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
