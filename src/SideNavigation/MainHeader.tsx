@@ -24,7 +24,7 @@ function MainHeader(props: any) {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    // window.open("http://52.146.0.154/api/method/logout","_self")
+    window.open("http://52.146.0.154/api/method/logout", "_self");
     dispatch(logout());
   };
 
