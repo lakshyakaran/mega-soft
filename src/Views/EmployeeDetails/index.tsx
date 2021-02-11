@@ -93,10 +93,10 @@ function EmployeeDetails(props: any) {
   const [employeeCount, setEmployeeCount] = useState(0);
   const [goalTotalCount, setGoalTotalCount] = useState(0);
   const [developmentCount, setDevelopmentCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  const newRoleType: any = sessionStorage.getItem("roleType");
   useEffect((): void => {
-    setLoading(true);
     const filters = [];
     if (filtersById) {
       filters.push(["employee_id", "=", filtersById]);
@@ -108,15 +108,16 @@ function EmployeeDetails(props: any) {
       doctype,
       limit_start,
       limit,
-      roleType,
+      newRoleType,
       JSON.stringify(filters)
     ).then((response) => {
+      setLoading(true);
       // console.log("employee response ==>", response);
       setEmployeeCount(response.count);
       setEmployeeData(response.data[0]);
+      setLoading(false);
     });
-    setLoading(false);
-  }, [doctype, limit_start, limit, roleType]);
+  }, [doctype, limit_start, limit, newRoleType]);
 
   useEffect((): void => {
     const filters = [];
@@ -124,7 +125,7 @@ function EmployeeDetails(props: any) {
       filters.push(["employee_id", "=", filtersById]);
     }
     fetchJobHistory(
-      roleType,
+      newRoleType,
       JSON.stringify(filters),
       limitStart,
       limitPageLength,
@@ -135,7 +136,7 @@ function EmployeeDetails(props: any) {
       setCount(response.count);
       setTotalCount(response.total_count);
     });
-  }, [roleType, limitStart, limitPageLength, orderByJobHistory]);
+  }, [newRoleType, limitStart, limitPageLength, orderByJobHistory]);
 
   useEffect((): void => {
     const filters = [];
@@ -353,7 +354,7 @@ function EmployeeDetails(props: any) {
               jobHistoryDetails(item);
             }}
           >
-            <VisibilityIcon style={{ color: "#344f84" }} />
+            <VisibilityIcon style={{ color: "#00597d" }} />
           </Link>
           <Link
             className="link-icons mr-3"
@@ -361,7 +362,7 @@ function EmployeeDetails(props: any) {
               updateJobhistory(item);
             }}
           >
-            <CreateIcon style={{ color: "#344f84" }} />
+            <CreateIcon style={{ color: "#00597d" }} />
           </Link>
           <Link
             className="link-icons "
@@ -522,7 +523,7 @@ function EmployeeDetails(props: any) {
               }}
             >
               <ArrowDropDownIcon
-                style={{ color: "#344f84", fontSize: "30px" }}
+                style={{ color: "#00597d", fontSize: "30px" }}
               />
             </div>
           ) : (
@@ -535,7 +536,7 @@ function EmployeeDetails(props: any) {
             >
               <RadioButtonUncheckedIcon
                 style={{
-                  color: "#344f84",
+                  color: "#00597d",
                   fontSize: "10px",
                   marginLeft: "25px",
                 }}
@@ -621,7 +622,7 @@ function EmployeeDetails(props: any) {
               goalDetails(item);
             }}
           >
-            <VisibilityIcon style={{ color: "#344f84" }} />
+            <VisibilityIcon style={{ color: "#00597d" }} />
           </Link>
           <Link
             className="link-icons mr-3"
@@ -629,7 +630,7 @@ function EmployeeDetails(props: any) {
               updateGoals(item);
             }}
           >
-            <CreateIcon style={{ color: "#344f84" }} />
+            <CreateIcon style={{ color: "#00597d" }} />
           </Link>
           <Link
             className="link-icons"
@@ -1401,8 +1402,8 @@ function EmployeeDetails(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                padding: "50px",
-                color: "#344f84",
+                padding: "80px",
+                color: "#00597d",
               }}
               size={SpinnerSize.large}
             />

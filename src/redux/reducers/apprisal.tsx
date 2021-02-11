@@ -34,13 +34,13 @@ export default function appraisal(
       };
     }
 
-    case "DELETE_APPRAISAL": {
-      return {
-        appraisalList: action.payload.data.filter(
-          (list: any) => list.id !== action.payload.data.id
-        ),
-      };
-    }
+    // case "DELETE_APPRAISAL": {
+    //   return {
+    //     appraisalList: action.payload.data.filter(
+    //       (list: any) => list.id !== action.payload.id
+    //     ),
+    //   };
+    // }
     default:
       return {
         ...state,

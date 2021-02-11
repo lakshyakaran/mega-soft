@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+} from "react-router-dom";
 import Navigation from "./Navigation";
 import Appraisal from "./Views/Appraisal";
 import AddAppraisal from "./Views/AddAppraisal";
@@ -16,6 +22,8 @@ import GoalDetails from "./Views/GoalDetails";
 import Login from "./Views/Login";
 import { initSideBar } from "./SideNavigation/sideBar";
 import { customSideBar } from "./SideNavigation/custom";
+
+import $ from "jquery";
 
 import { validateLogin, login } from "./redux/actions/auth";
 
@@ -59,13 +67,28 @@ function App(props: any) {
   // useEffect(() => {
   //   getAccessToken();
   // }, []);
+  const hist = useHistory();
   const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.Auth);
+
+  // const msRoute = () => {
+  //   $("a.sidebar-link").on("click", function () {
+  //     const route = String($(this).attr("href"));
+  //     console.log("Menu Option selected ==>", route);
+  //     alert(route);
+  //     // React routing code:
+
+  //     hist.push(route);
+
+  //     return false;
+  //   });
+  // };
 
   useEffect(() => {
     console.log("on load component=>");
     initSideBar();
     customSideBar();
+
     dispatch(validateLogin());
   }, []);
 

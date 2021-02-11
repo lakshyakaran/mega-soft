@@ -124,4 +124,14 @@ export const customSideBar = function () {
       $("#main-wrapper").attr("data-sidebartype", "full");
     }
   });
+
+  // Use react routes instead of href from the menu
+  // $("a.sidebar-link").on("click", function () {
+  //   const route = $(this).attr("href");
+  //   // console.log("Menu Option selected ==>", route);
+
+  //   // React routing code:
+
+  //   return false;
+  // });
 };

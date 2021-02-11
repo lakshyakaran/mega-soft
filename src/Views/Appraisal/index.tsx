@@ -42,6 +42,7 @@ import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import "./style.css";
 import { RootState } from "../../redux/reducers";
 import {
+  deleteAppraisalByID,
   edit_appraisal,
   fetchAppraisalData,
   fetchAppraisalDataById,
@@ -72,6 +73,42 @@ function Appraisal(props: any) {
   const params = useParams<ParamTypes>();
 
   // console.log("data apppp=>", appraisalList);
+
+  // const appraisalDataFetched = () => {
+  //   const filters = [];
+  //   if (filtersById) {
+  //     filters.push(["id", "like", filtersById]);
+  //   }
+  //   if (filtersByDescription) {
+  //     filters.push(["appraisal_description", "like", filtersByDescription]);
+  //   }
+  //   if (filtersByReviewFreq) {
+  //     filters.push(["review_frequency", "=", filtersByReviewFreq]);
+  //   }
+  //   if (filtersByAppraisal) {
+  //     filters.push(["type", "=", filtersByAppraisal]);
+  //   }
+  //   if (filtersByFormat) {
+  //     filters.push(["format_type", "=", filtersByFormat]);
+  //   }
+  //   dispatch(
+  //     fetchAppraisalData(
+  //       limitStart,
+  //       limitPageLength,
+  //       `${orderByField} ${orderBy}`,
+  //       JSON.stringify(filters)
+  //     )
+  //   );
+  // };
+
+  // let focusListener: any = {};
+
+  // useEffect(() => {
+  //   window.addEventListener("click", appraisalDataFetched);
+  //   return () => {
+  //     window.removeEventListener("load", appraisalDataFetched);
+  //   };
+  // }, []);
 
   useEffect((): void => {
     const filters = [];
@@ -146,6 +183,7 @@ function Appraisal(props: any) {
       fieldName: "appraisal_description",
       minWidth: 100,
       maxWidth: 200,
+      isMultiline: true,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
@@ -155,7 +193,7 @@ function Appraisal(props: any) {
       name: "Review From",
       fieldName: "review_from",
       minWidth: 50,
-      maxWidth: 160,
+      maxWidth: 120,
       isRowHeader: true,
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
@@ -215,7 +253,7 @@ function Appraisal(props: any) {
               viewAppraisal(item);
             }}
           >
-            <VisibilityIcon style={{ color: "#344f84" }} />
+            <VisibilityIcon style={{ color: "#00597d" }} />
           </Link>
           <Link
             className="link-icons mr-3"
@@ -223,7 +261,7 @@ function Appraisal(props: any) {
               updateAppriasal(item);
             }}
           >
-            <CreateIcon style={{ color: "#344f84" }} />
+            <CreateIcon style={{ color: "#00597d" }} />
           </Link>
           <Link
             className="link-icons"
@@ -688,7 +726,7 @@ function Appraisal(props: any) {
               display: "flex",
               justifyContent: "center",
               padding: "50px",
-              color: "#344f84",
+              color: "#00597d",
             }}
             size={SpinnerSize.large}
           />
@@ -816,6 +854,7 @@ function Appraisal(props: any) {
                 text="Ok"
                 allowDisabledFocus
                 onClick={() => {
+                  handleSearchClick();
                   setShowDeleteSuccess(false);
                 }}
                 style={{ marginLeft: "10px" }}

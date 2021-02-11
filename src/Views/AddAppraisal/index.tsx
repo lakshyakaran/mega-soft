@@ -435,7 +435,7 @@ function AddAppraisal(props: any) {
     };
     // console.log("addQueary=>", addQuery);
     add_apprisal(addQuery).then((response) => {
-      console.log("response=>", response.data);
+      // console.log("response=>", response.data);
       if (response?.status === 200) {
         setSuccessModal(true);
         // history.push("/home");

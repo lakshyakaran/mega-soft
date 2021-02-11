@@ -313,7 +313,7 @@ function GoalSetting(props: any) {
                 display: "flex",
                 justifyContent: "center",
                 padding: "50px",
-                color: "#344f84",
+                color: "#00597d",
               }}
               size={SpinnerSize.large}
             />
