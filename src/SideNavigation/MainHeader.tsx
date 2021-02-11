@@ -1,7 +1,5 @@
 import logo_text from "../../src/assets/img/logo-text.png";
 import logo_icon from "../../src/assets/img/logo-icon.png";
-import user1 from "../../src/assets/img/1.jpg";
-import { useEffect } from "react";
 import { initSideBar } from "./sideBar";
 import { customSideBar } from "./custom";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
@@ -14,6 +12,7 @@ import logo_nuage from "../assets/img/logo_nuage.png";
 import { useHistory } from "react-router-dom";
 import { RootState } from "../redux/reducers";
 import { setMenuType } from "../redux/actions/roleType";
+import moment from "moment";
 
 function MainHeader(props: any) {
   // useEffect(() => {
@@ -169,7 +168,7 @@ function MainHeader(props: any) {
               Logged In:
             </Text>
             <Text style={{ marginRight: "5px" }}>
-              {dateNow} {timeNow}
+              {moment(dateNow).format("YYYY-MM-DD")} {timeNow}
             </Text>
           </div>
           <ul className="navbar-nav float-right ml-auto">

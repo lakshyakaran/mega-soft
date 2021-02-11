@@ -294,7 +294,7 @@ function EmployeeDetails(props: any) {
       name: "Position Held",
       fieldName: "position_held",
       minWidth: 50,
-      maxWidth: 120,
+      maxWidth: 140,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
@@ -894,7 +894,7 @@ function EmployeeDetails(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "30px",
+                marginTop: "10px",
               }}
             >
               <PrimaryButton
@@ -941,7 +941,7 @@ function EmployeeDetails(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "30px",
+                marginTop: "10px",
               }}
             >
               <PrimaryButton
@@ -1052,7 +1052,7 @@ function EmployeeDetails(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "30px",
+                marginTop: "10px",
               }}
             >
               <PrimaryButton
@@ -1099,7 +1099,7 @@ function EmployeeDetails(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "30px",
+                marginTop: "10px",
               }}
             >
               <PrimaryButton
@@ -1189,7 +1189,7 @@ function EmployeeDetails(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "30px",
+                marginTop: "10px",
               }}
             >
               <PrimaryButton
