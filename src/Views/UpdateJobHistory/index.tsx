@@ -330,7 +330,9 @@ function UpdateJobHistory(props: any) {
                 }}
               />
             </div>
-            <div className="modal-content-success">Job History updated.</div>
+            <div className="modal-content-success">
+              Job History updated successfully.{" "}
+            </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PrimaryButton
                 text="OK"
@@ -362,7 +364,7 @@ function UpdateJobHistory(props: any) {
               />
             </div>
             <div className="modal-content">
-              Somthing went wrong. Please try again
+              Somthing went wrong. Please try again.
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PrimaryButton

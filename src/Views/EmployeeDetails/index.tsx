@@ -16,6 +16,8 @@ import {
   PivotItem,
   PivotLinkFormat,
   PrimaryButton,
+  Spinner,
+  SpinnerSize,
   Stack,
   Text,
   TextField,
@@ -82,16 +84,19 @@ function EmployeeDetails(props: any) {
 
   const [totalCount, setTotalCount] = useState(0);
   const [orderBy, setOrderBy] = useState("order_no asc");
+  const [orderByJobHistory] = useState("from_date asc");
   const [limitPageLengthDevelopment] = useState(5);
   const [developmentData, setDevelopmentData]: any = useState([]);
 
   const [goalData, setGoalData]: any = useState({});
   const [goalCount, setGoalCount] = useState(0);
-  const [EmployeeCount, setEmployeeCount] = useState(0);
+  const [employeeCount, setEmployeeCount] = useState(0);
   const [goalTotalCount, setGoalTotalCount] = useState(0);
   const [developmentCount, setDevelopmentCount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect((): void => {
+    setLoading(true);
     const filters = [];
     if (filtersById) {
       filters.push(["employee_id", "=", filtersById]);
@@ -107,9 +112,10 @@ function EmployeeDetails(props: any) {
       JSON.stringify(filters)
     ).then((response) => {
       // console.log("employee response ==>", response);
-      // setEmployeeCount(response.count);
+      setEmployeeCount(response.count);
       setEmployeeData(response.data[0]);
     });
+    setLoading(false);
   }, [doctype, limit_start, limit, roleType]);
 
   useEffect((): void => {
@@ -121,14 +127,15 @@ function EmployeeDetails(props: any) {
       roleType,
       JSON.stringify(filters),
       limitStart,
-      limitPageLength
+      limitPageLength,
+      orderByJobHistory
     ).then((response) => {
       // console.log("response of job history=>", response);
       setEmployeeDetails(response.data);
       setCount(response.count);
       setTotalCount(response.total_count);
     });
-  }, [roleType, limitStart, limitPageLength]);
+  }, [roleType, limitStart, limitPageLength, orderByJobHistory]);
 
   useEffect((): void => {
     const filters = [];
@@ -209,10 +216,6 @@ function EmployeeDetails(props: any) {
       fontSize: "20px",
     },
   };
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
 
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
@@ -1392,7 +1395,23 @@ function EmployeeDetails(props: any) {
       </WelcomeHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
-        <div className="data-container">{renderEmployeeDetails()}</div>
+        <div className="data-container">
+          {loading ? (
+            <Spinner
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "50px",
+                color: "#344f84",
+              }}
+              size={SpinnerSize.large}
+            />
+          ) : employeeCount === 0 ? (
+            renderNoData()
+          ) : (
+            renderEmployeeDetails()
+          )}
+        </div>
         {/* <div className="right-container">
           <div className="stepper">
             <ul className="progress">

@@ -458,7 +458,7 @@ function AddGoals(props: any) {
               />
             </div>
             <div className="modal-content">
-              Somthing went wrong. Please try again
+              Somthing went wrong. Please try again.
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PrimaryButton

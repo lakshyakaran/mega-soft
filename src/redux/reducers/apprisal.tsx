@@ -1,13 +1,13 @@
 interface appraisalType {
   appraisalList: any;
-  count : number;
+  count: number;
   total_count: number;
   isLoading: boolean;
 }
 
 const initialState: appraisalType = {
   appraisalList: [],
-  count : 0,
+  count: 0,
   total_count: 0,
   isLoading: true,
 };
@@ -31,6 +31,14 @@ export default function appraisal(
         total_count: action.payload.total_count,
         count: action.payload.count,
         isLoading: false,
+      };
+    }
+
+    case "DELETE_APPRAISAL": {
+      return {
+        appraisalList: action.payload.data.filter(
+          (list: any) => list.id !== action.payload.data.id
+        ),
       };
     }
     default:

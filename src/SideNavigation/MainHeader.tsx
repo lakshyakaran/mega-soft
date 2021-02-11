@@ -16,10 +16,10 @@ import { RootState } from "../redux/reducers";
 import { setMenuType } from "../redux/actions/roleType";
 
 function MainHeader(props: any) {
-  useEffect(() => {
-    customSideBar();
-    initSideBar();
-  }, []);
+  // useEffect(() => {
+  //   customSideBar();
+  //   initSideBar();
+  // }, []);
 
   const dispatch = useDispatch();
 
@@ -104,7 +104,7 @@ function MainHeader(props: any) {
                 className="nav-link sidebartoggler waves-effect waves-light"
                 href="#"
                 data-sidebartype="mini-sidebar"
-                onClick={handleCustomSidebar}
+                // onClick={handleCustomSidebar}
               >
                 <i className="mdi mdi-chevron-left font-24"></i>
               </a>

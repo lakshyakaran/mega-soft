@@ -22,6 +22,7 @@ import WelcomeHeader from "../../components/WelcomeHeader";
 import { fetchAppraisalDataById } from "../../redux/actions/apprisal";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
+import moment from "moment";
 
 interface ParamTypes {
   appraisalId: string;
@@ -80,6 +81,9 @@ function AppraisalDetail(props: any) {
     },
     { text: "Appraisal Details", key: "d3", as: "h4" },
   ];
+
+  // const reviewDate = moment(appraisalDetail.review_from).format("DD-MM-YYYY");
+  // const reviewDate = moment(appraisalDetail.review_from).format("DD-MM-YYYY");
 
   const renderData = () => {
     return (

@@ -643,7 +643,7 @@ function AddAppraisal(props: any) {
                   />
                 </div>
                 <div className="modal-content-success">
-                  Appraisal Added Successfully
+                  Appraisal added Successfully.
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
@@ -676,7 +676,7 @@ function AddAppraisal(props: any) {
                   />
                 </div>
                 <div className="modal-content">
-                  Somthing went wrong. Please try again
+                  Somthing went wrong. Please try again.
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton

@@ -8,6 +8,13 @@ export const addApprisal = (item: any) => {
   };
 };
 
+export const deleteAppraisalByID = (item: any) => {
+  return {
+    type: "DELETE_APPRAISAL",
+    payload: item,
+  };
+};
+
 export const fetchAppraisalData = (
   limit_start = 0,
   limit_page_length = 10,

@@ -112,8 +112,9 @@ export const customSideBar = function () {
   //****************************
   /* This is for sidebartoggler*/
   //****************************
+  // var i = 0;
   $(".sidebartoggler").on("click", function () {
-    // console.log("Sidebar toggle inner function ==>");
+    // console.log("Sidebar toggle inner function ==>", i++);
     $("#main-wrapper").toggleClass("mini-sidebar");
     if ($("#main-wrapper").hasClass("mini-sidebar")) {
       $(".sidebartoggler").prop("checked", !0);

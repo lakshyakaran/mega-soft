@@ -4,7 +4,8 @@ export const fetchEmployeeData = (
   doctype = "EmployeeAppraisal",
   limit_start = 0,
   limit = 10,
-  role: any
+  role: any,
+  filters: any
 ) => async (dispatch: any): Promise<any> => {
   try {
     const token = sessionStorage.getItem("access_token");
@@ -22,6 +23,7 @@ export const fetchEmployeeData = (
         limit_start,
         limit,
         role,
+        filters,
         fields: JSON.stringify(["employee_id", "appraisal_id", "status"]),
       },
       method: "GET",

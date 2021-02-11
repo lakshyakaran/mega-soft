@@ -67,7 +67,7 @@ function Appraisal(props: any) {
   const [filtersByFormat, setFiltersByFormat] = useState("");
   const dispatch = useDispatch();
   const appraisal = useSelector((state: RootState) => state.appraisal);
-  const { appraisalList, isLoading, count, total_count } = appraisal;
+  const { appraisalList, isLoading, count, total_count }: any = appraisal;
 
   const params = useParams<ParamTypes>();
 

@@ -4,7 +4,8 @@ export const fetchJobHistory = async (
   role = "Employee",
   filters: any,
   limit_start = 0,
-  limit_page_length = 10
+  limit_page_length = 10,
+  order_by = "from_date asc"
 ) => {
   const token = sessionStorage.getItem("access_token");
   if (token === null) {
@@ -18,6 +19,7 @@ export const fetchJobHistory = async (
       filters,
       limit_start,
       limit_page_length,
+      order_by,
       fields: JSON.stringify([
         "employee_id",
         "appraisal_id",

@@ -14,6 +14,8 @@ import AddGoals from "./Views/AddGoals";
 import UpdateGoals from "./Views/UpdateGoals";
 import GoalDetails from "./Views/GoalDetails";
 import Login from "./Views/Login";
+import { initSideBar } from "./SideNavigation/sideBar";
+import { customSideBar } from "./SideNavigation/custom";
 
 import { validateLogin, login } from "./redux/actions/auth";
 
@@ -61,6 +63,9 @@ function App(props: any) {
   const auth = useSelector((state: RootState) => state.Auth);
 
   useEffect(() => {
+    console.log("on load component=>");
+    initSideBar();
+    customSideBar();
     dispatch(validateLogin());
   }, []);
 

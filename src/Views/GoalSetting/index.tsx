@@ -12,6 +12,8 @@ import {
   IDropdownOption,
   IDropdownStyles,
   PrimaryButton,
+  Spinner,
+  SpinnerSize,
   Text,
 } from "office-ui-fabric-react";
 import { useHistory } from "react-router-dom";
@@ -29,46 +31,35 @@ function GoalSetting(props: any) {
   const [currentPage, setCurentPage] = useState(0);
   const [limitPageLength, setLimitPageLength] = useState(3);
   const [limitStart, setLimitSTart] = useState(0);
+  const [filterByStatus, setFilterByStatus] = useState("");
 
-  const employee = useSelector((state: RootState) => state.employeeList);
+  const employee = useSelector((state: RootState): any => state.employeeList);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   // console.log("roleTYpe==>", roleType)
   const { employeeList, isLoading, total_count, count } = employee;
-  // console.log("employeeList=> ", employeeList);
-
-  const [employeData, setEmployeeData]: any = useState({});
-  // console.log("employee data=>", employeeList);
-
-  // const newRoleType = sessionStorage.getItem("roleType")
 
   useEffect((): void => {
+    const filters = [];
+    if (filterByStatus) {
+      filters.push(["status", "like", filterByStatus]);
+    }
     const newRoleType = sessionStorage.getItem("roleType");
-    dispatch(fetchEmployeeData(doctype, limit_start, limit, newRoleType));
-  }, [doctype, limit_start, limit]);
-
-  const [roles, setRoles] = useState<IDropdownOption>({
-    key: "",
-    text: "",
-  });
-
-  const [period, setPeriod] = useState<IDropdownOption>({
-    key: "",
-    text: "",
-  });
+    dispatch(
+      fetchEmployeeData(
+        doctype,
+        limit_start,
+        limit,
+        newRoleType,
+        JSON.stringify(filters)
+      )
+    );
+  }, [doctype, limit_start, limit, filterByStatus]);
 
   const [status, setStatus] = useState<IDropdownOption>({
     key: "",
     text: "",
   });
   const history = useHistory();
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
-
-  const rolesOption: IDropdownOption[] = [
-    { key: "employee", text: "Employee" },
-    { key: "manager", text: "Manager" },
-    { key: "hrContact", text: "HR Contact" },
-  ];
 
   const dropdownStyles: Partial<IDropdownStyles> = {
     dropdown: {
@@ -95,9 +86,6 @@ function GoalSetting(props: any) {
     },
   };
 
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
-
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
     root: {
       margin: "0px",
@@ -109,29 +97,12 @@ function GoalSetting(props: any) {
     },
   };
 
-  const periodOption: IDropdownOption[] = [
-    { key: "key1", text: "2017-2018" },
-    { key: "key2", text: "2018-2019" },
-    { key: "key3", text: "2019-2020" },
-  ];
   const statusOption: IDropdownOption[] = [
-    { key: "key1", text: "Pending with Employee" },
-    { key: "key2", text: "Pending with Reviewer" },
-    { key: "key3", text: "Pending Counter Signing" },
-    { key: "key4", text: "Complete" },
-  ];
-
-  const operations = [
-    {
-      sno: "01",
-      action: "action1",
-      employeeID: "145728",
-      employeeName: "PRIYA GUPTA",
-      managerID: "124590",
-      managerName: "PINKO KUMAR",
-      status: "Pending With Employee",
-      apprisalType: "Goal Sheet",
-    },
+    { key: "", text: "Select" },
+    { key: "Pending with Employee", text: "Pending with Employee" },
+    { key: "Pending with Reviewer", text: "Pending with Reviewer" },
+    { key: "Pending Counter Signing", text: "Pending Counter Signing" },
+    { key: "Complete", text: "Complete" },
   ];
 
   const columns: IColumn[] = [
@@ -247,28 +218,8 @@ function GoalSetting(props: any) {
     // history.push("/appraisal/goalsetting/view");
   };
 
-  const handleRoles = (
-    ev?: React.FormEvent<HTMLDivElement>,
-    item?: IDropdownOption
-  ): void => {
-    setRoles(
-      item || {
-        key: "employee",
-        text: "",
-      }
-    );
-  };
-
-  const onChangePeriod = (
-    ev?: React.FormEvent<HTMLDivElement>,
-    item?: IDropdownOption
-  ): void => {
-    setPeriod(
-      item || {
-        key: "",
-        text: "",
-      }
-    );
+  const handleSearch = () => {
+    setFilterByStatus(`${status?.key || ""}`);
   };
 
   const onChangeStatus = (
@@ -299,37 +250,33 @@ function GoalSetting(props: any) {
     { text: "Goal Setting", key: "d4", isCurrentItem: true, as: "h4" },
   ];
 
-  return (
-    <div className="view">
-      {/* <WelcomeHeader>
-        <div
+  const renderNoData = () => {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          textAlign: "center",
+          marginTop: "20px",
+          flexDirection: "column",
+        }}
+      >
+        <Text
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            color: "#aaa",
+            textAlign: "center",
+            padding: 50,
+            fontSize: 30,
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px",
-            }}
-          >
-            <Text style={{ marginRight: "10px" }}>
-              Welcome {userName} ({userId})
-            </Text>
-            
-            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-              Logged In:
-            </Text>
-            <Text style={{ marginRight: "5px" }}>
-              {dateNow} {timeNow}
-            </Text>
-          </div>
-        </div>
-      </WelcomeHeader> */}
+          No Data Found.
+        </Text>
+      </div>
+    );
+  };
+
+  return (
+    <div className="view">
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">
@@ -356,96 +303,49 @@ function GoalSetting(props: any) {
                   alignSelf: "center",
                   marginTop: "24px",
                 }}
-              />
-            </div>
-            {/* <Dropdown
-              label="Period"
-              placeholder="Select"
-              options={periodOption}
-              className="reviewFrequency"
-              onChange={onChangePeriod}
-              style={{ padding: "0px" }}
-              styles={dropdownStyles}
-            /> */}
-          </div>
-          <div className="card">
-            <DetailsList
-              styles={listStyle}
-              items={employeeList}
-              className="detail-list"
-              columns={columns}
-              selectionMode={0}
-            />
-            <div className="pagination-style">
-              <Pagination
-                format="buttons"
-                // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-                // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
-                selectedPageIndex={currentPage}
-                pageCount={Math.ceil(total_count / limitPageLength)}
-                itemsPerPage={limitPageLength}
-                totalItemCount={total_count}
-                onPageChange={(page) => {
-                  setLimitSTart(page * limitPageLength);
-                  setCurentPage(page);
-                }}
+                onClick={handleSearch}
               />
             </div>
           </div>
-          {/* <div style={{ marginTop: "10px" }}>
-            <PrimaryButton
-              text="Export"
-              allowDisabledFocus
-              disabled={false}
-              checked={false}
+          {isLoading ? (
+            <Spinner
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "50px",
+                color: "#344f84",
+              }}
+              size={SpinnerSize.large}
             />
-            <PrimaryButton
-              text="Back"
-              allowDisabledFocus
-              disabled={false}
-              checked={false}
-            />
-          </div> */}
+          ) : employeeList.length === 0 ? (
+            renderNoData()
+          ) : (
+            <div className="card">
+              <DetailsList
+                styles={listStyle}
+                items={employeeList}
+                className="detail-list"
+                columns={columns}
+                selectionMode={0}
+              />
+              <div className="pagination-style">
+                <Pagination
+                  format="buttons"
+                  // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+                  // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+                  selectedPageIndex={currentPage}
+                  pageCount={Math.ceil(total_count / limitPageLength)}
+                  itemsPerPage={limitPageLength}
+                  totalItemCount={total_count}
+                  onPageChange={(page) => {
+                    setLimitSTart(page * limitPageLength);
+                    setCurentPage(page);
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
-        {/* <div className="right-container">
-          <div className="stepper">
-            <ul className="progress">
-              <li>
-                <div className="node green"></div>
-                <p className="green">
-                  <span>Provide your job history</span>
-                </p>
-              </li>
-              <li>
-                <div className="divider green"></div>
-              </li>
-              <li>
-                <div className="node green"></div>
-                <p className="green">
-                  <span>Perform goal setting</span>
-                </p>
-              </li>
-              <li>
-                <div className="divider green"></div>
-              </li>
-              <li>
-                <div className="node grey"></div>
-                <p className="grey">
-                  <span>Update training needs</span>
-                </p>
-              </li>
-              <li>
-                <div className="divider grey"></div>
-              </li>
-              <li>
-                <div className="node grey"></div>
-                <p className="grey">
-                  <span>Create development plan</span>
-                </p>
-              </li>
-            </ul>
-          </div>
-        </div> */}
       </div>
     </div>
   );
