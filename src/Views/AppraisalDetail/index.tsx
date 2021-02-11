@@ -90,21 +90,21 @@ function AppraisalDetail(props: any) {
               <div className="col-md-4">
                 <span>ID</span> : {appraisalDetail.id}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-8">
                 <span>Description</span> :{" "}
                 {appraisalDetail.appraisal_description}
               </div>
               <div className="col-md-4">
                 <span>Review From</span> : {appraisalDetail.review_from}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-8">
                 <span>Appraisal To</span> : {appraisalDetail.appraisal_to}
               </div>
               <div className="col-md-4">
                 <span>Review Frequency</span> :{" "}
                 {appraisalDetail.review_frequency}
               </div>
-              <div className="col-md-4">
+              <div className="col-md-8">
                 <span>Type</span> : {appraisalDetail.type}
               </div>
               <div className="col-md-4">
@@ -122,7 +122,7 @@ function AppraisalDetail(props: any) {
           <Separator />
           <div className="rowCheckBox">
             <div>
-              <Label>KRA Settings Tabs: </Label>
+              <Label>KRA/ Goal </Label>
               <Checkbox
                 disabled={true}
                 label={"Job History"}

@@ -72,6 +72,7 @@ function Appraisal(props: any) {
   const params = useParams<ParamTypes>();
 
   // console.log("data apppp=>", appraisalList);
+
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
@@ -97,20 +98,6 @@ function Appraisal(props: any) {
         JSON.stringify(filters)
       )
     );
-    // fetchAppraisalData(
-    //   limitStart,
-    //   limitPageLength,
-    //   `${orderByField} ${orderBy}`,
-    //   JSON.stringify(filters)
-    // ).then((response: any) => {
-    //   // setList(response.data);
-    //   // if (response.data.length == limitPageLength) {
-    //   //   setHasMoreRecord(true);
-    //   // } else {
-    //   //   setHasMoreRecord(false);
-    //   // }
-    // })
-    // console.log("filters==>", filters)
   }, [
     limitStart,
     limitPageLength,
@@ -174,6 +161,16 @@ function Appraisal(props: any) {
       isResizable: false,
     },
     {
+      key: "08",
+      name: "Appraisal To",
+      fieldName: "appraisal_to",
+      minWidth: 50,
+      maxWidth: 120,
+      isSortedDescending: false,
+      isRowHeader: true,
+      isResizable: false,
+    },
+    {
       key: "06",
       name: "Appraisal Type",
       fieldName: "type",
@@ -193,29 +190,6 @@ function Appraisal(props: any) {
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
-    {
-      key: "08",
-      name: "Appraisal To",
-      fieldName: "appraisal_to",
-      minWidth: 50,
-      maxWidth: 120,
-      isSortedDescending: false,
-      isRowHeader: true,
-      isResizable: false,
-    },
-    // {
-    //   key: "07",
-    //   name: "Owner",
-    //   fieldName: "owner",
-    //   minWidth: 10,
-    //   maxWidth: 170,
-    //   isSortedDescending: false,
-    //   sortAscendingAriaLabel: "Sorted A to Z",
-    //   isRowHeader: true,
-    //   onColumnClick: _onColumnClick,
-    //   sortDescendingAriaLabel: "Sorted Z to A",
-    //   isResizable: false,
-    // },
     {
       key: "09",
       name: "Review Frequency",
