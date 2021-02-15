@@ -23,8 +23,8 @@ import { setMenuType } from "../redux/actions/roleType";
 import moment from "moment";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
 import { changeLanguge, onChangeLanguage } from "../redux/actions/application";
+
 
 const rolesOption: IDropdownOption[] = [
   { key: "en", text: "English" },
@@ -93,14 +93,20 @@ function MainHeader(props: any) {
       }
     );
     const oldLanguage = i18n.language;
-    dispatch(onChangeLanguage(language?.key));
-    // i18n.changeLanguage(item?.key ?? '');
+    console.log("key=>", item?.key)
+    dispatch(onChangeLanguage(item?.key));
+    let data:any = item?.key || ''
+    i18n.changeLanguage(data);
 
     setTimeout(() => {
       Utils.reloadLocale(oldLanguage, item?.key);
       // history.goBack();
     }, 500);
   };
+
+  const changeLanguage = (event:any) => {
+    i18n.changeLanguage(event.target.value)
+  }
 
   return (
     <header className="topbar" data-navbarbg="skin5">
@@ -222,6 +228,10 @@ function MainHeader(props: any) {
             </Text>
           </div>
           <ul className="navbar-nav float-right ml-auto">
+          {/* <div onChange={changeLanguage}>
+      <input type="radio" value="en" name="language" defaultChecked /> English
+      <input type="radio" value="fr" name="language"/> Traditional Chinese
+    </div> */}
             <div>
               <Dropdown
                 options={rolesOption}
