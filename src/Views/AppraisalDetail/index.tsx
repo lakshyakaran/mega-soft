@@ -82,8 +82,8 @@ function AppraisalDetail(props: any) {
     { text: "Appraisal Details", key: "d3", as: "h4" },
   ];
 
-  // const reviewDate = moment(appraisalDetail.review_from).format("DD-MM-YYYY");
-  // const reviewDate = moment(appraisalDetail.review_from).format("DD-MM-YYYY");
+  const reviewDate = moment(appraisalDetail.review_from).format("DD-MM-YYYY");
+  const appraisalTo = moment(appraisalDetail.appraisal_to).format("DD-MM-YYYY");
 
   const renderData = () => {
     return (
@@ -99,10 +99,10 @@ function AppraisalDetail(props: any) {
                 {appraisalDetail.appraisal_description}
               </div>
               <div className="col-md-4">
-                <span>Review From</span> : {appraisalDetail.review_from}
+                <span>Review From</span> : {reviewDate}
               </div>
               <div className="col-md-8">
-                <span>Appraisal To</span> : {appraisalDetail.appraisal_to}
+                <span>Appraisal To</span> : {appraisalTo}
               </div>
               <div className="col-md-4">
                 <span>Review Frequency</span> :{" "}

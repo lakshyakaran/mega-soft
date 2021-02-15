@@ -8,6 +8,7 @@ import roleType from "./roleType";
 import jobHistory from "./jobHistory";
 import Auth from "./auth";
 import menuType from "./menuType";
+import application from "./application";
 
 const reducer = combineReducers({
   tasks,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   jobHistory,
   Auth,
   menuType,
+  application,
 });
 
 export default reducer;

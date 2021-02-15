@@ -49,6 +49,7 @@ import {
 } from "../../redux/actions/apprisal";
 import { useHistory, useParams } from "react-router-dom";
 import { delete_appraisal } from "../../redux/actions/apprisal";
+import moment from "moment";
 // import { roleType } from "../../redux/actions/roleType";
 
 interface ParamTypes {
@@ -69,46 +70,21 @@ function Appraisal(props: any) {
   const dispatch = useDispatch();
   const appraisal = useSelector((state: RootState) => state.appraisal);
   const { appraisalList, isLoading, count, total_count }: any = appraisal;
+  const [formatDate, setFormatDate] = useState("");
 
   const params = useParams<ParamTypes>();
 
-  // console.log("data apppp=>", appraisalList);
+  const newAppraisalList = appraisalList.map((element: any) => {
+    // console.log("element=>", element);
+    const a = {
+      ...element,
+      review_from: moment(element.review_from).format("DD-MM-YYYY"),
+      appraisal_to: moment(element.appraisal_to).format("DD-MM-YYYY"),
+    };
+    return a;
+  });
 
-  // const appraisalDataFetched = () => {
-  //   const filters = [];
-  //   if (filtersById) {
-  //     filters.push(["id", "like", filtersById]);
-  //   }
-  //   if (filtersByDescription) {
-  //     filters.push(["appraisal_description", "like", filtersByDescription]);
-  //   }
-  //   if (filtersByReviewFreq) {
-  //     filters.push(["review_frequency", "=", filtersByReviewFreq]);
-  //   }
-  //   if (filtersByAppraisal) {
-  //     filters.push(["type", "=", filtersByAppraisal]);
-  //   }
-  //   if (filtersByFormat) {
-  //     filters.push(["format_type", "=", filtersByFormat]);
-  //   }
-  //   dispatch(
-  //     fetchAppraisalData(
-  //       limitStart,
-  //       limitPageLength,
-  //       `${orderByField} ${orderBy}`,
-  //       JSON.stringify(filters)
-  //     )
-  //   );
-  // };
-
-  // let focusListener: any = {};
-
-  // useEffect(() => {
-  //   window.addEventListener("click", appraisalDataFetched);
-  //   return () => {
-  //     window.removeEventListener("load", appraisalDataFetched);
-  //   };
-  // }, []);
+  // console.log("newDate==>", newAppraisalList);
 
   useEffect((): void => {
     const filters = [];
@@ -736,7 +712,7 @@ function Appraisal(props: any) {
           <div className="card">
             <DetailsList
               styles={listStyle}
-              items={appraisalList}
+              items={newAppraisalList}
               className="detail-list"
               // onRenderRow={renderRow}
               columns={columns}

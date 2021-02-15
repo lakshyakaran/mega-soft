@@ -30,6 +30,7 @@ import WelcomeHeader from "../../components/WelcomeHeader";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
@@ -64,6 +65,7 @@ const dropdownStyles: Partial<IDropdownStyles> = {
 // }
 
 function AddAppraisal(props: any) {
+  const { t, i18n } = useTranslation();
   // const params = useParams<ParamTypes>();
   // console.log("id => ", params.id);
   const stackTokens = { childrenGap: 10 };
@@ -392,15 +394,15 @@ function AddAppraisal(props: any) {
   };
 
   const handleAddApprisal = () => {
-    if (claimsData.id === "") {
+    if (claimsData.id === "" || claimsData.id.length > 5) {
       setErrMsg("ID is required");
     }
     if (claimsData.description === "") {
       setErrMsgDescription("Description is required");
     }
-    if (claimsData.owner === "") {
-      setErrMsgOwner("Owner is required");
-    }
+    // if (claimsData.owner === "") {
+    //   setErrMsgOwner("Somthing went wrong");
+    // }
     if (formateType.text === "") {
       setErrMsgFormatType("Select format Type");
     }
@@ -460,18 +462,18 @@ function AddAppraisal(props: any) {
           <div className="goal-details">
             <TextField
               required
-              placeholder="ID"
+              placeholder={t("ID")}
               value={claimsData.id}
               errorMessage={errMsg}
               name="id"
-              label="Id"
+              label={t("ID")}
               onChange={onChangeInput}
               className="flexGrowTextInput"
             />
             <TextField
               required
-              placeholder="Description"
-              label="Description"
+              placeholder={t("Description")}
+              label={t("Description")}
               value={claimsData.description}
               errorMessage={errMsgDescription}
               // styles={textfelidStyle}
@@ -484,7 +486,7 @@ function AddAppraisal(props: any) {
           <div className="goal-details">
             <DatePicker
               isRequired={true}
-              label="Review From"
+              label={t("Review_From")}
               className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeek}
               strings={DayPickerStrings}
@@ -496,7 +498,7 @@ function AddAppraisal(props: any) {
             />
             <DatePicker
               isRequired={true}
-              label="Appraisal To"
+              label={t("Appraisal_To")}
               className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeekAppraisal}
               strings={DayPickerStringsAppraisal}
@@ -509,7 +511,7 @@ function AddAppraisal(props: any) {
             <Dropdown
               required
               errorMessage={errMsgReviewFrequency}
-              label="Review Frequency"
+              label={t("Review_Frequency")}
               placeholder="Select"
               className="flexGrow w33"
               onChange={onChangeReviewFrequency}
@@ -521,7 +523,7 @@ function AddAppraisal(props: any) {
           <div className="goal-details">
             <Dropdown
               required
-              label="Type"
+              label={t("Type")}
               errorMessage={errMsgType}
               placeholder="Select Type"
               className="flexGrow w33"
@@ -531,7 +533,7 @@ function AddAppraisal(props: any) {
             />
             <Dropdown
               required
-              label="Format Type"
+              label={t("Format_Type")}
               errorMessage={errMsgFormatType}
               className="flexGrow w33"
               onChange={onChangeFormateType}
@@ -541,12 +543,20 @@ function AddAppraisal(props: any) {
             />
             <TextField
               required
-              label="Owner"
+              label={t("Owner")}
               placeholder="Owner"
+              pattern={"^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"}
+              onGetErrorMessage={(v) =>
+                new RegExp(
+                  "^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"
+                ).test(v)
+                  ? ""
+                  : "Please give currect pattern"
+              }
               value={claimsData.owner}
               className="flexGrow w33"
               // styles={textfelidStyle}
-              errorMessage={errMsgOwner}
+              // errorMessage={errMsgOwner}
               name="owner"
               onChange={onChangeInput}
             />
@@ -554,7 +564,7 @@ function AddAppraisal(props: any) {
           <Separator />
           <div className="rowCheckBox">
             <div>
-              <Label>KRA Settings Tabs: </Label>
+              <Label>{t("KRA_Settings_Tabs")} </Label>
               <Checkbox
                 label={"Job History"}
                 title={"Competencies"}

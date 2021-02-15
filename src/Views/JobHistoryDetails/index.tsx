@@ -26,6 +26,7 @@ import {
   Text,
   TextField,
 } from "office-ui-fabric-react";
+import moment from "moment";
 
 interface ParamTypes {
   employeeId: string;
@@ -156,15 +157,9 @@ function JobHistoryDetails(props: any) {
       fontSize: "20px",
     },
   };
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
 
-  const [errMsgResponsibility, setErrMsgResponsibility] = useState("");
-  const [errMsgPlace, setErrMsgPlace] = useState("");
-  const [errMsgPosition, setErrMsgPosition] = useState("");
-  const [errMsgQualifications, setErrMsgQualifications] = useState("");
+  const fromDateFormat = moment(employeeDetails.from_date).format("DD-MM-YYYY");
+  const toDateFormat = moment(employeeDetails.to_date).format("DD-MM-YYYY");
 
   const stackTokens = { childrenGap: 10 };
   const renderJobHistoryForm = () => {
@@ -179,10 +174,10 @@ function JobHistoryDetails(props: any) {
               <span>Place of Posting</span> : {employeeDetails.place_of_posting}
             </div>
             <div className="col-md-4">
-              <span>From Date</span> : {employeeDetails.from_date}
+              <span>From Date</span> : {fromDateFormat}
             </div>
             <div className="col-md-8">
-              <span>To Date</span> : {employeeDetails.to_date}
+              <span>To Date</span> : {toDateFormat}
             </div>
             <div className="col-md-4">
               <span>Key Responsibilities</span> :{" "}

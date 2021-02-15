@@ -3,9 +3,17 @@ import logo_icon from "../../src/assets/img/logo-icon.png";
 import { initSideBar } from "./sideBar";
 import { customSideBar } from "./custom";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
-import { Link, Text } from "office-ui-fabric-react";
+import {
+  Dropdown,
+  IDropdownOption,
+  IDropdownStyles,
+  Link,
+  Text,
+} from "office-ui-fabric-react";
 import { logout } from "../redux/actions/auth";
 import { connect, useDispatch, useSelector } from "react-redux";
+
+import * as Utils from "../Utils";
 
 import logo_ms from "../assets/img/logo_ms.png";
 import logo_nuage from "../assets/img/logo_nuage.png";
@@ -13,12 +21,29 @@ import { useHistory } from "react-router-dom";
 import { RootState } from "../redux/reducers";
 import { setMenuType } from "../redux/actions/roleType";
 import moment from "moment";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import i18n from "i18next";
+import { changeLanguge, onChangeLanguage } from "../redux/actions/application";
+
+const rolesOption: IDropdownOption[] = [
+  { key: "en", text: "English" },
+  { key: "fr", text: "French" },
+];
 
 function MainHeader(props: any) {
+  const { t, i18n } = useTranslation();
   // useEffect(() => {
   //   customSideBar();
   //   initSideBar();
   // }, []);
+
+  const dropdownStyles: Partial<IDropdownStyles> = {
+    dropdown: {
+      width: 170,
+      border: "0px",
+    },
+  };
 
   const dispatch = useDispatch();
 
@@ -50,6 +75,31 @@ function MainHeader(props: any) {
         </span>
       );
     }
+  };
+
+  const [language, setLanguage] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
+
+  const handleLanguage = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setLanguage(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+    const oldLanguage = i18n.language;
+    dispatch(onChangeLanguage(language?.key));
+    // i18n.changeLanguage(item?.key ?? '');
+
+    setTimeout(() => {
+      Utils.reloadLocale(oldLanguage, item?.key);
+      // history.goBack();
+    }, 500);
   };
 
   return (
@@ -168,10 +218,22 @@ function MainHeader(props: any) {
               Logged In:
             </Text>
             <Text style={{ marginRight: "5px" }}>
-              {moment(dateNow).format("YYYY-MM-DD")} {timeNow}
+              {moment(dateNow).format("DD-MM-YYYY")} {timeNow}
             </Text>
           </div>
           <ul className="navbar-nav float-right ml-auto">
+            <div>
+              <Dropdown
+                options={rolesOption}
+                onChange={handleLanguage}
+                // selectedKey={
+                //   rolesOption.find((item) => item.text === language)?.key
+                // }
+                className="rolesDropDown"
+                styles={dropdownStyles}
+                style={{ marginLeft: "2rem", marginTop: "10px" }}
+              />
+            </div>
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle waves-effect waves-dark"

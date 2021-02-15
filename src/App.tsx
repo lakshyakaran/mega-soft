@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   BrowserRouter,
   Redirect,
@@ -114,80 +114,82 @@ function App(props: any) {
   }
 
   return (
-    <BrowserRouter>
-      {auth.isLoggedIn == true ? (
-        <Switch>
-          <div className="page-wrapper">
-            <Navigation />
-            {/* <Route exact path="/" component={Login} /> */}
-            <Route exact path="/home" component={Appraisal} />
-            <Route exact path="/addApprisal" component={AddAppraisal} />
-            {/* <Route exact path="/appraisal/add" component={Form} /> */}
-            <Route
-              exact
-              path="/appraisal/update/:appraisalId"
-              component={UpdateAppraisal}
-            />
-            <Route
-              exact
-              path="/appraisal/view/:appraisalId"
-              component={AppraisalDetail}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting"
-              component={GoalSetting}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/:employeeId/:appraisalId"
-              component={EmployeeDetails}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/addjobhistory/:employeeId/:appraisalId"
-              component={JobHistory}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/jobhistory/updateJobHistory/:name"
-              component={UpdateJobHistory}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/:name"
-              component={JobHistoryDetails}
-            />
+    <Suspense fallback="loading">
+      <BrowserRouter>
+        {auth.isLoggedIn == true ? (
+          <Switch>
+            <div className="page-wrapper">
+              <Navigation />
+              {/* <Route exact path="/" component={Login} /> */}
+              <Route exact path="/home" component={Appraisal} />
+              <Route exact path="/addApprisal" component={AddAppraisal} />
+              {/* <Route exact path="/appraisal/add" component={Form} /> */}
+              <Route
+                exact
+                path="/appraisal/update/:appraisalId"
+                component={UpdateAppraisal}
+              />
+              <Route
+                exact
+                path="/appraisal/view/:appraisalId"
+                component={AppraisalDetail}
+              />
+              <Route
+                exact
+                path="/appraisal/goalsetting"
+                component={GoalSetting}
+              />
+              <Route
+                exact
+                path="/appraisal/goalsetting/view/:employeeId/:appraisalId"
+                component={EmployeeDetails}
+              />
+              <Route
+                exact
+                path="/appraisal/goalsetting/view/addjobhistory/:employeeId/:appraisalId"
+                component={JobHistory}
+              />
+              <Route
+                exact
+                path="/appraisal/goalsetting/view/jobhistory/updateJobHistory/:name"
+                component={UpdateJobHistory}
+              />
+              <Route
+                exact
+                path="/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/:name"
+                component={JobHistoryDetails}
+              />
 
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/addgoal/:employeeId/:appraisalId"
-              component={AddGoals}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/goals/updategoal/:name"
-              component={UpdateGoals}
-            />
-            <Route
-              exact
-              path="/appraisal/goalsetting/view/goal/goaldetail/:name"
-              component={GoalDetails}
-            />
-            <Route path="/*" render={() => <Redirect to="/home" />} />
-            <Route
-              path="/appraisal/goalsetting*"
-              render={() => <Redirect to="/appraisal/goalsetting" />}
-            />
-          </div>
-        </Switch>
-      ) : (
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route path="/*" render={() => <Redirect to="/" />} />
-        </Switch>
-      )}
-    </BrowserRouter>
+              <Route
+                exact
+                path="/appraisal/goalsetting/view/addgoal/:employeeId/:appraisalId"
+                component={AddGoals}
+              />
+              <Route
+                exact
+                path="/appraisal/goalsetting/view/goals/updategoal/:name"
+                component={UpdateGoals}
+              />
+              <Route
+                exact
+                path="/appraisal/goalsetting/view/goal/goaldetail/:name"
+                component={GoalDetails}
+              />
+              <Route path="/*" render={() => <Redirect to="/home" />} />
+              <Route
+                path="/appraisal/goalsetting*"
+                render={() => <Redirect to="/appraisal/goalsetting" />}
+              />
+            </div>
+          </Switch>
+        ) : (
+          <Switch>
+            <Route exact path="/" component={Login} />
+            <Route path="/*" render={() => <Redirect to="/" />} />
+          </Switch>
+        )}
+      </BrowserRouter>
+    </Suspense>
   );
 }
 

@@ -1,0 +1,11 @@
+{
+    "Id" : "Id",
+    "Description" : "описание",
+    "Review_From" : "обзор от",
+    "Appraisal_To" : "оценка",
+    "Review_Frequency" : "Частота обзора",
+    "Format_Type" : "тип формата",
+    "Owner" : "владелец",
+    "KRA_Settings_Tabs" : "Вкладки настроек KRA",
+    "Type" : "тиор",
+}

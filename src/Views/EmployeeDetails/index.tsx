@@ -23,12 +23,13 @@ import {
   TextField,
 } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import {
   fetchJobHistory,
+  jobHistoryData,
   update_JobHistory,
 } from "../../redux/actions/jobHistory";
 import { RootState } from "../../redux/reducers";
@@ -52,6 +53,7 @@ import {
   handleDevelopmentDataChange,
 } from "../../redux/actions/developmentPlan";
 import "./style.css";
+import moment from "moment";
 
 interface ParamTypes {
   employeeId: string;
@@ -94,6 +96,12 @@ function EmployeeDetails(props: any) {
   const [goalTotalCount, setGoalTotalCount] = useState(0);
   const [developmentCount, setDevelopmentCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const jobHistoryDataLocal = useSelector(
+    (state: RootState) => state.jobHistory
+  );
+  const { jobHistory, isLoading, total_count }: any = jobHistoryDataLocal;
+  // console.log("jobHistoryDataLocal=>", jobHistory);
 
   const newRoleType: any = sessionStorage.getItem("roleType");
   useEffect((): void => {
@@ -124,19 +132,24 @@ function EmployeeDetails(props: any) {
     if (filtersById) {
       filters.push(["employee_id", "=", filtersById]);
     }
-    fetchJobHistory(
-      newRoleType,
-      JSON.stringify(filters),
-      limitStart,
-      limitPageLength,
-      orderByJobHistory
-    ).then((response) => {
-      // console.log("response of job history=>", response);
-      setEmployeeDetails(response.data);
-      setCount(response.count);
-      setTotalCount(response.total_count);
-    });
+    dispatch(
+      jobHistoryData(
+        newRoleType,
+        JSON.stringify(filters),
+        limitStart,
+        limitPageLength,
+        orderByJobHistory
+      )
+    );
   }, [newRoleType, limitStart, limitPageLength, orderByJobHistory]);
+  const newJobHistoryData = jobHistory.map((element: any) => {
+    const a = {
+      ...element,
+      from_date: moment(element.from_date).format("DD-MM-YYYY"),
+      to_date: moment(element.to_date).format("DD-MM-YYYY"),
+    };
+    return a;
+  });
 
   useEffect((): void => {
     const filters = [];
@@ -806,13 +819,23 @@ function EmployeeDetails(props: any) {
   const renderJobHistory = () => {
     return (
       <div>
-        {count === 0 ? (
+        {isLoading ? (
+          <Spinner
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "50px",
+              color: "#00597d",
+            }}
+            size={SpinnerSize.large}
+          />
+        ) : jobHistory.length === 0 ? (
           renderNoData()
         ) : (
           <div>
             <DetailsList
               styles={listStyle}
-              items={employeeDetails}
+              items={newJobHistoryData}
               className="detail-list"
               columns={columnsJobHistory}
               selectionMode={0}
@@ -1209,6 +1232,8 @@ function EmployeeDetails(props: any) {
     );
   };
 
+  const joiningDate = moment(employeeData.date_of_joining).format("DD-MM-YYYY");
+
   const renderEmployeeDetails = () => {
     return (
       <div>
@@ -1231,7 +1256,7 @@ function EmployeeDetails(props: any) {
                 <span>Department</span> : {employeeData.department}
               </div>
               <div className="col-md-4">
-                <span>Date of Joining</span> : {employeeData.date_of_joining}
+                <span>Date of Joining</span> : {joiningDate}
               </div>
               <div className="col-md-4">
                 <span>Reporting Officer</span> : {employeeData.manager_name}

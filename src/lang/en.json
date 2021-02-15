@@ -1,0 +1,11 @@
+{
+    "ID" : "ID",
+    "Description" : "Description",
+    "Review_From" : "Review From",
+    "Appraisal_To" : "Appraisal To",
+    "Review_Frequency" : "Review Frequency",
+    "Format_Type" : "Format Type",
+    "Owner" : "Owner",
+    "KRA_Settings_Tabs" : "KRA Settings Tabs",
+    "Type" : "Type",
+}

@@ -445,6 +445,14 @@ function UpdateAppraisal(props: any) {
               required
               label="Owner"
               placeholder="Owner"
+              pattern={"^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"}
+              onGetErrorMessage={(v) =>
+                new RegExp(
+                  "^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"
+                ).test(v)
+                  ? ""
+                  : "Please give currect pattern"
+              }
               value={updateData.appraisal_owner}
               styles={textfelidStyle}
               name="appraisal_owner"
