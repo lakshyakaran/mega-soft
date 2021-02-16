@@ -9,9 +9,12 @@ import {
   DatePicker,
   DayOfWeek,
   Dropdown,
+  getColorFromString,
   getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
+  IColor,
+  IColorPickerProps,
   IconButton,
   IDatePickerStrings,
   IDatePickerStyles,
@@ -23,6 +26,7 @@ import {
   mergeStyleSets,
   Modal,
   PrimaryButton,
+  ColorPicker,
   Separator,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
@@ -64,24 +68,28 @@ const dropdownStyles: Partial<IDropdownStyles> = {
 //   id: string
 // }
 
+const white = getColorFromString("#006994")!;
+
 function AddAppraisal(props: any) {
   const { t, i18n } = useTranslation();
   // const params = useParams<ParamTypes>();
   // console.log("id => ", params.id);
   const stackTokens = { childrenGap: 10 };
+  const [color, setColor] = useState(white);
 
-  const textfelidStyle: Partial<ITextFieldStyles> = {
-    root: {
-      borderRadius: "10px",
-      ".ms-TextField-wrapper": {
-        // borderRadius: "10px",
-      },
+  // const updateColor = React.useCallback(
+  //   (ev: any, colorObj: IColor) => setColor(colorObj),
+  //   []
+  // );
 
-      ".ms-TextField-fieldGroup fieldGroup-195": {
-        // borderRadius: "10px",
-      },
-    },
+  const updateColor = (ev: any, colorObj: IColor) => {
+    setColor(colorObj);
   };
+
+  const [showPreview, setShowPreview] = useState(true);
+  const [alphaType, setAlphaType] = React.useState<
+    IColorPickerProps["alphaType"]
+  >("alpha");
 
   const DayPickerStrings: IDatePickerStrings = {
     months: [
@@ -319,10 +327,6 @@ function AddAppraisal(props: any) {
     // const appraisalDate: any = moment(date).format("YYYY-MM-DD");
   };
 
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
   const history = useHistory();
 
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
@@ -394,15 +398,19 @@ function AddAppraisal(props: any) {
   };
 
   const handleAddApprisal = () => {
+    let pattern = /^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$/;
     if (claimsData.id === "" || claimsData.id.length > 5) {
       setErrMsg("ID is required");
     }
     if (claimsData.description === "") {
       setErrMsgDescription("Description is required");
     }
-    // if (claimsData.owner === "") {
-    //   setErrMsgOwner("Somthing went wrong");
-    // }
+    if (!pattern.test(claimsData.owner)) {
+      setErrMsgOwner("Please give currect pattern ");
+    }
+    if (claimsData.owner === "") {
+      setErrMsgOwner("Owner is required");
+    }
     if (formateType.text === "") {
       setErrMsgFormatType("Select format Type");
     }
@@ -458,6 +466,13 @@ function AddAppraisal(props: any) {
   const renderForm = () => {
     return (
       <React.Fragment>
+        {/* <ColorPicker
+          color={color}
+          onChange={updateColor}
+          alphaType={alphaType}
+          showPreview={showPreview}
+          // styles={colorPickerStyles}
+        /> */}
         <div className="form-container card">
           <div className="goal-details">
             <TextField
@@ -492,7 +507,7 @@ function AddAppraisal(props: any) {
               strings={DayPickerStrings}
               value={dateReview}
               onSelectDate={reviewFromDate}
-              placeholder="Select a date"
+              placeholder={t("select_a_date")}
               ariaLabel="Select a date"
               styles={datePickerStyle}
             />
@@ -505,14 +520,14 @@ function AddAppraisal(props: any) {
               onSelectDate={appraisalToDate}
               styles={datePickerStyle}
               value={dateAppraisal}
-              placeholder="Select a date"
+              placeholder={t("select_a_date")}
               ariaLabel="Select a date"
             />
             <Dropdown
               required
               errorMessage={errMsgReviewFrequency}
               label={t("Review_Frequency")}
-              placeholder="Select"
+              placeholder={t("select")}
               className="flexGrow w33"
               onChange={onChangeReviewFrequency}
               options={reviewFrequencyOptions}
@@ -525,7 +540,7 @@ function AddAppraisal(props: any) {
               required
               label={t("Type")}
               errorMessage={errMsgType}
-              placeholder="Select Type"
+              placeholder={t("select_type")}
               className="flexGrow w33"
               options={typeOptions}
               onChange={onChangeType}
@@ -537,26 +552,26 @@ function AddAppraisal(props: any) {
               errorMessage={errMsgFormatType}
               className="flexGrow w33"
               onChange={onChangeFormateType}
-              placeholder="Select Format Type"
+              placeholder={t("select_format_type")}
               options={formateTypeOptions}
               // styles={typeDropdownStyles}
             />
             <TextField
               required
               label={t("Owner")}
-              placeholder="Owner"
+              placeholder={t("Owner")}
               pattern={"^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"}
-              onGetErrorMessage={(v) =>
-                new RegExp(
-                  "^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"
-                ).test(v)
-                  ? ""
-                  : "Please give currect pattern"
-              }
+              // onGetErrorMessage={(v) =>
+              //   new RegExp(
+              //     "^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"
+              //   ).test(v)
+              //     ? ""
+              //     : "Please give currect pattern"
+              // }
               value={claimsData.owner}
               className="flexGrow w33"
               // styles={textfelidStyle}
-              // errorMessage={errMsgOwner}
+              errorMessage={errMsgOwner}
               name="owner"
               onChange={onChangeInput}
             />
@@ -566,7 +581,7 @@ function AddAppraisal(props: any) {
             <div>
               <Label>{t("KRA_Settings_Tabs")} </Label>
               <Checkbox
-                label={"Job History"}
+                label={t("job_history")}
                 title={"Competencies"}
                 checked={claimsData.kraSettingCompetencies}
                 className="flexGrowCheckBox"
@@ -574,7 +589,7 @@ function AddAppraisal(props: any) {
                 onChange={onChangeCheckbox}
               />
               <Checkbox
-                label={"Goals"}
+                label={t("goals")}
                 title={"Goals"}
                 checked={claimsData.kraSettingGoal}
                 className="flexGrowCheckBox"
@@ -582,7 +597,7 @@ function AddAppraisal(props: any) {
                 onChange={onChangeCheckbox}
               />
               <Checkbox
-                label={"Training/ Development Plan"}
+                label={t("training_and_development")}
                 title={"Development Plans"}
                 checked={claimsData.kraSettingDevelopmentPlan}
                 className="flexGrowCheckBox"
@@ -686,11 +701,11 @@ function AddAppraisal(props: any) {
                   />
                 </div>
                 <div className="modal-content">
-                  Somthing went wrong. Please try again.
+                  {t("somthing_went_wrong_please_try_again")}
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
-                    text="Go Back"
+                    text={t("go_back")}
                     allowDisabledFocus
                     onClick={() => {
                       setFailedModal(false);
@@ -715,6 +730,7 @@ function AddAppraisal(props: any) {
               <PrimaryButton
                 text="Add Appraisal"
                 allowDisabledFocus
+                style={{ backgroundColor: color.str }}
                 onClick={handleAddApprisal}
               />
             </div>

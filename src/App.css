@@ -2,10 +2,6 @@ body {
   background-color: #f8f7fc;
 }
 
-.container {
-  /* width: calc("100% - 20px");
-  margin-left: 200px; */
-}
 
 .sidebar {
   position: fixed;
@@ -19,7 +15,6 @@ body {
   /* overflow:auto; */
 }
 
-.sidebar .ms-Nav-chevronButton {}
 
 .view {
   padding-top: 18px;
@@ -60,9 +55,6 @@ body {
   padding-top: 0px;
 }
 
-.ms-DetailsHeader {
-  /* border: 1px solid black; */
-}
 
 .right-panel {
   width: 450px;
@@ -79,10 +71,6 @@ body {
   margin-right: 2rem;
   width: calc(100% - 550px);
 }
-
-/* .visibleItemLabel-149 {
-  display: none;
-} */
 
 .ms-Pagination-pageNumber {
   display: none;
@@ -153,15 +141,7 @@ body {
   z-index: 99;
 }
 
-.ms-Button--primary.root-106 {
-  background-color: #f79420;
-  border-color: #f79420;
-}
 
-.ms-Button--primary.root-106:hover {
-  background-color: #ea8c1e;
-  border-color: #ea8c1e;
-}
 
 .ms-Nav-compositeLink.is-selected.compositeLink-46 {
   background-color: #29416f;
@@ -171,9 +151,6 @@ body {
   font-size: 20px;
 }
 
-/* .ms-TooltipHost.root-175 {
-  display: none;
-} */
 
 .ms-Breadcrumb-list {
   margin-top: -18px;
@@ -199,9 +176,6 @@ body {
   border: none;
 }
 
-/* .data-container .ms-Pagination-container .visibleItemLabel-175{
-  display: none !important;
-} */
 
 .ms-Nav-chevronButton {
   color: #FFF;

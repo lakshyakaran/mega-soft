@@ -1,11 +1,11 @@
 export const changeLanguge = (language: any) => {
+  window.sessionStorage.setItem("language", language);
   return {
     type: "CHANGE_LANGUAGE",
-    language,
+    payload: language,
   };
 };
 
 export const onChangeLanguage = (language: any) => (dispatch: any) => {
-  console.log("payload=>", language);
   dispatch(changeLanguge(language));
 };

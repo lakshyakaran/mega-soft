@@ -50,6 +50,7 @@ import {
 import { useHistory, useParams } from "react-router-dom";
 import { delete_appraisal } from "../../redux/actions/apprisal";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 // import { roleType } from "../../redux/actions/roleType";
 
 interface ParamTypes {
@@ -57,6 +58,7 @@ interface ParamTypes {
 }
 
 function Appraisal(props: any) {
+  const { t, i18n } = useTranslation();
   // const [hasMoreRecord, setHasMoreRecord] = useState(true);
   const [limitStart, setLimitSTart] = useState(0);
   const [limitPageLength, setLimitPageLength] = useState(5);
@@ -613,22 +615,22 @@ function Appraisal(props: any) {
         <div className="card advance-search-section">
           <div className="searchBarClass">
             <TextField
-              label="ID"
+              label={t("ID")}
               onChange={itemSearch}
-              placeholder="Enter ID"
+              placeholder={t("ID")}
               className="searchInput"
               styles={controlStyles}
             />
             <TextField
-              label="Description"
+              placeholder={t("Description")}
+              label={t("Description")}
               className="searchInput"
               onChange={itemSearchDescription}
-              placeholder="Enter Description"
               styles={controlStyles}
             />
             <Dropdown
-              label="Review Frequency"
-              placeholder="Select"
+              label={t("Review_Frequency")}
+              placeholder={t("select")}
               options={searchOptions}
               className="reviewFrequency"
               onChange={itemSearchReview}
@@ -676,8 +678,9 @@ function Appraisal(props: any) {
             }
           >
             <Dropdown
-              label="Appraisal Type"
-              placeholder="Select"
+              // label="Appraisal Type"
+              label={t("Appraisal_To")}
+              placeholder={t("select")}
               options={searchAppraisal}
               className="reviewFrequency"
               onChange={itemSearchAppraisal}
@@ -685,8 +688,8 @@ function Appraisal(props: any) {
               styles={dropdownStyles}
             />
             <Dropdown
-              label="Format Type"
-              placeholder="Select"
+              label={t("Review_From")}
+              placeholder={t("select")}
               options={searchFormatType}
               className="reviewFrequency"
               onChange={itemSearchFormatType}

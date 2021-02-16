@@ -1,5 +1,5 @@
 const initialState = {
-  language: null,
+  language: window.sessionStorage.getItem("language") || "en",
 };
 
 export default function application(

@@ -10,6 +10,7 @@ import {
   Link,
   Text,
 } from "office-ui-fabric-react";
+import { initializeIcons } from "@uifabric/icons";
 import { logout } from "../redux/actions/auth";
 import { connect, useDispatch, useSelector } from "react-redux";
 
@@ -25,14 +26,16 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { changeLanguge, onChangeLanguage } from "../redux/actions/application";
 
-
-const rolesOption: IDropdownOption[] = [
-  { key: "en", text: "English" },
-  { key: "fr", text: "French" },
-];
+import i18n from "../i18n";
 
 function MainHeader(props: any) {
-  const { t, i18n } = useTranslation();
+  initializeIcons();
+  const languageOption: IDropdownOption[] = [
+    { key: "en", text: "English", data: { icon: "AADLogo" } },
+    { key: "fr", text: "French" },
+    // { key: "hi", text: "Hungarian" },
+  ];
+  // const { t, i18n } = useTranslation();
   // useEffect(() => {
   //   customSideBar();
   //   initSideBar();
@@ -42,10 +45,16 @@ function MainHeader(props: any) {
     dropdown: {
       width: 170,
       border: "0px",
+      // color: "#FFF",
+      backgroundColor: "#FFF",
     },
   };
 
   const dispatch = useDispatch();
+  const selectedLanguage = useSelector(
+    (state: RootState) => state.application.language
+  );
+  console.log("selectedLanguage=>", selectedLanguage);
 
   const handleLogout = () => {
     window.open("http://52.146.0.154/api/method/logout", "_self");
@@ -60,6 +69,7 @@ function MainHeader(props: any) {
   const history = useHistory();
 
   const menuType = useSelector((state: RootState) => state.menuType.menuType);
+
   // console.log("menuType", menuType);
 
   const dateNow = new Date().toLocaleDateString();
@@ -77,36 +87,25 @@ function MainHeader(props: any) {
     }
   };
 
-  const [language, setLanguage] = useState<IDropdownOption>({
-    key: "",
-    text: "",
-  });
-
   const handleLanguage = (
     ev?: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
   ): void => {
-    setLanguage(
-      item || {
-        key: "",
-        text: "",
-      }
-    );
-    const oldLanguage = i18n.language;
-    console.log("key=>", item?.key)
-    dispatch(onChangeLanguage(item?.key));
-    let data:any = item?.key || ''
+    // setLanguage(
+    //   item || {
+    //     key: "",
+    //     text: "",
+    //   }
+    // );
+    let data: any = item?.key || "";
+    dispatch(onChangeLanguage(data));
     i18n.changeLanguage(data);
 
-    setTimeout(() => {
-      Utils.reloadLocale(oldLanguage, item?.key);
-      // history.goBack();
-    }, 500);
+    // setTimeout(() => {
+    //   Utils.reloadLocale(oldLanguage, languageSelected);
+    //   // history.goBack();
+    // }, 500);
   };
-
-  const changeLanguage = (event:any) => {
-    i18n.changeLanguage(event.target.value)
-  }
 
   return (
     <header className="topbar" data-navbarbg="skin5">
@@ -167,52 +166,6 @@ function MainHeader(props: any) {
             <div className="main-logo">
               <img src={logo_nuage} />
             </div>
-            {/* <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <span className="d-none d-md-block">
-                  Create New <i className="fa fa-angle-down"></i>
-                </span>
-                <span className="d-block d-md-none">
-                  <i className="fa fa-plus"></i>
-                </span>
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#">
-                  Action
-                </a>
-                <a className="dropdown-item" href="#">
-                  Another action
-                </a>
-                <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#">
-                  Something else here
-                </a>
-              </div>
-            </li>
-            <li className="nav-item search-box">
-              {" "}
-              <a className="nav-link waves-effect waves-dark" href="#">
-                <i className="ti-search"></i>
-              </a>
-              <form className="app-search position-absolute">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search &amp; enter"
-                />{" "}
-                <a className="srh-btn">
-                  <i className="ti-close"></i>
-                </a>
-              </form>
-            </li> */}
           </ul>
 
           <div className="mx-auto text-white-50">
@@ -228,20 +181,18 @@ function MainHeader(props: any) {
             </Text>
           </div>
           <ul className="navbar-nav float-right ml-auto">
-          {/* <div onChange={changeLanguage}>
-      <input type="radio" value="en" name="language" defaultChecked /> English
-      <input type="radio" value="fr" name="language"/> Traditional Chinese
-    </div> */}
             <div>
               <Dropdown
-                options={rolesOption}
+                options={languageOption}
                 onChange={handleLanguage}
-                // selectedKey={
-                //   rolesOption.find((item) => item.text === language)?.key
-                // }
+                placeholder="Select language"
+                selectedKey={
+                  languageOption.find((item) => item.key === selectedLanguage)
+                    ?.key
+                }
                 className="rolesDropDown"
                 styles={dropdownStyles}
-                style={{ marginLeft: "2rem", marginTop: "10px" }}
+                style={{ marginLeft: "2rem", marginTop: "15px" }}
               />
             </div>
             <li className="nav-item dropdown">
@@ -344,14 +295,15 @@ function MainHeader(props: any) {
                 </ul>
               </div>
             </li>
-            <Link
+            <div
+              style={{ marginTop: "13px", cursor: "pointer" }}
               className="link-icons px-2 nav-link"
               onClick={() => {
                 handleLogout();
               }}
             >
               <PowerSettingsNewIcon />
-            </Link>
+            </div>
             <img src={logo_ms} className="ms-logo-center" />
             {/* <li className="nav-item dropdown">
               <a

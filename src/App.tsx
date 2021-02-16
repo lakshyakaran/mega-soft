@@ -114,7 +114,7 @@ function App(props: any) {
   }
 
   return (
-    <Suspense fallback="loading">
+    <Suspense fallback={null}>
       <BrowserRouter>
         {auth.isLoggedIn == true ? (
           <Switch>

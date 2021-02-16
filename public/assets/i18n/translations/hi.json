@@ -1,0 +1,23 @@
+{
+    "ID" : "Id",
+    "Description" : "विवरण",
+    "Review_From" : "से समीक्षा",
+    "Appraisal_To" : "के लिए मूल्यांकन",
+    "Review_Frequency" : "फ्रीक्वेंसी की समीक्षा",
+    "Format_Type" : "प्रारूप प्रकार",
+    "Owner" : "मालिक",
+    "KRA_Settings_Tabs" : "KRA Setting Tabs",
+    "Type" : "प्रकार",
+    "select_a_date" : "एक तारीख चुनें",
+    "select" : "चुनें",
+    "please_enter_description" : "कृपया विवरण दर्ज करें",
+    "please_enter_id" : "कृपया ID दर्ज करें",
+    "please_enter_type" : "कृपया प्रकार दर्ज करें", 
+    "please_enter_date" : "कृपया तारीख दर्ज करें", 
+    "please_enter_owner_name" : "कृपया मालिक का नाम दर्ज करें", 
+    "somthing_went_wrong_please_try_again" : "कृपया पुन: प्रयास करें",
+    "go_back" : "वापस जाओ",
+    "appraisal_successfully_added":"मूल्यांकन सफलतापूर्वक जोड़ा गया",
+    "select_type":"प्रकार चुनें",
+    "select_format_type":"प्रारूप प्रकार चुनें"
+}

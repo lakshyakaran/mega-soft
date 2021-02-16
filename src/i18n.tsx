@@ -6,7 +6,7 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    lng: "en",
+    lng: sessionStorage.getItem("language") || "en",
     backend: {
       /* translation file path */
       loadPath: "/assets/i18n/{{ns}}/{{lng}}.json",
