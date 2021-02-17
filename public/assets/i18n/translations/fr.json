@@ -1,26 +1,50 @@
 {
-    "ID" : "ID",
-    "Description" : "La description",
-    "Review_From" : "Avis de",
-    "Appraisal_To" : "Évaluation à",
-    "Review_Frequency" : "Fréquence des révisions",
-    "Format_Type" : "Type de format",
-    "Owner" : "Propriétaire",
-    "KRA_Settings_Tabs" : "KRA Onglets de paramètres",
-    "Type" : "Type",
-    "select_a_date" : "Sélectionnez une date",
-    "select" : "sélectionner",
-    "please_enter_description" : "Veuillez saisir une description",
-    "please_enter_id" : "Veuillez saisir votre identifiant",
-    "please_enter_type" : "Veuillez saisir type",
-    "please_enter_date" : "Veuillez saisir une date",
-    "please_enter_owner_name" : "Veuillez saisir le nom du propriétaire",
-    "select_type":"Sélectionner le genre",
-    "select_format_type":"\nSélectionnez le type de format",
-    "somthing_went_wrong_please_try_again" : "Quelque chose a mal tourné. Veuillez réessayer.",
-    "go_back" : "Retourner",
-    "appraisal_successfully_added":"\nÉvaluation ajoutée avec succès.",
-    "job_history":"antécédents professionnels",
-    "goals":"objectif",
-    "training_and_development":"plan de formation et de développement"
+  "form": {
+    "ID": "ID",
+    "Description": "La description",
+    "Review_From": "Avis de",
+    "Appraisal_To": "Évaluation à",
+    "Review_Frequency": "Fréquence des révisions",
+    "Format_Type": "Type de format",
+    "Owner": "Propriétaire",
+    "KRA_Settings_Tabs": "KRA Onglets de paramètres",
+    "Type": "Taper",
+    "action": "Action"
+  },
+  "delete_popup": {
+    "heading": "Effacer",
+    "message": "Quelque chose a mal tourné. Veuillez réessayer."
+  },
+  "success_popup": {
+    "heading": "Success",
+    "appraisal_success": "\nÉvaluation ajoutée avec succès.",
+    "jobhistory_success": "L'historique des tâches a bien été ajouté",
+    "goal_success": "Objectif ajouté avec succès."
+  },
+  "buttons": {
+    "go_back": "Retourner",
+    "ok": "d'accord",
+    "add": "Ajouter une évaluation",
+    "cancel": "Annuler a1",
+    "addNew": "Nouvelle évaluation"
+  },
+  "errorMsg": {
+    "please_enter_description": "Veuillez saisir une description",
+    "please_enter_id": "Veuillez saisir votre identifiant",
+    "please_enter_type": "Veuillez saisir type",
+    "please_enter_date": "Veuillez saisir une date",
+    "please_enter_owner_name": "Veuillez saisir le nom du propriétaire"
+  },
+  "placeholder": {
+    "id": "Entrez l'ID",
+    "description": "Entrez la description",
+    "select": "sélectionner",
+    "select_type": "Sélectionner le genre",
+    "select_format_type": "\nSélectionnez le type de format",
+    "select_a_date": "Sélectionnez une date",
+    "owner": "Entrez le nom du propriétaire"
+  },
+  "job_history": "antécédents professionnels",
+  "goals": "objectif",
+  "training_and_development": "plan de formation et de développement"
 }

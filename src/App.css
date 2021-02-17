@@ -2,19 +2,17 @@ body {
   background-color: #f8f7fc;
 }
 
-
 .sidebar {
   position: fixed;
   width: 250px;
-  /* background-color: #344f84; */
-  background-color: #1f262d;
+  background-color: #00597d;
+  /* background-color: #1f262d; */
   height: 100%;
   left: 0;
   top: 0;
   overflow-y: auto;
   /* overflow:auto; */
 }
-
 
 .view {
   padding-top: 18px;
@@ -54,7 +52,6 @@ body {
   padding-bottom: 0px;
   padding-top: 0px;
 }
-
 
 .right-panel {
   width: 450px;
@@ -141,8 +138,6 @@ body {
   z-index: 99;
 }
 
-
-
 .ms-Nav-compositeLink.is-selected.compositeLink-46 {
   background-color: #29416f;
 }
@@ -150,7 +145,6 @@ body {
 .itemLink-109 {
   font-size: 20px;
 }
-
 
 .ms-Breadcrumb-list {
   margin-top: -18px;
@@ -175,7 +169,6 @@ body {
   background-color: #035a7d;
   border: none;
 }
-
 
 .ms-Nav-chevronButton {
   color: #FFF;

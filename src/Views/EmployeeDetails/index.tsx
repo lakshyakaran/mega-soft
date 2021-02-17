@@ -103,7 +103,6 @@ function EmployeeDetails(props: any) {
   const { jobHistory, isLoading, total_count }: any = jobHistoryDataLocal;
   // console.log("jobHistoryDataLocal=>", jobHistory);
 
-  const newRoleType: any = sessionStorage.getItem("roleType");
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
@@ -116,7 +115,7 @@ function EmployeeDetails(props: any) {
       doctype,
       limit_start,
       limit,
-      newRoleType,
+      roleType,
       JSON.stringify(filters)
     ).then((response) => {
       setLoading(true);
@@ -125,7 +124,7 @@ function EmployeeDetails(props: any) {
       setEmployeeData(response.data[0]);
       setLoading(false);
     });
-  }, [doctype, limit_start, limit, newRoleType]);
+  }, [doctype, limit_start, limit, roleType]);
 
   useEffect((): void => {
     const filters = [];
@@ -134,14 +133,14 @@ function EmployeeDetails(props: any) {
     }
     dispatch(
       jobHistoryData(
-        newRoleType,
+        roleType,
         JSON.stringify(filters),
         limitStart,
         limitPageLength,
         orderByJobHistory
       )
     );
-  }, [newRoleType, limitStart, limitPageLength, orderByJobHistory]);
+  }, [roleType, limitStart, limitPageLength, orderByJobHistory]);
   const newJobHistoryData = jobHistory.map((element: any) => {
     const a = {
       ...element,
@@ -1232,7 +1231,7 @@ function EmployeeDetails(props: any) {
     );
   };
 
-  const joiningDate = moment(employeeData.date_of_joining).format("DD-MM-YYYY");
+  // const joiningDate = moment(employeeData.date_of_joining).format("DD-MM-YYYY");
 
   const renderEmployeeDetails = () => {
     return (
@@ -1256,7 +1255,8 @@ function EmployeeDetails(props: any) {
                 <span>Department</span> : {employeeData.department}
               </div>
               <div className="col-md-4">
-                <span>Date of Joining</span> : {joiningDate}
+                <span>Date of Joining</span> :{" "}
+                {moment(employeeData.date_of_joining).format("DD-MM-YYYY")}
               </div>
               <div className="col-md-4">
                 <span>Reporting Officer</span> : {employeeData.manager_name}

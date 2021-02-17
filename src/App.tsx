@@ -30,6 +30,7 @@ import { validateLogin, login } from "./redux/actions/auth";
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
+import roleType from "./redux/reducers/roleType";
 
 const getQueryParms = () => {
   const url = window.location.href;
@@ -92,7 +93,7 @@ function App(props: any) {
     dispatch(validateLogin());
   }, []);
 
-  sessionStorage.setItem("roleType", "Employee");
+  // sessionStorage.setItem("roleType", "Employee");
   // sessionStorage.setItem("menuType", "0");
 
   useEffect(() => {

@@ -9,6 +9,7 @@ i18n
     lng: sessionStorage.getItem("language") || "en",
     backend: {
       /* translation file path */
+      objectNotation: true,
       loadPath: "/assets/i18n/{{ns}}/{{lng}}.json",
     },
     fallbackLng: "en",
@@ -16,7 +17,7 @@ i18n
     /* can have multiple namespace, in case you want to divide a huge translation into smaller pieces and load them on demand */
     ns: ["translations"],
     defaultNS: "translations",
-    keySeparator: false,
+    // keySeparator: false,
     interpolation: {
       escapeValue: false,
       formatSeparator: ",",

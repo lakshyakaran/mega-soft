@@ -130,7 +130,7 @@ function Appraisal(props: any) {
   const columns: IColumn[] = [
     {
       key: "01",
-      name: "ID",
+      name: i18n.t("form.ID"),
       fieldName: "id",
       minWidth: 50,
       maxWidth: 100,
@@ -157,7 +157,7 @@ function Appraisal(props: any) {
     // },
     {
       key: "04",
-      name: "Description",
+      name: i18n.t("form.Description"),
       fieldName: "appraisal_description",
       minWidth: 100,
       maxWidth: 200,
@@ -168,7 +168,7 @@ function Appraisal(props: any) {
     },
     {
       key: "05",
-      name: "Review From",
+      name: i18n.t("form.Review_From"),
       fieldName: "review_from",
       minWidth: 50,
       maxWidth: 120,
@@ -178,7 +178,7 @@ function Appraisal(props: any) {
     },
     {
       key: "08",
-      name: "Appraisal To",
+      name: i18n.t("form.Appraisal_To"),
       fieldName: "appraisal_to",
       minWidth: 50,
       maxWidth: 120,
@@ -188,7 +188,7 @@ function Appraisal(props: any) {
     },
     {
       key: "06",
-      name: "Appraisal Type",
+      name: i18n.t("form.Type"),
       fieldName: "type",
       minWidth: 50,
       maxWidth: 160,
@@ -198,7 +198,7 @@ function Appraisal(props: any) {
     },
     {
       key: "07",
-      name: "Format Type",
+      name: i18n.t("form.Format_Type"),
       fieldName: "format_type",
       minWidth: 50,
       maxWidth: 160,
@@ -208,7 +208,7 @@ function Appraisal(props: any) {
     },
     {
       key: "09",
-      name: "Review Frequency",
+      name: i18n.t("form.Review_Frequency"),
       fieldName: "review_frequency",
       minWidth: 50,
       maxWidth: 160,
@@ -218,7 +218,7 @@ function Appraisal(props: any) {
     },
     {
       key: "02",
-      name: "Action",
+      name: i18n.t("form.action"),
       fieldName: "action",
       minWidth: 110,
       maxWidth: 110,
@@ -615,22 +615,22 @@ function Appraisal(props: any) {
         <div className="card advance-search-section">
           <div className="searchBarClass">
             <TextField
-              label={t("ID")}
+              label={t("form.ID")}
               onChange={itemSearch}
-              placeholder={t("ID")}
+              placeholder={t("placeholder.id")}
               className="searchInput"
               styles={controlStyles}
             />
             <TextField
-              placeholder={t("Description")}
-              label={t("Description")}
+              placeholder={t("placeholder.description")}
+              label={t("form.Description")}
               className="searchInput"
               onChange={itemSearchDescription}
               styles={controlStyles}
             />
             <Dropdown
-              label={t("Review_Frequency")}
-              placeholder={t("select")}
+              label={t("form.Review_Frequency")}
+              placeholder={t("placeholder.select")}
               options={searchOptions}
               className="reviewFrequency"
               onChange={itemSearchReview}
@@ -657,7 +657,7 @@ function Appraisal(props: any) {
               }}
             />
             <PrimaryButton
-              text="New Appraisal"
+              text={t("buttons.addNew")}
               iconProps={{ iconName: "Add" }}
               allowDisabledFocus
               onClick={() => {
@@ -679,8 +679,8 @@ function Appraisal(props: any) {
           >
             <Dropdown
               // label="Appraisal Type"
-              label={t("Appraisal_To")}
-              placeholder={t("select")}
+              label={t("form.Appraisal_To")}
+              placeholder={t("placeholder.select")}
               options={searchAppraisal}
               className="reviewFrequency"
               onChange={itemSearchAppraisal}
@@ -688,8 +688,8 @@ function Appraisal(props: any) {
               styles={dropdownStyles}
             />
             <Dropdown
-              label={t("Review_From")}
-              placeholder={t("select")}
+              label={t("form.Review_From")}
+              placeholder={t("placeholder.select")}
               options={searchFormatType}
               className="reviewFrequency"
               onChange={itemSearchFormatType}

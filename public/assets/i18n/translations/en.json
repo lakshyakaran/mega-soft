@@ -1,26 +1,50 @@
 {
-    "ID" : "ID",
-    "Description" : "Description",
-    "Review_From" : "Review From",
-    "Appraisal_To" : "Appraisal To",
-    "Review_Frequency" : "Review Frequency",
-    "Format_Type" : "Format Type",
-    "Owner" : "Owner",
-    "KRA_Settings_Tabs" : "KRA Settings Tabs",
-    "Type" : "Type",
-    "select_a_date" : "Select a date",
-    "select" : "select",
-    "please_enter_description" : "Please enter description",
-    "please_enter_id" : "Please enter ID",
-    "please_enter_type" : "Please enter description", 
-    "please_enter_date" : "Please enter date", 
-    "please_enter_owner_name" : "Please enter owner name", 
-    "select_type":"Select type",
-    "select_format_type":"Select format type",
-    "somthing_went_wrong_please_try_again" : "Somthing went wrong. Please try again.",
-    "go_back" : "Go back",
-    "appraisal_successfully_added":"Appraisal successfully added.",
-    "job_history":"Job History",
-    "goals":"Goals",
-    "training_and_development":"Training/ Development Plan"
+  "form": {
+    "ID": "ID",
+    "Description": "Description",
+    "Review_From": "Review From",
+    "Appraisal_To": "Appraisal To",
+    "Review_Frequency": "Review Frequency",
+    "Format_Type": "Format Type",
+    "Owner": "Owner",
+    "KRA_Settings_Tabs": "KRA Settings Tabs",
+    "Type": "Type",
+    "action": "Action"
+  },
+  "delete_popup": {
+    "heading": "Delete",
+    "message": "Somthing went wrong. Please try again."
+  },
+  "success_popup": {
+    "heading": "Success",
+    "appraisal_success": "Appraisal successfully added.",
+    "jobhistory_success": "Job History successfully added.",
+    "goal_success": "Goal successfully added."
+  },
+  "buttons": {
+    "go_back": "Go back",
+    "add": "Add Appraisal",
+    "ok": "Ok",
+    "cancel": "Cancel button",
+    "addNew": "New Appraisal"
+  },
+  "errorMsg": {
+    "please_enter_description": "Please enter description",
+    "please_enter_id": "Please enter ID",
+    "please_enter_type": "Please enter description",
+    "please_enter_date": "Please enter date",
+    "please_enter_owner_name": "Please enter owner name"
+  },
+  "placeholder": {
+    "id": "Enter ID",
+    "description": "Enter Description",
+    "select": "select",
+    "select_type": "Select type",
+    "select_format_type": "Select format type",
+    "select_a_date": "Select a date",
+    "owner": "Enter owner name"
+  },
+  "job_history": "Job History",
+  "goals": "Goals",
+  "training_and_development": "Training/ Development Plan"
 }

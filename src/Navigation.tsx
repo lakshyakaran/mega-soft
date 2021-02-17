@@ -246,7 +246,7 @@ function Navigation() {
   }, [history.location.pathname]);
   return (
     <div id="main-wrapper">
-      <MainHeader />
+      {/* <MainHeader /> */}
       <div className="sidebar left-sidebar">
         {/* <div className="main-logo">
           <img src={logo_nuage} />

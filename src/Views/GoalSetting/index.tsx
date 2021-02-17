@@ -43,17 +43,16 @@ function GoalSetting(props: any) {
     if (filterByStatus) {
       filters.push(["status", "like", filterByStatus]);
     }
-    const newRoleType = sessionStorage.getItem("roleType");
     dispatch(
       fetchEmployeeData(
         doctype,
         limit_start,
         limit,
-        newRoleType,
+        roleType,
         JSON.stringify(filters)
       )
     );
-  }, [doctype, limit_start, limit, filterByStatus]);
+  }, [doctype, limit_start, limit, filterByStatus, roleType]);
 
   const [status, setStatus] = useState<IDropdownOption>({
     key: "",

@@ -28,7 +28,8 @@ import { changeLanguge, onChangeLanguage } from "../redux/actions/application";
 
 import i18n from "../i18n";
 
-function MainHeader(props: any) {
+function MainHeader(props: { children: any }) {
+  const { children } = props;
   initializeIcons();
   const languageOption: IDropdownOption[] = [
     { key: "en", text: "English", data: { icon: "AADLogo" } },
@@ -54,7 +55,6 @@ function MainHeader(props: any) {
   const selectedLanguage = useSelector(
     (state: RootState) => state.application.language
   );
-  console.log("selectedLanguage=>", selectedLanguage);
 
   const handleLogout = () => {
     window.open("http://52.146.0.154/api/method/logout", "_self");
@@ -69,13 +69,14 @@ function MainHeader(props: any) {
   const history = useHistory();
 
   const menuType = useSelector((state: RootState) => state.menuType.menuType);
+  const userData = useSelector((state: RootState) => state.userData.UserData);
 
-  // console.log("menuType", menuType);
+  // console.log("userData", userData);
 
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
+  // const userName = props.userData.UserData[0].name;
+  // const userId = props.userData.UserData[0].id;
 
   const renderMenuLogo = () => {
     if (menuType == 0) {
@@ -160,7 +161,8 @@ function MainHeader(props: any) {
                 data-sidebartype="mini-sidebar"
                 // onClick={handleCustomSidebar}
               >
-                <i className="mdi mdi-chevron-left font-24"></i>
+                {/* <i className="mdi mdi-chevron-left font-24"></i> */}
+                {children}
               </a>
             </li>
             <div className="main-logo">
@@ -170,7 +172,7 @@ function MainHeader(props: any) {
 
           <div className="mx-auto text-white-50">
             <Text style={{ marginRight: "10px" }}>
-              Welcome {userName} ({userId})
+              Welcome {userData[0].name} ({userData[0].id})
             </Text>
 
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
