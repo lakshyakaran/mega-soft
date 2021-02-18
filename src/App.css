@@ -1,5 +1,3 @@
-
-
 body {
   background-color: #f8f7fc;
 }
@@ -19,6 +17,11 @@ body {
 .view {
   padding-top: 18px;
   padding-left: 250px;
+}
+
+.miniSideBar {
+  padding-top: 18px;
+  padding-left: 100px;
 }
 
 #main-wrapper[data-sidebartype=mini-sidebar]~.view {
@@ -296,3 +299,34 @@ body {
 /* .ms-DetailsRow-cell {
   padding-bottom: 0px;
 } */
+
+.pro-sidebar .pro-sidebar-layout button {
+  background: none;
+  border: none;
+  text-align: left;
+  color: #fff;
+  font-size: 1rem;
+  padding-left: 1rem;
+  cursor: pointer;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
+.pro-sidebar .pro-sidebar-layout button:hover {
+  background: rgba(255, 255, 255, .1);
+}
+
+.pro-sidebar .pro-sidebar-layout button:focus {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.pro-sidebar .pro-sidebar-layout .pro-sidebar-header {
+  margin-bottom: 1rem;
+}
+
+.pro-sidebar.collapsed {
+  width: 100px;
+  min-width: 100px;
+}

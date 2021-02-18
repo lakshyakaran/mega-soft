@@ -66,8 +66,8 @@ export const fetchAppraisalData = (
         Authorization: accessToken,
       },
     });
-    const responseBody = await response.data;
-    // console.log("api response =>", responseBody);
+    const responseBody = response.data;
+    console.log("Appraisal api response =>", responseBody);
     dispatch({
       type: "FETCH_APPRAISAL_LIST_SUCCESS",
       payload: responseBody,
@@ -208,6 +208,37 @@ export const delete_appraisal = async (data: any) => {
     console.log("delete api response ==>", response);
     return await response;
   } catch (error) {
+    return {
+      ...error,
+    };
+  }
+};
+
+export const filterByEmployee = async (order_by = "employee_name asc") => {
+  try {
+    const token = sessionStorage.getItem("access_token");
+    if (token === null) {
+      return false;
+    }
+    const accessToken = "bearer " + token;
+    const response = await axios({
+      url: `http://52.146.0.154/api/resource/Employee`,
+      params: {
+        order_by,
+        fields: JSON.stringify(["employee_id", "employee_name"]),
+      },
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: accessToken,
+      },
+    });
+    // console.log("Api filter by employee==>", response);
+    const responseBody = response.data;
+    return responseBody;
+  } catch (error) {
+    // console.log("error in getting data", error);
     return {
       ...error,
     };

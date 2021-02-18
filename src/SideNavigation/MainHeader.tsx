@@ -111,7 +111,7 @@ function MainHeader(props: { children: any }) {
   return (
     <header className="topbar" data-navbarbg="skin5">
       <nav className="navbar top-navbar navbar-expand-md navbar-dark">
-        <div className="navbar-header" data-logobg="skin5">
+        {/* <div className="navbar-header" data-logobg="skin5">
           <a
             className="nav-toggler waves-effect waves-light d-block d-md-none"
             href="#"
@@ -130,11 +130,7 @@ function MainHeader(props: { children: any }) {
               <img src={logo_icon} alt="homepage" className="light-logo" />
             </b>
             {renderMenuLogo()}
-            {/* {menuType !== 0 ? (
-              <span className="logo-text">
-                <img src={logo_text} alt="homepage" className="light-logo" />
-              </span>
-            ) : null} */}
+          
           </a>
           <a
             className="topbartoggler d-block d-md-none waves-effect waves-light"
@@ -147,7 +143,7 @@ function MainHeader(props: { children: any }) {
           >
             <i className="ti-more"></i>
           </a>
-        </div>
+        </div> */}
         <div
           className="navbar-collapse collapse"
           id="navbarSupportedContent"
@@ -177,7 +173,7 @@ function MainHeader(props: { children: any }) {
             </Text>
 
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-              Logged In:
+              {i18n.t("main_header.logged_in")} :
             </Text>
             <Text style={{ marginRight: "5px" }}>
               {moment(dateNow).format("DD-MM-YYYY")} {timeNow}

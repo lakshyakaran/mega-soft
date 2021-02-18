@@ -1,9 +1,11 @@
 interface type {
   roleType: any;
+  menuItem: any;
 }
 
 const initialState: type = {
-  roleType: window.sessionStorage.getItem('roleType') || "Employee",
+  roleType: window.sessionStorage.getItem("roleType") || "Employee",
+  menuItem: window.sessionStorage.getItem("menuItem") || false,
 };
 
 export default function roleType(
@@ -15,6 +17,13 @@ export default function roleType(
       return {
         ...state,
         roleType: action.payload,
+      };
+    }
+
+    case "HANDLE_MENU": {
+      return {
+        ...state,
+        menuItem: action.payload,
       };
     }
     default:

@@ -43,6 +43,8 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { Pagination } from "@uifabric/experiments";
 import jobHistory from "../../redux/reducers/jobHistory";
 import JobHistoryDetails from "../JobHistoryDetails";
+import { setCollapedMenu } from "../../redux/actions/roleType";
+import MenuIcon from "@material-ui/icons/Menu";
 import {
   fetchGoalData,
   fetchGoalDataName,
@@ -54,6 +56,7 @@ import {
 } from "../../redux/actions/developmentPlan";
 import "./style.css";
 import moment from "moment";
+import MainHeader from "../../SideNavigation/MainHeader";
 
 interface ParamTypes {
   employeeId: string;
@@ -1390,6 +1393,15 @@ function EmployeeDetails(props: any) {
     );
   };
 
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
+  const handlemenuClick = () => {
+    if (selectMenu === false) {
+      dispatch(setCollapedMenu(true));
+    } else {
+      dispatch(setCollapedMenu(false));
+    }
+  };
+
   return (
     <div className="view">
       {/* <WelcomeHeader>
@@ -1420,6 +1432,11 @@ function EmployeeDetails(props: any) {
           </div>
         </div>
       </WelcomeHeader> */}
+      <MainHeader>
+        <div onClick={handlemenuClick}>
+          <MenuIcon style={{ color: "#FFF" }} />
+        </div>
+      </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">

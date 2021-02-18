@@ -50,7 +50,10 @@ import {
 import { useHistory, useParams } from "react-router-dom";
 import { delete_appraisal } from "../../redux/actions/apprisal";
 import moment from "moment";
+import MenuIcon from "@material-ui/icons/Menu";
 import { useTranslation } from "react-i18next";
+import MainHeader from "../../SideNavigation/MainHeader";
+import { setCollapedMenu } from "../../redux/actions/roleType";
 // import { roleType } from "../../redux/actions/roleType";
 
 interface ParamTypes {
@@ -281,6 +284,7 @@ function Appraisal(props: any) {
 
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [updateData, setUpdateData]: any = useState({});
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
 
   const deleteAppraisal = (item: any) => {
     setDeleteItemId(item.id);
@@ -856,9 +860,19 @@ function Appraisal(props: any) {
     );
   };
 
+  const [collapsedMenu, setCollapsedMenu] = useState(false);
+
+  const handlemenuClick = () => {
+    if (selectMenu === false) {
+      dispatch(setCollapedMenu(true));
+    } else {
+      dispatch(setCollapedMenu(false));
+    }
+  };
+
   // console.log("data=>", appraisal);
   return (
-    <div className="view">
+    <div className={selectMenu == false ? `view` : `miniSideBar`}>
       {/* <WelcomeHeader>
         <div
           style={{
@@ -888,6 +902,11 @@ function Appraisal(props: any) {
           </div>
         </div>
       </WelcomeHeader> */}
+      <MainHeader>
+        <div onClick={handlemenuClick}>
+          <MenuIcon style={{ color: "#FFF" }} />
+        </div>
+      </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderData()}</div>

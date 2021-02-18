@@ -13,3 +13,11 @@ export const setMenuType = (item: any) => {
     payload: item,
   };
 };
+
+export const setCollapedMenu = (item: any) => {
+  window.sessionStorage.setItem("menuItem", item);
+  return {
+    type: "HANDLE_MENU",
+    payload: item,
+  };
+};

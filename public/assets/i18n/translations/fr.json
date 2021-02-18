@@ -45,6 +45,8 @@
     "owner": "Entrez le nom du propriétaire"
   },
   "sidebar_menu":{
+    "employee": "Employée",
+    "manager": "Directrice",
     "appraisal": "Évaluation",
     "setup":"Installer",
     "goal_setting":"Paramètres d'objectif",
@@ -65,6 +67,13 @@
   "main_header":{
     "welcome":"Bienvenue",
     "logged_in": "Connecté"
+  },
+   "goal_setting":{
+    "employee_id": "ID d'employé",
+    "employee_name": "Nom de l'employé",
+    "manager_name": "Nom du responsable",
+    "status": "Statut",
+    "appraisal_type": "Type d'évaluation"
   },
   "job_history": "antécédents professionnels",
   "goals": "objectif",

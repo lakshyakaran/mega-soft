@@ -45,6 +45,8 @@
     "owner": "Enter owner name"
   },
   "sidebar_menu":{
+    "employee": "Employee",
+    "manager": "Manager",
     "appraisal": "Appraisal",
     "setup":"Setup",
     "goal_setting":"Goal Setting",
@@ -65,6 +67,13 @@
   "main_header":{
     "welcome":"Welcome",
     "logged_in": "Logged In"
+  },
+  "goal_setting":{
+    "employee_id": "Employee ID",
+    "employee_name": "Employee Name",
+    "manager_name": "Manager Name",
+    "status": "Status",
+    "appraisal_type": "Appraisal Type"
   },
   "job_history": "Job History",
   "goals": "Goals",

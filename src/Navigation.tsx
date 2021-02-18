@@ -195,6 +195,7 @@ function Navigation() {
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const [navData, setNavData]: any = useState();
   // console.log("navData?????=>", navData);
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
 
   const navigation = useSelector(
     (state: RootState) => state.navigationData.navigationData
@@ -247,7 +248,13 @@ function Navigation() {
   return (
     <div id="main-wrapper">
       {/* <MainHeader /> */}
-      <div className="sidebar left-sidebar">
+      <div
+        className={
+          selectMenu === false
+            ? `sidebar left-sidebar`
+            : `sidebar left-sidebar-collapsed`
+        }
+      >
         {/* <div className="main-logo">
           <img src={logo_nuage} />
         </div> */}

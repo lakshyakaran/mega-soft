@@ -1,29 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import Header from "../../Header";
 import {
+  ComboBox,
   DetailsList,
   Dropdown,
   IBreadcrumbItem,
   IBreadcrumbStyles,
   IColumn,
+  IComboBox,
+  IComboBoxOption,
   IDetailsListStyles,
   IDropdownOption,
   IDropdownStyles,
+  ITag,
+  Label,
   PrimaryButton,
   Spinner,
   SpinnerSize,
+  TagPicker,
   Text,
 } from "office-ui-fabric-react";
 import { useHistory } from "react-router-dom";
 import { fetchEmployeeData } from "../../redux/actions/employeeData";
 import { RootState } from "../../redux/reducers";
 import { Pagination } from "@uifabric/experiments";
+import { useTranslation } from "react-i18next/";
+import { filterByEmployee } from "../../redux/actions/apprisal";
+import MainHeader from "../../SideNavigation/MainHeader";
+import { setCollapedMenu } from "../../redux/actions/roleType";
+import MenuIcon from "@material-ui/icons/Menu";
 
 function GoalSetting(props: any) {
   const dispatch = useDispatch();
-
+  const { t, i18n } = useTranslation();
   const [doctype, setDoctype] = useState("EmployeeAppraisal");
   const [limit_start, setLimitStart] = useState(0);
   const [limit, setLimit] = useState(10);
@@ -32,16 +43,49 @@ function GoalSetting(props: any) {
   const [limitPageLength, setLimitPageLength] = useState(3);
   const [limitStart, setLimitSTart] = useState(0);
   const [filterByStatus, setFilterByStatus] = useState("");
+  const [filterByName, setFilterByName] = useState("");
+  const [order_by] = useState("employee_name asc");
 
   const employee = useSelector((state: RootState): any => state.employeeList);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   // console.log("roleTYpe==>", roleType)
   const { employeeList, isLoading, total_count, count } = employee;
+  const comboBoxRef = useRef<IComboBox>(null);
+  const [filterOption, setFilterOption] = useState([]);
+
+  useEffect((): void => {
+    filterByEmployee(order_by).then((response) => {
+      // console.log("response of employee=>", response.data);
+      setFilterOption(response.data);
+    });
+  }, []);
+
+  const comboBoxBasicOptions: IComboBoxOption[] = filterOption.map(
+    (element: any) => ({
+      key: element.employee_id,
+      text: element.employee_name,
+    })
+  );
+
+  const [searchByName, setSearchByName]: any = useState("");
+
+  const handleEmployeeName = (
+    event: React.FormEvent<IComboBox>,
+    option?: IComboBoxOption,
+    index?: number,
+    value?: string
+  ) => {
+    // console.log("option.key", option?.key);
+    setSearchByName(option?.key || "");
+  };
 
   useEffect((): void => {
     const filters = [];
     if (filterByStatus) {
       filters.push(["status", "like", filterByStatus]);
+    }
+    if (filterByName) {
+      filters.push(["employee_id", "like", filterByName]);
     }
     dispatch(
       fetchEmployeeData(
@@ -52,7 +96,7 @@ function GoalSetting(props: any) {
         JSON.stringify(filters)
       )
     );
-  }, [doctype, limit_start, limit, filterByStatus, roleType]);
+  }, [doctype, limit_start, limit, filterByStatus, roleType, filterByName]);
 
   const [status, setStatus] = useState<IDropdownOption>({
     key: "",
@@ -150,7 +194,7 @@ function GoalSetting(props: any) {
 
     {
       key: "03",
-      name: "Employee ID",
+      name: i18n.t("goal_setting.employee_id"),
       fieldName: "employee_id",
       minWidth: 50,
       maxWidth: 90,
@@ -160,7 +204,7 @@ function GoalSetting(props: any) {
     },
     {
       key: "04",
-      name: "Employee Name",
+      name: i18n.t("goal_setting.employee_name"),
       fieldName: "employee_name",
       minWidth: 50,
       maxWidth: 120,
@@ -180,17 +224,17 @@ function GoalSetting(props: any) {
     // },
     {
       key: "06",
-      name: "Manager Name",
+      name: i18n.t("goal_setting.manager_name"),
       fieldName: "manager_name",
       minWidth: 50,
-      maxWidth: 100,
+      maxWidth: 140,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,
     },
     {
       key: "07",
-      name: "Status",
+      name: i18n.t("goal_setting.status"),
       fieldName: "status",
       minWidth: 50,
       maxWidth: 170,
@@ -200,7 +244,7 @@ function GoalSetting(props: any) {
     },
     {
       key: "08",
-      name: "Appraisal Type",
+      name: i18n.t("goal_setting.appraisal_type"),
       fieldName: "appraisal_type",
       minWidth: 50,
       maxWidth: 260,
@@ -219,6 +263,7 @@ function GoalSetting(props: any) {
 
   const handleSearch = () => {
     setFilterByStatus(`${status?.key || ""}`);
+    setFilterByName(`${searchByName || ""}`);
   };
 
   const onChangeStatus = (
@@ -238,15 +283,20 @@ function GoalSetting(props: any) {
   };
 
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: "Performance", key: "d1" },
+    { text: i18n.t("breadcrumb_itmes.performance"), key: "d1" },
     {
-      text: "Appraisal",
+      text: i18n.t("breadcrumb_itmes.appraisal"),
       key: "d2",
       as: "h4",
       onClick: _onBreadcrumbItemClicked,
     },
     // { text: "Employee", key: "d3", as: "h4" },
-    { text: "Goal Setting", key: "d4", isCurrentItem: true, as: "h4" },
+    {
+      text: i18n.t("breadcrumb_itmes.goal_setting"),
+      key: "d4",
+      isCurrentItem: true,
+      as: "h4",
+    },
   ];
 
   const renderNoData = () => {
@@ -273,9 +323,22 @@ function GoalSetting(props: any) {
       </div>
     );
   };
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
+  const handlemenuClick = () => {
+    if (selectMenu === false) {
+      dispatch(setCollapedMenu(true));
+    } else {
+      dispatch(setCollapedMenu(false));
+    }
+  };
 
   return (
     <div className="view">
+      <MainHeader>
+        <div onClick={handlemenuClick}>
+          <MenuIcon style={{ color: "#FFF" }} />
+        </div>
+      </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">
@@ -287,7 +350,7 @@ function GoalSetting(props: any) {
               }}
             >
               <Dropdown
-                label="Status"
+                label={i18n.t("goal_setting.status")}
                 placeholder="Select"
                 options={statusOption}
                 className="reviewFrequency"
@@ -295,15 +358,20 @@ function GoalSetting(props: any) {
                 style={{ padding: "0px" }}
                 styles={dropdownStyles}
               />
-              <Dropdown
-                label="Status"
-                placeholder="Select"
-                options={statusOption}
-                className="reviewFrequency"
-                onChange={onChangeStatus}
-                style={{ padding: "0px", marginLeft: "10px" }}
-                styles={dropdownStyles}
-              />
+              {roleType === "Manager" ? (
+                <ComboBox
+                  // componentRef={comboBoxRef}
+                  defaultSelectedKey="C"
+                  className="reviewFrequency"
+                  placeholder="Enter Employee Name"
+                  label="Employee Name"
+                  onChange={handleEmployeeName}
+                  allowFreeform
+                  style={{ marginLeft: "10px" }}
+                  autoComplete="on"
+                  options={comboBoxBasicOptions}
+                />
+              ) : null}
               <PrimaryButton
                 iconProps={{ iconName: "Search" }}
                 style={{

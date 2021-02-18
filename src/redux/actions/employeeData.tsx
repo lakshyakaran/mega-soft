@@ -33,7 +33,7 @@ export const fetchEmployeeData = (
         Authorization: accessToken,
       },
     });
-    // console.log("fetch employeee api response =>", response.data);
+    // console.log("fetch employeee api response =>", response.data.message);
     const responseBody = await response.data.message;
     dispatch({
       type: "FETCH_EMPLOYEE_LIST_SUCCESS",
