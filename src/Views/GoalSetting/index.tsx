@@ -333,7 +333,7 @@ function GoalSetting(props: any) {
   };
 
   return (
-    <div className="view">
+    <div className={selectMenu == false ? `view` : `miniSideBar`}>
       <MainHeader>
         <div onClick={handlemenuClick}>
           <MenuIcon style={{ color: "#FFF" }} />
@@ -360,8 +360,7 @@ function GoalSetting(props: any) {
               />
               {roleType === "Manager" ? (
                 <ComboBox
-                  // componentRef={comboBoxRef}
-                  defaultSelectedKey="C"
+                  componentRef={comboBoxRef}
                   className="reviewFrequency"
                   placeholder="Enter Employee Name"
                   label="Employee Name"

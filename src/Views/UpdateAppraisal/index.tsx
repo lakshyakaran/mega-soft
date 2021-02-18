@@ -32,11 +32,16 @@ import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
 
+import MainHeader from "../../SideNavigation/MainHeader";
+import MenuIcon from "@material-ui/icons/Menu";
+import { setCollapedMenu } from "../../redux/actions/roleType";
+
 import "./style.css";
 import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { edit_appraisal } from "../../redux/actions/apprisal";
 import { fetchAppraisalDataById } from "../../redux/actions/apprisal";
+import { RootState } from "../../redux/reducers";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -638,37 +643,51 @@ function UpdateAppraisal(props: any) {
     );
   };
 
+  const dispatch = useDispatch()
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
+  const handlemenuClick = () => {
+    if (selectMenu === false) {
+      dispatch(setCollapedMenu(true));
+    } else {
+      dispatch(setCollapedMenu(false));
+    }
+  };
+
   return (
-    <div className="view">
-      {/* <WelcomeHeader>
+    <div className={selectMenu == false ? `view` : `miniSideBar`}>
+    {/* <WelcomeHeader>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            padding: "10px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px",
-            }}
-          >
-            <Text style={{ marginRight: "10px" }}>
-              Welcome {userName} ({userId})
-            </Text>
-            
-            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-              Logged In:
-            </Text>
-            <Text style={{ marginRight: "5px" }}>
-              {dateNow} {timeNow}
-            </Text>
-          </div>
+          <Text style={{ marginRight: "10px" }}>
+            Welcome {userName} ({userId})
+          </Text>
+          <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
+            Logged In:
+          </Text>
+          <Text style={{ marginRight: "5px" }}>
+            {dateNow} {timeNow}
+          </Text>
         </div>
-      </WelcomeHeader> */}
+      </div>
+    </WelcomeHeader> */}
+    <MainHeader>
+      <div onClick={handlemenuClick}>
+        <MenuIcon style={{ color: "#FFF" }} />
+      </div>
+    </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderUpdateForm()}</div>

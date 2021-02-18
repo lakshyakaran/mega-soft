@@ -775,7 +775,7 @@ function Appraisal(props: any) {
             // containerClassName={contentStyles.container}
           >
             <div className="modal-header">
-              <div className="modal-title">Delete</div>
+              <div className="modal-title">{t("delete_popup.heading")}</div>
               <IconButton
                 styles={iconButtonStyles}
                 iconProps={cancelIcon}
@@ -786,7 +786,7 @@ function Appraisal(props: any) {
               />
             </div>
             <div className="modal-content-success">
-              Are you sure you want to delete this item?
+            {t("delete_popup.pop_up")}
             </div>
             <div
               style={{
@@ -796,14 +796,14 @@ function Appraisal(props: any) {
               }}
             >
               <PrimaryButton
-                text="Delete"
+                text={t("delete_popup.heading")}
                 allowDisabledFocus
                 onClick={handleDeleteAppraisal}
                 disabled={false}
                 checked={false}
               />
               <PrimaryButton
-                text="Cancel"
+                text={t("buttons.cancel")}
                 allowDisabledFocus
                 onClick={() => {
                   setShowDelete(false);

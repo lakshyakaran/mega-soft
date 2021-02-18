@@ -16,13 +16,18 @@ import {
   TextField,
 } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import WelcomeHeader from "../../components/WelcomeHeader";
 import { fetchAppraisalDataById } from "../../redux/actions/apprisal";
 import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
+import MainHeader from "../../SideNavigation/MainHeader";
+import MenuIcon from "@material-ui/icons/Menu";
+import { setCollapedMenu } from "../../redux/actions/roleType";
+import { RootState } from "../../redux/reducers";
+import { useTranslation } from "react-i18next/";
 
 interface ParamTypes {
   appraisalId: string;
@@ -32,6 +37,8 @@ const stackTokens = { childrenGap: 10 };
 
 function AppraisalDetail(props: any) {
   const params = useParams<ParamTypes>();
+
+  const { t, i18n } = useTranslation();
 
   const [limitStart] = useState(0);
   const [limitPageLength] = useState(5);
@@ -71,15 +78,15 @@ function AppraisalDetail(props: any) {
     history.push("/home");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: "Performance", key: "d1" },
+    { text: i18n.t("breadcrumb_itmes.performance"), key: "d1" },
     {
-      text: "Appraisal",
+      text: i18n.t("breadcrumb_itmes.appraisal"),
       key: "d2",
       isCurrentItem: true,
       as: "h4",
       onClick: _onBreadcrumbItemClicked,
     },
-    { text: "Appraisal Details", key: "d3", as: "h4" },
+    { text: i18n.t("breadcrumb_itmes.appraisal_details"), key: "d3", as: "h4" },
   ];
 
   const reviewDate = moment(appraisalDetail.review_from).format("DD-MM-YYYY");
@@ -92,30 +99,30 @@ function AppraisalDetail(props: any) {
           <div className="emp-details-section">
             <div className="row">
               <div className="col-md-4">
-                <span>ID</span> : {appraisalDetail.id}
+                <span>{i18n.t("form.ID")}</span> : {appraisalDetail.id}
               </div>
               <div className="col-md-8">
-                <span>Description</span> :{" "}
+                <span>{i18n.t("form.Description")}</span> :{" "}
                 {appraisalDetail.appraisal_description}
               </div>
               <div className="col-md-4">
-                <span>Review From</span> : {reviewDate}
+              <span>{i18n.t("form.Review_From")}</span> :{" "} : {reviewDate}
               </div>
               <div className="col-md-8">
-                <span>Appraisal To</span> : {appraisalTo}
+              <span>{i18n.t("form.Appraisal_To")}</span> :{" "} : {appraisalTo}
               </div>
               <div className="col-md-4">
-                <span>Review Frequency</span> :{" "}
+              <span>{i18n.t("form.Review_Frequency")}</span> :{" "}
                 {appraisalDetail.review_frequency}
               </div>
               <div className="col-md-8">
-                <span>Type</span> : {appraisalDetail.type}
+              <span>{i18n.t("form.Type")}</span> :{" "} : {appraisalDetail.type}
               </div>
               <div className="col-md-4">
-                <span>Format Type</span> : {appraisalDetail.format_type}
+              <span>{i18n.t("form.Format_Type")}</span> :{" "}: {appraisalDetail.format_type}
               </div>
               <div className="col-md-8">
-                <span>Owner</span> : {appraisalDetail.appraisal_owner}
+              <span>{i18n.t("form.Owner")}</span> :{" "} : {appraisalDetail.appraisal_owner}
               </div>
               {/* <div className="col-md-4">
                 <span>Counter signing</span> :{" "}
@@ -126,7 +133,7 @@ function AppraisalDetail(props: any) {
           <Separator />
           <div className="rowCheckBox">
             <div>
-              <Label>KRA/ Goal </Label>
+              <Label>{i18n.t("form.KRA_Settings_Tabs")}</Label>
               <Checkbox
                 disabled={true}
                 label={"Job History"}
@@ -192,37 +199,52 @@ function AppraisalDetail(props: any) {
     );
   };
 
+  const dispatch = useDispatch()
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
+  const handlemenuClick = () => {
+    if (selectMenu === false) {
+      dispatch(setCollapedMenu(true));
+    } else {
+      dispatch(setCollapedMenu(false));
+    }
+  };
+
+
   return (
-    <div className="view">
-      {/* <WelcomeHeader>
+    <div className={selectMenu == false ? `view` : `miniSideBar`}>
+    {/* <WelcomeHeader>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            padding: "10px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px",
-            }}
-          >
-            <Text style={{ marginRight: "10px" }}>
-              Welcome {userName} ({userId})
-            </Text>
-            
-            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-              Logged In:
-            </Text>
-            <Text style={{ marginRight: "5px" }}>
-              {dateNow} {timeNow}
-            </Text>
-          </div>
+          <Text style={{ marginRight: "10px" }}>
+            Welcome {userName} ({userId})
+          </Text>
+          <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
+            Logged In:
+          </Text>
+          <Text style={{ marginRight: "5px" }}>
+            {dateNow} {timeNow}
+          </Text>
         </div>
-      </WelcomeHeader> */}
+      </div>
+    </WelcomeHeader> */}
+    <MainHeader>
+      <div onClick={handlemenuClick}>
+        <MenuIcon style={{ color: "#FFF" }} />
+      </div>
+    </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderData()} </div>

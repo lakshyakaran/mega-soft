@@ -29,6 +29,9 @@ import {
 } from "office-ui-fabric-react";
 import moment from "moment";
 import { add_goals, fetchGoalData } from "../../redux/actions/goal";
+import MainHeader from "../../SideNavigation/MainHeader";
+import MenuIcon from "@material-ui/icons/Menu";
+import { setCollapedMenu } from "../../redux/actions/roleType";
 
 interface ParamTypes {
   employeeId: string;
@@ -477,8 +480,18 @@ function AddGoals(props: any) {
     );
   };
 
+  const dispatch = useDispatch()
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
+  const handlemenuClick = () => {
+    if (selectMenu === false) {
+      dispatch(setCollapedMenu(true));
+    } else {
+      dispatch(setCollapedMenu(false));
+    }
+  };
+
   return (
-    <div className="view">
+    <div className={selectMenu == false ? `view` : `miniSideBar`}>
       {/* <WelcomeHeader>
         <div
           style={{
@@ -507,6 +520,11 @@ function AddGoals(props: any) {
           </div>
         </div>
       </WelcomeHeader> */}
+      <MainHeader>
+        <div onClick={handlemenuClick}>
+          <MenuIcon style={{ color: "#FFF" }} />
+        </div>
+      </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderJobHistoryForm()}</div>

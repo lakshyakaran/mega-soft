@@ -13,6 +13,7 @@
   },
   "delete_popup": {
     "heading": "Effacer",
+    "pop_up":"Êtes-vous sûr de bien vouloir supprimer cet élément?",
     "message": "Quelque chose a mal tourné. Veuillez réessayer."
   },
   "success_popup": {
@@ -62,7 +63,8 @@
     "appraisal":"Évaluation",
     "goal_setting":"Paramètres d'objectif",
     "employee_details":"Détails de l'employé",
-    "add_appraisal":"Ajouter une évaluation"
+    "add_appraisal":"Ajouter une évaluation",
+    "appraisal_details":"Détails de l'évaluation"
   },
   "main_header":{
     "welcome":"Bienvenue",

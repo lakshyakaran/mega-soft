@@ -13,6 +13,7 @@
   },
   "delete_popup": {
     "heading": "Delete",
+    "pop_up":"Are you sure you want to delete this item?",
     "message": "Somthing went wrong. Please try again."
   },
   "success_popup": {
@@ -62,7 +63,8 @@
     "appraisal":"Appraisal",
     "goal_setting":"Goal Setting",
     "employee_details":"Employee Details",
-    "add_appraisal":"Add Appraisal"
+    "add_appraisal":"Add Appraisal",
+    "appraisal_details":"Appraisal Details"
   },
   "main_header":{
     "welcome":"Welcome",

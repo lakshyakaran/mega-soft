@@ -38,8 +38,12 @@ import { useTranslation } from "react-i18next";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { add_apprisal } from "../../redux/actions/apprisal";
+import { RootState } from "../../redux/reducers";
+import MainHeader from "../../SideNavigation/MainHeader";
+import MenuIcon from "@material-ui/icons/Menu";
+import { setCollapedMenu } from "../../redux/actions/roleType";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -754,9 +758,18 @@ function AddAppraisal(props: any) {
       </React.Fragment>
     );
   };
+  const dispatch = useDispatch()
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
+  const handlemenuClick = () => {
+    if (selectMenu === false) {
+      dispatch(setCollapedMenu(true));
+    } else {
+      dispatch(setCollapedMenu(false));
+    }
+  };
 
   return (
-    <div className="view">
+    <div className={selectMenu == false ? `view` : `miniSideBar`}>
       {/* <WelcomeHeader>
         <div
           style={{
@@ -785,6 +798,11 @@ function AddAppraisal(props: any) {
           </div>
         </div>
       </WelcomeHeader> */}
+      <MainHeader>
+        <div onClick={handlemenuClick}>
+          <MenuIcon style={{ color: "#FFF" }} />
+        </div>
+      </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderForm()}</div>

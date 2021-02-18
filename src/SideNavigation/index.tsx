@@ -351,7 +351,7 @@ function SideNavigation() {
             handleRoleMenu(event, "Employee");
           }}
         >
-          Employee
+          {i18n.t("sidebar_menu.employee")}
         </button>
         <Menu
           className="Employee"
@@ -417,7 +417,7 @@ function SideNavigation() {
             handleRoleMenu(event, "Manager");
           }}
         >
-          Manager
+          {i18n.t("sidebar_menu.manager")}
         </button>
         <Menu
           className="Manager"

@@ -1403,40 +1403,40 @@ function EmployeeDetails(props: any) {
   };
 
   return (
-    <div className="view">
-      {/* <WelcomeHeader>
+    <div className={selectMenu == false ? `view` : `miniSideBar`}>
+    {/* <WelcomeHeader>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            padding: "10px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px",
-            }}
-          >
-            <Text style={{ marginRight: "10px" }}>
-              Welcome {userName} ({userId})
-            </Text>
-            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-              Logged In:
-            </Text>
-            <Text style={{ marginRight: "5px" }}>
-              {dateNow} {timeNow}
-            </Text>
-          </div>
+          <Text style={{ marginRight: "10px" }}>
+            Welcome {userName} ({userId})
+          </Text>
+          <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
+            Logged In:
+          </Text>
+          <Text style={{ marginRight: "5px" }}>
+            {dateNow} {timeNow}
+          </Text>
         </div>
-      </WelcomeHeader> */}
-      <MainHeader>
-        <div onClick={handlemenuClick}>
-          <MenuIcon style={{ color: "#FFF" }} />
-        </div>
-      </MainHeader>
+      </div>
+    </WelcomeHeader> */}
+    <MainHeader>
+      <div onClick={handlemenuClick}>
+        <MenuIcon style={{ color: "#FFF" }} />
+      </div>
+    </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">
