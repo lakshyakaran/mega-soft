@@ -1,5 +1,6 @@
 const initialState = {
   language: window.sessionStorage.getItem("language") || "en",
+  primaryColor: window.sessionStorage.getItem("primaryColor") || "#00597d",
 };
 
 export default function application(
@@ -11,6 +12,11 @@ export default function application(
       return {
         ...state,
         language: action.payload,
+      };
+    case "CHANGE_PRIMARY_COLOR":
+      return {
+        ...state,
+        primaryColor: action.payload,
       };
     default:
       return state;

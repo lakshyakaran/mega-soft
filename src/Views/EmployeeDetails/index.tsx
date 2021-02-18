@@ -471,6 +471,7 @@ function EmployeeDetails(props: any) {
         <div>
           <TextField
             multiline
+            readOnly={roleType === "Employee" ? true : false}
             rows={3}
             onChange={(
               ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,

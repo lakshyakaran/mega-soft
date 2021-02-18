@@ -32,6 +32,8 @@ import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import MenuIcon from "@material-ui/icons/Menu";
 import menuData from "../menuData";
 import MainHeader from "./MainHeader";
+import { DefaultTheme } from "../../src/Utils/color";
+import { useTranslation } from "react-i18next/";
 
 const handleSideBar = () => {
   initSideBar();
@@ -39,6 +41,7 @@ const handleSideBar = () => {
 
 function SideNavigation() {
   const [navData, setNavData]: any = useState();
+  const { t, i18n } = useTranslation();
   const menuType = useSelector((state: RootState) => state.menuType.menuType);
   const [collapsedMenu, setCollapsedMenu] = useState(false);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
@@ -330,7 +333,10 @@ function SideNavigation() {
 
   const menuItem = () => {
     return (
-      <ProSidebar breakPoint="md" collapsed={collapsedMenu}>
+      <ProSidebar
+        collapsed={collapsedMenu}
+        style={{ backgroundColor: DefaultTheme.colors.primary }}
+      >
         <Menu popperArrow={true} iconShape="circle">
           {/* <MenuItem icon={<HomeIcon />}>
             Performance
@@ -344,19 +350,22 @@ function SideNavigation() {
             {menuData["ms-menu"][0].role}
           </SidebarHeader>
           <div style={roleType !== "Employee" ? { display: "none" } : {}}>
-            <SubMenu title={`Appraisal`} icon={<BarChartIcon />}>
+            <SubMenu
+              title={i18n.t("sidebar_menu.appraisal")}
+              icon={<BarChartIcon />}
+            >
               <Link to="/home" />
               {checkMenuPermission() === true ? (
                 <MenuItem icon={<SettingsIcon />}>
                   {/* {menuData["ms-menu"][0]["menu-items"][0]} */}
-                  Setup
+                  {i18n.t("sidebar_menu.setup")}
                   <Link to="/home" />
                 </MenuItem>
               ) : null}
               <SubMenu
                 // suffix={<ArrowRightIcon style={{ fontSize: "25px" }} />}
                 // title={menuData["ms-menu"][0]["menu-items"][1]}
-                title="Goal settings"
+                title={i18n.t("sidebar_menu.goal_setting")}
                 icon={<ListIcon />}
               >
                 <Link to="/appraisal/goalsetting " />
@@ -365,11 +374,21 @@ function SideNavigation() {
                 </SubMenu>
                 <MenuItem icon={<MenuOpenIcon />}>submenu 2</MenuItem> */}
               </SubMenu>
-              <MenuItem icon={<AssessmentIcon />}>Self Assessment </MenuItem>
+              <MenuItem icon={<AssessmentIcon />}>
+                {i18n.t("sidebar_menu.self_assessment")}
+              </MenuItem>
             </SubMenu>
-            <SubMenu title="Confirmation" icon={<AssignmentTurnedInIcon />}>
-              <MenuItem icon={<CachedIcon />}>Confirmation Status</MenuItem>
-              <MenuItem icon={<FileCopyIcon />}>Confirmation Letter</MenuItem>
+            <SubMenu
+              title={i18n.t("sidebar_menu.confirmation")}
+              icon={<AssignmentTurnedInIcon />}
+            >
+              <MenuItem icon={<CachedIcon />}>
+                <Link to="/home/changecolor" />
+                {i18n.t("sidebar_menu.confirmation_status")}
+              </MenuItem>
+              <MenuItem icon={<FileCopyIcon />}>
+                {i18n.t("sidebar_menu.confirmation_letter")}
+              </MenuItem>
             </SubMenu>
           </div>
         </Menu>
@@ -385,15 +404,17 @@ function SideNavigation() {
             <SubMenu title={`Appraisal`} icon={<BarChartIcon />}>
               <Link to="/home" />
               <MenuItem icon={<SettingsIcon />}>
-                Goal Settings
+                {i18n.t("sidebar_menu.team_goal_setting")}
                 <Link to="/appraisal/goalsetting" />
               </MenuItem>
-              <MenuItem icon={<AssessmentIcon />}>Self Assessment </MenuItem>
+              <MenuItem icon={<AssessmentIcon />}>
+                {i18n.t("sidebar_menu.team_assessment")}{" "}
+              </MenuItem>
             </SubMenu>
-            <SubMenu title="Confirmation" icon={<AssignmentTurnedInIcon />}>
+            {/* <SubMenu title="Confirmation" icon={<AssignmentTurnedInIcon />}>
               <MenuItem icon={<CachedIcon />}>Confirmation Status</MenuItem>
               <MenuItem icon={<FileCopyIcon />}>Confirmation Letter</MenuItem>
-            </SubMenu>
+            </SubMenu> */}
           </div>
         </Menu>
       </ProSidebar>
@@ -460,10 +481,3 @@ function SideNavigation() {
 }
 
 export default SideNavigation;
-
-const styles = {
-  manager: {
-    display: "none",
-  },
-  managerShow: {},
-};

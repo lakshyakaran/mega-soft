@@ -172,7 +172,8 @@ function MainHeader(props: { children: any }) {
 
           <div className="mx-auto text-white-50">
             <Text style={{ marginRight: "10px" }}>
-              Welcome {userData[0].name} ({userData[0].id})
+              {i18n.t("main_header.welcome")} {userData[0].name} (
+              {userData[0].id})
             </Text>
 
             <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>

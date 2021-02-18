@@ -295,6 +295,15 @@ function GoalSetting(props: any) {
                 style={{ padding: "0px" }}
                 styles={dropdownStyles}
               />
+              <Dropdown
+                label="Status"
+                placeholder="Select"
+                options={statusOption}
+                className="reviewFrequency"
+                onChange={onChangeStatus}
+                style={{ padding: "0px", marginLeft: "10px" }}
+                styles={dropdownStyles}
+              />
               <PrimaryButton
                 iconProps={{ iconName: "Search" }}
                 style={{

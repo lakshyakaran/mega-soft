@@ -20,6 +20,7 @@ import AddGoals from "./Views/AddGoals";
 import UpdateGoals from "./Views/UpdateGoals";
 import GoalDetails from "./Views/GoalDetails";
 import Login from "./Views/Login";
+import ChanageColor from "./components/ChanageColor";
 import { initSideBar } from "./SideNavigation/sideBar";
 import { customSideBar } from "./SideNavigation/custom";
 
@@ -86,7 +87,6 @@ function App(props: any) {
   // };
 
   useEffect(() => {
-    console.log("on load component=>");
     initSideBar();
     customSideBar();
 
@@ -176,6 +176,7 @@ function App(props: any) {
                 path="/appraisal/goalsetting/view/goal/goaldetail/:name"
                 component={GoalDetails}
               />
+              <Route exact path="/home/changecolor" component={ChanageColor} />
               <Route path="/*" render={() => <Redirect to="/home" />} />
               <Route
                 path="/appraisal/goalsetting*"

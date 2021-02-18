@@ -44,6 +44,28 @@
     "select_a_date": "Select a date",
     "owner": "Enter owner name"
   },
+  "sidebar_menu":{
+    "appraisal": "Appraisal",
+    "setup":"Setup",
+    "goal_setting":"Goal Setting",
+    "self_assessment": "Self Assessment",
+    "team_goal_setting": "Team Goal Setting",
+    "team_assessment": "Team Assessment",
+    "confirmation":"Confirmation",
+    "confirmation_status": "Confirmation Status",
+    "confirmation_letter": "Confirmation Letter"
+  },
+  "breadcrumb_itmes":{
+    "performance":"Performance",
+    "appraisal":"Appraisal",
+    "goal_setting":"Goal Setting",
+    "employee_details":"Employee Details",
+    "add_appraisal":"Add Appraisal"
+  },
+  "main_header":{
+    "welcome":"Welcome",
+    "logged_in": "Logged In"
+  },
   "job_history": "Job History",
   "goals": "Goals",
   "training_and_development": "Training/ Development Plan"

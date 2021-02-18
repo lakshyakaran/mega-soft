@@ -44,6 +44,28 @@
     "select_a_date": "Sélectionnez une date",
     "owner": "Entrez le nom du propriétaire"
   },
+  "sidebar_menu":{
+    "appraisal": "Évaluation",
+    "setup":"Installer",
+    "goal_setting":"Paramètres d'objectif",
+    "self_assessment": "Auto-évaluation",
+    "team_goal_setting": "Définition des objectifs de l'équipe",
+    "team_assessment": "Évaluation d'équipe",
+    "confirmation":"Confirmation",
+    "confirmation_status": "Statut de confirmation",
+    "confirmation_letter": "Lettre de confirmation"
+  },
+  "breadcrumb_itmes":{
+    "performance":"Performance",
+    "appraisal":"Évaluation",
+    "goal_setting":"Paramètres d'objectif",
+    "employee_details":"Détails de l'employé",
+    "add_appraisal":"Ajouter une évaluation"
+  },
+  "main_header":{
+    "welcome":"Bienvenue",
+    "logged_in": "Connecté"
+  },
   "job_history": "antécédents professionnels",
   "goals": "objectif",
   "training_and_development": "plan de formation et de développement"

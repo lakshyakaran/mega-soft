@@ -329,8 +329,17 @@ function Appraisal(props: any) {
 
   const _onBreadcrumbItemClicked = () => {};
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: "Performance", key: "d1", onClick: _onBreadcrumbItemClicked },
-    { text: "Appraisal", key: "d2", isCurrentItem: true, as: "h4" },
+    {
+      text: i18n.t("breadcrumb_itmes.performance"),
+      key: "d1",
+      onClick: _onBreadcrumbItemClicked,
+    },
+    {
+      text: i18n.t("breadcrumb_itmes.appraisal"),
+      key: "d2",
+      isCurrentItem: true,
+      as: "h4",
+    },
   ];
 
   const handleSearchClick = () => {

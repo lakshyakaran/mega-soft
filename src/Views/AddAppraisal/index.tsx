@@ -304,15 +304,15 @@ function AddAppraisal(props: any) {
     history.push("/home");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: "Performance", key: "d1" },
+    { text: i18n.t("breadcrumb_itmes.performance"), key: "d1" },
     {
-      text: "Appraisal",
+      text: i18n.t("breadcrumb_itmes.appraisal"),
       key: "d2",
       isCurrentItem: true,
       as: "h4",
       onClick: _onBreadcrumbItemClicked,
     },
-    { text: "Add Appraisal", key: "d3", as: "h4" },
+    { text: i18n.t("breadcrumb_itmes.add_appraisal"), key: "d3", as: "h4" },
   ];
 
   const [dateReview, setDateReview] = useState<Date | undefined>();
