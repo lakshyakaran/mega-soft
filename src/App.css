@@ -413,11 +413,16 @@ body {
   margin-top: 0px;
 }
 
-.ms-Pagination-container .visibleItemLabel {
+.goal-setting-pagination .ms-Pagination-container div:last-child {
   display: none;
 }
 
 #main-wrapper .left-sidebar .pro-sidebar {
   width: 250px !important;
   min-width: 250px !important;
+}
+
+.miniSideBar .nav-item svg.MuiSvgIcon-root {
+  transform: rotate(180deg);
+  transition: all 0.1s;
 }
