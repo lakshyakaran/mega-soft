@@ -38,6 +38,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import ZoomInIcon from "@material-ui/icons/ZoomIn";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 import "./style.css";
 import { RootState } from "../../redux/reducers";
@@ -651,7 +652,7 @@ function Appraisal(props: any) {
               styles={dropdownStyles}
             />
             <div
-              style={{ marginTop: "30px", cursor: "pointer" }}
+              style={{ marginTop: "10px", cursor: "pointer" }}
               onClick={() => {
                 handleAdvanceSearch();
                 // setAdvanceSearch(true);
@@ -786,7 +787,7 @@ function Appraisal(props: any) {
               />
             </div>
             <div className="modal-content-success">
-            {t("delete_popup.pop_up")}
+              {t("delete_popup.pop_up")}
             </div>
             <div
               style={{
@@ -904,7 +905,7 @@ function Appraisal(props: any) {
       </WelcomeHeader> */}
       <MainHeader>
         <div onClick={handlemenuClick}>
-          <MenuIcon style={{ color: "#FFF" }} />
+          <ArrowBackIosIcon style={{ color: "#FFF" }} />
         </div>
       </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />

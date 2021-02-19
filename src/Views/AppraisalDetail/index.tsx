@@ -25,6 +25,7 @@ import Header from "../../Header";
 import moment from "moment";
 import MainHeader from "../../SideNavigation/MainHeader";
 import MenuIcon from "@material-ui/icons/Menu";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { setCollapedMenu } from "../../redux/actions/roleType";
 import { RootState } from "../../redux/reducers";
 import { useTranslation } from "react-i18next/";
@@ -106,23 +107,25 @@ function AppraisalDetail(props: any) {
                 {appraisalDetail.appraisal_description}
               </div>
               <div className="col-md-4">
-              <span>{i18n.t("form.Review_From")}</span> :{" "} : {reviewDate}
+                <span>{i18n.t("form.Review_From")}</span> : : {reviewDate}
               </div>
               <div className="col-md-8">
-              <span>{i18n.t("form.Appraisal_To")}</span> :{" "} : {appraisalTo}
+                <span>{i18n.t("form.Appraisal_To")}</span> : : {appraisalTo}
               </div>
               <div className="col-md-4">
-              <span>{i18n.t("form.Review_Frequency")}</span> :{" "}
+                <span>{i18n.t("form.Review_Frequency")}</span> :{" "}
                 {appraisalDetail.review_frequency}
               </div>
               <div className="col-md-8">
-              <span>{i18n.t("form.Type")}</span> :{" "} : {appraisalDetail.type}
+                <span>{i18n.t("form.Type")}</span> : : {appraisalDetail.type}
               </div>
               <div className="col-md-4">
-              <span>{i18n.t("form.Format_Type")}</span> :{" "}: {appraisalDetail.format_type}
+                <span>{i18n.t("form.Format_Type")}</span> : :{" "}
+                {appraisalDetail.format_type}
               </div>
               <div className="col-md-8">
-              <span>{i18n.t("form.Owner")}</span> :{" "} : {appraisalDetail.appraisal_owner}
+                <span>{i18n.t("form.Owner")}</span> : :{" "}
+                {appraisalDetail.appraisal_owner}
               </div>
               {/* <div className="col-md-4">
                 <span>Counter signing</span> :{" "}
@@ -136,7 +139,7 @@ function AppraisalDetail(props: any) {
               <Label>{i18n.t("form.KRA_Settings_Tabs")}</Label>
               <Checkbox
                 disabled={true}
-                label={"Job History"}
+                label={i18n.t("job_history")}
                 title={"Competencies"}
                 checked={appraisalDetail.kra_settings_tab_competencies}
                 className="flexGrowCheckBox"
@@ -144,7 +147,7 @@ function AppraisalDetail(props: any) {
               />
               <Checkbox
                 disabled={true}
-                label={"Goals"}
+                label={i18n.t("goals")}
                 title={"Goals"}
                 checked={appraisalDetail.kra_settings_tab_goals}
                 className="flexGrowCheckBox"
@@ -152,7 +155,7 @@ function AppraisalDetail(props: any) {
               />
               <Checkbox
                 disabled={true}
-                label={"Training/ Development Plan"}
+                label={i18n.t("training_and_development")}
                 title={"Development Plans"}
                 checked={appraisalDetail.kra_settings_tab_development_plan}
                 className="flexGrowCheckBox"
@@ -199,7 +202,7 @@ function AppraisalDetail(props: any) {
     );
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
   const handlemenuClick = () => {
     if (selectMenu === false) {
@@ -209,10 +212,9 @@ function AppraisalDetail(props: any) {
     }
   };
 
-
   return (
     <div className={selectMenu == false ? `view` : `miniSideBar`}>
-    {/* <WelcomeHeader>
+      {/* <WelcomeHeader>
       <div
         style={{
           display: "flex",
@@ -240,11 +242,11 @@ function AppraisalDetail(props: any) {
         </div>
       </div>
     </WelcomeHeader> */}
-    <MainHeader>
-      <div onClick={handlemenuClick}>
-        <MenuIcon style={{ color: "#FFF" }} />
-      </div>
-    </MainHeader>
+      <MainHeader>
+        <div onClick={handlemenuClick}>
+          <ArrowBackIosIcon style={{ color: "#FFF" }} />
+        </div>
+      </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderData()} </div>

@@ -30,6 +30,7 @@ import {
 
 import MainHeader from "../../SideNavigation/MainHeader";
 import MenuIcon from "@material-ui/icons/Menu";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { setCollapedMenu } from "../../redux/actions/roleType";
 
 interface ParamTypes {
@@ -461,7 +462,7 @@ function UpdateGoals(props: any) {
     );
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
   const handlemenuClick = () => {
     if (selectMenu === false) {
@@ -473,7 +474,7 @@ function UpdateGoals(props: any) {
 
   return (
     <div className={selectMenu == false ? `view` : `miniSideBar`}>
-    {/* <WelcomeHeader>
+      {/* <WelcomeHeader>
       <div
         style={{
           display: "flex",
@@ -501,11 +502,11 @@ function UpdateGoals(props: any) {
         </div>
       </div>
     </WelcomeHeader> */}
-    <MainHeader>
-      <div onClick={handlemenuClick}>
-        <MenuIcon style={{ color: "#FFF" }} />
-      </div>
-    </MainHeader>
+      <MainHeader>
+        <div onClick={handlemenuClick}>
+          <ArrowBackIosIcon style={{ color: "#FFF" }} />
+        </div>
+      </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderJobHistoryForm()}</div>

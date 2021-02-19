@@ -295,7 +295,7 @@ function MainHeader(props: { children: any }) {
               </div>
             </li>
             <div
-              style={{ marginTop: "13px", cursor: "pointer" }}
+              style={{ cursor: "pointer" }}
               className="link-icons px-2 nav-link"
               onClick={() => {
                 handleLogout();

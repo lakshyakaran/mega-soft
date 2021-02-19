@@ -31,6 +31,7 @@ import { filterByEmployee } from "../../redux/actions/apprisal";
 import MainHeader from "../../SideNavigation/MainHeader";
 import { setCollapedMenu } from "../../redux/actions/roleType";
 import MenuIcon from "@material-ui/icons/Menu";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 function GoalSetting(props: any) {
   const dispatch = useDispatch();
@@ -336,7 +337,7 @@ function GoalSetting(props: any) {
     <div className={selectMenu == false ? `view` : `miniSideBar`}>
       <MainHeader>
         <div onClick={handlemenuClick}>
-          <MenuIcon style={{ color: "#FFF" }} />
+          <ArrowBackIosIcon style={{ color: "#FFF" }} />
         </div>
       </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />

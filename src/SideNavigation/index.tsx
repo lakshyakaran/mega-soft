@@ -447,6 +447,31 @@ function SideNavigation() {
           {/* <div style={roleType !== "Manager" ? { display: "none" } : {}}>
           </div> */}
         </Menu>
+        <button
+          onClick={(event) => {
+            handleRoleMenu(event, "HR Contact");
+          }}
+        >
+          {/* {i18n.t("sidebar_menu.employee")} */}
+          HR Contact
+        </button>
+        <Menu
+          style={roleType !== "HR Contact" ? { display: "none" } : {}}
+          popperArrow={true}
+          iconShape="circle"
+        >
+          <SubMenu
+            title={i18n.t("sidebar_menu.appraisal")}
+            icon={<BarChartIcon />}
+          >
+            <MenuItem icon={<SettingsIcon />}>
+              {i18n.t("sidebar_menu.setup")}
+              <Link to="/home" />
+            </MenuItem>
+          </SubMenu>
+          {/* <div style={roleType !== "Employee" ? { display: "none" } : {}}>
+          </div> */}
+        </Menu>
       </ProSidebar>
     );
   };

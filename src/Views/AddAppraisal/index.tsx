@@ -43,6 +43,7 @@ import { add_apprisal } from "../../redux/actions/apprisal";
 import { RootState } from "../../redux/reducers";
 import MainHeader from "../../SideNavigation/MainHeader";
 import MenuIcon from "@material-ui/icons/Menu";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { setCollapedMenu } from "../../redux/actions/roleType";
 
 const formateTypeOptions: IDropdownOption[] = [
@@ -758,7 +759,7 @@ function AddAppraisal(props: any) {
       </React.Fragment>
     );
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
   const handlemenuClick = () => {
     if (selectMenu === false) {
@@ -800,7 +801,7 @@ function AddAppraisal(props: any) {
       </WelcomeHeader> */}
       <MainHeader>
         <div onClick={handlemenuClick}>
-          <MenuIcon style={{ color: "#FFF" }} />
+          <ArrowBackIosIcon style={{ color: "#FFF" }} />
         </div>
       </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />

@@ -30,6 +30,7 @@ import moment from "moment";
 
 import MainHeader from "../../SideNavigation/MainHeader";
 import MenuIcon from "@material-ui/icons/Menu";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { setCollapedMenu } from "../../redux/actions/roleType";
 
 interface ParamTypes {
@@ -387,7 +388,7 @@ function UpdateJobHistory(props: any) {
     );
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
   const handlemenuClick = () => {
     if (selectMenu === false) {
@@ -429,7 +430,7 @@ function UpdateJobHistory(props: any) {
       </WelcomeHeader> */}
       <MainHeader>
         <div onClick={handlemenuClick}>
-          <MenuIcon style={{ color: "#FFF" }} />
+          <ArrowBackIosIcon style={{ color: "#FFF" }} />
         </div>
       </MainHeader>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
