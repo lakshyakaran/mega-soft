@@ -1,10 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 body {
-  background-color: #f8f7fc;
+  margin: 0;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 400;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* body {
+  background-color: #f8f7fc;
+} */
 
 .sidebar {
   position: fixed;
-  width: 250px;
+  /* width: 250px; */
   /* background-color: #00597d; */
   /* background-color: #1f262d; */
   height: 100%;
@@ -15,13 +25,15 @@ body {
 }
 
 .view {
-  padding-top: 18px;
+  /* padding-top: 18px; */
   padding-left: 250px;
+  transition: all .3s;
 }
 
 .miniSideBar {
-  padding-top: 18px;
+  /* padding-top: 18px; */
   padding-left: 100px;
+  transition: all .3s;
 }
 
 #main-wrapper[data-sidebartype=mini-sidebar]~.view {
@@ -274,6 +286,10 @@ body {
 .header ol.ms-Breadcrumb-list {
   background: #eeeeee;
   padding: 5px;
+  /* position: absolute; */
+  /* top: 10px; */
+  /* width: 100%; */
+  /* z-index: -1; */
 }
 
 .header ol.ms-Breadcrumb-list h4.ms-Breadcrumb-item {
@@ -287,7 +303,7 @@ body {
 
 .header ol.ms-Breadcrumb-list h4.ms-Breadcrumb-item .ms-TooltipHost {
   font-size: .9rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .MuiSvgIcon-root {
@@ -401,9 +417,9 @@ body {
   padding-bottom: 0px;
 }
 
-.MuiSvgIcon-root {
+/* .MuiSvgIcon-root {
   margin-top: 18px;
-}
+} */
 
 .pro-sidebar-header .MuiSvgIcon-root {
   margin-top: 0px;
@@ -425,4 +441,193 @@ body {
 .miniSideBar .nav-item svg.MuiSvgIcon-root {
   transform: rotate(180deg);
   transition: all 0.1s;
+}
+
+.app {
+  display: flex;
+  position: relative;
+}
+
+.app main {
+  padding: 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.pro-sidebar {
+  color: #adadad;
+  height: 100%;
+  width: 270px;
+  min-width: 270px;
+  text-align: left;
+  transition: width, left, right, .3s;
+  position: relative;
+  z-index: 1009;
+}
+
+/* 
+***********************Main Header css***************************
+*/
+
+.card {
+  margin-bottom: 20px;
+  padding: 1rem;
+  /* z-index: -1; */
+}
+
+/* .topbar {
+  position: fixed;
+  width: 100%;
+  width: calc(100% - 250px);
+  top: 0;
+  z-index: 50;
+  -webkit-box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.05);
+  box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  height: 64px
+}
+
+.miniSideBar .topbar {
+  width: calc(100% - 100px);
+}
+
+.topbar .navbar-collapse {
+  padding: 0px 10px 0 0
+}
+
+.topbar .top-navbar {
+  min-height: 64px;
+  padding: 0px
+}
+
+.topbar .top-navbar .dropdown-toggle:after {
+  display: none
+}
+
+.topbar .top-navbar .navbar-header {
+  width: 250px;
+  line-height: 64px
+}
+
+.topbar .top-navbar .navbar-header .navbar-brand {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 0px;
+  padding: 0 10px 0 10px
+}
+
+.topbar .top-navbar .navbar-header .navbar-brand .dark-logo {
+  display: none
+}
+
+.topbar .top-navbar .navbar-header .navbar-brand .logo-icon {
+  margin-right: 5px
+}
+
+.topbar .top-navbar .navbar-nav>.nav-item>.nav-link {
+  padding: 0px 15px;
+  font-size: 0.875rem;
+  line-height: 62px;
+  height: 64px
+}
+
+.topbar .top-navbar .navbar-nav>.nav-item:hover {
+  background: rgba(0, 0, 0, 0.05)
+}
+
+.topbar .mailbox, .topbar .user-dd {
+  min-width: 280px
+}
+
+.topbar .nav-toggler, .topbar .topbartoggler {
+  color: #fff;
+  padding: 0 15px
+} */
+
+/* 
+#navbarSupportedContent {
+  background: #006994 !important
+} */
+
+header .navbar {
+  background: #006994 !important;
+  padding-left: 0;
+}
+
+.ms-logo-center {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  /* margin-top: 1rem; */
+  max-height: 30px;
+}
+
+.main-logo {
+  /* text-align: center;
+    height: 50px; */
+  display: flex;
+  align-items: center;
+}
+
+.main-logo img {
+  /* width: auto;
+    max-width: 120px;
+    height: auto; */
+  max-height: 28px;
+  /* padding-top: .75rem; */
+}
+
+.mini-sidebar[data-sidebartype=mini-sidebar] a.sidebartoggler i::before {
+  transform: rotate( 180deg);
+  transition: all .3s;
+}
+
+a.sidebartoggler .MuiSvgIcon-root {
+  width: 1.3em;
+  height: 1.3em;
+}
+
+button:focus {
+  outline: 1px dotted;
+  /* outline: 5px auto -webkit-focus-ring-color; */
+}
+
+.medium-text {
+  font-size: 0.9rem;
+}
+
+.ms-DetailsList {
+  background-color: rgb(255 255 255);
+}
+
+.sidebar-ell span, .pro-sidebar-layout button {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.left-sidebar {
+  position: absolute;
+  width: 250px;
+  height: 100%;
+  top: 0px;
+  z-index: 10;
+  -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08)
+}
+
+.left-sidebar-collapsed {
+  position: absolute;
+  width: 100px !important;
+  height: 100%;
+  top: 0px;
+  z-index: 10;
+  -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
 }

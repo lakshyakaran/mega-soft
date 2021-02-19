@@ -38,6 +38,10 @@ import menuData from "../menuData";
 import MainHeader from "./MainHeader";
 import { DefaultTheme } from "../../src/Utils/color";
 import { useTranslation } from "react-i18next/";
+import PersonIcon from "@material-ui/icons/Person";
+import NoteIcon from "@material-ui/icons/Note";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import ImportExportIcon from "@material-ui/icons/ImportExport";
 
 const handleSideBar = () => {
   initSideBar();
@@ -51,6 +55,7 @@ function SideNavigation() {
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
   const dispatch = useDispatch();
+  const [menuHeading, setMenuHeading] = useState("");
   console.log("selectMenu==>", selectMenu);
   // useEffect(() => {
   //   initSideBar();
@@ -188,125 +193,6 @@ function SideNavigation() {
                   className="collapse  first-level"
                 ></ul>
               </li>
-              {/* <li className="sidebar-item">
-                <a
-                  className="sidebar-link  waves-effect waves-dark"
-                  href="#"
-                  onClick={(event) => {
-                    handleMainMenu(event, "Travel Desk");
-                  }}
-                  aria-expanded="false"
-                >
-                  <i className="mdi mdi-chart-bar"></i>
-                  <span className="hide-menu">Travel Desk</span>
-                </a>
-                <ul
-                  aria-expanded="false"
-                  className="collapse  first-level"
-                ></ul>
-              </li>
-              <li className="sidebar-item">
-                <a
-                  className="sidebar-link  waves-effect waves-dark"
-                  href="#"
-                  onClick={(event) => {
-                    handleMainMenu(event, "Mediclaim");
-                  }}
-                  aria-expanded="false"
-                >
-                  <i className="mdi mdi-chart-bar"></i>
-                  <span className="hide-menu">Mediclaim</span>
-                </a>
-                <ul
-                  aria-expanded="false"
-                  className="collapse  first-level"
-                ></ul>
-              </li>
-              <li className="sidebar-item">
-                <a
-                  className="sidebar-link  waves-effect waves-dark"
-                  href="#"
-                  onClick={(event) => {
-                    handleMainMenu(event, "Leaving Us?");
-                  }}
-                  aria-expanded="false"
-                >
-                  <i className="mdi mdi-chart-bar"></i>
-                  <span className="hide-menu">Leaving Us?</span>
-                </a>
-                <ul
-                  aria-expanded="false"
-                  className="collapse  first-level"
-                ></ul>
-              </li>
-              <li className="sidebar-item">
-                <a
-                  className="sidebar-link  waves-effect waves-dark"
-                  href="#"
-                  onClick={(event) => {
-                    handleMainMenu(event, "Help Desk");
-                  }}
-                  aria-expanded="false"
-                >
-                  <i className="mdi mdi-chart-bar"></i>
-                  <span className="hide-menu">Help Desk</span>
-                </a>
-                <ul
-                  aria-expanded="false"
-                  className="collapse  first-level"
-                ></ul>
-              </li>
-              <li className="sidebar-item">
-                <a
-                  className="sidebar-link  waves-effect waves-dark"
-                  href="#"
-                  onClick={(event) => {
-                    handleMainMenu(event, "Policies & Forms");
-                  }}
-                  aria-expanded="false"
-                >
-                  <i className="mdi mdi-chart-bar"></i>
-                  <span className="hide-menu">Policies & Forms</span>
-                </a>
-                <ul
-                  aria-expanded="false"
-                  className="collapse  first-level"
-                ></ul>
-              </li>
-              <li className="sidebar-item">
-                <a
-                  className="sidebar-link  waves-effect waves-dark"
-                  href="#"
-                  onClick={(event) => {
-                    handleMainMenu(event, "Reports");
-                  }}
-                  aria-expanded="false"
-                >
-                  <i className="mdi mdi-chart-bar"></i>
-                  <span className="hide-menu">Reports</span>
-                </a>
-                <ul
-                  aria-expanded="false"
-                  className="collapse  first-level"
-                ></ul>
-              </li>
-              <li className="sidebar-item">
-                <a
-                  className="sidebar-link  waves-effect waves-dark"
-                  href="#"
-                  onClick={(event) => {
-                    handleMainMenu(event, "Forms");
-                  }}
-                  aria-expanded="false"
-                >
-                  <i className="mdi mdi-chart-bar"></i>
-                  <span className="hide-menu">Forms</span>
-                </a>
-                <ul
-                  aria-expanded="false"
-                  className="collapse  first-level"
-                ></ul>
-              </li> */}
             </ul>
           </nav>
         </div>
@@ -343,8 +229,18 @@ function SideNavigation() {
         collapsed={selectMenu}
         style={{ backgroundColor: DefaultTheme.colors.primary }}
       >
-        <SidebarHeader>
-          <HomeIcon /> Performance
+        <SidebarHeader
+          onClick={() => {
+            dispatch(setMenuType("1"));
+          }}
+          className="sidebar-ell"
+          // style={{
+          //   overflow: "hidden",
+          //   textOverflow: "ellipsis",
+          //   whiteSpace: "nowrap",
+          // }}
+        >
+          <HomeIcon /> <span>Performance</span>
         </SidebarHeader>
         <button
           onClick={(event) => {
@@ -476,6 +372,93 @@ function SideNavigation() {
     );
   };
 
+  const handleOtherMenu = (event: any, item: any) => {
+    setMenuHeading(item);
+    console.log("clicked=>", item);
+    dispatch(setMenuType("0"));
+  };
+
+  const localMenuItem = () => {
+    return (
+      <ProSidebar
+        collapsed={selectMenu}
+        style={{ backgroundColor: DefaultTheme.colors.primary }}
+      >
+        {/* <button
+          onClick={(event) => {
+            handleRoleMenu(event, "Employee");
+          }}
+        >
+          {i18n.t("sidebar_menu.employee")}
+        </button> */}
+        <SidebarHeader
+          onClick={() => {
+            dispatch(setMenuType("0"));
+          }}
+        >
+          <HomeIcon />
+          HRMS
+        </SidebarHeader>
+        <Menu popperArrow={true} iconShape="circle" style={{}}>
+          <MenuItem
+            icon={<PersonIcon />}
+            style={{ marginBottom: "20px" }}
+            onClick={(event) => {
+              handleOtherMenu(event, "Profile");
+            }}
+          >
+            Profile
+          </MenuItem>
+          <MenuItem
+            icon={<NoteIcon />}
+            style={{ marginBottom: "20px" }}
+            onClick={(event) => {
+              handleOtherMenu(event, "Leave");
+            }}
+          >
+            Leave
+          </MenuItem>
+          <MenuItem
+            icon={<BarChartIcon />}
+            style={{ marginBottom: "20px" }}
+            onClick={(event) => {
+              handleOtherMenu(event, "Performance");
+            }}
+          >
+            Performance
+          </MenuItem>
+          <MenuItem
+            icon={<AssignmentTurnedInIcon />}
+            style={{ marginBottom: "20px" }}
+            onClick={(event) => {
+              handleOtherMenu(event, "Training");
+            }}
+          >
+            Training
+          </MenuItem>
+          <MenuItem
+            icon={<AttachMoneyIcon />}
+            style={{ marginBottom: "20px" }}
+            onClick={(event) => {
+              handleOtherMenu(event, "Payroll");
+            }}
+          >
+            Payroll
+          </MenuItem>
+          <MenuItem
+            icon={<ImportExportIcon />}
+            style={{ marginBottom: "20px" }}
+            onClick={(event) => {
+              handleOtherMenu(event, "Separation");
+            }}
+          >
+            Separation
+          </MenuItem>
+        </Menu>
+      </ProSidebar>
+    );
+  };
+
   const handlemenuClick = () => {
     if (collapsedMenu == false) {
       setCollapsedMenu(true);
@@ -506,8 +489,7 @@ function SideNavigation() {
       ) : (
         sideMenuLocal()
       )} */}
-
-      {menuItem()}
+      {menuType == 0 ? menuItem() : localMenuItem()}
 
       {/* <ProSidebar breakPoint="md" collapsed={collapsedMenu}>
         <Menu popperArrow={true} iconShape="circle">

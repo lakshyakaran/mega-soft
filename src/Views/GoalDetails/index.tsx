@@ -23,10 +23,6 @@ import {
   TextField,
 } from "office-ui-fabric-react";
 import { fetchGoalData, fetchGoalDataName } from "../../redux/actions/goal";
-import MainHeader from "../../SideNavigation/MainHeader";
-import MenuIcon from "@material-ui/icons/Menu";
-import { setCollapedMenu } from "../../redux/actions/roleType";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 interface ParamTypes {
   employeeId: string;
@@ -115,17 +111,6 @@ function GoalDetails(props: any) {
       fontSize: "20px",
     },
   };
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
-
-  const [errMsgOrder, setErrMsgOrder] = useState("");
-  const [errMsgGoal, setErrMsgGoal] = useState("");
-  const [errMsgGoalType, setErrMsgGoalType] = useState("");
-  const [errMsgMeasure, setErrMsgMeasure] = useState("");
-  const [errMsgWeightage, setErrMsgWeightage] = useState("");
-  const [errMsgKra, setErrMsgKra] = useState("");
 
   const stackTokens = { childrenGap: 10 };
   const renderJobHistoryForm = () => {
@@ -193,55 +178,11 @@ function GoalDetails(props: any) {
     );
   };
 
-  const dispatch = useDispatch();
-  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
-  const handlemenuClick = () => {
-    if (selectMenu === false) {
-      dispatch(setCollapedMenu(true));
-    } else {
-      dispatch(setCollapedMenu(false));
-    }
-  };
-
   return (
-    <div className={selectMenu == false ? `view` : `miniSideBar`}>
-      {/* <WelcomeHeader>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "10px",
-          }}
-        >
-          <Text style={{ marginRight: "10px" }}>
-            Welcome {userName} ({userId})
-          </Text>
-          <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-            Logged In:
-          </Text>
-          <Text style={{ marginRight: "5px" }}>
-            {dateNow} {timeNow}
-          </Text>
-        </div>
-      </div>
-    </WelcomeHeader> */}
-      <MainHeader>
-        <div onClick={handlemenuClick}>
-          <ArrowBackIosIcon style={{ color: "#FFF" }} />
-        </div>
-      </MainHeader>
+    <div>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderJobHistoryForm()}</div>
-        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );

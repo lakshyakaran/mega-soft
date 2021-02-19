@@ -1,31 +1,18 @@
 import {
   Checkbox,
-  DatePicker,
-  Dropdown,
   IBreadcrumbItem,
   IBreadcrumbStyles,
-  IDatePickerStyles,
-  IDropdownOption,
-  IDropdownStyles,
-  ITextFieldStyles,
   Label,
-  mergeStyleSets,
   PrimaryButton,
   Separator,
   Stack,
-  TextField,
 } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import WelcomeHeader from "../../components/WelcomeHeader";
 import { fetchAppraisalDataById } from "../../redux/actions/apprisal";
-import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
-import MainHeader from "../../SideNavigation/MainHeader";
-import MenuIcon from "@material-ui/icons/Menu";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { setCollapedMenu } from "../../redux/actions/roleType";
 import { RootState } from "../../redux/reducers";
 import { useTranslation } from "react-i18next/";
@@ -107,24 +94,24 @@ function AppraisalDetail(props: any) {
                 {appraisalDetail.appraisal_description}
               </div>
               <div className="col-md-4">
-                <span>{i18n.t("form.Review_From")}</span> : : {reviewDate}
+                <span>{i18n.t("form.Review_From")}</span> : {reviewDate}
               </div>
               <div className="col-md-8">
-                <span>{i18n.t("form.Appraisal_To")}</span> : : {appraisalTo}
+                <span>{i18n.t("form.Appraisal_To")}</span> : {appraisalTo}
               </div>
               <div className="col-md-4">
                 <span>{i18n.t("form.Review_Frequency")}</span> :{" "}
                 {appraisalDetail.review_frequency}
               </div>
               <div className="col-md-8">
-                <span>{i18n.t("form.Type")}</span> : : {appraisalDetail.type}
+                <span>{i18n.t("form.Type")}</span> : {appraisalDetail.type}
               </div>
               <div className="col-md-4">
-                <span>{i18n.t("form.Format_Type")}</span> : :{" "}
+                <span>{i18n.t("form.Format_Type")}</span> :{" "}
                 {appraisalDetail.format_type}
               </div>
               <div className="col-md-8">
-                <span>{i18n.t("form.Owner")}</span> : :{" "}
+                <span>{i18n.t("form.Owner")}</span> :{" "}
                 {appraisalDetail.appraisal_owner}
               </div>
               {/* <div className="col-md-4">
@@ -213,44 +200,10 @@ function AppraisalDetail(props: any) {
   };
 
   return (
-    <div className={selectMenu == false ? `view` : `miniSideBar`}>
-      {/* <WelcomeHeader>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "10px",
-          }}
-        >
-          <Text style={{ marginRight: "10px" }}>
-            Welcome {userName} ({userId})
-          </Text>
-          <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-            Logged In:
-          </Text>
-          <Text style={{ marginRight: "5px" }}>
-            {dateNow} {timeNow}
-          </Text>
-        </div>
-      </div>
-    </WelcomeHeader> */}
-      <MainHeader>
-        <div onClick={handlemenuClick}>
-          <ArrowBackIosIcon style={{ color: "#FFF" }} />
-        </div>
-      </MainHeader>
+    <div>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderData()} </div>
-        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );

@@ -23,6 +23,8 @@ import Login from "./Views/Login";
 import ChanageColor from "./components/ChanageColor";
 import { initSideBar } from "./SideNavigation/sideBar";
 import { customSideBar } from "./SideNavigation/custom";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 import $ from "jquery";
 
@@ -32,6 +34,8 @@ import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
 import roleType from "./redux/reducers/roleType";
+import MainHeader from "./SideNavigation/MainHeader";
+import { setCollapedMenu } from "./redux/actions/roleType";
 
 const getQueryParms = () => {
   const url = window.location.href;
@@ -72,6 +76,7 @@ function App(props: any) {
   const hist = useHistory();
   const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.Auth);
+  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
 
   // const msRoute = () => {
   //   $("a.sidebar-link").on("click", function () {
@@ -114,6 +119,14 @@ function App(props: any) {
     return null;
   }
 
+  const handlemenuClick = () => {
+    if (selectMenu === false) {
+      dispatch(setCollapedMenu(true));
+    } else {
+      dispatch(setCollapedMenu(false));
+    }
+  };
+
   return (
     <Suspense fallback={null}>
       <BrowserRouter>
@@ -121,67 +134,81 @@ function App(props: any) {
           <Switch>
             <div className="page-wrapper">
               <Navigation />
-              {/* <Route exact path="/" component={Login} /> */}
-              <Route exact path="/home" component={Appraisal} />
-              <Route exact path="/addApprisal" component={AddAppraisal} />
-              {/* <Route exact path="/appraisal/add" component={Form} /> */}
-              <Route
-                exact
-                path="/appraisal/update/:appraisalId"
-                component={UpdateAppraisal}
-              />
-              <Route
-                exact
-                path="/appraisal/view/:appraisalId"
-                component={AppraisalDetail}
-              />
-              <Route
-                exact
-                path="/appraisal/goalsetting"
-                component={GoalSetting}
-              />
-              <Route
-                exact
-                path="/appraisal/goalsetting/view/:employeeId/:appraisalId"
-                component={EmployeeDetails}
-              />
-              <Route
-                exact
-                path="/appraisal/goalsetting/view/addjobhistory/:employeeId/:appraisalId"
-                component={JobHistory}
-              />
-              <Route
-                exact
-                path="/appraisal/goalsetting/view/jobhistory/updateJobHistory/:name"
-                component={UpdateJobHistory}
-              />
-              <Route
-                exact
-                path="/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/:name"
-                component={JobHistoryDetails}
-              />
+              <main>
+                <div className={selectMenu == false ? `view` : `miniSideBar`}>
+                  <MainHeader>
+                    <div onClick={handlemenuClick}>
+                      <ChevronLeftIcon style={{ color: "#FFF" }} />
+                    </div>
+                  </MainHeader>
 
-              <Route
-                exact
-                path="/appraisal/goalsetting/view/addgoal/:employeeId/:appraisalId"
-                component={AddGoals}
-              />
-              <Route
-                exact
-                path="/appraisal/goalsetting/view/goals/updategoal/:name"
-                component={UpdateGoals}
-              />
-              <Route
-                exact
-                path="/appraisal/goalsetting/view/goal/goaldetail/:name"
-                component={GoalDetails}
-              />
-              <Route exact path="/home/changecolor" component={ChanageColor} />
-              <Route path="/*" render={() => <Redirect to="/home" />} />
-              <Route
-                path="/appraisal/goalsetting*"
-                render={() => <Redirect to="/appraisal/goalsetting" />}
-              />
+                  {/* <Route exact path="/" component={Login} /> */}
+                  <Route exact path="/home" component={Appraisal} />
+                  <Route exact path="/addApprisal" component={AddAppraisal} />
+                  {/* <Route exact path="/appraisal/add" component={Form} /> */}
+                  <Route
+                    exact
+                    path="/appraisal/update/:appraisalId"
+                    component={UpdateAppraisal}
+                  />
+                  <Route
+                    exact
+                    path="/appraisal/view/:appraisalId"
+                    component={AppraisalDetail}
+                  />
+                  <Route
+                    exact
+                    path="/appraisal/goalsetting"
+                    component={GoalSetting}
+                  />
+                  <Route
+                    exact
+                    path="/appraisal/goalsetting/view/:employeeId/:appraisalId"
+                    component={EmployeeDetails}
+                  />
+                  <Route
+                    exact
+                    path="/appraisal/goalsetting/view/addjobhistory/:employeeId/:appraisalId"
+                    component={JobHistory}
+                  />
+                  <Route
+                    exact
+                    path="/appraisal/goalsetting/view/jobhistory/updateJobHistory/:name"
+                    component={UpdateJobHistory}
+                  />
+                  <Route
+                    exact
+                    path="/appraisal/goalsetting/view/jobhistory/jobHistoryDetail/:name"
+                    component={JobHistoryDetails}
+                  />
+
+                  <Route
+                    exact
+                    path="/appraisal/goalsetting/view/addgoal/:employeeId/:appraisalId"
+                    component={AddGoals}
+                  />
+                  <Route
+                    exact
+                    path="/appraisal/goalsetting/view/goals/updategoal/:name"
+                    component={UpdateGoals}
+                  />
+                  <Route
+                    exact
+                    path="/appraisal/goalsetting/view/goal/goaldetail/:name"
+                    component={GoalDetails}
+                  />
+                  <Route
+                    exact
+                    path="/home/changecolor"
+                    component={ChanageColor}
+                  />
+                  <Route path="/*" render={() => <Redirect to="/home" />} />
+                  <Route
+                    path="/appraisal/goalsetting*"
+                    render={() => <Redirect to="/appraisal/goalsetting" />}
+                  />
+                </div>
+              </main>
             </div>
           </Switch>
         ) : (

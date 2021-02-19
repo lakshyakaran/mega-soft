@@ -1242,7 +1242,7 @@ function EmployeeDetails(props: any) {
     return (
       <div>
         <div className="card">
-          <div className="emp-details-section">
+          <div className="emp-details-section medium-text">
             <div className="row">
               <div className="col-md-4">
                 <span>Employee Id</span> : {employeeData.employee_id}
@@ -1404,40 +1404,7 @@ function EmployeeDetails(props: any) {
   };
 
   return (
-    <div className={selectMenu == false ? `view` : `miniSideBar`}>
-      {/* <WelcomeHeader>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "10px",
-          }}
-        >
-          <Text style={{ marginRight: "10px" }}>
-            Welcome {userName} ({userId})
-          </Text>
-          <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-            Logged In:
-          </Text>
-          <Text style={{ marginRight: "5px" }}>
-            {dateNow} {timeNow}
-          </Text>
-        </div>
-      </div>
-    </WelcomeHeader> */}
-      <MainHeader>
-        <div onClick={handlemenuClick}>
-          <ArrowBackIosIcon style={{ color: "#FFF" }} />
-        </div>
-      </MainHeader>
+    <div>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">
@@ -1457,45 +1424,6 @@ function EmployeeDetails(props: any) {
             renderEmployeeDetails()
           )}
         </div>
-        {/* <div className="right-container">
-          <div className="stepper">
-            <ul className="progress">
-              <li>
-                <div className="node green"></div>
-                <p className="green">
-                  <span>Provide your job history</span>
-                </p>
-              </li>
-              <li>
-                <div className="divider green"></div>
-              </li>
-              <li>
-                <div className="node green"></div>
-                <p className="green">
-                  <span>Perform goal setting</span>
-                </p>
-              </li>
-              <li>
-                <div className="divider green"></div>
-              </li>
-              <li>
-                <div className="node grey"></div>
-                <p className="grey">
-                  <span>Update training needs</span>
-                </p>
-              </li>
-              <li>
-                <div className="divider grey"></div>
-              </li>
-              <li>
-                <div className="node grey"></div>
-                <p className="grey">
-                  <span>Create development plan</span>
-                </p>
-              </li>
-            </ul>
-          </div>
-        </div> */}
       </div>
     </div>
   );

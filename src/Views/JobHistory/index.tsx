@@ -27,11 +27,6 @@ import {
 } from "office-ui-fabric-react";
 import moment from "moment";
 
-import MainHeader from "../../SideNavigation/MainHeader";
-import MenuIcon from "@material-ui/icons/Menu";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { setCollapedMenu } from "../../redux/actions/roleType";
-
 interface ParamTypes {
   employeeId: string;
   appraisalId: string;
@@ -378,55 +373,11 @@ function JobHistory(props: any) {
     );
   };
 
-  const dispatch = useDispatch();
-  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
-  const handlemenuClick = () => {
-    if (selectMenu === false) {
-      dispatch(setCollapedMenu(true));
-    } else {
-      dispatch(setCollapedMenu(false));
-    }
-  };
-
   return (
-    <div className={selectMenu == false ? `view` : `miniSideBar`}>
-      {/* <WelcomeHeader>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "10px",
-          }}
-        >
-          <Text style={{ marginRight: "10px" }}>
-            Welcome {userName} ({userId})
-          </Text>
-          <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-            Logged In:
-          </Text>
-          <Text style={{ marginRight: "5px" }}>
-            {dateNow} {timeNow}
-          </Text>
-        </div>
-      </div>
-    </WelcomeHeader> */}
-      <MainHeader>
-        <div onClick={handlemenuClick}>
-          <ArrowBackIosIcon style={{ color: "#FFF" }} />
-        </div>
-      </MainHeader>
+    <div>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderJobHistoryForm()}</div>
-        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );

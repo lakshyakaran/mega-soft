@@ -770,44 +770,10 @@ function AddAppraisal(props: any) {
   };
 
   return (
-    <div className={selectMenu == false ? `view` : `miniSideBar`}>
-      {/* <WelcomeHeader>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px",
-            }}
-          >
-            <Text style={{ marginRight: "10px" }}>
-              Welcome {userName} ({userId})
-            </Text>
-            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-              Logged In:
-            </Text>
-            <Text style={{ marginRight: "5px" }}>
-              {dateNow} {timeNow}
-            </Text>
-          </div>
-        </div>
-      </WelcomeHeader> */}
-      <MainHeader>
-        <div onClick={handlemenuClick}>
-          <ArrowBackIosIcon style={{ color: "#FFF" }} />
-        </div>
-      </MainHeader>
+    <div>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderForm()}</div>
-        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );

@@ -652,7 +652,10 @@ function Appraisal(props: any) {
               styles={dropdownStyles}
             />
             <div
-              style={{ marginTop: "10px", cursor: "pointer" }}
+              style={{
+                marginTop: "1.8rem",
+                cursor: "pointer",
+              }}
               onClick={() => {
                 handleAdvanceSearch();
                 // setAdvanceSearch(true);
@@ -873,7 +876,7 @@ function Appraisal(props: any) {
 
   // console.log("data=>", appraisal);
   return (
-    <div className={selectMenu == false ? `view` : `miniSideBar`}>
+    <div>
       {/* <WelcomeHeader>
         <div
           style={{
@@ -903,11 +906,11 @@ function Appraisal(props: any) {
           </div>
         </div>
       </WelcomeHeader> */}
-      <MainHeader>
+      {/* <MainHeader>
         <div onClick={handlemenuClick}>
           <ArrowBackIosIcon style={{ color: "#FFF" }} />
         </div>
-      </MainHeader>
+      </MainHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderData()}</div>

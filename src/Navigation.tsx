@@ -258,9 +258,9 @@ function Navigation() {
         {/* <div className="main-logo">
           <img src={logo_nuage} />
         </div> */}
-        <div className="footer-logo">
+        {/* <div className="footer-logo">
           <img src={hrms_logo} />
-        </div>
+        </div> */}
         {/* <Nav
           onLinkClick={onLinkClick}
           selectedKey={selectedNavKey}

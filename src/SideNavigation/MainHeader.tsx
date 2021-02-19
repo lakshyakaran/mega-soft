@@ -3,6 +3,8 @@ import logo_icon from "../../src/assets/img/logo-icon.png";
 import { initSideBar } from "./sideBar";
 import { customSideBar } from "./custom";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import SmsIcon from "@material-ui/icons/Sms";
 import {
   Dropdown,
   IDropdownOption,
@@ -179,7 +181,7 @@ function MainHeader(props: { children: any }) {
               {moment(dateNow).format("DD-MM-YYYY")} {timeNow}
             </Text>
           </div>
-          <ul className="navbar-nav float-right ml-auto">
+          <ul className="navbar-nav float-right ml-auto d-flex align-items-center">
             <div>
               <Dropdown
                 options={languageOption}
@@ -189,12 +191,11 @@ function MainHeader(props: { children: any }) {
                   languageOption.find((item) => item.key === selectedLanguage)
                     ?.key
                 }
-                className="rolesDropDown"
+                className="rolesDropDown mr-3"
                 styles={dropdownStyles}
-                style={{ marginLeft: "2rem", marginTop: "15px" }}
               />
             </div>
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle waves-effect waves-dark"
                 href=""
@@ -217,8 +218,8 @@ function MainHeader(props: { children: any }) {
                   Something else here
                 </a>
               </div>
-            </li>
-            <li className="nav-item dropdown">
+            </li> */}
+            {/* <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle waves-effect waves-dark"
                 href=""
@@ -293,7 +294,19 @@ function MainHeader(props: { children: any }) {
                   </li>
                 </ul>
               </div>
-            </li>
+            </li> */}
+            <div
+              style={{ cursor: "pointer" }}
+              className="link-icons px-2 nav-link"
+            >
+              <NotificationsIcon style={{ fontSize: "2rem" }} />
+            </div>
+            <div
+              style={{ cursor: "pointer" }}
+              className="link-icons px-2 nav-link"
+            >
+              <SmsIcon style={{ fontSize: "2rem" }} />
+            </div>
             <div
               style={{ cursor: "pointer" }}
               className="link-icons px-2 nav-link"
@@ -301,7 +314,7 @@ function MainHeader(props: { children: any }) {
                 handleLogout();
               }}
             >
-              <PowerSettingsNewIcon />
+              <PowerSettingsNewIcon style={{ fontSize: "2rem" }} />
             </div>
             <img src={logo_ms} className="ms-logo-center" />
             {/* <li className="nav-item dropdown">

@@ -334,12 +334,7 @@ function GoalSetting(props: any) {
   };
 
   return (
-    <div className={selectMenu == false ? `view` : `miniSideBar`}>
-      <MainHeader>
-        <div onClick={handlemenuClick}>
-          <ArrowBackIosIcon style={{ color: "#FFF" }} />
-        </div>
-      </MainHeader>
+    <div>
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">

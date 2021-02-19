@@ -5,7 +5,7 @@
 }
 
 .emp-details-section span {
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .employee-details-tabs .ms-Button--action {
@@ -18,10 +18,10 @@
 }
 
 .employee-details-tabs .ms-Button--action.is-selected {
-    background-color: rgb(52 79 132);
+    background-color: #006994
 }
 
 .employee-details-tabs .ms-Button--action.is-selected:hover {
     color: #FFF;
-    background-color: rgb(41 65 111);
+    background-color: #00597d
 }
