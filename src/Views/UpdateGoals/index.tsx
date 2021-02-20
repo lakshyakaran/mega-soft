@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
-import WelcomeHeader from "../../components/WelcomeHeader";
+import { connect } from "react-redux";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
-import { RootState } from "../../redux/reducers";
 import {
   Dropdown,
   getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
   IconButton,
-  IDatePickerStyles,
   IDropdownOption,
   IIconProps,
   IModalStyles,
   ITextFieldStyles,
-  mergeStyleSets,
   Modal,
   PrimaryButton,
   Stack,
-  Text,
   TextField,
 } from "office-ui-fabric-react";
 import {
-  fetchGoalData,
   fetchGoalDataName,
   update_goals,
 } from "../../redux/actions/goal";
@@ -60,7 +54,7 @@ function UpdateGoals(props: any) {
       orderBy,
       JSON.stringify(filters)
     ).then((response: any) => {
-      console.log("response of Goal===>", response.data);
+      // console.log("response of Goal===>", response.data);
       setUpdateGoalData(response.data[0]);
     });
   }, []);
@@ -146,10 +140,6 @@ function UpdateGoals(props: any) {
   const [errMsgWeightage] = useState("");
   const [errMsgKra] = useState("");
 
-  const [goalType, setGoalType] = useState<IDropdownOption>({
-    key: "",
-    text: "",
-  });
 
   const handleUpdateGoal = () => {
     const addQuery = {
@@ -341,7 +331,7 @@ function UpdateGoals(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Success</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -374,7 +364,7 @@ function UpdateGoals(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Error</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -385,7 +375,7 @@ function UpdateGoals(props: any) {
                 }}
               />
             </div>
-            <div className="modal-content">
+            <div className="modal-content-failed">
               Somthing went wrong. Please try again.
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>

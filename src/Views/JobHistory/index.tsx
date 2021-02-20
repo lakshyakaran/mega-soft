@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
-import WelcomeHeader from "../../components/WelcomeHeader";
+import { connect, useSelector } from "react-redux";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -22,7 +21,6 @@ import {
   Modal,
   PrimaryButton,
   Stack,
-  Text,
   TextField,
 } from "office-ui-fabric-react";
 import moment from "moment";
@@ -156,10 +154,6 @@ function JobHistory(props: any) {
       fontSize: "20px",
     },
   };
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
 
   const [errMsgResponsibility, setErrMsgResponsibility] = useState("");
   const [errMsgPlace, setErrMsgPlace] = useState("");
@@ -190,12 +184,15 @@ function JobHistory(props: any) {
       to_date: moment(toDate).format("YYYY-MM-DD"),
     };
     add_JobHistory(addQuery).then((response: any) => {
-      if (response.status === 200) {
-        setSuccessModal(true);
-      } else {
-        setFailedModal(true);
-      }
-    });
+      setSuccessModal(true);
+      // if (response.status === 200) {
+      // } else {
+      // }
+    })
+    .catch((err)=>{
+      console.log("error", err)
+      setFailedModal(true);
+    })
   };
 
   const stackTokens = { childrenGap: 10 };
@@ -309,7 +306,7 @@ function JobHistory(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Success</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -342,7 +339,7 @@ function JobHistory(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Error</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -353,7 +350,7 @@ function JobHistory(props: any) {
                 }}
               />
             </div>
-            <div className="modal-content">
+            <div className="modal-content-failed">
               Somthing went wrong. Please try again.
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>

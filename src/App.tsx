@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import {
   BrowserRouter,
   Redirect,
@@ -21,19 +21,14 @@ import UpdateGoals from "./Views/UpdateGoals";
 import GoalDetails from "./Views/GoalDetails";
 import Login from "./Views/Login";
 import ChanageColor from "./components/ChanageColor";
-import { initSideBar } from "./SideNavigation/sideBar";
-import { customSideBar } from "./SideNavigation/custom";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
-import $ from "jquery";
 
 import { validateLogin, login } from "./redux/actions/auth";
 
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
-import roleType from "./redux/reducers/roleType";
 import MainHeader from "./SideNavigation/MainHeader";
 import { setCollapedMenu } from "./redux/actions/roleType";
 
@@ -53,53 +48,15 @@ const getQueryParms = () => {
 };
 
 function App(props: any) {
-  // console.log("props==>", props.Auth.isLoggedIn);
-  // const getAccessToken = () => {
-  //   const url = window.location.href;
-  //   console.log("url ==", url);
-  //   const str = url;
-  //   const param = "access_token=";
-  //   let res = str.split("&", 1);
-  //   let n = res[0].search(param);
-
-  //   if (n < 0) {
-  //     return;
-  //   }
-  //   n += param.length;
-  //   let access_token = res[0].substr(n);
-  //   console.log("access_token on load==>", access_token);
-  //   sessionStorage.setItem("access_token", access_token);
-  // };
-  // useEffect(() => {
-  //   getAccessToken();
-  // }, []);
-  const hist = useHistory();
   const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.Auth);
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
 
-  // const msRoute = () => {
-  //   $("a.sidebar-link").on("click", function () {
-  //     const route = String($(this).attr("href"));
-  //     console.log("Menu Option selected ==>", route);
-  //     alert(route);
-  //     // React routing code:
-
-  //     hist.push(route);
-
-  //     return false;
-  //   });
-  // };
 
   useEffect(() => {
-    initSideBar();
-    customSideBar();
-
     dispatch(validateLogin());
   }, []);
 
-  // sessionStorage.setItem("roleType", "Employee");
-  // sessionStorage.setItem("menuType", "0");
 
   useEffect(() => {
     // const stateValue = getQueryParms("state");
@@ -130,7 +87,7 @@ function App(props: any) {
   return (
     <Suspense fallback={null}>
       <BrowserRouter>
-        {auth.isLoggedIn == true ? (
+        {auth.isLoggedIn === true ? (
           <Switch>
             <div className="page-wrapper">
               <Navigation />

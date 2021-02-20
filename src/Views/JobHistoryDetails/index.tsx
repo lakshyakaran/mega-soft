@@ -1,36 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
-import WelcomeHeader from "../../components/WelcomeHeader";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import {
-  add_JobHistory,
-  fetchJobHistory,
   fetchJobHistoryByName,
 } from "../../redux/actions/jobHistory";
 import { RootState } from "../../redux/reducers";
 import {
-  DatePicker,
-  getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
-  IconButton,
-  IDatePickerStyles,
-  IIconProps,
-  IModalStyles,
-  ITextFieldStyles,
-  mergeStyleSets,
-  Modal,
   PrimaryButton,
   Stack,
-  Text,
-  TextField,
 } from "office-ui-fabric-react";
 import moment from "moment";
-import MainHeader from "../../SideNavigation/MainHeader";
-import MenuIcon from "@material-ui/icons/Menu";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { setCollapedMenu } from "../../redux/actions/roleType";
 
 interface ParamTypes {
   employeeId: string;
@@ -64,49 +46,7 @@ function JobHistoryDetails(props: any) {
     );
   }, []);
 
-  const theme = getTheme();
-  const cancelIcon: IIconProps = { iconName: "Cancel" };
-  const iconButtonStyles = {
-    root: {
-      color: "#FFF",
-      marginLeft: "auto",
-      marginTop: "4px",
-      marginRight: "2px",
-    },
-    rootHovered: {
-      color: theme.palette.neutralDark,
-    },
-  };
-  const modalStyle: Partial<IModalStyles> = {
-    root: {},
-    main: {
-      height: "20%",
-      width: "20%",
-      backgroundColor: "#FFF",
-      // padding: "5px",
-    },
-  };
-
-  const datePickerStyle: Partial<IDatePickerStyles> = {
-    // root: {
-    //   width: "250px",
-    // },
-    icon: {
-      color: "rgb(111 144 220)",
-    },
-  };
-  const textfelidStyle: Partial<ITextFieldStyles> = {
-    root: {
-      //   width: "50px",
-    },
-  };
-
-  const controlClass = mergeStyleSets({
-    control: {
-      // margin: "0 0 15px 0",
-      // maxWidth: "150px",
-    },
-  });
+ 
 
   const onChangeInput = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -121,11 +61,9 @@ function JobHistoryDetails(props: any) {
 
   const onchangeToDate = (date: Date | null | undefined): void => {
     setToDate(date || undefined);
-    // const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
   };
   const onchangeFromDate = (date: Date | null | undefined): void => {
     setFromDate(date || undefined);
-    // const appraisalDate: any = moment(date).format("YYYY-MM-DD");
   };
 
   const history = useHistory();
@@ -215,15 +153,6 @@ function JobHistoryDetails(props: any) {
     );
   };
 
-  const dispatch = useDispatch();
-  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
-  const handlemenuClick = () => {
-    if (selectMenu === false) {
-      dispatch(setCollapedMenu(true));
-    } else {
-      dispatch(setCollapedMenu(false));
-    }
-  };
 
   return (
     <div>

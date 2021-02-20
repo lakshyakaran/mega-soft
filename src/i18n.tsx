@@ -6,13 +6,13 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    lng: sessionStorage.getItem("language") || "en",
+    lng: sessionStorage.getItem("language") || "US",
     backend: {
       /* translation file path */
       objectNotation: true,
       loadPath: "/assets/i18n/{{ns}}/{{lng}}.json",
     },
-    fallbackLng: "en",
+    fallbackLng: "US",
     debug: true,
     /* can have multiple namespace, in case you want to divide a huge translation into smaller pieces and load them on demand */
     ns: ["translations"],

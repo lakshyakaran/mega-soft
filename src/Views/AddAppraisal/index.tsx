@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   TextField,
-  ITextFieldStyles,
 } from "office-ui-fabric-react/lib/TextField";
 import { Stack } from "office-ui-fabric-react/lib/Stack";
 import "./style.css";
@@ -19,7 +18,6 @@ import {
   IDatePickerStrings,
   IDatePickerStyles,
   IDropdownOption,
-  IDropdownStyles,
   IIconProps,
   IModalStyles,
   Label,
@@ -30,8 +28,6 @@ import {
   Separator,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
-import WelcomeHeader from "../../components/WelcomeHeader";
-import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -41,15 +37,11 @@ import { useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { add_apprisal } from "../../redux/actions/apprisal";
 import { RootState } from "../../redux/reducers";
-import MainHeader from "../../SideNavigation/MainHeader";
-import MenuIcon from "@material-ui/icons/Menu";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { setCollapedMenu } from "../../redux/actions/roleType";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
   { key: "key3", text: "Non Sales Employees" },
-  // { key: "key4", text: "Management" },
 ];
 
 const reviewFrequencyOptions: IDropdownOption[] = [
@@ -62,30 +54,13 @@ const typeOptions: IDropdownOption[] = [
   { key: "key2", text: "Confirmation Appraisal" },
 ];
 
-const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: {
-    width: 170,
-    border: "0px",
-  },
-};
-
-// interface ParamTypes {
-//   id: string
-// }
 
 const white = getColorFromString("#006994")!;
 
 function AddAppraisal(props: any) {
   const { t, i18n } = useTranslation();
-  // const params = useParams<ParamTypes>();
-  // console.log("id => ", params.id);
   const stackTokens = { childrenGap: 10 };
   const [color, setColor] = useState(white);
-
-  // const updateColor = React.useCallback(
-  //   (ev: any, colorObj: IColor) => setColor(colorObj),
-  //   []
-  // );
 
   const updateColor = (ev: any, colorObj: IColor) => {
     setColor(colorObj);
@@ -343,29 +318,6 @@ function AddAppraisal(props: any) {
     },
   };
 
-  // // const rolesOption: IDropdownOption[] = [
-  // //   { key: "employee", text: "Employee" },
-  // //   { key: "manager", text: "Manager" },
-  // //   { key: "hrContent", text: "HR content" },
-  // // ];
-
-  // const [roles, setRoles] = useState<IDropdownOption>({
-  //   key: "employee",
-  //   text: "",
-  // });
-
-  // const handleRoles = (
-  //   ev?: React.FormEvent<HTMLDivElement>,
-  //   item?: IDropdownOption
-  // ): void => {
-  //   setRoles(
-  //     item || {
-  //       key: "",
-  //       text: "",
-  //     }
-  //   );
-  // };
-  // const dispatch = useDispatch();
 
   const [errMsg, setErrMsg] = useState("");
   const [errMsgDescription, setErrMsgDescription] = useState("");
@@ -448,24 +400,17 @@ function AddAppraisal(props: any) {
       appraisal_to: moment(dateAppraisal).format("YYYY-MM-DD"),
       appraisal_owner: claimsData.owner,
     };
-    // console.log("addQueary=>", addQuery);
     add_apprisal(addQuery).then((response) => {
-      // console.log("response=>", response.data);
-      if (response?.status === 200) {
+      console.log("response=>", response);
+      if (response) {
         setSuccessModal(true);
-        // history.push("/home");
       } else {
-        // console.log("failed==>", failedModal);
         setFailedModal(true);
       }
-
-      // else {
-      //   console.log("then error msg btnClick==>", response);
-      // }
+    })
+    .catch((err) => {
+      console.log("Error in btnClick=>", JSON.stringify(err));
     });
-    // .catch((err) => {
-    //   console.log("Error in btnClick=>", err);
-    // });
   };
 
   const renderForm = () => {
@@ -566,16 +511,8 @@ function AddAppraisal(props: any) {
               label={t("form.Owner")}
               placeholder={t("placeholder.owner")}
               pattern={"^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"}
-              // onGetErrorMessage={(v) =>
-              //   new RegExp(
-              //     "^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"
-              //   ).test(v)
-              //     ? ""
-              //     : "Please give currect pattern"
-              // }
               value={claimsData.owner}
               className="flexGrow w33"
-              // styles={textfelidStyle}
               errorMessage={errMsgOwner}
               name="owner"
               onChange={onChangeInput}
@@ -609,49 +546,6 @@ function AddAppraisal(props: any) {
                 name="kraSettingDevelopmentPlan"
                 onChange={onChangeCheckbox}
               />
-              {/* <Checkbox
-                label={"Summary"}
-                title={"Summary"}
-                checked={claimsData.kraSettingSummary}
-                className="flexGrowCheckBox"
-                name="kraSettingSummary"
-                onChange={onChangeCheckbox}
-              /> */}
-            </div>
-            <div>
-              {/* <Label>Assessment Tabs: </Label>
-              <Checkbox
-                label={"Goals"}
-                title={"Goals"}
-                checked={claimsData.assessmentGoal}
-                className="flexGrowCheckBox"
-                name="assessmentGoal"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Competencies"}
-                title={"Competencies"}
-                checked={claimsData.assessmentCompetencies}
-                className="flexGrowCheckBox"
-                name="assessmentCompetencies"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Development Plans"}
-                title={"Development Plans"}
-                checked={claimsData.assessmentDevelopmentPlan}
-                className="flexGrowCheckBox"
-                name="assessmentSummary"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Summary"}
-                title={"Summary"}
-                checked={claimsData.assessmentSummary}
-                className="flexGrowCheckBox"
-                name="assessmentSummary"
-                onChange={onChangeCheckbox}
-              /> */}
             </div>
             <div>
               <Modal
@@ -707,7 +601,7 @@ function AddAppraisal(props: any) {
                     }}
                   />
                 </div>
-                <div className="modal-content">{t("delete_popup.message")}</div>
+                <div className="modal-content-failed">{t("delete_popup.message")}</div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
                     text={t("buttons.go_back")}

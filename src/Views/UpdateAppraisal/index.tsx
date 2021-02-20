@@ -5,7 +5,6 @@ import {
 } from "office-ui-fabric-react/lib/TextField";
 import { useParams } from "react-router-dom";
 import { Stack } from "office-ui-fabric-react/lib/Stack";
-import "./style.css";
 import {
   DatePicker,
   DayOfWeek,
@@ -17,7 +16,6 @@ import {
   IDatePickerStrings,
   IDatePickerStyles,
   IDropdownOption,
-  IDropdownStyles,
   IIconProps,
   IModalStyles,
   Label,
@@ -27,22 +25,14 @@ import {
   Separator,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
-import WelcomeHeader from "../../components/WelcomeHeader";
-import { Text } from "office-ui-fabric-react/lib/Text";
 import Header from "../../Header";
 import moment from "moment";
 
-import MainHeader from "../../SideNavigation/MainHeader";
-import MenuIcon from "@material-ui/icons/Menu";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { setCollapedMenu } from "../../redux/actions/roleType";
-
 import "./style.css";
 import { useHistory } from "react-router-dom";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { edit_appraisal } from "../../redux/actions/apprisal";
 import { fetchAppraisalDataById } from "../../redux/actions/apprisal";
-import { RootState } from "../../redux/reducers";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -59,12 +49,6 @@ const typeOptions: IDropdownOption[] = [
   { key: "key2", text: "Confirmation Appraisal" },
 ];
 
-const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: {
-    width: 170,
-    border: "0px",
-  },
-};
 
 interface ParamTypes {
   appraisalId: string;
@@ -96,11 +80,6 @@ function UpdateAppraisal(props: any) {
       setUpdateData(response.data[0]);
     });
   }, []);
-
-  // console.log("upadetdata==>", updateData);
-
-  // const appraisalList = useSelector((state: RootState) => state.appraisal.appraisalList) || [];
-  //   const updateData = appraisalList.find(item => item.id === params.appraisalId);
 
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
@@ -238,29 +217,7 @@ function UpdateAppraisal(props: any) {
     },
     { text: "Update Appraisal", key: "d3", as: "h4" },
   ];
-
-  // const [dateReview, setDateReview] = useState<Date | null | undefined>(
-  //   new Date(updateData.review_from)
-  // );
-  // const [dateAppraisal, setdDateAppraisal] = useState<Date | null | undefined>(
-  //   new Date(updateData.appraisal_to)
-  // );
-
-  // const reviewFromDate = (date: Date | null | undefined): void => {
-  //   const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
-  //   // console.log("date==>", reviewFrequencyDate);
-  //   setDateReview(reviewFrequencyDate);
-  // };
-  // const appraisalToDate = (date: Date | null | undefined): void => {
-  //   const appraisalDate: any = moment(date).format("YYYY-MM-DD");
-  //   // console.log("date==>", reviewFrequencyDate);
-  //   setdDateAppraisal(appraisalDate);
-  // };
-
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
+  
   const history = useHistory();
 
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
@@ -272,29 +229,6 @@ function UpdateAppraisal(props: any) {
     },
   };
 
-  // const rolesOption: IDropdownOption[] = [
-  //   { key: "key1", text: "HR" },
-  //   { key: "key2", text: "Manager" },
-  //   { key: "key3", text: "Employee" },
-  // ];
-
-  // const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
-  //   key: "",
-  //   text: "",
-  // });
-
-  // const handleRoles = (
-  //   ev?: React.FormEvent<HTMLDivElement>,
-  //   item?: IDropdownOption
-  // ): void => {
-  //   setReviewSearch(
-  //     item || {
-  //       key: "",
-  //       text: "",
-  //     }
-  //   );
-  // };
-  // const dispatch = useDispatch();
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
   const theme = getTheme();
@@ -494,49 +428,6 @@ function UpdateAppraisal(props: any) {
                 name="kra_settings_tab_development_plan"
                 onChange={onChangeCheckbox}
               />
-              {/* <Checkbox
-                label={"Summary"}
-                title={"Summary"}
-                checked={updateData.kra_settings_tab_summary}
-                className="flexGrowCheckBox"
-                name="kra_settings_tab_summary"
-                onChange={onChangeCheckbox}
-              /> */}
-            </div>
-            <div>
-              {/* <Label>Assessment Tabs: </Label>
-              <Checkbox
-                label={"Goals"}
-                title={"Goals"}
-                checked={updateData.assessment_tab_goals}
-                className="flexGrowCheckBox"
-                name="assessment_tab_goals"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Competencies"}
-                title={"Competencies"}
-                checked={updateData.assessment_tab_competencies}
-                className="flexGrowCheckBox"
-                name="assessment_tab_competencies"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Development Plans"}
-                title={"Development Plans"}
-                checked={updateData.assessment_tab_development_plan}
-                className="flexGrowCheckBox"
-                name="assessment_tab_development_plan"
-                onChange={onChangeCheckbox}
-              />
-              <Checkbox
-                label={"Summary"}
-                title={"Summary"}
-                checked={updateData.assessment_tab_summary}
-                className="flexGrowCheckBox"
-                name="assessment_tab_summary"
-                onChange={onChangeCheckbox}
-              /> */}
             </div>
             <div>
               <Modal
@@ -546,7 +437,7 @@ function UpdateAppraisal(props: any) {
                 styles={modalStyle}
                 // containerClassName={contentStyles.container}
               >
-                <div className="modal-header">
+                <div className="modal-header-local">
                   <div className="modal-title">Success</div>
                   <IconButton
                     styles={iconButtonStyles}
@@ -579,7 +470,7 @@ function UpdateAppraisal(props: any) {
                 styles={modalStyle}
                 // containerClassName={contentStyles.container}
               >
-                <div className="modal-header">
+                <div className="modal-header-local">
                   <div className="modal-title">Error</div>
                   <IconButton
                     styles={iconButtonStyles}
@@ -590,7 +481,7 @@ function UpdateAppraisal(props: any) {
                     }}
                   />
                 </div>
-                <div className="modal-content">
+                <div className="modal-content-failed">
                   Somthing went wrong. Please try again.
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
@@ -644,15 +535,7 @@ function UpdateAppraisal(props: any) {
     );
   };
 
-  const dispatch = useDispatch();
-  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
-  const handlemenuClick = () => {
-    if (selectMenu === false) {
-      dispatch(setCollapedMenu(true));
-    } else {
-      dispatch(setCollapedMenu(false));
-    }
-  };
+  
 
   return (
     <div>

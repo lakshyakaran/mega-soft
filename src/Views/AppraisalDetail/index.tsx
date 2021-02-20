@@ -114,10 +114,7 @@ function AppraisalDetail(props: any) {
                 <span>{i18n.t("form.Owner")}</span> :{" "}
                 {appraisalDetail.appraisal_owner}
               </div>
-              {/* <div className="col-md-4">
-                <span>Counter signing</span> :{" "}
-                {appraisalDetail.counter_signing_name}
-              </div> */}
+             
             </div>
           </div>
           <Separator />
@@ -148,14 +145,7 @@ function AppraisalDetail(props: any) {
                 className="flexGrowCheckBox"
                 name="kra_settings_tab_development_plan"
               />
-              {/* <Checkbox
-                label={"Summary"}
-                title={"Summary"}
-                checked={updateData.kra_settings_tab_summary}
-                className="flexGrowCheckBox"
-                name="kra_settings_tab_summary"
-                onChange={onChangeCheckbox}
-              /> */}
+              
             </div>
           </div>
           <Stack

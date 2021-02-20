@@ -1,38 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
-import WelcomeHeader from "../../components/WelcomeHeader";
+import { connect } from "react-redux";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
-import { RootState } from "../../redux/reducers";
 import {
-  Dropdown,
-  getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
-  IconButton,
-  IDatePickerStyles,
   IDropdownOption,
-  IIconProps,
-  IModalStyles,
-  ITextFieldStyles,
-  mergeStyleSets,
-  Modal,
   PrimaryButton,
   Stack,
-  Text,
-  TextField,
 } from "office-ui-fabric-react";
-import { fetchGoalData, fetchGoalDataName } from "../../redux/actions/goal";
+import {  fetchGoalDataName } from "../../redux/actions/goal";
 
 interface ParamTypes {
   employeeId: string;
   name: string;
 }
 
-const goalOptions: IDropdownOption[] = [
-  { key: "key1", text: "Goal" },
-  { key: "key2", text: "Sub-Goal" },
-];
 
 function GoalDetails(props: any) {
   const params = useParams<ParamTypes>();
@@ -56,17 +39,11 @@ function GoalDetails(props: any) {
       orderBy,
       JSON.stringify(filters)
     ).then((response) => {
-      // console.log("response of Goal===>", response.data);
       setGoalDetails(response.data[0]);
     });
   }, []);
 
-  const textfelidStyle: Partial<ITextFieldStyles> = {
-    root: {
-      //   width: "50px",
-    },
-  };
-
+  
   const onChangeInput = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string

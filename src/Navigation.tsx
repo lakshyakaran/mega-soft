@@ -1,24 +1,13 @@
 import * as React from "react";
 import {
-  Nav,
   INavLink,
-  INavStyles,
   INavLinkGroup,
 } from "office-ui-fabric-react/lib/Nav";
 import { initializeIcons } from "@uifabric/icons";
 import { useHistory, matchPath } from "react-router-dom";
-
-import hrms_logo from "./assets/img/hrms_logo.gif";
-import logo_nuage from "./assets/img/logo_nuage.png";
-import {
-  fetchNavigationBar,
-  sideNavigationData,
-} from "./redux/actions/navigation";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
 import SideNavigation from "./SideNavigation";
-import MainHeader from "./SideNavigation/MainHeader";
 
 initializeIcons();
 
@@ -147,72 +136,11 @@ const navLinkGroups: INavLinkGroup[] = [
   },
 ];
 
-const navStyles: Partial<INavStyles> = {
-  root: {
-    // overflowY: "auto",
-    // width: 208,
-    height: "100%",
-  },
-  link: {
-    width: "200px",
-  },
-  linkText: {
-    color: "#FFF",
-    // fontSize: 12,
-    selectors: {
-      "&:hover": {
-        color: "#FFF",
-      },
-    },
-  },
-  chevronIcon: {
-    color: "#FFF",
-  },
-  compositeLink: {
-    selectors: {
-      "&.is-selected": {
-        background: "#29416f",
-      },
-      "&:hover": {
-        ".ms-Button": {
-          background: "#29416f",
-        },
-        ".ms-Nav-linkText": {
-          // color: "#FFF", // your real styling here
-        },
-        ".ms-Icon": {
-          color: "#FFF",
-        },
-      },
-    },
-  },
-};
 
 function Navigation() {
-  // const { children } = props;
-  const dispatch = useDispatch();
-  const [doctype, setDoctype] = useState("EmployeeAppraisal");
-  const roleType = useSelector((state: RootState) => state.roleType.roleType);
-  const [navData, setNavData]: any = useState();
-  // console.log("navData?????=>", navData);
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
 
-  const navigation = useSelector(
-    (state: RootState) => state.navigationData.navigationData
-  );
-  // console.log("navigation data=>", navigation.links);
-
-  // useEffect((): void => {
-  //   dispatch(fetchNavigationBar(doctype, roleType ? roleType : "Employee"));
-  // }, [doctype, roleType]);
-
-  // useEffect((): void => {
-  //   sideNavigationData(doctype).then((response) => {
-  //     console.log("side nav response", response.message);
-  //     setNavData(response.message);
-  //   });
-  // }, [doctype]);
-
+  
   let history = useHistory();
   const [selectedNavKey, setSelectedNavKey] = React.useState("");
   const onLinkClick = (ev?: React.MouseEvent<HTMLElement>, item?: INavLink) => {
@@ -255,21 +183,7 @@ function Navigation() {
             : `sidebar left-sidebar-collapsed`
         }
       >
-        {/* <div className="main-logo">
-          <img src={logo_nuage} />
-        </div> */}
-        {/* <div className="footer-logo">
-          <img src={hrms_logo} />
-        </div> */}
-        {/* <Nav
-          onLinkClick={onLinkClick}
-          selectedKey={selectedNavKey}
-          ariaLabel="Nav basic example"
-          styles={navStyles}
-          groups={navigation.links}
-        /> */}
         <SideNavigation />
-        {/* <div dangerouslySetInnerHTML={{ __html: navData }} /> */}
       </div>
     </div>
   );

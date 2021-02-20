@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import WelcomeHeader from "../../components/WelcomeHeader";
 import Header from "../../Header";
 import {
   ComboBox,
@@ -14,12 +13,9 @@ import {
   IDetailsListStyles,
   IDropdownOption,
   IDropdownStyles,
-  ITag,
-  Label,
   PrimaryButton,
   Spinner,
   SpinnerSize,
-  TagPicker,
   Text,
 } from "office-ui-fabric-react";
 import { useHistory } from "react-router-dom";
@@ -28,10 +24,7 @@ import { RootState } from "../../redux/reducers";
 import { Pagination } from "@uifabric/experiments";
 import { useTranslation } from "react-i18next/";
 import { filterByEmployee } from "../../redux/actions/apprisal";
-import MainHeader from "../../SideNavigation/MainHeader";
 import { setCollapedMenu } from "../../redux/actions/roleType";
-import MenuIcon from "@material-ui/icons/Menu";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 function GoalSetting(props: any) {
   const dispatch = useDispatch();
@@ -49,14 +42,12 @@ function GoalSetting(props: any) {
 
   const employee = useSelector((state: RootState): any => state.employeeList);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
-  // console.log("roleTYpe==>", roleType)
   const { employeeList, isLoading, total_count, count } = employee;
   const comboBoxRef = useRef<IComboBox>(null);
   const [filterOption, setFilterOption] = useState([]);
 
   useEffect((): void => {
     filterByEmployee(order_by).then((response) => {
-      // console.log("response of employee=>", response.data);
       setFilterOption(response.data);
     });
   }, []);
@@ -402,8 +393,6 @@ function GoalSetting(props: any) {
               <div className="pagination-style">
                 <Pagination
                   format="buttons"
-                  // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-                  // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
                   selectedPageIndex={currentPage}
                   pageCount={Math.ceil(total_count / limitPageLength)}
                   itemsPerPage={limitPageLength}

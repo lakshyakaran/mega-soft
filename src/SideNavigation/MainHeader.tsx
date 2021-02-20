@@ -27,6 +27,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { changeLanguge, onChangeLanguage } from "../redux/actions/application";
+import ReactFlagsSelect from 'react-flags-select';
 
 import i18n from "../i18n";
 
@@ -74,6 +75,7 @@ function MainHeader(props: { children: any }) {
   const userData = useSelector((state: RootState) => state.userData.UserData);
 
   // console.log("userData", userData);
+  const [selectedCountry, setSelectedCountry] = useState("")
 
   const dateNow = new Date().toLocaleDateString();
   const timeNow = new Date().toLocaleTimeString();
@@ -103,49 +105,18 @@ function MainHeader(props: { children: any }) {
     let data: any = item?.key || "";
     dispatch(onChangeLanguage(data));
     i18n.changeLanguage(data);
-
-    // setTimeout(() => {
-    //   Utils.reloadLocale(oldLanguage, languageSelected);
-    //   // history.goBack();
-    // }, 500);
   };
+
+  const handleNewLang = (code:any)=>{
+    dispatch(onChangeLanguage(code));
+    i18n.changeLanguage(code);
+  
+    console.log("code", code)
+  }
 
   return (
     <header className="topbar" data-navbarbg="skin5">
       <nav className="navbar top-navbar navbar-expand-md navbar-dark">
-        {/* <div className="navbar-header" data-logobg="skin5">
-          <a
-            className="nav-toggler waves-effect waves-light d-block d-md-none"
-            href="#"
-          >
-            <i className="ti-menu ti-close"></i>
-          </a>
-          <a
-            className="navbar-brand"
-            href=""
-            onClick={() => {
-              dispatch(setMenuType("1"));
-              history.push("/home");
-            }}
-          >
-            <b className="logo-icon p-l-10">
-              <img src={logo_icon} alt="homepage" className="light-logo" />
-            </b>
-            {renderMenuLogo()}
-          
-          </a>
-          <a
-            className="topbartoggler d-block d-md-none waves-effect waves-light"
-            href=""
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i className="ti-more"></i>
-          </a>
-        </div> */}
         <div
           className="navbar-collapse collapse"
           id="navbarSupportedContent"
@@ -182,7 +153,15 @@ function MainHeader(props: { children: any }) {
             </Text>
           </div>
           <ul className="navbar-nav float-right ml-auto d-flex align-items-center">
-            <div>
+          <ReactFlagsSelect
+            selected ={selectedLanguage}
+            onSelect = {handleNewLang}
+            className="flagSelect"
+            countries={["US","FR"]}
+            customLabels={{"US": "English","FR": "French"}}
+            placeholder="Select Language" 
+          />
+            {/* <div>
               <Dropdown
                 options={languageOption}
                 onChange={handleLanguage}
@@ -194,107 +173,7 @@ function MainHeader(props: { children: any }) {
                 className="rolesDropDown mr-3"
                 styles={dropdownStyles}
               />
-            </div>
-            {/* <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle waves-effect waves-dark"
-                href=""
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                {" "}
-                <i className="mdi mdi-bell font-24"></i>
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#">
-                  Action
-                </a>
-                <a className="dropdown-item" href="#">
-                  Another action
-                </a>
-                <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#">
-                  Something else here
-                </a>
-              </div>
-            </li> */}
-            {/* <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle waves-effect waves-dark"
-                href=""
-                id="2"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                {" "}
-                <i className="font-24 mdi mdi-comment-processing"></i>
-              </a>
-              <div
-                className="dropdown-menu dropdown-menu-right mailbox animated bounceInDown"
-                aria-labelledby="2"
-              >
-                <ul className="list-style-none">
-                  <li>
-                    <div className="">
-                      <a href="#" className="link border-top">
-                        <div className="d-flex no-block align-items-center p-10">
-                          <span className="btn btn-success btn-circle">
-                            <i className="ti-calendar"></i>
-                          </span>
-                          <div className="m-l-10">
-                            <h5 className="m-b-0">Event today</h5>
-                            <span className="mail-desc">
-                              Just a reminder that event
-                            </span>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="#" className="link border-top">
-                        <div className="d-flex no-block align-items-center p-10">
-                          <span className="btn btn-info btn-circle">
-                            <i className="ti-settings"></i>
-                          </span>
-                          <div className="m-l-10">
-                            <h5 className="m-b-0">Settings</h5>
-                            <span className="mail-desc">
-                              You can customize this template
-                            </span>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="#" className="link border-top">
-                        <div className="d-flex no-block align-items-center p-10">
-                          <span className="btn btn-primary btn-circle">
-                            <i className="ti-user"></i>
-                          </span>
-                          <div className="m-l-10">
-                            <h5 className="m-b-0">Pavan kumar</h5>
-                            <span className="mail-desc">
-                              Just see the my admin!
-                            </span>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="#" className="link border-top">
-                        <div className="d-flex no-block align-items-center p-10">
-                          <span className="btn btn-danger btn-circle">
-                            <i className="fa fa-link"></i>
-                          </span>
-                          <div className="m-l-10">
-                            <h5 className="m-b-0">Luanch Admin</h5>
-                            <span className="mail-desc">
-                              Just see the my new admin!
-                            </span>
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </li> */}
+            </div> */}
             <div
               style={{ cursor: "pointer" }}
               className="link-icons px-2 nav-link"

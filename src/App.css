@@ -55,11 +55,27 @@ body {
   background-color: #344f84;
 }
 
+.modal-content-failed {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  font-size: 15px;
+  color: #FF0000;
+}
+
+.modal-content-success {
+  display: flex;
+  justify-content: center;
+  padding: 25px;
+  font-size: 15px;
+  color: #344f84;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 20px;
+   font-size: 20px;
   font-weight: 700;
   color: #FFF;
   background-color: #344f84;
@@ -630,4 +646,11 @@ button:focus {
   -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
   box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s;
+}
+
+.flagSelect {
+  width: 150px;
+  background: #FFF;
+  height: 40px;
+
 }

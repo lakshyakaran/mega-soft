@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
   DetailsList,
-  DetailsRow,
   IColumn,
-  IDetailsListProps,
   IDetailsListStyles,
-  IDetailsRowStyles,
 } from "office-ui-fabric-react/lib/DetailsList";
 import "office-ui-fabric-react/dist/css/fabric.css";
 import {
@@ -28,8 +25,6 @@ import {
   IBreadcrumbStyles,
 } from "office-ui-fabric-react/lib/Breadcrumb";
 import Header from "../../Header";
-// import Panel from "../../components/Panel";
-import WelcomeHeader from "../../components/WelcomeHeader";
 import { Pagination } from "@uifabric/experiments";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Text } from "office-ui-fabric-react/lib/Text";
@@ -37,25 +32,17 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import ZoomInIcon from "@material-ui/icons/ZoomIn";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 import "./style.css";
 import { RootState } from "../../redux/reducers";
 import {
-  deleteAppraisalByID,
   edit_appraisal,
   fetchAppraisalData,
   fetchAppraisalDataById,
 } from "../../redux/actions/apprisal";
 import { useHistory, useParams } from "react-router-dom";
-import { delete_appraisal } from "../../redux/actions/apprisal";
 import moment from "moment";
-import MenuIcon from "@material-ui/icons/Menu";
 import { useTranslation } from "react-i18next";
-import MainHeader from "../../SideNavigation/MainHeader";
-import { setCollapedMenu } from "../../redux/actions/roleType";
-// import { roleType } from "../../redux/actions/roleType";
 
 interface ParamTypes {
   appraisalId: string;
@@ -63,7 +50,7 @@ interface ParamTypes {
 
 function Appraisal(props: any) {
   const { t, i18n } = useTranslation();
-  // const [hasMoreRecord, setHasMoreRecord] = useState(true);
+  const history = useHistory();
   const [limitStart, setLimitSTart] = useState(0);
   const [limitPageLength, setLimitPageLength] = useState(5);
   const [orderBy, setOrderBy] = useState("asc");
@@ -90,8 +77,7 @@ function Appraisal(props: any) {
     return a;
   });
 
-  // console.log("newDate==>", newAppraisalList);
-
+  
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
@@ -128,9 +114,7 @@ function Appraisal(props: any) {
     filtersByFormat,
   ]);
 
-  // const params = useParams<ParamTypes>();
-  // console.log("id => ", params.id);
-
+  
   const columns: IColumn[] = [
     {
       key: "01",
@@ -147,18 +131,6 @@ function Appraisal(props: any) {
       sortDescendingAriaLabel: "Sorted Z to A",
       isResizable: false,
     },
-    // {
-    //   key: "03",
-    //   name: "Name",
-    //   fieldName: "name",
-    //   minWidth: 10,
-    //   maxWidth: 110,
-    //   isSortedDescending: false,
-    //   sortAscendingAriaLabel: "Sorted A to Z",
-    //   onColumnClick: _onColumnClick,
-    //   sortDescendingAriaLabel: "Sorted Z to A",
-    //   isResizable: false,
-    // },
     {
       key: "04",
       name: i18n.t("form.Description"),
@@ -285,7 +257,6 @@ function Appraisal(props: any) {
 
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [updateData, setUpdateData]: any = useState({});
-  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
 
   const deleteAppraisal = (item: any) => {
     setDeleteItemId(item.id);
@@ -306,16 +277,12 @@ function Appraisal(props: any) {
     setShowDelete(true);
   };
 
-  // console.log("deleteItemId=>", deleteItemId);
-
   const handleDeleteAppraisal = () => {
     const deleteQuery = {
       id: deleteItemId,
       is_deleted: 1,
     };
-    // console.log("deleteQuery==>", deleteQuery);
     edit_appraisal(deleteQuery).then((response) => {
-      // console.log("response=>", response);
       setShowDelete(false);
       setShowDeleteSuccess(true);
       setDeleteItemId(null);
@@ -328,7 +295,6 @@ function Appraisal(props: any) {
   };
 
   const updateAppriasal = (item: any) => {
-    // localStorage.setItem('apprisal_data', JSON.stringify(item));
     history.push(`/appraisal/update/${item.id}`);
   };
 
@@ -391,11 +357,7 @@ function Appraisal(props: any) {
 
   const [searchById, setSearchById] = useState("");
   const [searchByDescription, setSearchByDescription] = useState("");
-  // const [appraisalToSearch, setAppraisalToSearch] = useState("");
-  // const [role, setRole] = useState<IDropdownOption>({
-  //   key: "employee",
-  //   text: "",
-  // });
+  
 
   const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
     key: "",
@@ -417,11 +379,7 @@ function Appraisal(props: any) {
     text?: string
   ): void => {
     setSearchById(text || "");
-    // if(text === "" && searchById !== "") {
-    //   setFiltersById("");
-    //   setLimitSTart(0);
-    //   setCurentPage(0)
-    // }
+    
   };
 
   const itemSearchDescription = (
@@ -429,11 +387,7 @@ function Appraisal(props: any) {
     text?: string
   ): void => {
     setSearchByDescription(text || "");
-    // if(text === "" && searchById !== "") {
-    //   setFiltersById("");
-    //   setLimitSTart(0);
-    //   setCurentPage(0)
-    // }
+    
   };
 
   const itemSearchReview = (
@@ -472,29 +426,6 @@ function Appraisal(props: any) {
     );
   };
 
-  // const handleRoles = (
-  //   ev?: React.FormEvent<HTMLDivElement>,
-  //   item?: IDropdownOption
-  // ): void => {
-  //   setRole(
-  //     item || {
-  //       key: "",
-  //       text: "",
-  //     }
-  //   );
-  // };
-
-  // const itemSearchApprisalTo = (
-  //   ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-  //   text?: string
-  // ): void => {
-  //   setAppraisalToSearch(text || "");
-  //   // if(text === "" && searchById !== "") {
-  //   //   setFiltersById("");
-  //   //   setLimitSTart(0);
-  //   //   setCurentPage(0)
-  //   // }
-  // };
 
   const listStyle: Partial<IDetailsListStyles> = {
     headerWrapper: {
@@ -533,12 +464,7 @@ function Appraisal(props: any) {
     { key: "Confirmation Appraisal", text: "Confirmation Appraisal" },
   ];
 
-  // const rolesOption: IDropdownOption[] = [
-  //   { key: "employee", text: "Employee" },
-  //   { key: "manager", text: "Manager" },
-  //   { key: "hrContact", text: "HR Contact" },
-  // ];
-
+  
   const dropdownStyles: Partial<IDropdownStyles> = {
     dropdown: {
       // width: 170,
@@ -546,11 +472,6 @@ function Appraisal(props: any) {
     },
   };
 
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
-  const history = useHistory();
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
   const [advanceSearch, setAdvanceSearch] = useState(false);
 
   const handleAdvanceSearch = () => {
@@ -572,18 +493,7 @@ function Appraisal(props: any) {
       fontSize: "20px",
     },
   };
-  const renderRow: IDetailsListProps["onRenderRow"] = (props) => {
-    const customStyles: Partial<IDetailsRowStyles> = {};
-    if (props) {
-      if (props.itemIndex % 2 === 0) {
-        // Every other row renders with a different background color
-        customStyles.root = { backgroundColor: theme.palette.themeLighterAlt };
-      }
-
-      return <DetailsRow {...props} styles={customStyles} />;
-    }
-    return null;
-  };
+  
 
   const renderNoData = () => {
     return (
@@ -596,17 +506,6 @@ function Appraisal(props: any) {
           flexDirection: "column",
         }}
       >
-        {/* <PrimaryButton
-          text="New Appraisal"
-          iconProps={{ iconName: "Add" }}
-          allowDisabledFocus
-          onClick={() => {
-            history.push("/addApprisal");
-          }}
-          style={{ marginLeft: "auto", alignSelf: "center" }}
-          disabled={false}
-          checked={false}
-        /> */}
         <Text
           style={{
             color: "#aaa",
@@ -621,8 +520,7 @@ function Appraisal(props: any) {
     );
   };
 
-  // console.log("appraisal data=>>", appraisalList);
-
+  
   const renderData = () => {
     return (
       <React.Fragment>
@@ -658,8 +556,6 @@ function Appraisal(props: any) {
               }}
               onClick={() => {
                 handleAdvanceSearch();
-                // setAdvanceSearch(true);
-                // setAdvanceSearch(false);
               }}
             >
               <MoreHorizIcon style={{ color: "#344f84", marginLeft: "20px" }} />
@@ -695,7 +591,6 @@ function Appraisal(props: any) {
             }
           >
             <Dropdown
-              // label="Appraisal Type"
               label={t("form.Appraisal_To")}
               placeholder={t("placeholder.select")}
               options={searchAppraisal}
@@ -734,33 +629,16 @@ function Appraisal(props: any) {
               styles={listStyle}
               items={newAppraisalList}
               className="detail-list"
-              // onRenderRow={renderRow}
               columns={columns}
               selectionMode={0}
             />
             <div className="pagination-style">
               <Pagination
                 format="buttons"
-                // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-                // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
                 selectedPageIndex={currentPage}
-                // pageCount={hasMoreRecord ? currentPage + 2 : currentPage + 1}
                 pageCount={Math.ceil(total_count / limitPageLength)}
-                // itemsCount
                 itemsPerPage={limitPageLength}
-                // itemsPerPage={appraisalList.count}
-                // pageRangeDisplayed= {currentPage}
-                // totalItemCount={limitPageLength * 2}
                 totalItemCount={total_count}
-                // numberOfPageButton={2}
-                // lastPageIconProps={{
-                //   iconName: "DoubleChevronRight",
-                //   style: { display: "none" },
-                // }}
-                // firstPageIconProps={{
-                //   iconName: "ChevronRight",
-                //   style: { display: "none" },
-                // }}
                 onPageChange={(page) => {
                   setLimitSTart(page * limitPageLength);
                   setCurentPage(page);
@@ -778,7 +656,7 @@ function Appraisal(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">{t("delete_popup.heading")}</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -825,7 +703,7 @@ function Appraisal(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Success</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -864,57 +742,11 @@ function Appraisal(props: any) {
     );
   };
 
-  const [collapsedMenu, setCollapsedMenu] = useState(false);
-
-  const handlemenuClick = () => {
-    if (selectMenu === false) {
-      dispatch(setCollapedMenu(true));
-    } else {
-      dispatch(setCollapedMenu(false));
-    }
-  };
-
-  // console.log("data=>", appraisal);
   return (
     <div>
-      {/* <WelcomeHeader>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px",
-            }}
-          >
-            <Text style={{ marginRight: "10px" }}>
-              Welcome {userName} ({userId})
-            </Text>
-            
-            <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
-              Logged In:
-            </Text>
-            <Text style={{ marginRight: "5px" }}>
-              {dateNow} {timeNow}
-            </Text>
-          </div>
-        </div>
-      </WelcomeHeader> */}
-      {/* <MainHeader>
-        <div onClick={handlemenuClick}>
-          <ArrowBackIosIcon style={{ color: "#FFF" }} />
-        </div>
-      </MainHeader> */}
       <Header item={itemsWithHeading} styles={breadCrumStyle} />
       <div className="content">
         <div className="data-container">{renderData()}</div>
-        {/* <div className="right-container"></div> */}
       </div>
     </div>
   );
@@ -923,8 +755,4 @@ export default connect((state) => ({
   ...state,
 }))(Appraisal);
 
-// const styles = {
-//   advanceSearch:{
-//     dispaly:"flex"
-//   }
-// }
+

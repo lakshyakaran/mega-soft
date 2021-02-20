@@ -115,21 +115,7 @@
     padding: 5px;
 }
 
-.modal-content {
-    display: flex;
-    justify-content: center;
-    padding: 30px;
-    font-size: 15px;
-    color: #FF0000;
-}
 
-.modal-content-success {
-    display: flex;
-    justify-content: center;
-    padding: 25px;
-    font-size: 15px;
-    color: #344f84;
-}
 
 .ms-logo {
     width: 65px;

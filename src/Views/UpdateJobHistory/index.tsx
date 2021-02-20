@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
-import WelcomeHeader from "../../components/WelcomeHeader";
+import { connect, useSelector } from "react-redux";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import {
-  add_JobHistory,
   fetchJobHistory,
   update_JobHistory,
 } from "../../redux/actions/jobHistory";
@@ -23,15 +21,10 @@ import {
   Modal,
   PrimaryButton,
   Stack,
-  Text,
   TextField,
 } from "office-ui-fabric-react";
 import moment from "moment";
 
-import MainHeader from "../../SideNavigation/MainHeader";
-import MenuIcon from "@material-ui/icons/Menu";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { setCollapedMenu } from "../../redux/actions/roleType";
 
 interface ParamTypes {
   name: string;
@@ -104,8 +97,6 @@ function UpdateJobHistory(props: any) {
 
   const controlClass = mergeStyleSets({
     control: {
-      // margin: "0 0 15px 0",
-      // maxWidth: "150px",
     },
   });
 
@@ -122,11 +113,9 @@ function UpdateJobHistory(props: any) {
 
   const onchangeToDate = (date: Date | null | undefined): void => {
     setToDate(date || undefined);
-    // const reviewFrequencyDate: any = moment(date).format("YYYY-MM-DD");
   };
   const onchangeFromDate = (date: Date | null | undefined): void => {
     setFromDate(date || undefined);
-    // const appraisalDate: any = moment(date).format("YYYY-MM-DD");
   };
 
   const history = useHistory();
@@ -166,11 +155,6 @@ function UpdateJobHistory(props: any) {
       fontSize: "20px",
     },
   };
-  const userName = props.userData.UserData[0].name;
-  const userId = props.userData.UserData[0].id;
-  const dateNow = new Date().toLocaleDateString();
-  const timeNow = new Date().toLocaleTimeString();
-
   const [errMsgResponsibility, setErrMsgResponsibility] = useState("");
   const [errMsgPlace, setErrMsgPlace] = useState("");
   const [errMsgPosition, setErrMsgPosition] = useState("");
@@ -324,7 +308,7 @@ function UpdateJobHistory(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Success</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -357,7 +341,7 @@ function UpdateJobHistory(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Error</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -368,7 +352,7 @@ function UpdateJobHistory(props: any) {
                 }}
               />
             </div>
-            <div className="modal-content">
+            <div className="modal-content-failed">
               Somthing went wrong. Please try again.
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
@@ -388,15 +372,6 @@ function UpdateJobHistory(props: any) {
     );
   };
 
-  const dispatch = useDispatch();
-  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
-  const handlemenuClick = () => {
-    if (selectMenu === false) {
-      dispatch(setCollapedMenu(true));
-    } else {
-      dispatch(setCollapedMenu(false));
-    }
-  };
 
   return (
     <div>

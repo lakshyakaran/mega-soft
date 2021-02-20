@@ -9,7 +9,6 @@ import {
   IIconProps,
   IModalStyles,
   ITextFieldStyles,
-  Label,
   Link,
   Modal,
   Pivot,
@@ -24,7 +23,6 @@ import {
 } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import WelcomeHeader from "../../components/WelcomeHeader";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -37,15 +35,9 @@ import { fetchEmployeeDataByID } from "../../redux/actions/employeeData";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { Pagination } from "@uifabric/experiments";
-import jobHistory from "../../redux/reducers/jobHistory";
-import JobHistoryDetails from "../JobHistoryDetails";
-import { setCollapedMenu } from "../../redux/actions/roleType";
-import MenuIcon from "@material-ui/icons/Menu";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import {
   fetchGoalData,
   fetchGoalDataName,
@@ -57,7 +49,6 @@ import {
 } from "../../redux/actions/developmentPlan";
 import "./style.css";
 import moment from "moment";
-import MainHeader from "../../SideNavigation/MainHeader";
 
 interface ParamTypes {
   employeeId: string;
@@ -75,7 +66,6 @@ function EmployeeDetails(props: any) {
 
   const [employeeData, setEmployeeData]: any = useState({});
   const history = useHistory();
-  const [employeeDetails, setEmployeeDetails]: any = useState({});
 
   const [currentPage, setCurentPage] = useState(0);
   const [currentPageGoal, setCurentPageGoal] = useState(0);
@@ -285,26 +275,6 @@ function EmployeeDetails(props: any) {
   };
 
   const columnsJobHistory: IColumn[] = [
-    // {
-    //   key: "02",
-    //   name: "Appraisal ID",
-    //   fieldName: "appraisal_id",
-    //   minWidth: 50,
-    //   maxWidth: 90,
-    //   isSortedDescending: false,
-    //   isRowHeader: true,
-    //   isResizable: false,
-    // },
-    // {
-    //   key: "03",
-    //   name: "Employee ID",
-    //   fieldName: "employee_id",
-    //   minWidth: 50,
-    //   maxWidth: 80,
-    //   isRowHeader: true,
-    //   sortDescendingAriaLabel: "Sorted Z to A",
-    //   isResizable: false,
-    // },
     {
       key: "06",
       name: "Position Held",
@@ -702,13 +672,11 @@ function EmployeeDetails(props: any) {
       orderBy,
       JSON.stringify(filters)
     ).then((response: any) => {
-      // console.log(response.data);
       setUpdateData(response.data[0]);
     });
     setShowDelete(true);
   };
 
-  // console.log("deleteItemId=>", updateData)
 
   const handleDeleteGoal = () => {
     const deleteQuery = {
@@ -716,7 +684,6 @@ function EmployeeDetails(props: any) {
       is_deleted: 1,
     };
     update_goals(deleteQuery).then((response) => {
-      // console.log("response=>", response);
       setShowDelete(false);
       setShowDeleteSuccess(true);
       setDeleteItemId(null);
@@ -724,35 +691,11 @@ function EmployeeDetails(props: any) {
     });
   };
 
-  const operations = [
-    {
-      sno: "01",
-      action: "action1",
-      employeeID: "145728",
-      employeeName: "PRIYA GUPTA",
-      managerID: "124590",
-      managerName: "PINKO KUMAR",
-      status: "Pending With Employee",
-      apprisalType: "Goal Sheet",
-    },
-    {
-      sno: "02",
-      action: "action1",
-      employeeID: "145728",
-      employeeName: "PRIYA GUPTA",
-      managerID: "124590",
-      managerName: "PINKO KUMAR",
-      status: "Pending With Employee",
-      apprisalType: "Goal Sheet",
-    },
-  ];
 
   const [showDevelopment, setShowDevelopment] = useState(false);
 
   const handleDevelpmentDatachange = () => {
-    // console.log("developmentData=> ", developmentData);
     const devPlan = [...developmentData];
-    // console.log("devPlan=>", devPlan);
     const changedQuery = {
       doctype: "EmployeeDevelopmentPlan",
       data: {
@@ -760,7 +703,6 @@ function EmployeeDetails(props: any) {
       },
     };
     handleDevelopmentDataChange(changedQuery).then((response: any) => {
-      // console.log("update successfully =>", response);
       setShowDevelopment(true);
     });
   };
@@ -903,7 +845,7 @@ function EmployeeDetails(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Delete</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -950,7 +892,7 @@ function EmployeeDetails(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Success</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -1005,8 +947,6 @@ function EmployeeDetails(props: any) {
             <div className="pagination-style">
               <Pagination
                 format="buttons"
-                // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-                // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
                 selectedPageIndex={currentPageGoal}
                 pageCount={Math.ceil(goalTotalCount / limitPageLengthGoal)}
                 itemsPerPage={limitPageLengthGoal}
@@ -1061,7 +1001,7 @@ function EmployeeDetails(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Delete</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -1108,7 +1048,7 @@ function EmployeeDetails(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Success</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -1198,7 +1138,7 @@ function EmployeeDetails(props: any) {
             styles={modalStyle}
             // containerClassName={contentStyles.container}
           >
-            <div className="modal-header">
+            <div className="modal-header-local">
               <div className="modal-title">Success</div>
               <IconButton
                 styles={iconButtonStyles}
@@ -1236,7 +1176,6 @@ function EmployeeDetails(props: any) {
     );
   };
 
-  // const joiningDate = moment(employeeData.date_of_joining).format("DD-MM-YYYY");
 
   const renderEmployeeDetails = () => {
     return (
@@ -1275,100 +1214,7 @@ function EmployeeDetails(props: any) {
               </div>
             </div>
           </div>
-          {/* <div className="row-jobHistory d-none">
-            <TextField
-              readOnly={true}
-              value={employeeData.employee_id}
-              placeholder="Employee ID"
-              label="Employee Id"
-              name="id"
-              styles={textfelidStyle}
-              // value={jobHistory[0].employee_id}
-              // onChange={onChangeInput}
-              className="flexGrow"
-            />
-            <TextField
-              readOnly={true}
-              value={employeeData.employee_name}
-              placeholder="Employee Name"
-              label="Employee Name"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="appraisal_description"
-              // onChange={onChangeInput}
-            />
-            <TextField
-              readOnly={true}
-              value={employeeData.designation}
-              placeholder="Designation"
-              label="Designation"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="appraisal_description"
-            />
-          </div>
-          <div className="row-jobHistory d-none">
-            <TextField
-              readOnly={true}
-              value={employeeData.location}
-              placeholder="Location"
-              label="Location"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="appraisal_description"
-            />
-            <TextField
-              readOnly={true}
-              value={employeeData.department}
-              placeholder="Department"
-              label="Department"
-              name="id"
-              // onChange={onChangeInput}
-              styles={textfelidStyle}
-              className="flexGrow"
-            />
-            <TextField
-              readOnly={true}
-              value={employeeData.date_of_joining}
-              placeholder="Date of Joining"
-              label="Date of Joining"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="appraisal_description"
-            />
-          </div>
-          <div className="row-jobHistory d-none">
-            <TextField
-              readOnly={true}
-              // value={employeeData.date_of_joining}
-              placeholder="Reporting Officer"
-              label="Reporting Officer"
-              styles={textfelidStyle}
-              className="flexGrow"
-              name="appraisal_description"
-              // onChange={onChangeInput}
-            />
-            <TextField
-              readOnly={true}
-              value={employeeData.reviewer_name}
-              placeholder="Reviewer"
-              label="Reviewer"
-              name="id"
-              styles={textfelidStyle}
-              // onChange={onChangeInput}
-              className="flexGrow"
-            />
-            <TextField
-              readOnly={true}
-              value={employeeData.counter_signing_name}
-              placeholder="Counter signing"
-              label="Counter signing"
-              name="id"
-              styles={textfelidStyle}
-              // onChange={onChangeInput}
-              className="flexGrow"
-            />
-          </div> */}
+          
         </div>
         <div
           style={{ marginTop: "10px" }}
@@ -1394,14 +1240,7 @@ function EmployeeDetails(props: any) {
     );
   };
 
-  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
-  const handlemenuClick = () => {
-    if (selectMenu === false) {
-      dispatch(setCollapedMenu(true));
-    } else {
-      dispatch(setCollapedMenu(false));
-    }
-  };
+  
 
   return (
     <div>

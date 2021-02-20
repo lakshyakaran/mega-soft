@@ -23,6 +23,9 @@ export const fetchAppraisalData = (
 ) => async (dispatch: any): Promise<any> => {
   const token = sessionStorage.getItem("access_token");
   if (token === null) {
+    dispatch({
+      type: "LOGOUT_SUCCESS",
+    });
     return false;
   }
   const accessToken = "bearer " + token;
@@ -67,7 +70,7 @@ export const fetchAppraisalData = (
       },
     });
     const responseBody = response.data;
-    console.log("Appraisal api response =>", responseBody);
+    // console.log("Appraisal api response =>", responseBody);
     dispatch({
       type: "FETCH_APPRAISAL_LIST_SUCCESS",
       payload: responseBody,
@@ -141,8 +144,7 @@ export const fetchAppraisalDataById = async (
 };
 
 export const add_apprisal = async (data: any) => {
-  try {
-    const token = sessionStorage.getItem("access_token");
+  const token = sessionStorage.getItem("access_token");
     if (token === null) {
       return false;
     }
@@ -158,14 +160,7 @@ export const add_apprisal = async (data: any) => {
       data: JSON.stringify(data),
     });
     return response;
-  } catch (error) {
-    console.log("error in catch block=>", JSON.stringify(error));
-    return {
-      ...error,
-    };
-  }
-};
-
+} 
 export const edit_appraisal = async (data: any) => {
   try {
     const token = sessionStorage.getItem("access_token");
