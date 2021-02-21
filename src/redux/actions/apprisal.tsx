@@ -77,7 +77,9 @@ export const fetchAppraisalData = (
     });
     return responseBody;
   } catch (error) {
-    // console.log("error in getting data", error);
+    dispatch({
+      type: "LOGOUT_SUCCESS",
+    });
     return {
       ...error,
     };

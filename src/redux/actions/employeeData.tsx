@@ -41,7 +41,10 @@ export const fetchEmployeeData = (
     });
     return responseBody;
   } catch (error) {
-    // console.log("error in getting data", error);
+    dispatch({
+      type: "LOGOUT_SUCCESS",
+    });
+    console.log("error in getting employee data =>", error);
     return {
       ...error,
     };
