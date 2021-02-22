@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiBase } from "../../config.json";
 
 export const fetchDevelopmentPlan = async (
   limit_start = 0,
@@ -12,7 +13,7 @@ export const fetchDevelopmentPlan = async (
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/EmployeeDevelopmentPlan`,
+    url: `${apiBase}/EmployeeDevelopmentPlan`,
     params: {
       limit_start,
       limit_page_length,
@@ -36,7 +37,7 @@ export const fetchDevelopmentPlan = async (
     },
   });
   //   console.log("fetch DEVELOPMENT api response =>", response.data);
-  const responseBody = await response.data;
+  const responseBody = response.data;
   return responseBody;
 };
 
@@ -57,6 +58,6 @@ export const handleDevelopmentDataChange = async (data: any) => {
     data: JSON.stringify(data),
   });
   // console.log("Development data changed =>", response);
-  const responseBody = await response.data;
+  const responseBody = response.data;
   return responseBody;
 };

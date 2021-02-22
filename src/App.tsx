@@ -23,7 +23,6 @@ import Login from "./Views/Login";
 import ChanageColor from "./components/ChanageColor";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
-
 import { validateLogin, login } from "./redux/actions/auth";
 
 import "./App.css";
@@ -52,11 +51,9 @@ function App(props: any) {
   const auth = useSelector((state: RootState) => state.Auth);
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
 
-
   useEffect(() => {
     dispatch(validateLogin());
   }, []);
-
 
   useEffect(() => {
     // const stateValue = getQueryParms("state");
@@ -95,7 +92,9 @@ function App(props: any) {
                 <div className={selectMenu == false ? `view` : `miniSideBar`}>
                   <MainHeader>
                     <div onClick={handlemenuClick}>
-                      <ChevronLeftIcon style={{ color: "#FFF" }} />
+                      <ChevronLeftIcon
+                        style={{ color: "#FFF", cursor: "pointer" }}
+                      />
                     </div>
                   </MainHeader>
 

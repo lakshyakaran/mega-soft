@@ -1,19 +1,5 @@
 import axios from "axios";
-import accessToken from "../../apiBase.json";
-
-export const addApprisal = (item: any) => {
-  return {
-    type: "ADD_APPRISAL",
-    payload: item,
-  };
-};
-
-export const deleteAppraisalByID = (item: any) => {
-  return {
-    type: "DELETE_APPRAISAL",
-    payload: item,
-  };
-};
+import { apiBase } from "../../config.json";
 
 export const fetchAppraisalData = (
   limit_start = 0,
@@ -34,7 +20,7 @@ export const fetchAppraisalData = (
       type: "FETCH_APPRAISAL_LIST_START",
     });
     const response = await axios({
-      url: `http://52.146.0.154/api/resource/Appraisal`,
+      url: `${apiBase}/Appraisal`,
       params: {
         limit_start,
         limit_page_length,
@@ -99,7 +85,7 @@ export const fetchAppraisalDataById = async (
     }
     const accessToken = "bearer " + token;
     const response = await axios({
-      url: `http://52.146.0.154/api/resource/Appraisal`,
+      url: `${apiBase}/Appraisal`,
       params: {
         limit_start,
         limit_page_length,
@@ -134,7 +120,7 @@ export const fetchAppraisalDataById = async (
         Authorization: accessToken,
       },
     });
-    const responseBody = await response.data;
+    const responseBody = response.data;
     // console.log("api data by id", responseBody)
     return responseBody;
   } catch (error) {
@@ -147,22 +133,22 @@ export const fetchAppraisalDataById = async (
 
 export const add_apprisal = async (data: any) => {
   const token = sessionStorage.getItem("access_token");
-    if (token === null) {
-      return false;
-    }
-    const accessToken = "bearer " + token;
-    const response = await axios({
-      url: `http://52.146.0.154/api/resource/Appraisal`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: accessToken,
-      },
-      data: JSON.stringify(data),
-    });
-    return response;
-} 
+  if (token === null) {
+    return false;
+  }
+  const accessToken = "bearer " + token;
+  const response = await axios({
+    url: `${apiBase}/Appraisal`,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: accessToken,
+    },
+    data: JSON.stringify(data),
+  });
+  return response;
+};
 export const edit_appraisal = async (data: any) => {
   try {
     const token = sessionStorage.getItem("access_token");
@@ -171,7 +157,7 @@ export const edit_appraisal = async (data: any) => {
     }
     const accessToken = "bearer " + token;
     const response = await axios({
-      url: `http://52.146.0.154/api/resource/Appraisal/${data.id}`,
+      url: `${apiBase}/Appraisal/${data.id}`,
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -181,29 +167,7 @@ export const edit_appraisal = async (data: any) => {
       data: JSON.stringify(data),
     });
     // console.log("api response ==>", response)
-    return await response;
-  } catch (error) {
-    return {
-      ...error,
-    };
-  }
-};
-
-export const delete_appraisal = async (data: any) => {
-  try {
-    const response = await axios({
-      url: `http://52.146.0.154/api/resource/Appraisal/${data}`,
-      method: "DELETE",
-      headers: {
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: " token 5ccbc7af363c163:b6060f97664d556",
-      },
-      data: JSON.stringify(data),
-    });
-    console.log("delete api response ==>", response);
-    return await response;
+    return response;
   } catch (error) {
     return {
       ...error,
@@ -219,7 +183,7 @@ export const filterByEmployee = async (order_by = "employee_name asc") => {
     }
     const accessToken = "bearer " + token;
     const response = await axios({
-      url: `http://52.146.0.154/api/resource/Employee`,
+      url: `${apiBase}/Employee`,
       params: {
         order_by,
         fields: JSON.stringify(["employee_id", "employee_name"]),

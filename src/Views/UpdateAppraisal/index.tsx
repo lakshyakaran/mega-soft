@@ -49,7 +49,6 @@ const typeOptions: IDropdownOption[] = [
   { key: "key2", text: "Confirmation Appraisal" },
 ];
 
-
 interface ParamTypes {
   appraisalId: string;
 }
@@ -217,7 +216,7 @@ function UpdateAppraisal(props: any) {
     },
     { text: "Update Appraisal", key: "d3", as: "h4" },
   ];
-  
+
   const history = useHistory();
 
   const breadCrumStyle: Partial<IBreadcrumbStyles> = {
@@ -534,8 +533,6 @@ function UpdateAppraisal(props: any) {
       </React.Fragment>
     );
   };
-
-  
 
   return (
     <div>

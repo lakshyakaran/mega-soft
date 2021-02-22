@@ -13,7 +13,7 @@
   },
   "delete_popup": {
     "heading": "Delete",
-    "pop_up":"Are you sure you want to delete this item?",
+    "pop_up": "Are you sure you want to delete this item?",
     "message": "Somthing went wrong. Please try again."
   },
   "success_popup": {
@@ -45,32 +45,39 @@
     "select_a_date": "Select a date",
     "owner": "Enter owner name"
   },
-  "sidebar_menu":{
+  "sidebar_menu": {
     "employee": "Employee",
     "manager": "Manager",
-    "appraisal": "Appraisal",
-    "setup":"Setup",
-    "goal_setting":"Goal Setting",
-    "self_assessment": "Self Assessment",
-    "team_goal_setting": "Team Goal Setting",
-    "team_assessment": "Team Assessment",
-    "confirmation":"Confirmation",
+    "hr_contact": "HR Contact",
+    "appraisal_setup": "Setup",
+    "appraisal_goal-setting": "Goal Setting",
+    "appraisal_self-assessment": "Self Assessment",
+    "appraisal_team-goal-setting": "Team Goal Setting",
+    "appraisal_team-assessment": "Team Assessment",
+    "confirmation": "Confirmation",
     "confirmation_status": "Confirmation Status",
-    "confirmation_letter": "Confirmation Letter"
+    "confirmation_letter": "Confirmation Letter",
+    "appraisal": {
+      "setup": "Setup",
+      "goal-setting":"Goal Setting",
+      "team-goal-setting":"Team Goal Setting",
+      "team-assessment":"Team Assessment",
+      "self-assessment":"Self Assessment"
+    }
   },
-  "breadcrumb_itmes":{
-    "performance":"Performance",
-    "appraisal":"Appraisal",
-    "goal_setting":"Goal Setting",
-    "employee_details":"Employee Details",
-    "add_appraisal":"Add Appraisal",
-    "appraisal_details":"Appraisal Details"
+  "breadcrumb_itmes": {
+    "performance": "Performance",
+    "appraisal": "Appraisal",
+    "goal_setting": "Goal Setting",
+    "employee_details": "Employee Details",
+    "add_appraisal": "Add Appraisal",
+    "appraisal_details": "Appraisal Details"
   },
-  "main_header":{
-    "welcome":"Welcome",
+  "main_header": {
+    "welcome": "Welcome",
     "logged_in": "Logged In"
   },
-  "goal_setting":{
+  "goal_setting": {
     "employee_id": "Employee ID",
     "employee_name": "Employee Name",
     "manager_name": "Manager Name",

@@ -33,8 +33,7 @@ export const fetchNavigationBar = (
   }
 };
 
-export const sideNavigationData = async (home_menu :any) => {
-
+export const sideNavigationData = async (home_menu: any) => {
   const response = await axios({
     url: `http://52.146.0.154/api/method/megasoft_hrms.pm.pm_collapsible_menu`,
     params: {
@@ -51,3 +50,5 @@ export const sideNavigationData = async (home_menu :any) => {
   const responseBody = await response.data;
   return responseBody;
 };
+
+//post as form data

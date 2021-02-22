@@ -315,14 +315,6 @@ function GoalSetting(props: any) {
       </div>
     );
   };
-  const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
-  const handlemenuClick = () => {
-    if (selectMenu === false) {
-      dispatch(setCollapedMenu(true));
-    } else {
-      dispatch(setCollapedMenu(false));
-    }
-  };
 
   return (
     <div>

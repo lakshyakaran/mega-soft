@@ -13,7 +13,7 @@
   },
   "delete_popup": {
     "heading": "Effacer",
-    "pop_up":"Êtes-vous sûr de bien vouloir supprimer cet élément?",
+    "pop_up": "Êtes-vous sûr de bien vouloir supprimer cet élément?",
     "message": "Quelque chose a mal tourné. Veuillez réessayer."
   },
   "success_popup": {
@@ -45,32 +45,40 @@
     "select_a_date": "Sélectionnez une date",
     "owner": "Entrez le nom du propriétaire"
   },
-  "sidebar_menu":{
+  "sidebar_menu": {
     "employee": "Employée",
     "manager": "Directrice",
-    "appraisal": "Évaluation",
-    "setup":"Installer",
-    "goal_setting":"Paramètres d'objectif",
-    "self_assessment": "Auto-évaluation",
-    "team_goal_setting": "Définition des objectifs de l'équipe",
-    "team_assessment": "Évaluation d'équipe",
-    "confirmation":"Confirmation",
+    "hr_contact": "HR Contact",
+    "appraisal_setup": "Installer",
+    "appraisal_goal-setting": "Paramètres d'objectif",
+    "testMenu.menu": "Paramètres d'objectif",
+    "appraisal_self-assessment": "Auto-évaluation",
+    "appraisal_team-goal-setting": "Définition des objectifs de l'équipe",
+    "appraisal_team-assessment": "Évaluation d'équipe",
+    "confirmation": "Confirmation",
     "confirmation_status": "Statut de confirmation",
-    "confirmation_letter": "Lettre de confirmation"
+    "confirmation_letter": "Lettre de confirmation",
+    "appraisal": {
+      "setup": "Installer",
+      "goal-setting":"Paramètres d'objectif",
+      "team-goal-setting":"Définition des objectifs de l'équipe",
+      "team-assessment":"Évaluation d'équipe",
+      "self-assessment":"Auto-évaluation"
+    }
   },
-  "breadcrumb_itmes":{
-    "performance":"Performance",
-    "appraisal":"Évaluation",
-    "goal_setting":"Paramètres d'objectif",
-    "employee_details":"Détails de l'employé",
-    "add_appraisal":"Ajouter une évaluation",
-    "appraisal_details":"Détails de l'évaluation"
+  "breadcrumb_itmes": {
+    "performance": "Performance",
+    "appraisal": "Évaluation",
+    "goal_setting": "Paramètres d'objectif",
+    "employee_details": "Détails de l'employé",
+    "add_appraisal": "Ajouter une évaluation",
+    "appraisal_details": "Détails de l'évaluation"
   },
-  "main_header":{
-    "welcome":"Bienvenue",
+  "main_header": {
+    "welcome": "Bienvenue",
     "logged_in": "Connecté"
   },
-   "goal_setting":{
+  "goal_setting": {
     "employee_id": "ID d'employé",
     "employee_name": "Nom de l'employé",
     "manager_name": "Nom du responsable",

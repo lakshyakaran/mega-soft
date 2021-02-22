@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import "./style.css";
-import { initSideBar } from "./sideBar";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/reducers";
-import {
-  setMenuType,
-  setRoleType,
-} from "../redux/actions/roleType";
+import { setMenuType, setRoleType } from "../redux/actions/roleType";
 import {
   ProSidebar,
   Menu,
@@ -30,24 +26,133 @@ import PersonIcon from "@material-ui/icons/Person";
 import NoteIcon from "@material-ui/icons/Note";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
-
+import menuData from "../../src/menuData";
 
 function SideNavigation() {
   const { t, i18n } = useTranslation();
   const menuType = useSelector((state: RootState) => state.menuType.menuType);
-  const [collapsedMenu, setCollapsedMenu] = useState(false);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
   const dispatch = useDispatch();
   const [menuHeading, setMenuHeading] = useState("");
-  
+
+  console.log("roleType", roleType);
+
+  const testMenu = i18n.t("sidebar_menu.appraisal.setup");
+
+  console.log("testMenu=>", testMenu);
 
   const handleRoleMenu = (e: any, item: any) => {
     dispatch(setRoleType(item));
-    console.log("employee clicked==>", item);
+    console.log("clicked==>", item);
   };
 
+  const checkMenuPermission = (role: any, menuType: any): boolean => {
+    for (let i = 0; i < menuData["ms-menu"].length; i++) {
+      if (menuData["ms-menu"][i].role === role) {
+        let menu = menuData["ms-menu"];
+        for (let j = 0; j < menu[i]["menu-items"].length; j++) {
+          if (menu[i]["menu-items"][j] === menuType) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  };
 
+  const menu: any = [];
+
+  for (let i = 0; i < menuData["ms-menu"].length; i++) {
+    menu.push(
+      <button
+        onClick={(event) => {
+          handleRoleMenu(event, menuData["ms-menu"][i].role);
+        }}
+      >
+        {menuData["ms-menu"][i].role}
+      </button>
+    );
+    menu.push(
+      <Menu
+        style={
+          roleType !== menuData["ms-menu"][i].role ? { display: "none" } : {}
+        }
+        popperArrow={true}
+        iconShape="circle"
+      >
+        <SubMenu
+          title={i18n.t("sidebar_menu.appraisal.setup")}
+          icon={<BarChartIcon />}
+        >
+          {checkMenuPermission(
+            menuData["ms-menu"][i].role,
+            "sidebar_menu.appraisal.setup"
+          ) === true ? (
+            <MenuItem icon={<SettingsIcon />}>
+              {i18n.t("sidebar_menu.appraisal.setup")}
+              <Link to="/home" />
+            </MenuItem>
+          ) : null}
+          {checkMenuPermission(
+            menuData["ms-menu"][i].role,
+            "sidebar_menu.appraisal.goal-setting"
+          ) === true ? (
+            <MenuItem icon={<SettingsIcon />}>
+              {i18n.t("sidebar_menu.appraisal.goal-setting")}
+              <Link to="/appraisal/goalsetting" />
+            </MenuItem>
+          ) : null}
+
+          {checkMenuPermission(
+            menuData["ms-menu"][i].role,
+            "sidebar_menu.appraisal.self-assessment"
+          ) === true ? (
+            <MenuItem icon={<SettingsIcon />}>
+              {i18n.t("sidebar_menu.appraisal.self-assessment")}
+              {/* <Link to="/home" /> */}
+            </MenuItem>
+          ) : null}
+
+          {checkMenuPermission(
+            menuData["ms-menu"][i].role,
+            "sidebar_menu.appraisal.team-goal-setting"
+          ) === true ? (
+            <MenuItem icon={<SettingsIcon />}>
+              {i18n.t("sidebar_menu.appraisal.team-goal-setting")}
+              <Link to="/appraisal/goalsetting" />
+            </MenuItem>
+          ) : null}
+
+          {checkMenuPermission(
+            menuData["ms-menu"][i].role,
+            "sidebar_menu.appraisal.team-assessment"
+          ) === true ? (
+            <MenuItem icon={<SettingsIcon />}>
+              {i18n.t("sidebar_menu.appraisal.team-assessment")}
+              {/* <Link to="/home" /> */}
+            </MenuItem>
+          ) : null}
+          {/* <MenuItem icon={<AssessmentIcon />}>
+            {i18n.t("sidebar_menu.self_assessment")}
+            <Link to="/home" />
+          </MenuItem> */}
+        </SubMenu>
+        <SubMenu
+          title={i18n.t("sidebar_menu.confirmation")}
+          icon={<AssignmentTurnedInIcon />}
+        >
+          <MenuItem icon={<CachedIcon />}>
+            {/* <Link to="/home/changecolor" /> */}
+            {i18n.t("sidebar_menu.confirmation_status")}
+          </MenuItem>
+          <MenuItem icon={<FileCopyIcon />}>
+            {i18n.t("sidebar_menu.confirmation_letter")}
+          </MenuItem>
+        </SubMenu>
+      </Menu>
+    );
+  }
 
   const menuItem = () => {
     return (
@@ -63,15 +168,15 @@ function SideNavigation() {
         >
           <HomeIcon /> <span>Performance</span>
         </SidebarHeader>
-        <button
+        {/* <button
           onClick={(event) => {
             handleRoleMenu(event, "Employee");
           }}
         >
-          {i18n.t("sidebar_menu.employee")}
-        </button>
-        <Menu
-          className="Employee"
+          {i18n.t(menuData["ms-menu"][0].role)}
+        </button> */}
+        {menu}
+        {/* <Menu
           style={roleType !== "Employee" ? { display: "none" } : {}}
           popperArrow={true}
           iconShape="circle"
@@ -80,16 +185,11 @@ function SideNavigation() {
             title={i18n.t("sidebar_menu.appraisal")}
             icon={<BarChartIcon />}
           >
-            {/* <Link to="/home" /> */}
             <MenuItem icon={<SettingsIcon />}>
               {i18n.t("sidebar_menu.setup")}
               <Link to="/home" />
             </MenuItem>
-            {/* {checkMenuPermission() === true ? (
-            ) : null} */}
-            <MenuItem
-              icon={<ListIcon />}
-            >
+            <MenuItem icon={<ListIcon />}>
               {i18n.t("sidebar_menu.goal_setting")}
               <Link to="/appraisal/goalsetting" />
             </MenuItem>
@@ -103,22 +203,19 @@ function SideNavigation() {
             icon={<AssignmentTurnedInIcon />}
           >
             <MenuItem icon={<CachedIcon />}>
-              {/* <Link to="/home/changecolor" /> */}
               {i18n.t("sidebar_menu.confirmation_status")}
             </MenuItem>
             <MenuItem icon={<FileCopyIcon />}>
               {i18n.t("sidebar_menu.confirmation_letter")}
             </MenuItem>
           </SubMenu>
-          {/* <div style={roleType !== "Employee" ? { display: "none" } : {}}>
-          </div> */}
-        </Menu>
-        <button
+        </Menu> */}
+        {/* <button
           onClick={(event) => {
             handleRoleMenu(event, "Manager");
           }}
         >
-          {i18n.t("sidebar_menu.manager")}
+          {i18n.t(menuData["ms-menu"][1].role)}
         </button>
         <Menu
           className="Manager"
@@ -136,15 +233,13 @@ function SideNavigation() {
               {i18n.t("sidebar_menu.team_assessment")}{" "}
             </MenuItem>
           </SubMenu>
-
         </Menu>
         <button
           onClick={(event) => {
             handleRoleMenu(event, "HR Contact");
           }}
         >
-          {/* {i18n.t("sidebar_menu.employee")} */}
-          HR Contact
+          {i18n.t(menuData["ms-menu"][2].role)}
         </button>
         <Menu
           style={roleType !== "HR Contact" ? { display: "none" } : {}}
@@ -160,7 +255,7 @@ function SideNavigation() {
               <Link to="/home" />
             </MenuItem>
           </SubMenu>
-        </Menu>
+        </Menu> */}
       </ProSidebar>
     );
   };
@@ -243,15 +338,6 @@ function SideNavigation() {
         </Menu>
       </ProSidebar>
     );
-  };
-
-  const handlemenuClick = () => {
-    if (collapsedMenu == false) {
-      setCollapsedMenu(true);
-    }
-    if (collapsedMenu == true) {
-      setCollapsedMenu(false);
-    }
   };
 
   return (
