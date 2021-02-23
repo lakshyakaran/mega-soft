@@ -26,7 +26,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import NoteIcon from "@material-ui/icons/Note";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
-import menuData from "../../src/menuData";
+// import menuData from "../../src/menuData";
 import { sideNavigationData } from "../redux/actions/navigation";
 
 function SideNavigation() {
@@ -34,17 +34,16 @@ function SideNavigation() {
   const menuType = useSelector((state: RootState) => state.menuType.menuType);
   const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
+  const sideMenuData = useSelector((state: RootState) => state.navigationData);
+  const menuData = sideMenuData.navigationData;
+  const isLoading = sideMenuData.isLoading;
   const dispatch = useDispatch();
   const [menuHeading, setMenuHeading] = useState("");
-  const [sideMenuData, setSideMenuData] = useState([]);
+  // const [sideMenuData, setSideMenuData]: any = useState([]);
 
-  console.log("roleType", roleType);
   useEffect((): void => {
-    sideNavigationData().then((response) => {
-      setSideMenuData(response.message);
-      console.log("side nav response==>", response);
-    });
-  }, []);
+    dispatch(sideNavigationData(menuType));
+  }, [menuType]);
 
   const handleRoleMenu = (e: any, item: any) => {
     dispatch(setRoleType(item));
@@ -67,95 +66,106 @@ function SideNavigation() {
 
   const menu: any = [];
 
-  for (let i = 0; i < menuData["ms-menu"].length; i++) {
-    menu.push(
-      <button
-        onClick={(event) => {
-          handleRoleMenu(event, menuData["ms-menu"][i].role);
-        }}
-      >
-        {menuData["ms-menu"][i].role}
-      </button>
-    );
-    menu.push(
-      <Menu
-        style={
-          roleType !== menuData["ms-menu"][i].role ? { display: "none" } : {}
-        }
-        popperArrow={true}
-        iconShape="circle"
-      >
-        <SubMenu
-          title={i18n.t("sidebar_menu.appraisal.setup")}
-          icon={<BarChartIcon />}
+  if (!isLoading) {
+    for (let i = 0; i < menuData["ms-menu"].length; i++) {
+      menu.push(
+        <button
+          onClick={(event) => {
+            handleRoleMenu(event, menuData["ms-menu"][i].role);
+          }}
         >
-          {checkMenuPermission(
-            menuData["ms-menu"][i].role,
-            "sidebar_menu.appraisal.setup"
-          ) === true ? (
-            <MenuItem icon={<SettingsIcon />}>
-              {i18n.t("sidebar_menu.appraisal.setup")}
-              <Link to="/home" />
-            </MenuItem>
-          ) : null}
-          {checkMenuPermission(
-            menuData["ms-menu"][i].role,
-            "sidebar_menu.appraisal.goal-setting"
-          ) === true ? (
-            <MenuItem icon={<SettingsIcon />}>
-              {i18n.t("sidebar_menu.appraisal.goal-setting")}
-              <Link to="/appraisal/goalsetting" />
-            </MenuItem>
-          ) : null}
+          {menuData["ms-menu"][i].role}
+        </button>
+      );
+      menu.push(
+        <Menu
+          style={
+            roleType !== menuData["ms-menu"][i].role ? { display: "none" } : {}
+          }
+          popperArrow={true}
+          iconShape="circle"
+        >
+          <SubMenu
+            title={i18n.t("nav.performance.appraisal-menu")}
+            icon={<BarChartIcon />}
+          >
+            {checkMenuPermission(
+              menuData["ms-menu"][i].role,
+              "nav.performance.appraisal.setup"
+            ) === true ? (
+              <MenuItem icon={<SettingsIcon />}>
+                {i18n.t("nav.performance.appraisal.Setup")}
+                <Link to="/home" />
+              </MenuItem>
+            ) : null}
+            {checkMenuPermission(
+              menuData["ms-menu"][i].role,
+              "nav.performance.appraisal.goal-setting"
+            ) === true ? (
+              <MenuItem icon={<ListIcon />}>
+                {i18n.t("nav.performance.appraisal.goal-setting")}
+                <Link to="/appraisal/goalsetting" />
+              </MenuItem>
+            ) : null}
 
-          {checkMenuPermission(
-            menuData["ms-menu"][i].role,
-            "sidebar_menu.appraisal.self-assessment"
-          ) === true ? (
-            <MenuItem icon={<SettingsIcon />}>
-              {i18n.t("sidebar_menu.appraisal.self-assessment")}
-              {/* <Link to="/home" /> */}
-            </MenuItem>
-          ) : null}
+            {checkMenuPermission(
+              menuData["ms-menu"][i].role,
+              "nav.performance.appraisal.self-assessment"
+            ) === true ? (
+              <MenuItem icon={<AssessmentIcon />}>
+                {i18n.t("nav.performance.appraisal.self-assessment")}
+                {/* <Link to="/home" /> */}
+              </MenuItem>
+            ) : null}
 
-          {checkMenuPermission(
-            menuData["ms-menu"][i].role,
-            "sidebar_menu.appraisal.team-goal-setting"
-          ) === true ? (
-            <MenuItem icon={<SettingsIcon />}>
-              {i18n.t("sidebar_menu.appraisal.team-goal-setting")}
-              <Link to="/appraisal/goalsetting" />
-            </MenuItem>
-          ) : null}
+            {checkMenuPermission(
+              menuData["ms-menu"][i].role,
+              "nav.performance.appraisal.team-goal-setting"
+            ) === true ? (
+              <MenuItem icon={<ListIcon />}>
+                {i18n.t("nav.performance.appraisal.team-goal-setting")}
+                <Link to="/appraisal/goalsetting" />
+              </MenuItem>
+            ) : null}
 
-          {checkMenuPermission(
-            menuData["ms-menu"][i].role,
-            "sidebar_menu.appraisal.team-assessment"
-          ) === true ? (
-            <MenuItem icon={<SettingsIcon />}>
-              {i18n.t("sidebar_menu.appraisal.team-assessment")}
-              {/* <Link to="/home" /> */}
-            </MenuItem>
-          ) : null}
-          {/* <MenuItem icon={<AssessmentIcon />}>
+            {checkMenuPermission(
+              menuData["ms-menu"][i].role,
+              "nav.performance.appraisal.team-assessment"
+            ) === true ? (
+              <MenuItem icon={<AssessmentIcon />}>
+                {i18n.t("nav.performance.appraisal.team-assessment")}
+                {/* <Link to="/home" /> */}
+              </MenuItem>
+            ) : null}
+            {/* <MenuItem icon={<AssessmentIcon />}>
             {i18n.t("sidebar_menu.self_assessment")}
             <Link to="/home" />
           </MenuItem> */}
-        </SubMenu>
-        <SubMenu
-          title={i18n.t("sidebar_menu.confirmation")}
-          icon={<AssignmentTurnedInIcon />}
-        >
-          <MenuItem icon={<CachedIcon />}>
-            {/* <Link to="/home/changecolor" /> */}
-            {i18n.t("sidebar_menu.confirmation_status")}
-          </MenuItem>
-          <MenuItem icon={<FileCopyIcon />}>
-            {i18n.t("sidebar_menu.confirmation_letter")}
-          </MenuItem>
-        </SubMenu>
-      </Menu>
-    );
+          </SubMenu>
+          <SubMenu
+            title={i18n.t("nav.performance.confirmation-menu")}
+            icon={<AssignmentTurnedInIcon />}
+          >
+            {checkMenuPermission(
+              menuData["ms-menu"][i].role,
+              "nav.performance.confirmation.letter"
+            ) === true ? (
+              <MenuItem icon={<CachedIcon />}>
+                {i18n.t("nav.performance.confirmation.confirmation-letter")}
+                {/* <Link to="/home" /> */}
+              </MenuItem>
+            ) : null}
+
+            {/* <MenuItem icon={<CachedIcon />}>
+              {i18n.t("sidebar_menu.confirmation_status")}
+            </MenuItem>
+            <MenuItem icon={<FileCopyIcon />}>
+              {i18n.t("sidebar_menu.confirmation_letter")}
+            </MenuItem> */}
+          </SubMenu>
+        </Menu>
+      );
+    }
   }
 
   const menuItem = () => {
@@ -172,97 +182,30 @@ function SideNavigation() {
         >
           <HomeIcon /> <span>Performance</span>
         </SidebarHeader>
-        {/* <button
-          onClick={(event) => {
-            handleRoleMenu(event, "Employee");
-          }}
-        >
-          {i18n.t(menuData["ms-menu"][0].role)}
-        </button> */}
         {menu}
-        {/* <Menu
-          style={roleType !== "Employee" ? { display: "none" } : {}}
-          popperArrow={true}
-          iconShape="circle"
-        >
-          <SubMenu
-            title={i18n.t("sidebar_menu.appraisal")}
-            icon={<BarChartIcon />}
-          >
-            <MenuItem icon={<SettingsIcon />}>
-              {i18n.t("sidebar_menu.setup")}
-              <Link to="/home" />
-            </MenuItem>
-            <MenuItem icon={<ListIcon />}>
-              {i18n.t("sidebar_menu.goal_setting")}
-              <Link to="/appraisal/goalsetting" />
-            </MenuItem>
-            <MenuItem icon={<AssessmentIcon />}>
-              {i18n.t("sidebar_menu.self_assessment")}
-              <Link to="/home" />
-            </MenuItem>
-          </SubMenu>
-          <SubMenu
-            title={i18n.t("sidebar_menu.confirmation")}
-            icon={<AssignmentTurnedInIcon />}
-          >
-            <MenuItem icon={<CachedIcon />}>
-              {i18n.t("sidebar_menu.confirmation_status")}
-            </MenuItem>
-            <MenuItem icon={<FileCopyIcon />}>
-              {i18n.t("sidebar_menu.confirmation_letter")}
-            </MenuItem>
-          </SubMenu>
-        </Menu> */}
-        {/* <button
-          onClick={(event) => {
-            handleRoleMenu(event, "Manager");
-          }}
-        >
-          {i18n.t(menuData["ms-menu"][1].role)}
-        </button>
-        <Menu
-          className="Manager"
-          style={roleType !== "Manager" ? { display: "none" } : {}}
-          popperArrow={true}
-          iconShape="circle"
-        >
-          <SubMenu title={`Appraisal`} icon={<BarChartIcon />}>
-            <Link to="/home" />
-            <MenuItem icon={<SettingsIcon />}>
-              {i18n.t("sidebar_menu.team_goal_setting")}
-              <Link to="/appraisal/goalsetting" />
-            </MenuItem>
-            <MenuItem icon={<AssessmentIcon />}>
-              {i18n.t("sidebar_menu.team_assessment")}{" "}
-            </MenuItem>
-          </SubMenu>
-        </Menu>
-        <button
-          onClick={(event) => {
-            handleRoleMenu(event, "HR Contact");
-          }}
-        >
-          {i18n.t(menuData["ms-menu"][2].role)}
-        </button>
-        <Menu
-          style={roleType !== "HR Contact" ? { display: "none" } : {}}
-          popperArrow={true}
-          iconShape="circle"
-        >
-          <SubMenu
-            title={i18n.t("sidebar_menu.appraisal")}
-            icon={<BarChartIcon />}
-          >
-            <MenuItem icon={<SettingsIcon />}>
-              {i18n.t("sidebar_menu.setup")}
-              <Link to="/home" />
-            </MenuItem>
-          </SubMenu>
-        </Menu> */}
       </ProSidebar>
     );
   };
+
+  // const otherMenu: any = [];
+
+  // if (!isLoading) {
+  //   for (let i = 0; i < menuData["ms-menu"].length; i++) {
+  //     otherMenu.push(
+  //       <Menu popperArrow={true} iconShape="circle">
+  //         <MenuItem
+  //           icon={<PersonIcon />}
+  //           style={{ marginBottom: "20px" }}
+  //           onClick={(event) => {
+  //             handleOtherMenu(event, "Profile");
+  //           }}
+  //         >
+  //           {menuData["ms-menu"][i]}
+  //         </MenuItem>
+  //       </Menu>
+  //     );
+  //   }
+  // }
 
   const handleOtherMenu = (event: any, item: any) => {
     setMenuHeading(item);
@@ -284,6 +227,7 @@ function SideNavigation() {
           <HomeIcon />
           HRMS
         </SidebarHeader>
+        {/* {otherMenu} */}
         <Menu popperArrow={true} iconShape="circle" style={{}}>
           <MenuItem
             icon={<PersonIcon />}
@@ -293,14 +237,9 @@ function SideNavigation() {
             }}
           >
             Profile
+            {/* {menuData["ms-menu"][0]."menu-items".[0]} */}
           </MenuItem>
-          <MenuItem
-            icon={<NoteIcon />}
-            style={{ marginBottom: "20px" }}
-            onClick={(event) => {
-              handleOtherMenu(event, "Leave");
-            }}
-          >
+          <MenuItem icon={<NoteIcon />} style={{ marginBottom: "20px" }}>
             Leave
           </MenuItem>
           <MenuItem
@@ -315,27 +254,15 @@ function SideNavigation() {
           <MenuItem
             icon={<AssignmentTurnedInIcon />}
             style={{ marginBottom: "20px" }}
-            onClick={(event) => {
-              handleOtherMenu(event, "Training");
-            }}
           >
             Training
           </MenuItem>
-          <MenuItem
-            icon={<AttachMoneyIcon />}
-            style={{ marginBottom: "20px" }}
-            onClick={(event) => {
-              handleOtherMenu(event, "Payroll");
-            }}
-          >
+          <MenuItem icon={<AttachMoneyIcon />} style={{ marginBottom: "20px" }}>
             Payroll
           </MenuItem>
           <MenuItem
             icon={<ImportExportIcon />}
             style={{ marginBottom: "20px" }}
-            onClick={(event) => {
-              handleOtherMenu(event, "Separation");
-            }}
           >
             Separation
           </MenuItem>

@@ -157,7 +157,7 @@ function GoalSetting(props: any) {
     // },
     {
       key: "02",
-      name: "Action",
+      name: i18n.t("common.action"),
       fieldName: "action",
       minWidth: 80,
       maxWidth: 110,
@@ -186,7 +186,7 @@ function GoalSetting(props: any) {
 
     {
       key: "03",
-      name: i18n.t("goal_setting.employee_id"),
+      name: i18n.t("goal_setting_form.employee_id"),
       fieldName: "employee_id",
       minWidth: 50,
       maxWidth: 90,
@@ -196,7 +196,7 @@ function GoalSetting(props: any) {
     },
     {
       key: "04",
-      name: i18n.t("goal_setting.employee_name"),
+      name: i18n.t("goal_setting_form.employee_name"),
       fieldName: "employee_name",
       minWidth: 50,
       maxWidth: 120,
@@ -216,7 +216,7 @@ function GoalSetting(props: any) {
     // },
     {
       key: "06",
-      name: i18n.t("goal_setting.manager_name"),
+      name: i18n.t("goal_setting_form.manager_name"),
       fieldName: "manager_name",
       minWidth: 50,
       maxWidth: 140,
@@ -226,7 +226,7 @@ function GoalSetting(props: any) {
     },
     {
       key: "07",
-      name: i18n.t("goal_setting.status"),
+      name: i18n.t("goal_setting_form.status"),
       fieldName: "status",
       minWidth: 50,
       maxWidth: 170,
@@ -236,7 +236,7 @@ function GoalSetting(props: any) {
     },
     {
       key: "08",
-      name: i18n.t("goal_setting.appraisal_type"),
+      name: i18n.t("goal_setting_form.appraisal_type"),
       fieldName: "appraisal_type",
       minWidth: 50,
       maxWidth: 260,
@@ -275,16 +275,16 @@ function GoalSetting(props: any) {
   };
 
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: i18n.t("breadcrumb_itmes.performance"), key: "d1" },
+    { text: i18n.t("breadcrumb_items.performance"), key: "d1" },
     {
-      text: i18n.t("breadcrumb_itmes.appraisal"),
+      text: i18n.t("breadcrumb_items.appraisal"),
       key: "d2",
       as: "h4",
       onClick: _onBreadcrumbItemClicked,
     },
     // { text: "Employee", key: "d3", as: "h4" },
     {
-      text: i18n.t("breadcrumb_itmes.goal_setting"),
+      text: i18n.t("breadcrumb_items.goal_setting"),
       key: "d4",
       isCurrentItem: true,
       as: "h4",
@@ -329,7 +329,7 @@ function GoalSetting(props: any) {
               }}
             >
               <Dropdown
-                label={i18n.t("goal_setting.status")}
+                label={i18n.t("goal_setting_form.status")}
                 placeholder="Select"
                 options={statusOption}
                 className="reviewFrequency"

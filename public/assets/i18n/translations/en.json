@@ -1,0 +1,96 @@
+{
+  "nav": {
+    "performance": {
+      "appraisal": {
+        "Setup": "Setup",
+        "goal-setting": "Goal Setting",
+        "self-assessment": "Self Assessment",
+        "team-assessment": "Team Assessment",
+        "team-goal-setting": "Team Goal Setting"
+      },
+      "confirmation": {
+        "confirmation-letter": "Confirmation Letter",
+        "confirmation-status": "Confirmation Status"
+      },
+      "appraisal-menu": "Appraisal",
+      "confirmation-menu": "Confirmation"
+    }
+  },
+  "role-name": {
+    "employee": "Employee",
+    "manager": "Manager",
+    "hr contact": "HR Contact"
+  },
+  "appraisal_form": {
+    "Appraisal_To": "Appraisal To",
+    "Description": "Description",
+    "Format_Type": "Format Type",
+    "KRA_Settings_Tabs": "KRA Settings Tabs",
+    "Owner": "Owner",
+    "Review_Frequency": "Review Frequency",
+    "Review_From": "Review From",
+    "buttons": {
+      "back": "Back",
+      "new": "New",
+      "save": "Save",
+      "update": "Update",
+      "ok": "OK",
+      "cancel": "Cancel"
+    },
+    "field_place_holders": {
+      "description": "Enter the description",
+      "id": "Enter ID",
+      "owner": "Enter owner",
+      "select": "select",
+      "select_a_date": "Select a date",
+      "select_format_type": "Select format type",
+      "select_type": "Select type"
+    }
+  },
+  "pop_up": {
+    "delete": {
+      "error_message": "Something went wrong. Please try again.",
+      "heading": "Delete",
+      "confirmation_message": "Are you sure you want to delete this item?",
+      "success_message": "Data deleted successfully."
+    },
+    "success": {
+      "heading": "Success",
+      "success_message": "Data saved successfully.",
+      "error_message": "Something went wrong. Please try again."
+    }
+  },
+  "breadcrumb_items": {
+    "appraisal": "Appraisal",
+    "appraisal_details": "Appraisal Details",
+    "employee_details": "Employee Details",
+    "goal_setting": "Goal Setting",
+    "performance": "Performance",
+    "add_appraisal": "Add Appraisal"
+  },
+  "common": {
+    "ID": "ID",
+    "action": "Action",
+    "type": "Type"
+  },
+  "error_messages": {
+    "please_enter_date": "Please enter the date",
+    "please_enter_description": "Please enter the description",
+    "please_enter_id": "Please enter the ID",
+    "please_enter_owner_name": "Please enter the owner name",
+    "please_enter_type": "Please enter the type"
+  },
+  "main_header": {
+    "logged_in": "Logged in",
+    "welcome": "Welcome"
+  },
+  "goal_setting_form": {
+    "appraisal_type": "Appraisal Type",
+    "employee_id": "Employee ID",
+    "employee_name": "Employee Name",
+    "goals": "Goals",
+    "job_history": "Job History",
+    "manager_name": "Manager Name",
+    "status": "Status"
+  }
+}

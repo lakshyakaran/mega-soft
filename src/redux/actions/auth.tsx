@@ -110,16 +110,33 @@ export const logout = () => async (dispatch: any): Promise<any> => {
   }
 };
 
-// export const login = async () => {
-//   const response = await axios({
-//     url: `http://52.146.0.154/api/method/megasoft_hrms.pm.ms_hrms_login`,
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Accept: "application/json",
-//       Authorization: " token 5ccbc7af363c163:b6060f97664d556",
-//     },
-//   });
-//   const responseBody = await response.data;
-//   return responseBody;
-// };
+export const userInfo = () => async (dispatch: any): Promise<any> => {
+  try {
+    const token = sessionStorage.getItem("access_token");
+    if (token === null) {
+      return false;
+    }
+    const accessToken = "bearer " + token;
+    const response = await axios({
+      url: `http://52.146.0.154/api/method/megasoft_hrms.pm.logged_in_user`,
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "multipart/form-data",
+        Authorization: accessToken,
+      },
+    });
+    const responseBody = await response.data.message;
+    // console.log("responseBody user", responseBody);
+    dispatch({
+      type: "USER_INFO",
+      payload: responseBody,
+    });
+    return responseBody;
+  } catch (error) {
+    console.log("error in getting userInfo =>", error);
+    return {
+      ...error,
+    };
+  }
+};

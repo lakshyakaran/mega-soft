@@ -1,5 +1,5 @@
 const initialState = {
-  language: window.sessionStorage.getItem("language") || "US",
+  language: window.sessionStorage.getItem("language") || "en",
   primaryColor: window.sessionStorage.getItem("primaryColor") || "#00597d",
 };
 

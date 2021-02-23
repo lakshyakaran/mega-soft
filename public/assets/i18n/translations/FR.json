@@ -1,6 +1,5 @@
 {
-  "form": {
-    "ID": "ID",
+  "appraisal_form": {
     "Description": "La description",
     "Review_From": "Avis de",
     "Appraisal_To": "Évaluation à",
@@ -8,65 +7,42 @@
     "Format_Type": "Type de format",
     "Owner": "Propriétaire",
     "KRA_Settings_Tabs": "KRA Onglets de paramètres",
-    "Type": "Type",
-    "action": "Action"
-  },
-  "delete_popup": {
-    "heading": "Effacer",
-    "pop_up": "Êtes-vous sûr de bien vouloir supprimer cet élément?",
-    "message": "Quelque chose a mal tourné. Veuillez réessayer."
-  },
-  "success_popup": {
-    "heading": "Success",
-    "appraisal_success": "\nÉvaluation ajoutée avec succès.",
-    "jobhistory_success": "L'historique des tâches a bien été ajouté",
-    "goal_success": "Objectif ajouté avec succès."
-  },
-  "buttons": {
-    "go_back": "Retourner",
-    "ok": "d'accord",
-    "add": "Ajouter une évaluation",
-    "cancel": "Annuler a1",
-    "addNew": "Nouvelle évaluation"
-  },
-  "errorMsg": {
-    "please_enter_description": "Veuillez saisir une description",
-    "please_enter_id": "Veuillez saisir votre identifiant",
-    "please_enter_type": "Veuillez saisir type",
-    "please_enter_date": "Veuillez saisir une date",
-    "please_enter_owner_name": "Veuillez saisir le nom du propriétaire"
-  },
-  "placeholder": {
-    "id": "Entrez l'ID",
-    "description": "Entrez la description",
-    "select": "sélectionner",
-    "select_type": "Sélectionner le genre",
-    "select_format_type": "\nSélectionnez le type de format",
-    "select_a_date": "Sélectionnez une date",
-    "owner": "Entrez le nom du propriétaire"
-  },
-  "sidebar_menu": {
-    "employee": "Employée",
-    "manager": "Directrice",
-    "hr_contact": "HR Contact",
-    "appraisal_setup": "Installer",
-    "appraisal_goal-setting": "Paramètres d'objectif",
-    "testMenu.menu": "Paramètres d'objectif",
-    "appraisal_self-assessment": "Auto-évaluation",
-    "appraisal_team-goal-setting": "Définition des objectifs de l'équipe",
-    "appraisal_team-assessment": "Évaluation d'équipe",
-    "confirmation": "Confirmation",
-    "confirmation_status": "Statut de confirmation",
-    "confirmation_letter": "Lettre de confirmation",
-    "appraisal": {
-      "setup": "Installer",
-      "goal-setting":"Paramètres d'objectif",
-      "team-goal-setting":"Définition des objectifs de l'équipe",
-      "team-assessment":"Évaluation d'équipe",
-      "self-assessment":"Auto-évaluation"
+    "field_place_holders": {
+      "id": "Entrez l'ID",
+      "description": "Entrez la description",
+      "select": "sélectionner",
+      "select_type": "Sélectionner le genre",
+      "select_format_type": "Sélectionnez le type de format",
+      "select_a_date": "Sélectionnez une date",
+      "owner": "Entrez le nom du propriétaire"
+    },
+    "buttons": {
+      "ok": "d'accord",
+      "cancel": "Annuler",
+      "back": "Retourner",
+      "new": "Nouvelle",
+      "save": "Enregistrer",
+      "update": "Update"
     }
   },
-  "breadcrumb_itmes": {
+  "pop_up": {
+    "success": {
+      "heading": "Succès",
+      "success_message": "Données enregistrées avec succès.",
+      "error_message": "Un problème est survenu. Veuillez réessayer."
+    },
+    "delete": {
+      "heading": "Effacer",
+      "error_message": "Un problème est survenu. Veuillez réessayer.",
+      "confirmation_message": "Êtes-vous sûr de bien vouloir supprimer cet élément?",
+      "success_message": "Données supprimées avec succès."
+    }
+  },
+  "main_header": {
+    "welcome": "Bienvenue",
+    "logged_in": "Connecté"
+  },
+  "breadcrumb_items": {
     "performance": "Performance",
     "appraisal": "Évaluation",
     "goal_setting": "Paramètres d'objectif",
@@ -74,18 +50,47 @@
     "add_appraisal": "Ajouter une évaluation",
     "appraisal_details": "Détails de l'évaluation"
   },
-  "main_header": {
-    "welcome": "Bienvenue",
-    "logged_in": "Connecté"
+  "error_messages": {
+    "please_enter_description": "Veuillez saisir une description",
+    "please_enter_id": "Veuillez saisir votre identifiant",
+    "please_enter_type": "Veuillez saisir type",
+    "please_enter_date": "Veuillez saisir une date",
+    "please_enter_owner_name": "Veuillez saisir le nom du propriétaire"
   },
-  "goal_setting": {
+  "common": {
+    "ID": "ID",
+    "type": "Type",
+    "action": "Action"
+  },
+  "nav": {
+    "performance": {
+      "appraisal": {
+        "Setup": "Installer",
+        "goal-setting": "Paramètres d'objectif",
+        "self-assessment": "Auto-évaluation",
+        "team-assessment": "Évaluation d'équipe",
+        "team-goal-setting": "Définition des objectifs de l'équipe"
+      },
+      "confirmation": {
+        "confirmation-letter": "Lettre de confirmation",
+        "confirmation-status": "Statut de confirmation"
+      },
+      "appraisal-menu": "Évaluation",
+      "confirmation-menu": "Confirmation"
+    }
+  },
+  "role-name": {
+    "employee": "Employée",
+    "manager": "Directrice",
+    "hr contact": "Contact RH"
+  },
+  "goal_setting_form": {
     "employee_id": "ID d'employé",
     "employee_name": "Nom de l'employé",
     "manager_name": "Nom du responsable",
     "status": "Statut",
-    "appraisal_type": "Type d'évaluation"
-  },
-  "job_history": "antécédents professionnels",
-  "goals": "objectif",
-  "training_and_development": "plan de formation et de développement"
+    "appraisal_type": "Type d'évaluation",
+    "goals": "Objectif",
+    "job_history": "Antécédents Professionnels"
+  }
 }

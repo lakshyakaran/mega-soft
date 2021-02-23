@@ -66,15 +66,15 @@ function AppraisalDetail(props: any) {
     history.push("/home");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: i18n.t("breadcrumb_itmes.performance"), key: "d1" },
+    { text: i18n.t("breadcrumb_items.performance"), key: "d1" },
     {
-      text: i18n.t("breadcrumb_itmes.appraisal"),
+      text: i18n.t("breadcrumb_items.appraisal"),
       key: "d2",
       isCurrentItem: true,
       as: "h4",
       onClick: _onBreadcrumbItemClicked,
     },
-    { text: i18n.t("breadcrumb_itmes.appraisal_details"), key: "d3", as: "h4" },
+    { text: i18n.t("breadcrumb_items.appraisal_details"), key: "d3", as: "h4" },
   ];
 
   const reviewDate = moment(appraisalDetail.review_from).format("DD-MM-YYYY");
@@ -87,43 +87,44 @@ function AppraisalDetail(props: any) {
           <div className="emp-details-section">
             <div className="row">
               <div className="col-md-4">
-                <span>{i18n.t("form.ID")}</span> : {appraisalDetail.id}
+                <span>{i18n.t("common.ID")}</span> : {appraisalDetail.id}
               </div>
               <div className="col-md-8">
-                <span>{i18n.t("form.Description")}</span> :{" "}
+                <span>{i18n.t("appraisal_form.Description")}</span> :{" "}
                 {appraisalDetail.appraisal_description}
               </div>
               <div className="col-md-4">
-                <span>{i18n.t("form.Review_From")}</span> : {reviewDate}
+                <span>{i18n.t("appraisal_form.Review_From")}</span> :{" "}
+                {reviewDate}
               </div>
               <div className="col-md-8">
-                <span>{i18n.t("form.Appraisal_To")}</span> : {appraisalTo}
+                <span>{i18n.t("appraisal_form.Appraisal_To")}</span> :{" "}
+                {appraisalTo}
               </div>
               <div className="col-md-4">
-                <span>{i18n.t("form.Review_Frequency")}</span> :{" "}
+                <span>{i18n.t("appraisal_form.Review_Frequency")}</span> :{" "}
                 {appraisalDetail.review_frequency}
               </div>
               <div className="col-md-8">
-                <span>{i18n.t("form.Type")}</span> : {appraisalDetail.type}
+                <span>{i18n.t("common.type")}</span> : {appraisalDetail.type}
               </div>
               <div className="col-md-4">
-                <span>{i18n.t("form.Format_Type")}</span> :{" "}
+                <span>{i18n.t("appraisal_form.Format_Type")}</span> :{" "}
                 {appraisalDetail.format_type}
               </div>
               <div className="col-md-8">
-                <span>{i18n.t("form.Owner")}</span> :{" "}
+                <span>{i18n.t("appraisal_form.Owner")}</span> :{" "}
                 {appraisalDetail.appraisal_owner}
               </div>
-             
             </div>
           </div>
           <Separator />
           <div className="rowCheckBox">
             <div>
-              <Label>{i18n.t("form.KRA_Settings_Tabs")}</Label>
+              <Label>{i18n.t("appraisal_form.KRA_Settings_Tabs")}</Label>
               <Checkbox
                 disabled={true}
-                label={i18n.t("job_history")}
+                label={i18n.t("goal_setting_form.job_history")}
                 title={"Competencies"}
                 checked={appraisalDetail.kra_settings_tab_competencies}
                 className="flexGrowCheckBox"
@@ -131,7 +132,7 @@ function AppraisalDetail(props: any) {
               />
               <Checkbox
                 disabled={true}
-                label={i18n.t("goals")}
+                label={i18n.t("goal_setting_form.goals")}
                 title={"Goals"}
                 checked={appraisalDetail.kra_settings_tab_goals}
                 className="flexGrowCheckBox"
@@ -139,13 +140,13 @@ function AppraisalDetail(props: any) {
               />
               <Checkbox
                 disabled={true}
-                label={i18n.t("training_and_development")}
+                // label={i18n.t("goal_setting_form.training_and_development")}
+                label="Training/Development Plans"
                 title={"Development Plans"}
                 checked={appraisalDetail.kra_settings_tab_development_plan}
                 className="flexGrowCheckBox"
                 name="kra_settings_tab_development_plan"
               />
-              
             </div>
           </div>
           <Stack
@@ -164,7 +165,7 @@ function AppraisalDetail(props: any) {
               }}
             >
               <PrimaryButton
-                text="Back"
+                text={t("appraisal_form.buttons.back")}
                 allowDisabledFocus
                 disabled={false}
                 onClick={() => {

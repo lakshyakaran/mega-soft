@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import {
-  TextField,
-} from "office-ui-fabric-react/lib/TextField";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Stack } from "office-ui-fabric-react/lib/Stack";
 import "./style.css";
 import {
@@ -53,7 +51,6 @@ const typeOptions: IDropdownOption[] = [
   { key: "key1", text: "Annual Appraisal" },
   { key: "key2", text: "Confirmation Appraisal" },
 ];
-
 
 const white = getColorFromString("#006994")!;
 
@@ -318,7 +315,6 @@ function AddAppraisal(props: any) {
     },
   };
 
-
   const [errMsg, setErrMsg] = useState("");
   const [errMsgDescription, setErrMsgDescription] = useState("");
   const [errMsgOwner, setErrMsgOwner] = useState("");
@@ -400,17 +396,18 @@ function AddAppraisal(props: any) {
       appraisal_to: moment(dateAppraisal).format("YYYY-MM-DD"),
       appraisal_owner: claimsData.owner,
     };
-    add_apprisal(addQuery).then((response) => {
-      console.log("response=>", response);
-      if (response) {
-        setSuccessModal(true);
-      } else {
-        setFailedModal(true);
-      }
-    })
-    .catch((err) => {
-      console.log("Error in btnClick=>", JSON.stringify(err));
-    });
+    add_apprisal(addQuery)
+      .then((response) => {
+        console.log("response=>", response);
+        if (response) {
+          setSuccessModal(true);
+        } else {
+          setFailedModal(true);
+        }
+      })
+      .catch((err) => {
+        console.log("Error in btnClick=>", JSON.stringify(err));
+      });
   };
 
   const renderForm = () => {
@@ -427,18 +424,18 @@ function AddAppraisal(props: any) {
           <div className="goal-details">
             <TextField
               required
-              placeholder={t("placeholder.id")}
+              placeholder={t("appraisal_form.field_place_holders.id")}
               value={claimsData.id}
               errorMessage={errMsg}
               name="id"
-              label={t("form.ID")}
+              label={t("common.ID")}
               onChange={onChangeInput}
               className="flexGrowTextInput"
             />
             <TextField
               required
-              placeholder={t("placeholder.description")}
-              label={t("form.Description")}
+              placeholder={t("appraisal_form.field_place_holders.description")}
+              label={t("appraisal_form.Description")}
               value={claimsData.description}
               errorMessage={errMsgDescription}
               // styles={textfelidStyle}
@@ -451,33 +448,37 @@ function AddAppraisal(props: any) {
           <div className="goal-details">
             <DatePicker
               isRequired={true}
-              label={t("form.Review_From")}
+              label={t("appraisal_form.Review_From")}
               className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeek}
               strings={DayPickerStrings}
               value={dateReview}
               onSelectDate={reviewFromDate}
-              placeholder={t("placeholder.select_a_date")}
+              placeholder={t(
+                "appraisal_form.field_place_holders.select_a_date"
+              )}
               ariaLabel="Select a date"
               styles={datePickerStyle}
             />
             <DatePicker
               isRequired={true}
-              label={t("form.Appraisal_To")}
+              label={t("appraisal_form.Appraisal_To")}
               className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeekAppraisal}
               strings={DayPickerStringsAppraisal}
               onSelectDate={appraisalToDate}
               styles={datePickerStyle}
               value={dateAppraisal}
-              placeholder={t("placeholder.select_a_date")}
+              placeholder={t(
+                "appraisal_form.field_place_holders.select_a_date"
+              )}
               ariaLabel="Select a date"
             />
             <Dropdown
               required
               errorMessage={errMsgReviewFrequency}
-              label={t("form.Review_Frequency")}
-              placeholder={t("placeholder.select")}
+              label={t("appraisal_form.Review_Frequency")}
+              placeholder={t("appraisal_form.field_place_holders.select")}
               className="flexGrow w33"
               onChange={onChangeReviewFrequency}
               options={reviewFrequencyOptions}
@@ -488,9 +489,9 @@ function AddAppraisal(props: any) {
           <div className="goal-details">
             <Dropdown
               required
-              label={t("form.Type")}
+              label={t("common.type")}
               errorMessage={errMsgType}
-              placeholder={t("placeholder.select_type")}
+              placeholder={t("appraisal_form.field_place_holders.select_type")}
               className="flexGrow w33"
               options={typeOptions}
               onChange={onChangeType}
@@ -498,18 +499,20 @@ function AddAppraisal(props: any) {
             />
             <Dropdown
               required
-              label={t("form.Format_Type")}
+              label={t("appraisal_form.Format_Type")}
               errorMessage={errMsgFormatType}
               className="flexGrow w33"
               onChange={onChangeFormateType}
-              placeholder={t("placeholder.select_format_type")}
+              placeholder={t(
+                "appraisal_form.field_place_holders.select_format_type"
+              )}
               options={formateTypeOptions}
               // styles={typeDropdownStyles}
             />
             <TextField
               required
-              label={t("form.Owner")}
-              placeholder={t("placeholder.owner")}
+              label={t("appraisal_form.Owner")}
+              placeholder={t("appraisal_form.field_place_holders.owner")}
               pattern={"^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"}
               value={claimsData.owner}
               className="flexGrow w33"
@@ -521,9 +524,9 @@ function AddAppraisal(props: any) {
           <Separator />
           <div className="rowCheckBox">
             <div>
-              <Label>{t("form.KRA_Settings_Tabs")} </Label>
+              <Label>{t("appraisal_form.KRA_Settings_Tabs")} </Label>
               <Checkbox
-                label={t("job_history")}
+                label={i18n.t("goal_setting_form.job_history")}
                 title={"Competencies"}
                 checked={claimsData.kraSettingCompetencies}
                 className="flexGrowCheckBox"
@@ -531,7 +534,7 @@ function AddAppraisal(props: any) {
                 onChange={onChangeCheckbox}
               />
               <Checkbox
-                label={t("goals")}
+                label={i18n.t("goal_setting_form.goals")}
                 title={"Goals"}
                 checked={claimsData.kraSettingGoal}
                 className="flexGrowCheckBox"
@@ -539,7 +542,7 @@ function AddAppraisal(props: any) {
                 onChange={onChangeCheckbox}
               />
               <Checkbox
-                label={t("training_and_development")}
+                label="Training/Development Plans"
                 title={"Development Plans"}
                 checked={claimsData.kraSettingDevelopmentPlan}
                 className="flexGrowCheckBox"
@@ -601,7 +604,9 @@ function AddAppraisal(props: any) {
                     }}
                   />
                 </div>
-                <div className="modal-content-failed">{t("delete_popup.message")}</div>
+                <div className="modal-content-failed">
+                  {t("delete_popup.message")}
+                </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
                     text={t("buttons.go_back")}
@@ -627,7 +632,7 @@ function AddAppraisal(props: any) {
               }}
             >
               <PrimaryButton
-                text={t("buttons.add")}
+                text={t("appraisal_form.buttons.save")}
                 allowDisabledFocus
                 style={{ backgroundColor: color.str }}
                 onClick={handleAddApprisal}
@@ -639,7 +644,7 @@ function AddAppraisal(props: any) {
               }}
             >
               <PrimaryButton
-                text={t("buttons.cancel")}
+                text={t("appraisal_form.buttons.cancel")}
                 allowDisabledFocus
                 disabled={false}
                 onClick={() => {

@@ -6,7 +6,7 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    lng: sessionStorage.getItem("language") || "US",
+    lng: sessionStorage.getItem("language") || "en",
     backend: {
       /* translation file path */
       objectNotation: true,

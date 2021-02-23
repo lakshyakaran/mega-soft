@@ -4,9 +4,9 @@ const initialState = {
 };
 
 export default function Auth(
-  state: { isLoggedIn: any, isLoading: any } = initialState,
+  state: { isLoggedIn: any; isLoading: any } = initialState,
   action: { type: string; payload: any }
-): { isLoggedIn: any, isLoading: any } {
+): { isLoggedIn: any; isLoading: any } {
   switch (action.type) {
     case "LOGIN_SUCCESS": {
       return {

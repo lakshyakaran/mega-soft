@@ -77,7 +77,6 @@ function Appraisal(props: any) {
     return a;
   });
 
-  
   useEffect((): void => {
     const filters = [];
     if (filtersById) {
@@ -114,11 +113,10 @@ function Appraisal(props: any) {
     filtersByFormat,
   ]);
 
-  
   const columns: IColumn[] = [
     {
       key: "01",
-      name: i18n.t("form.ID"),
+      name: i18n.t("common.ID"),
       fieldName: "id",
       minWidth: 50,
       maxWidth: 100,
@@ -133,7 +131,7 @@ function Appraisal(props: any) {
     },
     {
       key: "04",
-      name: i18n.t("form.Description"),
+      name: i18n.t("appraisal_form.Description"),
       fieldName: "appraisal_description",
       minWidth: 100,
       maxWidth: 200,
@@ -144,7 +142,7 @@ function Appraisal(props: any) {
     },
     {
       key: "05",
-      name: i18n.t("form.Review_From"),
+      name: i18n.t("appraisal_form.Review_From"),
       fieldName: "review_from",
       minWidth: 50,
       maxWidth: 120,
@@ -154,7 +152,7 @@ function Appraisal(props: any) {
     },
     {
       key: "08",
-      name: i18n.t("form.Appraisal_To"),
+      name: i18n.t("appraisal_form.Appraisal_To"),
       fieldName: "appraisal_to",
       minWidth: 50,
       maxWidth: 120,
@@ -164,7 +162,7 @@ function Appraisal(props: any) {
     },
     {
       key: "06",
-      name: i18n.t("form.Type"),
+      name: i18n.t("common.type"),
       fieldName: "type",
       minWidth: 50,
       maxWidth: 160,
@@ -174,7 +172,7 @@ function Appraisal(props: any) {
     },
     {
       key: "07",
-      name: i18n.t("form.Format_Type"),
+      name: i18n.t("appraisal_form.Format_Type"),
       fieldName: "format_type",
       minWidth: 50,
       maxWidth: 160,
@@ -184,7 +182,7 @@ function Appraisal(props: any) {
     },
     {
       key: "09",
-      name: i18n.t("form.Review_Frequency"),
+      name: i18n.t("appraisal_form.Review_Frequency"),
       fieldName: "review_frequency",
       minWidth: 50,
       maxWidth: 160,
@@ -194,7 +192,7 @@ function Appraisal(props: any) {
     },
     {
       key: "02",
-      name: i18n.t("form.action"),
+      name: i18n.t("common.action"),
       fieldName: "action",
       minWidth: 110,
       maxWidth: 110,
@@ -301,12 +299,12 @@ function Appraisal(props: any) {
   const _onBreadcrumbItemClicked = () => {};
   const itemsWithHeading: IBreadcrumbItem[] = [
     {
-      text: i18n.t("breadcrumb_itmes.performance"),
+      text: i18n.t("breadcrumb_items.performance"),
       key: "d1",
       onClick: _onBreadcrumbItemClicked,
     },
     {
-      text: i18n.t("breadcrumb_itmes.appraisal"),
+      text: i18n.t("breadcrumb_items.appraisal"),
       key: "d2",
       isCurrentItem: true,
       as: "h4",
@@ -357,7 +355,6 @@ function Appraisal(props: any) {
 
   const [searchById, setSearchById] = useState("");
   const [searchByDescription, setSearchByDescription] = useState("");
-  
 
   const [reviewSearch, setReviewSearch] = useState<IDropdownOption>({
     key: "",
@@ -379,7 +376,6 @@ function Appraisal(props: any) {
     text?: string
   ): void => {
     setSearchById(text || "");
-    
   };
 
   const itemSearchDescription = (
@@ -387,7 +383,6 @@ function Appraisal(props: any) {
     text?: string
   ): void => {
     setSearchByDescription(text || "");
-    
   };
 
   const itemSearchReview = (
@@ -426,7 +421,6 @@ function Appraisal(props: any) {
     );
   };
 
-
   const listStyle: Partial<IDetailsListStyles> = {
     headerWrapper: {
       ".root-106": {
@@ -464,7 +458,6 @@ function Appraisal(props: any) {
     { key: "Confirmation Appraisal", text: "Confirmation Appraisal" },
   ];
 
-  
   const dropdownStyles: Partial<IDropdownStyles> = {
     dropdown: {
       // width: 170,
@@ -493,7 +486,6 @@ function Appraisal(props: any) {
       fontSize: "20px",
     },
   };
-  
 
   const renderNoData = () => {
     return (
@@ -520,29 +512,28 @@ function Appraisal(props: any) {
     );
   };
 
-  
   const renderData = () => {
     return (
       <React.Fragment>
         <div className="card advance-search-section">
           <div className="searchBarClass">
             <TextField
-              label={t("form.ID")}
+              label={t("common.ID")}
               onChange={itemSearch}
-              placeholder={t("placeholder.id")}
+              placeholder={t("appraisal_form.field_place_holders.id")}
               className="searchInput"
               styles={controlStyles}
             />
             <TextField
-              placeholder={t("placeholder.description")}
-              label={t("form.Description")}
+              placeholder={t("appraisal_form.field_place_holders.description")}
+              label={t("appraisal_form.Description")}
               className="searchInput"
               onChange={itemSearchDescription}
               styles={controlStyles}
             />
             <Dropdown
-              label={t("form.Review_Frequency")}
-              placeholder={t("placeholder.select")}
+              label={t("appraisal_form.Review_Frequency")}
+              placeholder={t("appraisal_form.field_place_holders.select")}
               options={searchOptions}
               className="reviewFrequency"
               onChange={itemSearchReview}
@@ -570,7 +561,7 @@ function Appraisal(props: any) {
               }}
             />
             <PrimaryButton
-              text={t("buttons.addNew")}
+              text={t("appraisal_form.buttons.new")}
               iconProps={{ iconName: "Add" }}
               allowDisabledFocus
               onClick={() => {
@@ -591,8 +582,8 @@ function Appraisal(props: any) {
             }
           >
             <Dropdown
-              label={t("form.Appraisal_To")}
-              placeholder={t("placeholder.select")}
+              label={t("appraisal_form.Appraisal_To")}
+              placeholder={t("appraisal_form.field_place_holders.select")}
               options={searchAppraisal}
               className="reviewFrequency"
               onChange={itemSearchAppraisal}
@@ -600,8 +591,8 @@ function Appraisal(props: any) {
               styles={dropdownStyles}
             />
             <Dropdown
-              label={t("form.Review_From")}
-              placeholder={t("placeholder.select")}
+              label={t("appraisal_form.Review_From")}
+              placeholder={t("appraisal_form.field_place_holders.select")}
               options={searchFormatType}
               className="reviewFrequency"
               onChange={itemSearchFormatType}
@@ -657,7 +648,7 @@ function Appraisal(props: any) {
             // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
-              <div className="modal-title">{t("delete_popup.heading")}</div>
+              <div className="modal-title">{t("pop_up.delete.heading")}</div>
               <IconButton
                 styles={iconButtonStyles}
                 iconProps={cancelIcon}
@@ -668,7 +659,7 @@ function Appraisal(props: any) {
               />
             </div>
             <div className="modal-content-success">
-              {t("delete_popup.pop_up")}
+              {t("pop_up.delete.confirmation_message")}
             </div>
             <div
               style={{
@@ -678,14 +669,14 @@ function Appraisal(props: any) {
               }}
             >
               <PrimaryButton
-                text={t("delete_popup.heading")}
+                text={t("pop_up.delete.heading")}
                 allowDisabledFocus
                 onClick={handleDeleteAppraisal}
                 disabled={false}
                 checked={false}
               />
               <PrimaryButton
-                text={t("buttons.cancel")}
+                text={t("appraisal_form.buttons.cancel")}
                 allowDisabledFocus
                 onClick={() => {
                   setShowDelete(false);
@@ -704,7 +695,7 @@ function Appraisal(props: any) {
             // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
-              <div className="modal-title">Success</div>
+              <div className="modal-title">{t("pop_up.success.heading")}</div>
               <IconButton
                 styles={iconButtonStyles}
                 iconProps={cancelIcon}
@@ -715,7 +706,7 @@ function Appraisal(props: any) {
               />
             </div>
             <div className="modal-content-success">
-              Item deleted successfully.
+              {t("pop_up.delete.success_message")}
             </div>
             <div
               style={{
@@ -725,7 +716,7 @@ function Appraisal(props: any) {
               }}
             >
               <PrimaryButton
-                text="Ok"
+                text={t("appraisal_form.buttons.ok")}
                 allowDisabledFocus
                 onClick={() => {
                   handleSearchClick();
@@ -754,5 +745,3 @@ function Appraisal(props: any) {
 export default connect((state) => ({
   ...state,
 }))(Appraisal);
-
-

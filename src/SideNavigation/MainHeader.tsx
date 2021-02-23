@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import SmsIcon from "@material-ui/icons/Sms";
-import { Text } from "office-ui-fabric-react";
-import { logout } from "../redux/actions/auth";
+import {
+  Dropdown,
+  IDropdownOption,
+  IDropdownStyles,
+  Text,
+} from "office-ui-fabric-react";
+import { logout, userInfo } from "../redux/actions/auth";
 import { connect, useDispatch, useSelector } from "react-redux";
 
 import logo_ms from "../assets/img/logo_ms.png";
@@ -17,15 +22,60 @@ import i18n from "../i18n";
 
 function MainHeader(props: { children: any }) {
   const { children } = props;
+  const languageOption: IDropdownOption[] = [
+    { key: "en", text: "English" },
+    { key: "fr", text: "French" },
+  ];
   const dispatch = useDispatch();
+  const [userInfoData, setUserInfoData]: any = useState();
   const selectedLanguage = useSelector(
     (state: RootState) => state.application.language
   );
+
+  const userinformation = useSelector(
+    (state: RootState) => state.userData.user
+  );
+
+  const dropdownStyles: Partial<IDropdownStyles> = {
+    dropdown: {
+      width: 170,
+      border: "0px",
+      // color: "#FFF",
+      backgroundColor: "#FFF",
+    },
+  };
+
+  const handleLanguage = (
+    ev?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    // setLanguage(
+    //   item || {
+    //     key: "",
+    //     text: "",
+    //   }
+    // );
+    let data: any = item?.key || "";
+    dispatch(onChangeLanguage(data));
+    i18n.changeLanguage(data);
+
+    // setTimeout(() => {
+    //   Utils.reloadLocale(oldLanguage, languageSelected);
+    //   // history.goBack();
+    // }, 500);
+  };
+
+  // console.log("userInfo", userinformation);
 
   const handleLogout = () => {
     window.open("http://52.146.0.154/api/method/logout", "_self");
     dispatch(logout());
   };
+
+  // console.log("user response==>", userInfoData);
+  useEffect((): void => {
+    dispatch(userInfo());
+  }, []);
 
   const userData = useSelector((state: RootState) => state.userData.UserData);
 
@@ -47,7 +97,9 @@ function MainHeader(props: { children: any }) {
       </div>
       <div className="mx-auto text-white-50">
         <Text style={{ marginRight: "10px" }}>
-          {i18n.t("main_header.welcome")} {userData[0].name} ({userData[0].id})
+          {/* {i18n.t("main_header.welcome")} {userData[0].name} ({userData[0].id}) */}
+          {i18n.t("main_header.welcome")} {userinformation.full_name} (
+          {userinformation.employee_id})
         </Text>
 
         <Text style={{ marginRight: "5px", marginLeft: "2rem" }}>
@@ -57,14 +109,27 @@ function MainHeader(props: { children: any }) {
           {moment(dateNow).format("DD-MM-YYYY")} {timeNow}
         </Text>
       </div>
-      <ReactFlagsSelect
+      {/* <ReactFlagsSelect
         selected={selectedLanguage}
         onSelect={handleNewLang}
         className="flagSelect"
         countries={["US", "FR"]}
         customLabels={{ US: "English", FR: "French" }}
         placeholder="Select Language"
-      />
+      /> */}
+      <div>
+        <Dropdown
+          options={languageOption}
+          onChange={handleLanguage}
+          placeholder="Select language"
+          selectedKey={
+            languageOption.find((item) => item.key === selectedLanguage)?.key
+          }
+          className="rolesDropDown"
+          styles={dropdownStyles}
+          style={{ marginLeft: "2rem", marginTop: "15px" }}
+        />
+      </div>
       <div style={{ cursor: "pointer" }} className="link-icons px-2 nav-link">
         <NotificationsIcon style={{ fontSize: "2rem", color: "#FFF" }} />
       </div>
