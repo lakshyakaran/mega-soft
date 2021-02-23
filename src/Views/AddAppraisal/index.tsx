@@ -354,27 +354,35 @@ function AddAppraisal(props: any) {
     let pattern = /^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$/;
     if (claimsData.id === "" || claimsData.id.length > 5) {
       setErrMsg(i18n.t("errorMsg.please_enter_id"));
+      return false;
     }
     if (claimsData.description === "") {
       setErrMsgDescription(i18n.t("errorMsg.please_enter_description"));
+      return false;
     }
     if (!pattern.test(claimsData.owner)) {
       setErrMsgOwner("Please give currect pattern ");
+      return false;
     }
     if (claimsData.owner === "") {
       setErrMsgOwner(i18n.t("errorMsg.please_enter_owner_name"));
+      return false;
     }
     if (formateType.text === "") {
       setErrMsgFormatType("Select format Type");
+      return false;
     }
     if (reviewFrequency.text === "") {
       setErrMsgReviewFrequency("Select review Frequency");
+      return false;
     }
     if (selectedType.text === "") {
       setErrMsgType("Select type");
+      return false;
     }
     if (dateReview === null) {
       setErrMsgReviewDate("Select review date");
+      return false;
     }
     const addQuery = {
       id: claimsData.id,
@@ -399,13 +407,14 @@ function AddAppraisal(props: any) {
     add_apprisal(addQuery)
       .then((response) => {
         console.log("response=>", response);
-        if (response) {
-          setSuccessModal(true);
-        } else {
-          setFailedModal(true);
-        }
+        setSuccessModal(true);
+        // if (response) {
+        // } else {
+        //   setFailedModal(true);
+        // }
       })
       .catch((err) => {
+        setFailedModal(true);
         console.log("Error in btnClick=>", JSON.stringify(err));
       });
   };

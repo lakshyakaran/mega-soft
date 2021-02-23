@@ -40,6 +40,7 @@ function SideNavigation() {
   const dispatch = useDispatch();
   const [menuHeading, setMenuHeading] = useState("");
   // const [sideMenuData, setSideMenuData]: any = useState([]);
+  // console.log("menuData==>",menuData)
 
   useEffect((): void => {
     dispatch(sideNavigationData(menuType));
@@ -187,25 +188,25 @@ function SideNavigation() {
     );
   };
 
-  // const otherMenu: any = [];
+  const otherMenu: any = [];
 
-  // if (!isLoading) {
-  //   for (let i = 0; i < menuData["ms-menu"].length; i++) {
-  //     otherMenu.push(
-  //       <Menu popperArrow={true} iconShape="circle">
-  //         <MenuItem
-  //           icon={<PersonIcon />}
-  //           style={{ marginBottom: "20px" }}
-  //           onClick={(event) => {
-  //             handleOtherMenu(event, "Profile");
-  //           }}
-  //         >
-  //           {menuData["ms-menu"][i]}
-  //         </MenuItem>
-  //       </Menu>
-  //     );
-  //   }
-  // }
+  if (!isLoading) {
+    for (let i = 0; i < menuData["ms-menu"][0]["menu-items"].length; i++) {
+      otherMenu.push(
+        <Menu popperArrow={true} iconShape="circle">
+          <MenuItem
+            icon={<PersonIcon />}
+            style={{ marginBottom: "20px" }}
+            onClick={(event) => {
+              handleOtherMenu(event, "Profile");
+            }}
+          >
+            {menuData["ms-menu"][0]["menu-items"][i]}
+          </MenuItem>
+        </Menu>
+      );
+    }
+  }
 
   const handleOtherMenu = (event: any, item: any) => {
     setMenuHeading(item);
@@ -227,8 +228,8 @@ function SideNavigation() {
           <HomeIcon />
           HRMS
         </SidebarHeader>
-        {/* {otherMenu} */}
-        <Menu popperArrow={true} iconShape="circle" style={{}}>
+        {otherMenu}
+        {/* <Menu popperArrow={true} iconShape="circle" style={{}}>
           <MenuItem
             icon={<PersonIcon />}
             style={{ marginBottom: "20px" }}
@@ -237,7 +238,7 @@ function SideNavigation() {
             }}
           >
             Profile
-            {/* {menuData["ms-menu"][0]."menu-items".[0]} */}
+            {menuData["ms-menu"][0]["menu-items"][0]}
           </MenuItem>
           <MenuItem icon={<NoteIcon />} style={{ marginBottom: "20px" }}>
             Leave
@@ -266,7 +267,7 @@ function SideNavigation() {
           >
             Separation
           </MenuItem>
-        </Menu>
+        </Menu> */}
       </ProSidebar>
     );
   };
