@@ -33,21 +33,39 @@ export const fetchNavigationBar = (
   }
 };
 
-export const sideNavigationData = async (home_menu: any) => {
+// export const sideNavigationData = async (home_menu: any) => {
+//   const response = await axios({
+//     url: `http://52.146.0.154/api/method/megasoft_hrms.pm.pm_collapsible_menu`,
+//     params: {
+//       home_menu,
+//     },
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "multipart/form-data",
+//       Accept: "multipart/form-data",
+//       Authorization: "token 5ccbc7af363c163:b6060f97664d556",
+//     },
+//   });
+//   // console.log("side nav api response =>", response.data);
+//   const responseBody = await response.data;
+//   return responseBody;
+// };
+
+export const sideNavigationData = async () => {
+  const formData = new FormData();
+  formData.append("home_menu", "0");
   const response = await axios({
-    url: `http://52.146.0.154/api/method/megasoft_hrms.pm.pm_collapsible_menu`,
-    params: {
-      home_menu,
-    },
-    method: "GET",
+    url: `http://52.146.0.154/api/method/megasoft_hrms.pm.pm_sidebar_menu_permissions`,
+    method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
       Accept: "multipart/form-data",
       Authorization: "token 5ccbc7af363c163:b6060f97664d556",
     },
+    data: formData,
   });
   // console.log("side nav api response =>", response.data);
-  const responseBody = await response.data;
+  const responseBody = response.data;
   return responseBody;
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +27,7 @@ import NoteIcon from "@material-ui/icons/Note";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import menuData from "../../src/menuData";
+import { sideNavigationData } from "../redux/actions/navigation";
 
 function SideNavigation() {
   const { t, i18n } = useTranslation();
@@ -35,12 +36,15 @@ function SideNavigation() {
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
   const dispatch = useDispatch();
   const [menuHeading, setMenuHeading] = useState("");
+  const [sideMenuData, setSideMenuData] = useState([]);
 
   console.log("roleType", roleType);
-
-  const testMenu = i18n.t("sidebar_menu.appraisal.setup");
-
-  console.log("testMenu=>", testMenu);
+  useEffect((): void => {
+    sideNavigationData().then((response) => {
+      setSideMenuData(response.message);
+      console.log("side nav response==>", response);
+    });
+  }, []);
 
   const handleRoleMenu = (e: any, item: any) => {
     dispatch(setRoleType(item));
