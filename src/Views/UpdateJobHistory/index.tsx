@@ -25,7 +25,6 @@ import {
 } from "office-ui-fabric-react";
 import moment from "moment";
 
-
 interface ParamTypes {
   name: string;
 }
@@ -96,8 +95,7 @@ function UpdateJobHistory(props: any) {
   };
 
   const controlClass = mergeStyleSets({
-    control: {
-    },
+    control: {},
   });
 
   const onChangeInput = (
@@ -159,32 +157,36 @@ function UpdateJobHistory(props: any) {
   const [errMsgPlace, setErrMsgPlace] = useState("");
   const [errMsgPosition, setErrMsgPosition] = useState("");
   const [errMsgQualifications, setErrMsgQualifications] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handleUpdateJobHistory = () => {
-    if (jobHistoryUpdateData.responsibilities === "") {
+    if (jobHistoryUpdateData.key_responsibilities === "") {
       setErrMsgResponsibility("Key Responsibilities is required");
     }
-    if (jobHistoryUpdateData.place === "") {
+    if (jobHistoryUpdateData.place_of_posting === "") {
       setErrMsgPlace("Place of Posting is required");
     }
-    if (jobHistoryUpdateData.position === "") {
+    if (jobHistoryUpdateData.position_held === "") {
       setErrMsgPosition("Position Held is required");
     }
     if (jobHistoryUpdateData.qualifications === "") {
       setErrMsgQualifications("Qualifications is required");
     }
+    setLoading(false);
     const updateQuery = {
       ...jobHistoryUpdateData,
       from_date: moment(jobHistoryUpdateData.from_date).format("YYYY-MM-DD"),
       to_date: moment(jobHistoryUpdateData.to_date).format("YYYY-MM-DD"),
     };
-    update_JobHistory(updateQuery).then((response: any) => {
-      if (response.status === 200) {
-        setSuccessModal(true);
-      } else {
-        setFailedModal(true);
-      }
-    });
+    if (loading == false) {
+      update_JobHistory(updateQuery)
+        .then((response: any) => {
+          setSuccessModal(true);
+        })
+        .catch((err: any) => {
+          setFailedModal(true);
+        });
+    }
   };
 
   const stackTokens = { childrenGap: 10 };
@@ -371,7 +373,6 @@ function UpdateJobHistory(props: any) {
       </div>
     );
   };
-
 
   return (
     <div>

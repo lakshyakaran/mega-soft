@@ -24,6 +24,7 @@ import {
   PrimaryButton,
   ColorPicker,
   Separator,
+  addYears,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
 import Header from "../../Header";
@@ -281,15 +282,15 @@ function AddAppraisal(props: any) {
     history.push("/home");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
-    { text: i18n.t("breadcrumb_itmes.performance"), key: "d1" },
+    { text: i18n.t("breadcrumb_items.performance"), key: "d1" },
     {
-      text: i18n.t("breadcrumb_itmes.appraisal"),
+      text: i18n.t("breadcrumb_items.appraisal"),
       key: "d2",
       isCurrentItem: true,
       as: "h4",
       onClick: _onBreadcrumbItemClicked,
     },
-    { text: i18n.t("breadcrumb_itmes.add_appraisal"), key: "d3", as: "h4" },
+    { text: i18n.t("breadcrumb_items.add_appraisal"), key: "d3", as: "h4" },
   ];
 
   const [dateReview, setDateReview] = useState<Date | undefined>();
@@ -325,6 +326,7 @@ function AddAppraisal(props: any) {
   const [errMsgAppraisalDate, setErrMsgAppraisalDate] = useState("");
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const theme = getTheme();
   const cancelIcon: IIconProps = { iconName: "Cancel" };
@@ -352,38 +354,43 @@ function AddAppraisal(props: any) {
 
   const handleAddApprisal = () => {
     let pattern = /^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$/;
-    if (claimsData.id === "" || claimsData.id.length > 5) {
-      setErrMsg(i18n.t("errorMsg.please_enter_id"));
-      return false;
+    if (claimsData.id === "") {
+      setErrMsg(i18n.t("error_messages.please_enter_id"));
     }
     if (claimsData.description === "") {
-      setErrMsgDescription(i18n.t("errorMsg.please_enter_description"));
-      return false;
+      setErrMsgDescription(i18n.t("error_messages.please_enter_description"));
     }
     if (!pattern.test(claimsData.owner)) {
-      setErrMsgOwner("Please give currect pattern ");
-      return false;
+      setErrMsgOwner(i18n.t("error_messages.please_enter_currect_pattern"));
     }
     if (claimsData.owner === "") {
-      setErrMsgOwner(i18n.t("errorMsg.please_enter_owner_name"));
-      return false;
+      setErrMsgOwner(i18n.t("error_messages.please_enter_owner_name"));
     }
     if (formateType.text === "") {
-      setErrMsgFormatType("Select format Type");
-      return false;
+      setErrMsgFormatType(i18n.t("error_messages.select_format_type"));
     }
     if (reviewFrequency.text === "") {
-      setErrMsgReviewFrequency("Select review Frequency");
-      return false;
+      setErrMsgReviewFrequency(
+        i18n.t("error_messages.select_review_frequency")
+      );
     }
     if (selectedType.text === "") {
-      setErrMsgType("Select type");
-      return false;
+      setErrMsgType(i18n.t("error_messages.select_type"));
     }
-    if (dateReview === null) {
-      setErrMsgReviewDate("Select review date");
-      return false;
+    if (!dateReview) {
+      setErrMsgReviewDate(i18n.t("error_messages.please_enter_date"));
     }
+    if (!dateAppraisal) {
+      setErrMsgAppraisalDate(i18n.t("error_messages.please_enter_date"));
+    }
+    let checkReviewDate = moment(dateReview).format("YYYY-MM-DD");
+    let checkAppraisalDate = moment(dateAppraisal).format("YYYY-MM-DD");
+    if (checkReviewDate > checkAppraisalDate) {
+      setErrMsgAppraisalDate(
+        i18n.t("error_messages.from_date_greater_than_to_date")
+      );
+    }
+    setLoading(false);
     const addQuery = {
       id: claimsData.id,
       appraisal_description: claimsData.description,
@@ -404,19 +411,17 @@ function AddAppraisal(props: any) {
       appraisal_to: moment(dateAppraisal).format("YYYY-MM-DD"),
       appraisal_owner: claimsData.owner,
     };
-    add_apprisal(addQuery)
-      .then((response) => {
-        console.log("response=>", response);
-        setSuccessModal(true);
-        // if (response) {
-        // } else {
-        //   setFailedModal(true);
-        // }
-      })
-      .catch((err) => {
-        setFailedModal(true);
-        console.log("Error in btnClick=>", JSON.stringify(err));
-      });
+    if (loading == false) {
+      add_apprisal(addQuery)
+        .then((response) => {
+          // console.log("response=>", response);
+          setSuccessModal(true);
+        })
+        .catch((err) => {
+          setFailedModal(true);
+          console.log("Error in btnClick=>", JSON.stringify(err));
+        });
+    }
   };
 
   const renderForm = () => {
@@ -457,6 +462,7 @@ function AddAppraisal(props: any) {
           <div className="goal-details">
             <DatePicker
               isRequired={true}
+              textField={{ errorMessage: errMsgReviewDate }}
               label={t("appraisal_form.Review_From")}
               className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeek}
@@ -471,6 +477,7 @@ function AddAppraisal(props: any) {
             />
             <DatePicker
               isRequired={true}
+              textField={{ errorMessage: errMsgAppraisalDate }}
               label={t("appraisal_form.Appraisal_To")}
               className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeekAppraisal}
@@ -569,7 +576,7 @@ function AddAppraisal(props: any) {
               >
                 <div className="modal-header-local">
                   <div className="modal-title">
-                    {t("success_popup.heading")}
+                    {t("pop_up.success.heading")}
                   </div>
                   <IconButton
                     styles={iconButtonStyles}
@@ -581,11 +588,11 @@ function AddAppraisal(props: any) {
                   />
                 </div>
                 <div className="modal-content-success">
-                  {t("success_popup.appraisal_success")}
+                  {t("pop_up.success.success_message")}
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
-                    text={t("buttons.ok")}
+                    text={t("appraisal_form.buttons.ok")}
                     allowDisabledFocus
                     onClick={() => {
                       history.push("/home");
@@ -603,7 +610,7 @@ function AddAppraisal(props: any) {
                 // containerClassName={contentStyles.container}
               >
                 <div className="modal-header-local">
-                  <div className="modal-title">{t("delete_popup.heading")}</div>
+                  <div className="modal-title">Error</div>
                   <IconButton
                     styles={iconButtonStyles}
                     iconProps={cancelIcon}
@@ -614,11 +621,11 @@ function AddAppraisal(props: any) {
                   />
                 </div>
                 <div className="modal-content-failed">
-                  {t("delete_popup.message")}
+                  {t("pop_up.success.error_message")}
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <PrimaryButton
-                    text={t("buttons.go_back")}
+                    text={t("appraisal_form.buttons.back")}
                     allowDisabledFocus
                     onClick={() => {
                       setFailedModal(false);

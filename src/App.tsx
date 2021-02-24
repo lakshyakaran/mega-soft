@@ -93,7 +93,11 @@ function App(props: any) {
                   <MainHeader>
                     <div onClick={handlemenuClick}>
                       <ChevronLeftIcon
-                        style={{ color: "#FFF", cursor: "pointer" }}
+                        style={{
+                          color: "#FFF",
+                          cursor: "pointer",
+                          marginRight: "10px",
+                        }}
                       />
                     </div>
                   </MainHeader>

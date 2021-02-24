@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiBase } from "../../config.json";
+import apiUrl from "../../config";
 
 export const fetchAppraisalData = (
   limit_start = 0,
@@ -20,7 +20,7 @@ export const fetchAppraisalData = (
       type: "FETCH_APPRAISAL_LIST_START",
     });
     const response = await axios({
-      url: `${apiBase}/Appraisal`,
+      url: `${apiUrl.resource}/Appraisal`,
       params: {
         limit_start,
         limit_page_length,
@@ -85,7 +85,7 @@ export const fetchAppraisalDataById = async (
     }
     const accessToken = "bearer " + token;
     const response = await axios({
-      url: `${apiBase}/Appraisal`,
+      url: `${apiUrl.resource}/Appraisal`,
       params: {
         limit_start,
         limit_page_length,
@@ -138,7 +138,7 @@ export const add_apprisal = async (data: any) => {
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: `${apiBase}/Appraisal`,
+    url: `${apiUrl.resource}/Appraisal`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -157,7 +157,7 @@ export const edit_appraisal = async (data: any) => {
     }
     const accessToken = "bearer " + token;
     const response = await axios({
-      url: `${apiBase}/Appraisal/${data.id}`,
+      url: `${apiUrl.resource}/Appraisal/${data.id}`,
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -183,7 +183,7 @@ export const filterByEmployee = async (order_by = "employee_name asc") => {
     }
     const accessToken = "bearer " + token;
     const response = await axios({
-      url: `${apiBase}/Employee`,
+      url: `${apiUrl.resource}/Employee`,
       params: {
         order_by,
         fields: JSON.stringify(["employee_id", "employee_name"]),

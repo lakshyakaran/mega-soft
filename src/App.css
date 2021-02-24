@@ -16,7 +16,7 @@ body {
   position: fixed;
   /* width: 250px; */
   /* background-color: #00597d; */
-  /* background-color: #1f262d; */
+  background-color: #00597d;
   height: 100%;
   left: 0;
   top: 0;
@@ -644,7 +644,8 @@ button:focus {
 }
 
 .left-sidebar {
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
   width: 250px;
   height: 100%;
   top: 0px;

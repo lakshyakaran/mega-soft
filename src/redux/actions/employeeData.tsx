@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiUrl from "../../config";
 
 export const fetchEmployeeData = (
   doctype = "EmployeeAppraisal",
@@ -17,7 +18,7 @@ export const fetchEmployeeData = (
       type: "FETCH_EMPOLYEE_LIST_START",
     });
     const response = await axios({
-      url: `http://52.146.0.154/api/method/megasoft_hrms.pm.employee_appraisals`,
+      url: `${apiUrl.method}/megasoft_hrms.pm.employee_appraisals`,
       params: {
         doctype,
         limit_start,
@@ -64,7 +65,7 @@ export const fetchEmployeeDataByID = async (
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: `http://52.146.0.154/api/method/megasoft_hrms.pm.employee_appraisals`,
+    url: `${apiUrl.method}/megasoft_hrms.pm.employee_appraisals`,
     params: {
       doctype,
       limit_start,

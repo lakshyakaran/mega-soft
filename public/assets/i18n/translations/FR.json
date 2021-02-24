@@ -55,7 +55,12 @@
     "please_enter_id": "Veuillez saisir votre identifiant",
     "please_enter_type": "Veuillez saisir type",
     "please_enter_date": "Veuillez saisir une date",
-    "please_enter_owner_name": "Veuillez saisir le nom du propriétaire"
+    "please_enter_owner_name": "Veuillez saisir le nom du propriétaire",
+    "select_review_frequency": "Sélectionnez la fréquence d'examen",
+    "select_format_type": "Sélectionnez le type de format",
+    "select_type": "Sélectionner le genre",
+    "please_enter_currect_pattern": "Veuillez saisir le modèle actuel",
+    "from_date_greater_than_to_date": "Date \"Du\" supérieure à la date \"Au\""
   },
   "common": {
     "ID": "ID",
@@ -77,6 +82,12 @@
       },
       "appraisal-menu": "Évaluation",
       "confirmation-menu": "Confirmation"
+    },
+    "hrms-module": {
+      "profile": "profil",
+      "performance": "Performance",
+      "leave": "Congés",
+      "payroll": "Paie"
     }
   },
   "role-name": {

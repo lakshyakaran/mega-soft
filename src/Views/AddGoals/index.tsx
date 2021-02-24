@@ -95,14 +95,12 @@ function AddGoals(props: any) {
     },
   };
 
-  
   const textfelidStyle: Partial<ITextFieldStyles> = {
     root: {
       //   width: "50px",
     },
   };
 
-  
   const onChangeInput = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
@@ -161,6 +159,7 @@ function AddGoals(props: any) {
   const [errMsgMeasure, setErrMsgMeasure] = useState("");
   const [errMsgWeightage, setErrMsgWeightage] = useState("");
   const [errMsgKra, setErrMsgKra] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const [goalType, setGoalType] = useState<IDropdownOption>({
     key: "",
@@ -198,6 +197,7 @@ function AddGoals(props: any) {
     if (goalType.text === "") {
       setErrMsgGoalType("Select goal type");
     }
+    setLoading(false);
     const addQuery = {
       appraisal_id: params.appraisalId,
       employee_id: params.employeeId,
@@ -212,13 +212,15 @@ function AddGoals(props: any) {
       threshold: goalInputData.threshold,
       weightage: goalInputData.weightage,
     };
-    add_goals(addQuery).then((response: any) => {
-      if (response.status === 200) {
-        setSuccessModal(true);
-      } else {
-        setFailedModal(true);
-      }
-    });
+    if (loading == false) {
+      add_goals(addQuery)
+        .then((response: any) => {
+          setSuccessModal(true);
+        })
+        .catch((err: any) => {
+          setFailedModal(true);
+        });
+    }
   };
 
   const stackTokens = { childrenGap: 10 };

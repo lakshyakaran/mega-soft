@@ -28,6 +28,7 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 // import menuData from "../../src/menuData";
 import { sideNavigationData } from "../redux/actions/navigation";
+import { Spinner, SpinnerSize } from "office-ui-fabric-react";
 
 function SideNavigation() {
   const { t, i18n } = useTranslation();
@@ -157,6 +158,16 @@ function SideNavigation() {
               </MenuItem>
             ) : null}
 
+            {checkMenuPermission(
+              menuData["ms-menu"][i].role,
+              "nav.performance.confirmation-status"
+            ) === true ? (
+              <MenuItem icon={<CachedIcon />}>
+                {i18n.t("nav.performance.confirmation.confirmation-status")}
+                {/* <Link to="/home" /> */}
+              </MenuItem>
+            ) : null}
+
             {/* <MenuItem icon={<CachedIcon />}>
               {i18n.t("sidebar_menu.confirmation_status")}
             </MenuItem>
@@ -188,25 +199,25 @@ function SideNavigation() {
     );
   };
 
-  const otherMenu: any = [];
+  // const otherMenu: any = [];
 
-  if (!isLoading) {
-    for (let i = 0; i < menuData["ms-menu"][0]["menu-items"].length; i++) {
-      otherMenu.push(
-        <Menu popperArrow={true} iconShape="circle">
-          <MenuItem
-            icon={<PersonIcon />}
-            style={{ marginBottom: "20px" }}
-            onClick={(event) => {
-              handleOtherMenu(event, "Profile");
-            }}
-          >
-            {menuData["ms-menu"][0]["menu-items"][i]}
-          </MenuItem>
-        </Menu>
-      );
-    }
-  }
+  // if (!isLoading) {
+  //   for (let i = 0; i < menuData["ms-menu"][0]["menu-items"].length; i++) {
+  //     otherMenu.push(
+  //       <Menu popperArrow={true} iconShape="circle">
+  //         <MenuItem
+  //           icon={<PersonIcon />}
+  //           style={{ marginBottom: "20px" }}
+  //           onClick={(event) => {
+  //             handleOtherMenu(event, "Profile");
+  //           }}
+  //         >
+  //           {menuData["ms-menu"][0]["menu-items"][i]}
+  //         </MenuItem>
+  //       </Menu>
+  //     );
+  //   }
+  // }
 
   const handleOtherMenu = (event: any, item: any) => {
     setMenuHeading(item);
@@ -215,7 +226,7 @@ function SideNavigation() {
   };
 
   const localMenuItem = () => {
-    return (
+    return !isLoading ? (
       <ProSidebar
         collapsed={selectMenu}
         style={{ backgroundColor: DefaultTheme.colors.primary }}
@@ -228,47 +239,42 @@ function SideNavigation() {
           <HomeIcon />
           HRMS
         </SidebarHeader>
-        {otherMenu}
-        {/* <Menu popperArrow={true} iconShape="circle" style={{}}>
-          <MenuItem
-            icon={<PersonIcon />}
-            style={{ marginBottom: "20px" }}
-            onClick={(event) => {
-              handleOtherMenu(event, "Profile");
-            }}
-          >
-            Profile
-            {menuData["ms-menu"][0]["menu-items"][0]}
+        {/* {otherMenu} */}
+        <Menu popperArrow={true} iconShape="circle" style={{}}>
+          <MenuItem icon={<PersonIcon />} style={{ marginBottom: "20px" }}>
+            {i18n.t(menuData["ms-menu"][0]["menu-items"][0])}
           </MenuItem>
-          <MenuItem icon={<NoteIcon />} style={{ marginBottom: "20px" }}>
-            Leave
+          <MenuItem icon={<BarChartIcon />} style={{ marginBottom: "20px" }}>
+            {i18n.t(menuData["ms-menu"][0]["menu-items"][1])}
           </MenuItem>
           <MenuItem
-            icon={<BarChartIcon />}
+            icon={<AssignmentTurnedInIcon />}
             style={{ marginBottom: "20px" }}
             onClick={(event) => {
               handleOtherMenu(event, "Performance");
             }}
           >
-            Performance
-          </MenuItem>
-          <MenuItem
-            icon={<AssignmentTurnedInIcon />}
-            style={{ marginBottom: "20px" }}
-          >
-            Training
-          </MenuItem>
-          <MenuItem icon={<AttachMoneyIcon />} style={{ marginBottom: "20px" }}>
-            Payroll
+            {i18n.t(menuData["ms-menu"][0]["menu-items"][2])}
           </MenuItem>
           <MenuItem
             icon={<ImportExportIcon />}
             style={{ marginBottom: "20px" }}
           >
-            Separation
+            {i18n.t(menuData["ms-menu"][0]["menu-items"][3])}
           </MenuItem>
-        </Menu> */}
+        </Menu>
       </ProSidebar>
+    ) : (
+      <Spinner
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "50px",
+          color: "#00597d",
+        }}
+        size={SpinnerSize.large}
+      />
     );
   };
 

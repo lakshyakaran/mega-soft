@@ -159,6 +159,9 @@ function JobHistory(props: any) {
   const [errMsgPlace, setErrMsgPlace] = useState("");
   const [errMsgPosition, setErrMsgPosition] = useState("");
   const [errMsgQualifications, setErrMsgQualifications] = useState("");
+  const [errMsgFromDate, setErrMsgFromDate] = useState("");
+  const [errMsgToDate, setErrMsgToDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handleAddJobHistory = () => {
     if (jobHistoryData.responsibilities === "") {
@@ -173,6 +176,19 @@ function JobHistory(props: any) {
     if (jobHistoryData.qualifications === "") {
       setErrMsgQualifications("Qualifications is required");
     }
+
+    if (!fromDate) {
+      setErrMsgFromDate("Please select date");
+    }
+    if (!toDate) {
+      setErrMsgToDate("Please select date");
+    }
+    let checkFromDate = moment(fromDate).format("YYYY-MM-DD");
+    let checkToDate = moment(toDate).format("YYYY-MM-DD");
+    if (checkFromDate > checkToDate) {
+      setErrMsgToDate("From date greater than To date");
+    }
+    setLoading(false);
     const addQuery = {
       appraisal_id: appraisalId,
       employee_id: filtersById,
@@ -183,16 +199,16 @@ function JobHistory(props: any) {
       from_date: moment(fromDate).format("YYYY-MM-DD"),
       to_date: moment(toDate).format("YYYY-MM-DD"),
     };
-    add_JobHistory(addQuery).then((response: any) => {
-      setSuccessModal(true);
-      // if (response.status === 200) {
-      // } else {
-      // }
-    })
-    .catch((err)=>{
-      console.log("error", err)
-      setFailedModal(true);
-    })
+    if (loading == false) {
+      add_JobHistory(addQuery)
+        .then((response: any) => {
+          setSuccessModal(true);
+        })
+        .catch((err) => {
+          console.log("error", err);
+          setFailedModal(true);
+        });
+    }
   };
 
   const stackTokens = { childrenGap: 10 };
@@ -231,7 +247,7 @@ function JobHistory(props: any) {
               onSelectDate={onchangeFromDate}
               value={fromDate}
               styles={datePickerStyle}
-              // textField={{ errorMessage: "Form date is required" }}
+              textField={{ errorMessage: errMsgFromDate }}
             />
             <DatePicker
               isRequired={true}
@@ -240,8 +256,8 @@ function JobHistory(props: any) {
               className={`${controlClass.control} flexGrow w33`}
               onSelectDate={onchangeToDate}
               value={toDate}
-              // textField={{ errorMessage = { errMsgPlace } }}
               styles={datePickerStyle}
+              textField={{ errorMessage: errMsgToDate }}
             />
           </div>
 

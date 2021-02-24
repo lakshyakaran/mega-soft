@@ -19,6 +19,7 @@ import { onChangeLanguage } from "../redux/actions/application";
 import ReactFlagsSelect from "react-flags-select";
 
 import i18n from "../i18n";
+import apiUrl from "../config";
 
 function MainHeader(props: { children: any }) {
   const { children } = props;
@@ -68,7 +69,7 @@ function MainHeader(props: { children: any }) {
   // console.log("userInfo", userinformation);
 
   const handleLogout = () => {
-    window.open("http://52.146.0.154/api/method/logout", "_self");
+    window.open(`${apiUrl.method}/logout`, "_self");
     dispatch(logout());
   };
 
@@ -127,7 +128,6 @@ function MainHeader(props: { children: any }) {
           }
           className="rolesDropDown"
           styles={dropdownStyles}
-          style={{ marginLeft: "2rem", marginTop: "15px" }}
         />
       </div>
       <div style={{ cursor: "pointer" }} className="link-icons px-2 nav-link">

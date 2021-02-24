@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiUrl from "../../config";
 
 // export const validateLogin = () => {
 //   const sessionState = sessionStorage.getItem("sessionState");
@@ -53,33 +54,6 @@ export const login = (access_token: any) => {
   };
 };
 
-// export const logout = () => async (dispatch: any): Promise<any> => {
-//   const token = sessionStorage.getItem("access_token");
-//   const accessToken = "bearer " + token;
-//   if (token === null) {
-//     dispatch({
-//       type: "LOGOUT_SUCCESS",
-//     });
-//     return false;
-//   }
-//   const response = await axios({
-//     url: `http://52.146.0.154/api/method/frappe.integrations.oauth2.revoke_token`,
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Accept: "application/json",
-//       Authorization: accessToken,
-//     },
-//   });
-//   const responseBody = await response.data;
-//   sessionStorage.removeItem("access_token");
-//   dispatch({
-//     type: "LOGOUT_SUCCESS",
-//   });
-//   return false;
-
-// };
-
 export const logout = () => async (dispatch: any): Promise<any> => {
   try {
     const token = sessionStorage.getItem("access_token");
@@ -89,7 +63,7 @@ export const logout = () => async (dispatch: any): Promise<any> => {
     const formData = new FormData();
     formData.append("token", token);
     const response = await axios({
-      url: `http://52.146.0.154/api/method/frappe.integrations.oauth2.revoke_token`,
+      url: `${apiUrl.method}/frappe.integrations.oauth2.revoke_token`,
       method: "POST",
       headers: {
         "Content-Type": "multipart/form-data",
@@ -118,7 +92,7 @@ export const userInfo = () => async (dispatch: any): Promise<any> => {
     }
     const accessToken = "bearer " + token;
     const response = await axios({
-      url: `http://52.146.0.154/api/method/megasoft_hrms.pm.logged_in_user`,
+      url: `${apiUrl.method}/megasoft_hrms.pm.logged_in_user`,
       method: "POST",
       headers: {
         "Content-Type": "multipart/form-data",

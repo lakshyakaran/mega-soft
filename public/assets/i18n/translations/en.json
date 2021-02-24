@@ -14,6 +14,12 @@
       },
       "appraisal-menu": "Appraisal",
       "confirmation-menu": "Confirmation"
+    },
+    "hrms-module": {
+      "profile": "Profile",
+      "performance": "Performance",
+      "leave": "Leave",
+      "payroll": "Payroll"
     }
   },
   "role-name": {
@@ -78,7 +84,12 @@
     "please_enter_description": "Please enter the description",
     "please_enter_id": "Please enter the ID",
     "please_enter_owner_name": "Please enter the owner name",
-    "please_enter_type": "Please enter the type"
+    "please_enter_type": "Please enter the type",
+    "select_review_frequency": "Select review frequency",
+    "select_format_type": "Select format type",
+    "select_type": "Select type",
+    "please_enter_currect_pattern": "Please enter currect pattern",
+    "from_date_greater_than_to_date": "\"From\" date greater than \"To\" date"
   },
   "main_header": {
     "logged_in": "Logged in",

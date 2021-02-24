@@ -17,10 +17,7 @@ import {
   Stack,
   TextField,
 } from "office-ui-fabric-react";
-import {
-  fetchGoalDataName,
-  update_goals,
-} from "../../redux/actions/goal";
+import { fetchGoalDataName, update_goals } from "../../redux/actions/goal";
 
 interface ParamTypes {
   employeeId: string;
@@ -133,25 +130,43 @@ function UpdateGoals(props: any) {
     },
   };
 
-  const [errMsgOrder] = useState("");
-  const [errMsgGoal] = useState("");
-  const [errMsgGoalType] = useState("");
-  const [errMsgMeasure] = useState("");
-  const [errMsgWeightage] = useState("");
-  const [errMsgKra] = useState("");
-
+  const [errMsgOrder, setErrMsgOrder] = useState("");
+  const [errMsgGoal, setErrMsgGoal] = useState("");
+  const [errMsgGoalType, setErrMsgGoalType] = useState("");
+  const [errMsgMeasure, setErrMsgMeasure] = useState("");
+  const [errMsgWeightage, setErrMsgWeightage] = useState("");
+  const [errMsgKra, setErrMsgKra] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handleUpdateGoal = () => {
+    if (updateGoalData.order_no === "") {
+      setErrMsgOrder("Order number is required");
+    }
+    if (updateGoalData.kra === "") {
+      setErrMsgKra("KRA is required");
+    }
+    if (updateGoalData.goal === "") {
+      setErrMsgGoal("Goal is required");
+    }
+    if (updateGoalData.measure === "") {
+      setErrMsgMeasure("Measure is required");
+    }
+    if (updateGoalData.weightage === "") {
+      setErrMsgWeightage("Weightage is required");
+    }
+    setLoading(false);
     const addQuery = {
       ...updateGoalData,
     };
-    update_goals(addQuery).then((response: any) => {
-      if (response.status === 200) {
-        setSuccessModal(true);
-      } else {
-        setFailedModal(true);
-      }
-    });
+    if (loading == false) {
+      update_goals(addQuery)
+        .then((response: any) => {
+          setSuccessModal(true);
+        })
+        .catch((err: any) => {
+          setFailedModal(true);
+        });
+    }
   };
 
   const stackTokens = { childrenGap: 10 };

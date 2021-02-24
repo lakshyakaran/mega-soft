@@ -6,6 +6,7 @@ import {
 import { useParams } from "react-router-dom";
 import { Stack } from "office-ui-fabric-react/lib/Stack";
 import {
+  addYears,
   DatePicker,
   DayOfWeek,
   Dropdown,
@@ -228,8 +229,12 @@ function UpdateAppraisal(props: any) {
     },
   };
 
+  const [errMsgDescription, setErrMsgDescription] = useState("");
+  const [errMsgOwner, setErrMsgOwner] = useState("");
+  const [errMsgAppraisalDate, setErrMsgAppraisalDate] = useState("");
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const theme = getTheme();
   const cancelIcon: IIconProps = { iconName: "Cancel" };
 
@@ -255,6 +260,24 @@ function UpdateAppraisal(props: any) {
   };
 
   const handleUpdateApprisal = () => {
+    let pattern = /^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$/;
+    if (updateData.appraisal_description === "") {
+      setErrMsgDescription("Please enter the description");
+    }
+    if (!pattern.test(updateData.appraisal_owner)) {
+      setErrMsgOwner("Please give currect pattern ");
+    }
+    if (updateData.owner === "") {
+      setErrMsgOwner("Please enter the owner name");
+    }
+    let checkReviewDate = moment(updateData.review_from).format("YYYY-MM-DD");
+    let checkAppraisalDate = moment(updateData.appraisal_to).format(
+      "YYYY-MM-DD"
+    );
+    if (checkReviewDate > checkAppraisalDate) {
+      setErrMsgAppraisalDate("From date greater than To date");
+    }
+    setLoading(false);
     const updateQuery = {
       ...updateData,
       review_from: moment(updateData.review_from).format("YYYY-MM-DD"),
@@ -262,18 +285,16 @@ function UpdateAppraisal(props: any) {
       description: "22",
       route: "appraisal/BB00002",
     };
-    // console.log("updateQuery=>", updateQuery);
-    edit_appraisal(updateQuery).then((response) => {
-      // console.log("response=>", response);
-      if (response?.status === 200) {
-        setSuccessModal(true);
-      } else {
-        setFailedModal(true);
-      }
-    });
-    // .catch((err) => {
-    //   console.log("Error in btnClick=>", err);
-    // });
+    if (loading == false) {
+      edit_appraisal(updateQuery).then((response) => {
+        // console.log("response=>", response);
+        if (response?.status === 200) {
+          setSuccessModal(true);
+        } else {
+          setFailedModal(true);
+        }
+      });
+    }
   };
 
   const renderUpdateForm = () => {
@@ -292,6 +313,7 @@ function UpdateAppraisal(props: any) {
             />
             <TextField
               required
+              errorMessage={errMsgDescription}
               placeholder="Description"
               label="Description"
               value={updateData.appraisal_description}
@@ -321,6 +343,7 @@ function UpdateAppraisal(props: any) {
             <DatePicker
               isRequired
               label="Appraisal To"
+              textField={{ errorMessage: errMsgAppraisalDate }}
               value={new Date(updateData.appraisal_to)}
               className={`${controlClass.control} flexGrow w33`}
               firstDayOfWeek={firstDayOfWeek}
@@ -384,14 +407,8 @@ function UpdateAppraisal(props: any) {
               required
               label="Owner"
               placeholder="Owner"
+              errorMessage={errMsgOwner}
               pattern={"^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"}
-              onGetErrorMessage={(v) =>
-                new RegExp(
-                  "^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"
-                ).test(v)
-                  ? ""
-                  : "Please give currect pattern"
-              }
               value={updateData.appraisal_owner}
               styles={textfelidStyle}
               name="appraisal_owner"

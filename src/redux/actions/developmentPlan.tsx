@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiBase } from "../../config.json";
+import apiUrl from "../../config";
 
 export const fetchDevelopmentPlan = async (
   limit_start = 0,
@@ -13,7 +13,7 @@ export const fetchDevelopmentPlan = async (
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: `${apiBase}/EmployeeDevelopmentPlan`,
+    url: `${apiUrl.resource}/EmployeeDevelopmentPlan`,
     params: {
       limit_start,
       limit_page_length,
@@ -48,7 +48,7 @@ export const handleDevelopmentDataChange = async (data: any) => {
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: `http://52.146.0.154/api/method/megasoft_hrms.pm.employee_development_plan`,
+    url: `${apiUrl.method}/megasoft_hrms.pm.employee_development_plan`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",

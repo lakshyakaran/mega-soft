@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiUrl from "../../config";
 
 export const jobHistoryData = (
   role = "Employee",
@@ -16,7 +17,7 @@ export const jobHistoryData = (
     type: "FETCH_JOB_HISTORY_START",
   });
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/JobHistory`,
+    url: `${apiUrl.resource}/JobHistory`,
     params: {
       role,
       filters,
@@ -65,7 +66,7 @@ export const fetchJobHistory = async (
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/JobHistory`,
+    url: `${apiUrl.resource}/JobHistory`,
     params: {
       role,
       filters,
@@ -107,7 +108,7 @@ export const fetchJobHistoryByName = async (
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/JobHistory`,
+    url: `${apiUrl.resource}/JobHistory`,
     params: {
       role,
       filters,
@@ -143,7 +144,7 @@ export const add_JobHistory = async (data: any) => {
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/JobHistory`,
+    url: `${apiUrl.resource}/JobHistory`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -164,7 +165,7 @@ export const update_JobHistory = async (data: any) => {
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/JobHistory/${data.name}`,
+    url: `${apiUrl.resource}/JobHistory/${data.name}`,
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

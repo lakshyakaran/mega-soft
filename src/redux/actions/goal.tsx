@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiUrl from "../../config";
 
 export const fetchGoalData = async (
   limit_start = 0,
@@ -12,7 +13,7 @@ export const fetchGoalData = async (
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/AppraisalGoals`,
+    url: `${apiUrl.resource}/AppraisalGoals`,
     params: {
       limit_start,
       limit_page_length,
@@ -60,7 +61,7 @@ export const fetchGoalDataName = async (
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/AppraisalGoals`,
+    url: `${apiUrl.resource}/AppraisalGoals`,
     params: {
       limit_start,
       limit_page_length,
@@ -103,7 +104,7 @@ export const add_goals = async (data: any) => {
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/AppraisalGoals`,
+    url: `${apiUrl.resource}/AppraisalGoals`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -113,7 +114,7 @@ export const add_goals = async (data: any) => {
     data: JSON.stringify(data),
   });
   console.log("add goal api response =>", response);
-  const responseBody = await response;
+  const responseBody = response;
   return responseBody;
 };
 
@@ -124,7 +125,7 @@ export const update_goals = async (data: any) => {
   }
   const accessToken = "bearer " + token;
   const response = await axios({
-    url: ` http://52.146.0.154/api/resource/AppraisalGoals/${data.name}`,
+    url: `${apiUrl.resource}/AppraisalGoals/${data.name}`,
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -133,7 +134,7 @@ export const update_goals = async (data: any) => {
     },
     data: JSON.stringify(data),
   });
-  console.log("update goal api response =>", response);
-  const responseBody = await response;
+  // console.log("update goal api response =>", response);
+  const responseBody = response;
   return responseBody;
 };
