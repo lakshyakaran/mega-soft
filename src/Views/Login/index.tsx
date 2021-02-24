@@ -9,7 +9,7 @@ import { login } from "../../redux/actions/auth";
 import logo_ms from "../../assets/img/logo_ms.png";
 import banner_main from "../../assets/img/megasoft_hrms.jpg";
 import "./style.css";
-import apiUrl from "../../config";
+import apiUrl, { OAuthParameters } from "../../config";
 
 function Login() {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ function Login() {
                   allowDisabledFocus
                   onClick={() => {
                     window.open(
-                      `${apiUrl.method}/frappe.integrations.oauth2.authorize?client_id=3b9ea85aeb&state=12345&response_type=token&scope=all&redirect_uri=http://localhost:3000/home`,
+                      `${apiUrl.method}/frappe.integrations.oauth2.authorize?client_id=${OAuthParameters.client_id}&state=${OAuthParameters.state}&response_type=code&scope=all&redirect_uri=http://localhost:3000/home`,
                       "_self"
                     );
                   }}

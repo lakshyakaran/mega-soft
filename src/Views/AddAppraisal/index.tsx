@@ -327,6 +327,7 @@ function AddAppraisal(props: any) {
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isError, setIsError] = useState(true);
 
   const theme = getTheme();
   const cancelIcon: IIconProps = { iconName: "Cancel" };
@@ -390,7 +391,6 @@ function AddAppraisal(props: any) {
         i18n.t("error_messages.from_date_greater_than_to_date")
       );
     }
-    setLoading(false);
     const addQuery = {
       id: claimsData.id,
       appraisal_description: claimsData.description,
@@ -411,7 +411,9 @@ function AddAppraisal(props: any) {
       appraisal_to: moment(dateAppraisal).format("YYYY-MM-DD"),
       appraisal_owner: claimsData.owner,
     };
-    if (loading == false) {
+    console.log("loading", loading);
+    setLoading(false);
+    if (loading === false) {
       add_apprisal(addQuery)
         .then((response) => {
           // console.log("response=>", response);

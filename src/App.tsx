@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   BrowserRouter,
   Redirect,
@@ -23,13 +23,14 @@ import Login from "./Views/Login";
 import ChanageColor from "./components/ChanageColor";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
-import { validateLogin, login } from "./redux/actions/auth";
+import { validateLogin, login, getAccessToken } from "./redux/actions/auth";
 
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
 import MainHeader from "./SideNavigation/MainHeader";
 import { setCollapedMenu } from "./redux/actions/roleType";
+import { OAuthParameters } from "./config";
 
 const getQueryParms = () => {
   const url = window.location.href;
@@ -46,28 +47,64 @@ const getQueryParms = () => {
   return access_token;
 };
 
+const getOAuthCode = () => {
+  const url = window.location.href;
+  const str = url;
+  const param = "code=";
+  let res = str.split("&", 1);
+  let n = res[0].search(param);
+
+  if (n < 0) {
+    return;
+  }
+  n += param.length;
+  let code = res[0].substr(n);
+  return code;
+};
+
 function App(props: any) {
   const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.Auth);
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
+  const [grant_type] = useState("authorization_code");
+  const [redirect_uri]: any = useState("http://localhost:3000/home");
+  const [client_id] = useState(OAuthParameters.client_id);
+  const [scope] = useState("all");
 
   useEffect(() => {
     dispatch(validateLogin());
   }, []);
 
-  useEffect(() => {
-    // const stateValue = getQueryParms("state");
-    // const sessionStateValue = getQueryParms("session_state");
-    const access_token = getQueryParms();
-    // console.log("access_token main==>", access_token);
-    // if (stateValue && sessionStateValue && access_token) {
-    //   dispatch(login(sessionStateValue, stateValue, access_token));
-    // }
+  const code = getOAuthCode();
 
-    if (access_token) {
-      dispatch(login(access_token));
-    }
+  useEffect(() => {
+    const accesstokenData = {
+      client_id: client_id,
+      scope: scope,
+      code: code,
+    };
+    getAccessToken(accesstokenData).then((response: any) => {
+      // console.log("response", response);
+      // sessionStorage.setItem("refresh_token", response.data.refresh_token);
+      if (response.data.access_token) {
+        dispatch(login(response.data.access_token));
+      }
+    });
   }, []);
+
+  // useEffect(() => {
+  //   // const stateValue = getQueryParms("state");
+  //   // const sessionStateValue = getQueryParms("session_state");
+  //   const access_token = getQueryParms();
+  //   // console.log("access_token main==>", access_token);
+  //   // if (stateValue && sessionStateValue && access_token) {
+  //   //   dispatch(login(sessionStateValue, stateValue, access_token));
+  //   // }
+
+  //   if (access_token) {
+  //     dispatch(login(access_token));
+  //   }
+  // }, []);
 
   if (auth.isLoading) {
     return null;

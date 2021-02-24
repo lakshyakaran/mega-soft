@@ -44,6 +44,32 @@ export const validateLogin = () => {
 //   };
 // };
 
+export const getAccessToken = async (data: any) => {
+  try {
+    const formData = new FormData();
+    formData.append("grant_type", "authorization_code");
+    formData.append("code", data.code);
+    formData.append("redirect_uri", "http://localhost:3000/home");
+    formData.append("client_id", data.client_id);
+    formData.append("scope", data.scope);
+    const response = await axios({
+      url: `http://52.146.0.154/api/method/frappe.integrations.oauth2.get_token`,
+
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
+      },
+      data: formData,
+    });
+    return response;
+  } catch (error) {
+    return {
+      ...error,
+    };
+  }
+};
+
 export const login = (access_token: any) => {
   // sessionStorage.setItem("sessionState", sessionState);
   // sessionStorage.setItem("state", state);

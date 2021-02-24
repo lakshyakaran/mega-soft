@@ -5,3 +5,8 @@ const apiUrl = {
 };
 
 export default apiUrl;
+
+export const OAuthParameters = {
+  client_id: "3b9ea85aeb",
+  state: "12345",
+};
