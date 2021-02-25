@@ -1,5 +1,8 @@
 import axios from "axios";
-import apiUrl from "../../config";
+import apiUrl, { OAuthParameters } from "../../config";
+import { handleRefreshToken, logout } from "./auth";
+
+const client_id = OAuthParameters.client_id;
 
 export const fetchAppraisalData = (
   limit_start = 0,
@@ -63,9 +66,46 @@ export const fetchAppraisalData = (
     });
     return responseBody;
   } catch (error) {
-    dispatch({
-      type: "LOGOUT_SUCCESS",
-    });
+    if (error.response) {
+      if (error.response.status === 403) {
+        console.log("inside 403 error block", JSON.stringify(error.response));
+        const refresh_token = sessionStorage.getItem("refresh_token");
+        const data = {
+          refresh_token: refresh_token,
+          client_id: client_id,
+        };
+        handleRefreshToken(data)
+          .then((response: any) => {
+            console.log("response of refresh token ", response);
+            console.log("calling handle appraisal again.");
+            if (!response.isAxiosError) {
+              fetchAppraisalData(
+                limit_start,
+                limit_page_length,
+                order_by,
+                filters
+              );
+            } else {
+              console.log(
+                "ERROR: 1. unable to refresh access_token logging out.",
+                response
+              );
+              dispatch({
+                type: "LOGOUT_SUCCESS",
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "ERROR: 2. unable to refresh access_token logging out.",
+              error.response
+            );
+            dispatch({
+              type: "LOGOUT_SUCCESS",
+            });
+          });
+      }
+    }
     return {
       ...error,
     };
@@ -124,7 +164,42 @@ export const fetchAppraisalDataById = async (
     // console.log("api data by id", responseBody)
     return responseBody;
   } catch (error) {
-    // console.log("error in getting data", error);
+    if (error.response) {
+      if (error.response.status === 403) {
+        console.log("inside 403 error block", JSON.stringify(error.response));
+        const refresh_token = sessionStorage.getItem("refresh_token");
+        const data = {
+          refresh_token: refresh_token,
+          client_id: client_id,
+        };
+        handleRefreshToken(data)
+          .then((response: any) => {
+            console.log("response of refresh token ", response);
+            console.log("calling handle appraisal again.");
+            if (!response.isAxiosError) {
+              fetchAppraisalDataById(
+                limit_start,
+                limit_page_length,
+                order_by,
+                filters
+              );
+            } else {
+              console.log(
+                "ERROR: 1. unable to refresh access_token logging out.",
+                response
+              );
+              // dispatch(logout());
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "ERROR: 2. unable to refresh access_token logging out.",
+              error.response
+            );
+            // dispatch(logout());
+          });
+      }
+    }
     return {
       ...error,
     };
@@ -150,29 +225,23 @@ export const add_apprisal = async (data: any) => {
   return response;
 };
 export const edit_appraisal = async (data: any) => {
-  try {
-    const token = sessionStorage.getItem("access_token");
-    if (token === null) {
-      return false;
-    }
-    const accessToken = "bearer " + token;
-    const response = await axios({
-      url: `${apiUrl.resource}/Appraisal/${data.id}`,
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: accessToken,
-      },
-      data: JSON.stringify(data),
-    });
-    // console.log("api response ==>", response)
-    return response;
-  } catch (error) {
-    return {
-      ...error,
-    };
+  const token = sessionStorage.getItem("access_token");
+  if (token === null) {
+    return false;
   }
+  const accessToken = "bearer " + token;
+  const response = await axios({
+    url: `${apiUrl.resource}/Appraisal/${data.id}`,
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: accessToken,
+    },
+    data: JSON.stringify(data),
+  });
+  // console.log("api response ==>", response)
+  return response;
 };
 
 export const filterByEmployee = async (order_by = "employee_name asc") => {

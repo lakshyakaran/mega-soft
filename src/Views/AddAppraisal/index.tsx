@@ -37,6 +37,8 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { add_apprisal } from "../../redux/actions/apprisal";
 import { RootState } from "../../redux/reducers";
 import { setCollapedMenu } from "../../redux/actions/roleType";
+import { handleRefreshToken, logout } from "../../redux/actions/auth";
+import { OAuthParameters } from "../../config";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
@@ -326,6 +328,8 @@ function AddAppraisal(props: any) {
   const [errMsgAppraisalDate, setErrMsgAppraisalDate] = useState("");
   const [successModal, setSuccessModal] = useState(false);
   const [failedModal, setFailedModal] = useState(false);
+  const [error400, setError400] = useState(false);
+  const [error500, setError500] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(true);
 
@@ -351,6 +355,59 @@ function AddAppraisal(props: any) {
       backgroundColor: "#FFF",
       // padding: "5px",
     },
+  };
+
+  const [client_id] = useState(OAuthParameters.client_id);
+  const [applicationError, setApplicationError] = useState(false);
+
+  // let errorMessage = "Something went wrong. Please contact system support.";
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleApplicationError = (resp: any) => {
+    if (resp.status >= 400 && resp.status <= 499) {
+      let errorMessage = "Please correct the input data & try again.";
+      setErrorMessage(errorMessage);
+      setApplicationError(true);
+    } else if (resp.status >= 500 && resp.status <= 599) {
+      let errorMessage =
+        "Server error. Please contact system support or try again later.";
+      setErrorMessage(errorMessage);
+      setApplicationError(true);
+    }
+
+    // setApplicationError(true);
+    // return (
+    //   <Modal
+    //     titleAriaId={"ERROR"}
+    //     isOpen={true}
+    //     isBlocking={false}
+    //     styles={modalStyle}
+    //     // containerClassName={contentStyles.container}
+    //   >
+    //     <div className="modal-header-local">
+    //       <div className="modal-title">Error</div>
+    //       <IconButton
+    //         styles={iconButtonStyles}
+    //         iconProps={cancelIcon}
+    //         ariaLabel="Close popup modal"
+    //         onClick={() => {
+    //           setApplicationError(false);
+    //         }}
+    //       />
+    //     </div>
+    //     <div className="modal-content-failed">{errorMessage}</div>
+    //     <div style={{ display: "flex", justifyContent: "center" }}>
+    //       <PrimaryButton
+    //         text={t("appraisal_form.buttons.back")}
+    //         allowDisabledFocus
+    //         onClick={() => {
+    //           setApplicationError(false);
+    //         }}
+    //         disabled={false}
+    //         checked={false}
+    //       />
+    //     </div>
+    //   </Modal>
+    // );
   };
 
   const handleAddApprisal = () => {
@@ -391,6 +448,19 @@ function AddAppraisal(props: any) {
         i18n.t("error_messages.from_date_greater_than_to_date")
       );
     }
+    if (
+      claimsData.id === "" ||
+      claimsData.description === "" ||
+      claimsData.owner === "" ||
+      formateType.text === "" ||
+      reviewFrequency.text === "" ||
+      selectedType.text === "" ||
+      !dateReview ||
+      !dateAppraisal ||
+      checkReviewDate > checkAppraisalDate
+    ) {
+      return false;
+    }
     const addQuery = {
       id: claimsData.id,
       appraisal_description: claimsData.description,
@@ -411,19 +481,61 @@ function AddAppraisal(props: any) {
       appraisal_to: moment(dateAppraisal).format("YYYY-MM-DD"),
       appraisal_owner: claimsData.owner,
     };
-    console.log("loading", loading);
     setLoading(false);
-    if (loading === false) {
-      add_apprisal(addQuery)
-        .then((response) => {
-          // console.log("response=>", response);
-          setSuccessModal(true);
-        })
-        .catch((err) => {
-          setFailedModal(true);
-          console.log("Error in btnClick=>", JSON.stringify(err));
-        });
-    }
+
+    add_apprisal(addQuery)
+      .then((response) => {
+        // console.log("response=>", response);
+        setSuccessModal(true);
+      })
+      .catch((error: any) => {
+        if (error.response) {
+          console.log("message", error.response.data);
+          console.log("status", error.response.status);
+          if (error.response.status === 403) {
+            console.log(
+              "inside 403 error block",
+              JSON.stringify(error.response)
+            );
+            const refresh_token = sessionStorage.getItem("refresh_token");
+            const data = {
+              refresh_token: refresh_token,
+              client_id: client_id,
+            };
+            handleRefreshToken(data)
+              .then((response: any) => {
+                console.log("response of refresh token ", response);
+                console.log("calling handle appraisal again.");
+                if (!response.isAxiosError) {
+                  handleAddApprisal();
+                } else {
+                  console.log(
+                    "ERROR: 1. unable to refresh access_token logging out.",
+                    response
+                  );
+                  dispatch(logout());
+                }
+              })
+              .catch((error) => {
+                console.log(
+                  "ERROR: 2. unable to refresh access_token logging out.",
+                  error.response
+                );
+                dispatch(logout());
+              });
+          } else {
+            // if (error.response.status > 400 && error.response.status < 499) {
+            //   errorcode(400);
+            // }
+            // if (error.response.status > 500 && error.response.status < 599) {
+            //   errorcode(500);
+            // }
+
+            handleApplicationError(error.response);
+          }
+          // console.log(error.response.headers);
+        }
+      });
   };
 
   const renderForm = () => {
@@ -637,6 +749,73 @@ function AddAppraisal(props: any) {
                   />
                 </div>
               </Modal>
+              <Modal
+                titleAriaId={"Title failed"}
+                isOpen={applicationError}
+                isBlocking={false}
+                styles={modalStyle}
+                // containerClassName={contentStyles.container}
+              >
+                <div className="modal-header-local">
+                  <div className="modal-title">Error</div>
+                  <IconButton
+                    styles={iconButtonStyles}
+                    iconProps={cancelIcon}
+                    ariaLabel="Close popup modal"
+                    onClick={() => {
+                      setApplicationError(false);
+                    }}
+                  />
+                </div>
+                <div className="modal-content-failed">
+                  {/* {t("pop_up.success.error_message")} */}
+                  {errorMessage}
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <PrimaryButton
+                    text={t("appraisal_form.buttons.back")}
+                    allowDisabledFocus
+                    onClick={() => {
+                      setApplicationError(false);
+                    }}
+                    disabled={false}
+                    checked={false}
+                  />
+                </div>
+              </Modal>
+              {/* <Modal
+                titleAriaId={"Title failed"}
+                isOpen={error500}
+                isBlocking={false}
+                styles={modalStyle}
+                // containerClassName={contentStyles.container}
+              >
+                <div className="modal-header-local">
+                  <div className="modal-title">Error</div>
+                  <IconButton
+                    styles={iconButtonStyles}
+                    iconProps={cancelIcon}
+                    ariaLabel="Close popup modal"
+                    onClick={() => {
+                      setError500(false);
+                    }}
+                  />
+                </div>
+                <div className="modal-content-failed">
+                  Server error. Please try later or contact system support.
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <PrimaryButton
+                    text={t("appraisal_form.buttons.back")}
+                    allowDisabledFocus
+                    onClick={() => {
+                      setError500(false);
+                    }}
+                    disabled={false}
+                    checked={false}
+                  />
+                </div>
+              </Modal> */}
             </div>
           </div>
           <Stack

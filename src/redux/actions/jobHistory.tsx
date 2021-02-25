@@ -175,6 +175,6 @@ export const update_JobHistory = async (data: any) => {
     data: JSON.stringify(data),
   });
   // console.log("update jobhisty api response =>", response);
-  const responseBody = await response;
+  const responseBody = response;
   return responseBody;
 };

@@ -1,5 +1,8 @@
 import axios from "axios";
-import apiUrl from "../../config";
+import apiUrl, { OAuthParameters } from "../../config";
+import { handleRefreshToken, logout } from "./auth";
+
+const client_id = OAuthParameters.client_id;
 
 export const fetchEmployeeData = (
   doctype = "EmployeeAppraisal",
@@ -42,10 +45,37 @@ export const fetchEmployeeData = (
     });
     return responseBody;
   } catch (error) {
-    dispatch({
-      type: "LOGOUT_SUCCESS",
-    });
-    console.log("error in getting employee data =>", error);
+    if (error.response) {
+      if (error.response.status === 403) {
+        console.log("inside 403 error block", JSON.stringify(error.response));
+        const refresh_token = sessionStorage.getItem("refresh_token");
+        const data = {
+          refresh_token: refresh_token,
+          client_id: client_id,
+        };
+        handleRefreshToken(data)
+          .then((response: any) => {
+            console.log("response of refresh token ", response);
+            console.log("calling handle appraisal again.");
+            if (!response.isAxiosError) {
+              fetchEmployeeData(doctype, limit_start, limit, role, filters);
+            } else {
+              console.log(
+                "ERROR: 1. unable to refresh access_token logging out.",
+                response
+              );
+              dispatch(logout());
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "ERROR: 2. unable to refresh access_token logging out.",
+              error.response
+            );
+            dispatch(logout());
+          });
+      }
+    }
     return {
       ...error,
     };
@@ -59,29 +89,66 @@ export const fetchEmployeeDataByID = async (
   role = "Employee",
   filters: any
 ) => {
-  const token = sessionStorage.getItem("access_token");
-  if (token === null) {
-    return false;
+  try {
+    const token = sessionStorage.getItem("access_token");
+    if (token === null) {
+      return false;
+    }
+    const accessToken = "bearer " + token;
+    const response = await axios({
+      url: `${apiUrl.method}/megasoft_hrms.pm.employee_appraisals`,
+      params: {
+        doctype,
+        limit_start,
+        limit,
+        role,
+        filters,
+        fields: JSON.stringify(["employee_id", "appraisal_id", "status"]),
+      },
+      method: "GET",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "multipart/form-data",
+        Authorization: accessToken,
+      },
+    });
+    // console.log("fetch employeee api response =>", response.data);
+    const responseBody = await response.data.message;
+    return responseBody;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 403) {
+        console.log("inside 403 error block", JSON.stringify(error.response));
+        const refresh_token = sessionStorage.getItem("refresh_token");
+        const data = {
+          refresh_token: refresh_token,
+          client_id: client_id,
+        };
+        handleRefreshToken(data)
+          .then((response: any) => {
+            console.log("response of refresh token ", response);
+            console.log("calling handle appraisal again.");
+            if (!response.isAxiosError) {
+              fetchEmployeeData(doctype, limit_start, limit, role, filters);
+            } else {
+              console.log(
+                "ERROR: 1. unable to refresh access_token logging out.",
+                response
+              );
+              // dispatch(logout());
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "ERROR: 2. unable to refresh access_token logging out.",
+              error.response
+            );
+            // dispatch(logout());
+          });
+      }
+    }
+    return {
+      ...error,
+    };
   }
-  const accessToken = "bearer " + token;
-  const response = await axios({
-    url: `${apiUrl.method}/megasoft_hrms.pm.employee_appraisals`,
-    params: {
-      doctype,
-      limit_start,
-      limit,
-      role,
-      filters,
-      fields: JSON.stringify(["employee_id", "appraisal_id", "status"]),
-    },
-    method: "GET",
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Accept: "multipart/form-data",
-      Authorization: accessToken,
-    },
-  });
-  // console.log("fetch employeee api response =>", response.data);
-  const responseBody = await response.data.message;
-  return responseBody;
 };

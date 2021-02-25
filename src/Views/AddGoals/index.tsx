@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../redux/reducers";
@@ -20,6 +20,9 @@ import {
   TextField,
 } from "office-ui-fabric-react";
 import { add_goals, fetchGoalData } from "../../redux/actions/goal";
+import { handleRefreshToken, logout } from "../../redux/actions/auth";
+import { OAuthParameters } from "../../config";
+import applicationError from "../../applicationError";
 
 interface ParamTypes {
   employeeId: string;
@@ -159,7 +162,23 @@ function AddGoals(props: any) {
   const [errMsgMeasure, setErrMsgMeasure] = useState("");
   const [errMsgWeightage, setErrMsgWeightage] = useState("");
   const [errMsgKra, setErrMsgKra] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [client_id] = useState(OAuthParameters.client_id);
+  const [applicationError, setApplicationError] = useState(false);
+  const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleApplicationError = (resp: any) => {
+    if (resp.status >= 400 && resp.status <= 499) {
+      let errorMessage = "Please correct the input data & try again.";
+      setErrorMessage(errorMessage);
+      setApplicationError(true);
+    } else if (resp.status >= 500 && resp.status <= 599) {
+      let errorMessage =
+        "Server error. Please contact system support or try again later.";
+      setErrorMessage(errorMessage);
+      setApplicationError(true);
+    }
+  };
 
   const [goalType, setGoalType] = useState<IDropdownOption>({
     key: "",
@@ -178,7 +197,7 @@ function AddGoals(props: any) {
     );
   };
 
-  const handleAddJobHistory = () => {
+  const handleAddGoals = () => {
     if (goalInputData.order_no === "") {
       setErrMsgOrder("Order number is required");
     }
@@ -197,7 +216,16 @@ function AddGoals(props: any) {
     if (goalType.text === "") {
       setErrMsgGoalType("Select goal type");
     }
-    setLoading(false);
+    if (
+      goalInputData.order_no === "" ||
+      goalInputData.kra === "" ||
+      goalInputData.goal === "" ||
+      goalInputData.measure === "" ||
+      goalInputData.weightage === "" ||
+      goalType.text === ""
+    ) {
+      return false;
+    }
     const addQuery = {
       appraisal_id: params.appraisalId,
       employee_id: params.employeeId,
@@ -212,15 +240,50 @@ function AddGoals(props: any) {
       threshold: goalInputData.threshold,
       weightage: goalInputData.weightage,
     };
-    if (loading == false) {
-      add_goals(addQuery)
-        .then((response: any) => {
-          setSuccessModal(true);
-        })
-        .catch((err: any) => {
-          setFailedModal(true);
-        });
-    }
+    add_goals(addQuery)
+      .then((response: any) => {
+        setSuccessModal(true);
+      })
+      .catch((error: any) => {
+        if (error.response) {
+          console.log("message", error.response.data);
+          console.log("status", error.response.status);
+          if (error.response.status === 403) {
+            console.log(
+              "inside 403 error block",
+              JSON.stringify(error.response)
+            );
+            const refresh_token = sessionStorage.getItem("refresh_token");
+            const data = {
+              refresh_token: refresh_token,
+              client_id: client_id,
+            };
+            handleRefreshToken(data)
+              .then((response: any) => {
+                console.log("response of refresh token ", response);
+                console.log("calling handle appraisal again.");
+                if (!response.isAxiosError) {
+                  handleAddGoals();
+                } else {
+                  console.log(
+                    "ERROR: 1. unable to refresh access_token logging out.",
+                    response
+                  );
+                  dispatch(logout());
+                }
+              })
+              .catch((error) => {
+                console.log(
+                  "ERROR: 2. unable to refresh access_token logging out.",
+                  error.response
+                );
+                dispatch(logout());
+              });
+          } else {
+            handleApplicationError(error.response);
+          }
+        }
+      });
   };
 
   const stackTokens = { childrenGap: 10 };
@@ -361,7 +424,7 @@ function AddGoals(props: any) {
               <PrimaryButton
                 text="Add"
                 allowDisabledFocus
-                onClick={handleAddJobHistory}
+                onClick={handleAddGoals}
               />
             </div>
             <div
@@ -440,6 +503,40 @@ function AddGoals(props: any) {
                 allowDisabledFocus
                 onClick={() => {
                   setFailedModal(false);
+                }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+          <Modal
+            titleAriaId={"Title failed"}
+            isOpen={applicationError}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header-local">
+              <div className="modal-title">Error</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setApplicationError(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-failed">
+              {/* {t("pop_up.success.error_message")} */}
+              {errorMessage}
+            </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <PrimaryButton
+                text="Back"
+                allowDisabledFocus
+                onClick={() => {
+                  setApplicationError(false);
                 }}
                 disabled={false}
                 checked={false}

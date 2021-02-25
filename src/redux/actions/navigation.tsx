@@ -1,5 +1,8 @@
 import axios from "axios";
-import apiUrl from "../../config";
+import apiUrl, { OAuthParameters } from "../../config";
+import { handleRefreshToken, logout } from "./auth";
+
+const client_id = OAuthParameters.client_id;
 
 export const sideNavigationData = (data: any) => async (
   dispatch: any
@@ -34,7 +37,37 @@ export const sideNavigationData = (data: any) => async (
     });
     return responseBody;
   } catch (error) {
-    // console.log("error in getting data", error);
+    if (error.response) {
+      if (error.response.status === 403) {
+        console.log("inside 403 error block", JSON.stringify(error.response));
+        const refresh_token = sessionStorage.getItem("refresh_token");
+        const data = {
+          refresh_token: refresh_token,
+          client_id: client_id,
+        };
+        handleRefreshToken(data)
+          .then((response: any) => {
+            console.log("response of refresh token ", response);
+            console.log("calling menu again.");
+            if (!response.isAxiosError) {
+              sideNavigationData(data);
+            } else {
+              console.log(
+                "ERROR: 1. unable to refresh access_token logging out.",
+                response
+              );
+              dispatch(logout());
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "ERROR: 2. unable to refresh access_token logging out.",
+              error.response
+            );
+            dispatch(logout());
+          });
+      }
+    }
     return {
       ...error,
     };

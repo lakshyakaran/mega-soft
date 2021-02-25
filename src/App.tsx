@@ -23,7 +23,12 @@ import Login from "./Views/Login";
 import ChanageColor from "./components/ChanageColor";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
-import { validateLogin, login, getAccessToken } from "./redux/actions/auth";
+import {
+  validateLogin,
+  login,
+  getAccessToken,
+  handleRefreshToken,
+} from "./redux/actions/auth";
 
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,6 +75,7 @@ function App(props: any) {
   const [redirect_uri]: any = useState("http://localhost:3000/home");
   const [client_id] = useState(OAuthParameters.client_id);
   const [scope] = useState("all");
+  const [oauth, setOAuth]: any = useState();
 
   useEffect(() => {
     dispatch(validateLogin());
@@ -84,10 +90,13 @@ function App(props: any) {
       code: code,
     };
     getAccessToken(accesstokenData).then((response: any) => {
+      // setOAuth(response.data);
       // console.log("response", response);
       // sessionStorage.setItem("refresh_token", response.data.refresh_token);
-      if (response.data.access_token) {
-        dispatch(login(response.data.access_token));
+      const access_token = response.data.access_token;
+      const refresh_token = response.data.refresh_token;
+      if (access_token && refresh_token) {
+        dispatch(login(access_token, refresh_token));
       }
     });
   }, []);

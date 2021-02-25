@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import Header from "../../Header";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -18,6 +18,8 @@ import {
   TextField,
 } from "office-ui-fabric-react";
 import { fetchGoalDataName, update_goals } from "../../redux/actions/goal";
+import { handleRefreshToken, logout } from "../../redux/actions/auth";
+import { OAuthParameters } from "../../config";
 
 interface ParamTypes {
   employeeId: string;
@@ -136,7 +138,23 @@ function UpdateGoals(props: any) {
   const [errMsgMeasure, setErrMsgMeasure] = useState("");
   const [errMsgWeightage, setErrMsgWeightage] = useState("");
   const [errMsgKra, setErrMsgKra] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [client_id] = useState(OAuthParameters.client_id);
+  const [applicationError, setApplicationError] = useState(false);
+  const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleApplicationError = (resp: any) => {
+    if (resp.status >= 400 && resp.status <= 499) {
+      let errorMessage = "Please correct the input data & try again.";
+      setErrorMessage(errorMessage);
+      setApplicationError(true);
+    } else if (resp.status >= 500 && resp.status <= 599) {
+      let errorMessage =
+        "Server error. Please contact system support or try again later.";
+      setErrorMessage(errorMessage);
+      setApplicationError(true);
+    }
+  };
 
   const handleUpdateGoal = () => {
     if (updateGoalData.order_no === "") {
@@ -154,19 +172,53 @@ function UpdateGoals(props: any) {
     if (updateGoalData.weightage === "") {
       setErrMsgWeightage("Weightage is required");
     }
-    setLoading(false);
     const addQuery = {
       ...updateGoalData,
     };
-    if (loading == false) {
-      update_goals(addQuery)
-        .then((response: any) => {
-          setSuccessModal(true);
-        })
-        .catch((err: any) => {
-          setFailedModal(true);
-        });
-    }
+    update_goals(addQuery)
+      .then((response: any) => {
+        setSuccessModal(true);
+      })
+      .catch((error: any) => {
+        if (error.response) {
+          console.log("message", error.response.data);
+          console.log("status", error.response.status);
+          if (error.response.status === 403) {
+            console.log(
+              "inside 403 error block",
+              JSON.stringify(error.response)
+            );
+            const refresh_token = sessionStorage.getItem("refresh_token");
+            const data = {
+              refresh_token: refresh_token,
+              client_id: client_id,
+            };
+            handleRefreshToken(data)
+              .then((response: any) => {
+                console.log("response of refresh token ", response);
+                console.log("calling handle appraisal again.");
+                if (!response.isAxiosError) {
+                  handleUpdateGoal();
+                } else {
+                  console.log(
+                    "ERROR: 1. unable to refresh access_token logging out.",
+                    response
+                  );
+                  dispatch(logout());
+                }
+              })
+              .catch((error) => {
+                console.log(
+                  "ERROR: 2. unable to refresh access_token logging out.",
+                  error.response
+                );
+                dispatch(logout());
+              });
+          } else {
+            handleApplicationError(error.response);
+          }
+        }
+      });
   };
 
   const stackTokens = { childrenGap: 10 };
@@ -399,6 +451,40 @@ function UpdateGoals(props: any) {
                 allowDisabledFocus
                 onClick={() => {
                   setFailedModal(false);
+                }}
+                disabled={false}
+                checked={false}
+              />
+            </div>
+          </Modal>
+          <Modal
+            titleAriaId={"Title failed"}
+            isOpen={applicationError}
+            isBlocking={false}
+            styles={modalStyle}
+            // containerClassName={contentStyles.container}
+          >
+            <div className="modal-header-local">
+              <div className="modal-title">Error</div>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close popup modal"
+                onClick={() => {
+                  setApplicationError(false);
+                }}
+              />
+            </div>
+            <div className="modal-content-failed">
+              {/* {t("pop_up.success.error_message")} */}
+              {errorMessage}
+            </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <PrimaryButton
+                text="Back"
+                allowDisabledFocus
+                onClick={() => {
+                  setApplicationError(false);
                 }}
                 disabled={false}
                 checked={false}

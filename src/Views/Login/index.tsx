@@ -58,7 +58,7 @@ function Login() {
                   allowDisabledFocus
                   onClick={() => {
                     window.open(
-                      `${apiUrl.method}/frappe.integrations.oauth2.authorize?client_id=${OAuthParameters.client_id}&state=${OAuthParameters.state}&response_type=code&scope=all&redirect_uri=http://localhost:3000/home`,
+                      `${apiUrl.method}/frappe.integrations.oauth2.authorize?client_id=${OAuthParameters.client_id}&state=${OAuthParameters.state}&response_type=code&scope=all&redirect_uri=${apiUrl.applicationHome}`,
                       "_self"
                     );
                   }}

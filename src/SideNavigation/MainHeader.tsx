@@ -20,6 +20,7 @@ import ReactFlagsSelect from "react-flags-select";
 
 import i18n from "../i18n";
 import apiUrl from "../config";
+import { useHistory } from "react-router-dom";
 
 function MainHeader(props: { children: any }) {
   const { children } = props;
@@ -66,11 +67,18 @@ function MainHeader(props: { children: any }) {
     // }, 500);
   };
 
+  const history = useHistory();
+
   // console.log("userInfo", userinformation);
 
   const handleLogout = () => {
     window.open(`${apiUrl.method}/logout`, "_self");
     dispatch(logout());
+    history.push("/");
+    // window.open(
+    //   `https://id.nuagebiz.tech/auth/realms/megasoft/protocol/openid-connect/logout?redirect_uri=http://localhost:3000`,
+    //   "_self"
+    // );
   };
 
   // console.log("user response==>", userInfoData);
