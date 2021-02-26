@@ -12,7 +12,7 @@ i18n
       objectNotation: true,
       loadPath: "/assets/i18n/{{ns}}/{{lng}}.json",
     },
-    fallbackLng: "US",
+    fallbackLng: "en",
     debug: true,
     /* can have multiple namespace, in case you want to divide a huge translation into smaller pieces and load them on demand */
     ns: ["translations"],

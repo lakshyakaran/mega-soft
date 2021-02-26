@@ -1,30 +1,14 @@
 import axios from "axios";
 import apiUrl, { OAuthParameters } from "../../config";
 
-// export const validateLogin = () => {
-//   const sessionState = sessionStorage.getItem("sessionState");
-//   const state = sessionStorage.getItem("state");
-//   const access_token = sessionStorage.getItem("access_token");
-//   const user = {};
-//   if (sessionState && state) {
-//     return {
-//       type: "LOGIN_SUCCESS",
-//       payload: user,
-//     };
-//   } else {
-//     return {
-//       type: "LOGOUT_SUCCESS",
-//     };
-//   }
-// };
 
 const client_id = OAuthParameters.client_id;
 
 export const validateLogin = () => {
   const access_token = sessionStorage.getItem("access_token");
-  // console.log("access_token ==>", access_token);
+  const refresh_token = sessionStorage.getItem("refresh_token");
   const user = {};
-  if (access_token) {
+  if (access_token && refresh_token) {
     return {
       type: "LOGIN_SUCCESS",
       payload: user,
@@ -36,15 +20,6 @@ export const validateLogin = () => {
   }
 };
 
-// export const login = (sessionState: any, state: any, access_token: any) => {
-//   sessionStorage.setItem("sessionState", sessionState);
-//   sessionStorage.setItem("state", state);
-//   sessionStorage.setItem("access_token", access_token);
-//   return {
-//     type: "LOGIN_SUCCESS",
-//     payload: {},
-//   };
-// };
 
 export const getAccessToken = async (data: any) => {
   try {
@@ -98,8 +73,6 @@ export const handleRefreshToken = async (data: any) => {
 };
 
 export const login = (access_token: any, refresh_token: any) => {
-  // sessionStorage.setItem("sessionState", sessionState);
-  // sessionStorage.setItem("state", state);
   sessionStorage.setItem("access_token", access_token);
   sessionStorage.setItem("refresh_token", refresh_token);
   return {
@@ -108,7 +81,7 @@ export const login = (access_token: any, refresh_token: any) => {
   };
 };
 
-export const logout = () => async (dispatch: any): Promise<any> => {
+export const revokeToken = () => async (dispatch: any): Promise<any> => {
   try {
     const token = sessionStorage.getItem("access_token");
     if (token === null) {
@@ -130,6 +103,7 @@ export const logout = () => async (dispatch: any): Promise<any> => {
     dispatch({
       type: "LOGOUT_SUCCESS",
     });
+    console.log("revoke-token response", response)
     return response;
   } catch (error) {
     console.log("error in catch block=>", JSON.stringify(error));
@@ -138,6 +112,30 @@ export const logout = () => async (dispatch: any): Promise<any> => {
     };
   }
 };
+
+
+export const logout = () => async (): Promise<any> => {
+  console.log("inside logout function")
+  try {
+    const response = await axios({
+      url: `${apiUrl.method}/logout`,
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "multipart/form-data",
+      },
+    });
+    console.log("logout response", response)
+    return response;
+  } catch (error) {
+    console.log("error in catch block=>", JSON.stringify(error));
+    return {
+      ...error,
+    };
+  }
+};
+
+
 
 export const userInfo = () => async (dispatch: any): Promise<any> => {
   try {

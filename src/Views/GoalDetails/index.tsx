@@ -9,7 +9,7 @@ import {
   PrimaryButton,
   Stack,
 } from "office-ui-fabric-react";
-import {  fetchGoalDataName } from "../../redux/actions/goal";
+import { fetchGoalDataName } from "../../redux/actions/goal";
 
 interface ParamTypes {
   employeeId: string;
@@ -43,7 +43,7 @@ function GoalDetails(props: any) {
     });
   }, []);
 
-  
+
   const onChangeInput = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     text?: string
@@ -57,7 +57,7 @@ function GoalDetails(props: any) {
 
   const history = useHistory();
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");

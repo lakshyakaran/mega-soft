@@ -1,24 +1,10 @@
-import {
-  ITextFieldStyles,
-  PrimaryButton,
-  TextField,
-} from "office-ui-fabric-react";
-import React, { useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import { login } from "../../redux/actions/auth";
+import { PrimaryButton } from "office-ui-fabric-react";
+import { connect } from "react-redux";
 import logo_ms from "../../assets/img/logo_ms.png";
-import banner_main from "../../assets/img/megasoft_hrms.jpg";
 import "./style.css";
 import apiUrl, { OAuthParameters } from "../../config";
 
 function Login() {
-  const dispatch = useDispatch();
-  const textfelidStyle: Partial<ITextFieldStyles> = {
-    root: {
-      width: "300px",
-    },
-  };
-
   return (
     <div className="login-section">
       <div className="row">

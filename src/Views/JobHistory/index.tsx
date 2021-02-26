@@ -125,7 +125,7 @@ function JobHistory(props: any) {
 
   const history = useHistory();
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");
@@ -381,7 +381,7 @@ function JobHistory(props: any) {
             isOpen={successModal}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Success</div>
@@ -414,7 +414,7 @@ function JobHistory(props: any) {
             isOpen={failedModal}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Error</div>
@@ -447,7 +447,7 @@ function JobHistory(props: any) {
             isOpen={applicationError}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Error</div>

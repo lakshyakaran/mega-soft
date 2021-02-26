@@ -7,7 +7,7 @@ export default function ChanageColor() {
   const history = useHistory();
 
   const _onBreadcrumbItemClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
 
   const itemsWithHeading: IBreadcrumbItem[] = [

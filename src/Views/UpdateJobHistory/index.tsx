@@ -121,7 +121,7 @@ function UpdateJobHistory(props: any) {
 
   const history = useHistory();
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");
@@ -284,7 +284,7 @@ function UpdateJobHistory(props: any) {
                 })
               }
               styles={datePickerStyle}
-              // textField={{ errorMessage: "Form date is required" }}
+            // textField={{ errorMessage: "Form date is required" }}
             />
             <DatePicker
               isRequired={true}
@@ -362,7 +362,7 @@ function UpdateJobHistory(props: any) {
             isOpen={successModal}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Success</div>
@@ -395,7 +395,7 @@ function UpdateJobHistory(props: any) {
             isOpen={failedModal}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Error</div>
@@ -428,7 +428,7 @@ function UpdateJobHistory(props: any) {
             isOpen={applicationError}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Error</div>

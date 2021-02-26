@@ -8,7 +8,7 @@ import {
   IDropdownStyles,
   Text,
 } from "office-ui-fabric-react";
-import { logout, userInfo } from "../redux/actions/auth";
+import { logout, revokeToken, userInfo } from "../redux/actions/auth";
 import { connect, useDispatch, useSelector } from "react-redux";
 
 import logo_ms from "../assets/img/logo_ms.png";
@@ -16,7 +16,6 @@ import logo_nuage from "../assets/img/logo_nuage.png";
 import { RootState } from "../redux/reducers";
 import moment from "moment";
 import { onChangeLanguage } from "../redux/actions/application";
-import ReactFlagsSelect from "react-flags-select";
 
 import i18n from "../i18n";
 import apiUrl from "../config";
@@ -72,9 +71,9 @@ function MainHeader(props: { children: any }) {
   // console.log("userInfo", userinformation);
 
   const handleLogout = () => {
-    window.open(`${apiUrl.method}/logout`, "_self");
-    dispatch(logout());
-    history.push("/");
+    // window.open(`${apiUrl.method}/logout`, "_self");
+    logout();
+    dispatch(revokeToken());
     // window.open(
     //   `https://id.nuagebiz.tech/auth/realms/megasoft/protocol/openid-connect/logout?redirect_uri=http://localhost:3000`,
     //   "_self"
@@ -118,14 +117,6 @@ function MainHeader(props: { children: any }) {
           {moment(dateNow).format("DD-MM-YYYY")} {timeNow}
         </Text>
       </div>
-      {/* <ReactFlagsSelect
-        selected={selectedLanguage}
-        onSelect={handleNewLang}
-        className="flagSelect"
-        countries={["US", "FR"]}
-        customLabels={{ US: "English", FR: "French" }}
-        placeholder="Select Language"
-      /> */}
       <div>
         <Dropdown
           options={languageOption}

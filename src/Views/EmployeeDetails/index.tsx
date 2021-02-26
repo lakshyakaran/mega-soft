@@ -192,7 +192,7 @@ function EmployeeDetails(props: any) {
     });
   }, [limitStartGoal, limitPageLengthGoal]);
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");
@@ -250,9 +250,9 @@ function EmployeeDetails(props: any) {
       developmentData.map((item: any, i: any) =>
         index === i
           ? {
-              ...item,
-              development_plan: value || "",
-            }
+            ...item,
+            development_plan: value || "",
+          }
           : item
       )
     );
@@ -266,9 +266,9 @@ function EmployeeDetails(props: any) {
       developmentData.map((item: any, i: any) =>
         index === i
           ? {
-              ...item,
-              reviewer_remarks: value || "",
-            }
+            ...item,
+            reviewer_remarks: value || "",
+          }
           : item
       )
     );
@@ -514,22 +514,22 @@ function EmployeeDetails(props: any) {
               />
             </div>
           ) : (
-            <div
-              className="link-icons"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                // console.log("item", item);
-              }}
-            >
-              <RadioButtonUncheckedIcon
-                style={{
-                  color: "#00597d",
-                  fontSize: "10px",
-                  marginLeft: "25px",
+              <div
+                className="link-icons"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  // console.log("item", item);
                 }}
-              />
-            </div>
-          )}
+              >
+                <RadioButtonUncheckedIcon
+                  style={{
+                    color: "#00597d",
+                    fontSize: "10px",
+                    marginLeft: "25px",
+                  }}
+                />
+              </div>
+            )}
         </div>
       ),
     },
@@ -778,31 +778,31 @@ function EmployeeDetails(props: any) {
         ) : jobHistory.length === 0 ? (
           renderNoData()
         ) : (
-          <div>
-            <DetailsList
-              styles={listStyle}
-              items={newJobHistoryData}
-              className="detail-list"
-              columns={columnsJobHistory}
-              selectionMode={0}
-            />
-            <div className="pagination-style">
-              <Pagination
-                format="buttons"
-                // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
-                // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
-                selectedPageIndex={currentPage}
-                pageCount={Math.ceil(totalCount / limitPageLength)}
-                itemsPerPage={limitPageLength}
-                totalItemCount={totalCount}
-                onPageChange={(page) => {
-                  setLimitSTart(page * limitPageLength);
-                  setCurentPage(page);
-                }}
-              />
-            </div>
-          </div>
-        )}
+              <div>
+                <DetailsList
+                  styles={listStyle}
+                  items={newJobHistoryData}
+                  className="detail-list"
+                  columns={columnsJobHistory}
+                  selectionMode={0}
+                />
+                <div className="pagination-style">
+                  <Pagination
+                    format="buttons"
+                    // nextPageIconProps={{iconName: "CaretRightSolid8",style:{color:"red", fontSize:"25px"}}}
+                    // previousPageIconProps={{iconName: "CaretLeftSolid8",style:{color:"red", fontSize:"25px"}}}
+                    selectedPageIndex={currentPage}
+                    pageCount={Math.ceil(totalCount / limitPageLength)}
+                    itemsPerPage={limitPageLength}
+                    totalItemCount={totalCount}
+                    onPageChange={(page) => {
+                      setLimitSTart(page * limitPageLength);
+                      setCurentPage(page);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
         <Stack
           horizontal
           tokens={stackTokens}
@@ -843,7 +843,7 @@ function EmployeeDetails(props: any) {
             isOpen={showDeleteJob}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Delete</div>
@@ -890,7 +890,7 @@ function EmployeeDetails(props: any) {
             isOpen={showDeleteSuccessJob}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Success</div>
@@ -936,29 +936,29 @@ function EmployeeDetails(props: any) {
         {goalCount === 0 ? (
           renderNoData()
         ) : (
-          <div>
-            <DetailsList
-              styles={listStyle}
-              items={goalData}
-              className="detail-list"
-              columns={columnsGoal}
-              selectionMode={0}
-            />
-            <div className="pagination-style">
-              <Pagination
-                format="buttons"
-                selectedPageIndex={currentPageGoal}
-                pageCount={Math.ceil(goalTotalCount / limitPageLengthGoal)}
-                itemsPerPage={limitPageLengthGoal}
-                totalItemCount={goalTotalCount}
-                onPageChange={(pageGoal) => {
-                  setLimitSTartGoal(pageGoal * limitPageLengthGoal);
-                  setCurentPageGoal(pageGoal);
-                }}
+            <div>
+              <DetailsList
+                styles={listStyle}
+                items={goalData}
+                className="detail-list"
+                columns={columnsGoal}
+                selectionMode={0}
               />
+              <div className="pagination-style">
+                <Pagination
+                  format="buttons"
+                  selectedPageIndex={currentPageGoal}
+                  pageCount={Math.ceil(goalTotalCount / limitPageLengthGoal)}
+                  itemsPerPage={limitPageLengthGoal}
+                  totalItemCount={goalTotalCount}
+                  onPageChange={(pageGoal) => {
+                    setLimitSTartGoal(pageGoal * limitPageLengthGoal);
+                    setCurentPageGoal(pageGoal);
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
         <Stack
           horizontal
           tokens={stackTokens}
@@ -999,7 +999,7 @@ function EmployeeDetails(props: any) {
             isOpen={showDelete}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Delete</div>
@@ -1046,7 +1046,7 @@ function EmployeeDetails(props: any) {
             isOpen={showDeleteSuccess}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Success</div>
@@ -1136,7 +1136,7 @@ function EmployeeDetails(props: any) {
             isOpen={showDevelopment}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Success</div>
@@ -1214,7 +1214,7 @@ function EmployeeDetails(props: any) {
               </div>
             </div>
           </div>
-          
+
         </div>
         <div
           style={{ marginTop: "10px" }}
@@ -1240,7 +1240,7 @@ function EmployeeDetails(props: any) {
     );
   };
 
-  
+
 
   return (
     <div>
@@ -1260,8 +1260,8 @@ function EmployeeDetails(props: any) {
           ) : employeeCount === 0 ? (
             renderNoData()
           ) : (
-            renderEmployeeDetails()
-          )}
+                renderEmployeeDetails()
+              )}
         </div>
       </div>
     </div>

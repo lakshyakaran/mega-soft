@@ -32,6 +32,34 @@ html, body, #root, .login-section, .login-banner-image, .login-section .row {
     color: #FFF;
 }
 
+.home-banner {
+    padding: 50px;
+}
+
+.home-banner-text {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+}
+
+.home-banner-text h2 {
+    font-size: 70px;
+    font-weight: 800;
+}
+
+.home-banner-text p {
+    font-size: 21px;
+}
+
+.instruction {
+    font-size: 16px;
+    margin-top: 40px;
+}
+
+.home-banner-text span {
+    color: #00597d;
+}
+
 .login-banner-text h2 {
     font-size: 70px;
     font-weight: 800;
@@ -57,5 +85,3 @@ html, body, #root, .login-section, .login-banner-image, .login-section .row {
 .login-form .ms-Button .ms-Button-label {
     font-size: 1rem;
 }
-
-.ms-logo-login {}

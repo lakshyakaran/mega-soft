@@ -206,7 +206,7 @@ function UpdateAppraisal(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
     { text: "Performance", key: "d1" },
@@ -421,7 +421,7 @@ function UpdateAppraisal(props: any) {
                 setUpdateData({ ...updateData, review_frequency: item?.text })
               }
               options={reviewFrequencyOptions}
-              // styles={dropdownStyles}
+            // styles={dropdownStyles}
             />
           </div>
           <div className="goal-details">
@@ -437,7 +437,7 @@ function UpdateAppraisal(props: any) {
               onChange={(ev, item) =>
                 setUpdateData({ ...updateData, type: item?.text })
               }
-              // styles={typeDropdownStyles}
+            // styles={typeDropdownStyles}
             />
             <Dropdown
               required
@@ -453,7 +453,7 @@ function UpdateAppraisal(props: any) {
               }
               placeholder="Select Format Type"
               options={formateTypeOptions}
-              // styles={typeDropdownStyles}
+            // styles={typeDropdownStyles}
             />
             <TextField
               required
@@ -503,7 +503,7 @@ function UpdateAppraisal(props: any) {
                 isOpen={successModal}
                 isBlocking={false}
                 styles={modalStyle}
-                // containerClassName={contentStyles.container}
+              // containerClassName={contentStyles.container}
               >
                 <div className="modal-header-local">
                   <div className="modal-title">Success</div>
@@ -512,7 +512,7 @@ function UpdateAppraisal(props: any) {
                     iconProps={cancelIcon}
                     ariaLabel="Close popup modal"
                     onClick={() => {
-                      history.push("/home");
+                      history.push("/appraisal");
                     }}
                   />
                 </div>
@@ -524,7 +524,7 @@ function UpdateAppraisal(props: any) {
                     text="OK"
                     allowDisabledFocus
                     onClick={() => {
-                      history.push("/home");
+                      history.push("/appraisal");
                     }}
                     disabled={false}
                     checked={false}
@@ -536,7 +536,7 @@ function UpdateAppraisal(props: any) {
                 isOpen={failedModal}
                 isBlocking={false}
                 styles={modalStyle}
-                // containerClassName={contentStyles.container}
+              // containerClassName={contentStyles.container}
               >
                 <div className="modal-header-local">
                   <div className="modal-title">Error</div>
@@ -569,7 +569,7 @@ function UpdateAppraisal(props: any) {
                 isOpen={applicationError}
                 isBlocking={false}
                 styles={modalStyle}
-                // containerClassName={contentStyles.container}
+              // containerClassName={contentStyles.container}
               >
                 <div className="modal-header-local">
                   <div className="modal-title">Error</div>
@@ -626,7 +626,7 @@ function UpdateAppraisal(props: any) {
                 allowDisabledFocus
                 disabled={false}
                 onClick={() => {
-                  history.push("/home");
+                  history.push("/appraisal");
                 }}
                 checked={false}
               />

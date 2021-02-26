@@ -100,7 +100,7 @@ function UpdateGoals(props: any) {
 
   const history = useHistory();
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");
@@ -266,7 +266,7 @@ function UpdateGoals(props: any) {
                 })
               }
               options={goalOptions}
-              // styles={dropdownStyles}
+            // styles={dropdownStyles}
             />
             <TextField
               disabled={updateGoalData.goal_type === "Goal" ? true : false}
@@ -396,7 +396,7 @@ function UpdateGoals(props: any) {
             isOpen={successModal}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Success</div>
@@ -429,7 +429,7 @@ function UpdateGoals(props: any) {
             isOpen={failedModal}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Error</div>
@@ -462,7 +462,7 @@ function UpdateGoals(props: any) {
             isOpen={applicationError}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Error</div>

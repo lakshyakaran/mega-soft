@@ -271,7 +271,7 @@ function GoalSetting(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
 
   const itemsWithHeading: IBreadcrumbItem[] = [
@@ -374,29 +374,29 @@ function GoalSetting(props: any) {
           ) : employeeList.length === 0 ? (
             renderNoData()
           ) : (
-            <div className="card">
-              <DetailsList
-                styles={listStyle}
-                items={employeeList}
-                className="detail-list"
-                columns={columns}
-                selectionMode={0}
-              />
-              <div className="pagination-style">
-                <Pagination
-                  format="buttons"
-                  selectedPageIndex={currentPage}
-                  pageCount={Math.ceil(total_count / limitPageLength)}
-                  itemsPerPage={limitPageLength}
-                  totalItemCount={total_count}
-                  onPageChange={(page) => {
-                    setLimitSTart(page * limitPageLength);
-                    setCurentPage(page);
-                  }}
-                />
-              </div>
-            </div>
-          )}
+                <div className="card">
+                  <DetailsList
+                    styles={listStyle}
+                    items={employeeList}
+                    className="detail-list"
+                    columns={columns}
+                    selectionMode={0}
+                  />
+                  <div className="pagination-style">
+                    <Pagination
+                      format="buttons"
+                      selectedPageIndex={currentPage}
+                      pageCount={Math.ceil(total_count / limitPageLength)}
+                      itemsPerPage={limitPageLength}
+                      totalItemCount={total_count}
+                      onPageChange={(page) => {
+                        setLimitSTart(page * limitPageLength);
+                        setCurentPage(page);
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
         </div>
       </div>
     </div>

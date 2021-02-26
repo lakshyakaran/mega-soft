@@ -124,7 +124,7 @@ function AddGoals(props: any) {
 
   const history = useHistory();
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");
@@ -321,7 +321,7 @@ function AddGoals(props: any) {
               className="flexGrow w25"
               onChange={onChangeGoalType}
               options={goalOptions}
-              // styles={dropdownStyles}
+            // styles={dropdownStyles}
             />
             <TextField
               disabled={goalType.text === "Goal" ? true : false}
@@ -448,7 +448,7 @@ function AddGoals(props: any) {
             isOpen={successModal}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Success</div>
@@ -481,7 +481,7 @@ function AddGoals(props: any) {
             isOpen={failedModal}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Error</div>
@@ -514,7 +514,7 @@ function AddGoals(props: any) {
             isOpen={applicationError}
             isBlocking={false}
             styles={modalStyle}
-            // containerClassName={contentStyles.container}
+          // containerClassName={contentStyles.container}
           >
             <div className="modal-header-local">
               <div className="modal-title">Error</div>

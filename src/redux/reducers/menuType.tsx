@@ -3,7 +3,7 @@ interface type {
 }
 
 const initialState: type = {
-  menuType: window.sessionStorage.getItem("menuType") || 0,
+  menuType: window.sessionStorage.getItem("menuType") || 1,
 };
 
 export default function menuType(

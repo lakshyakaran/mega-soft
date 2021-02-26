@@ -46,7 +46,7 @@ function JobHistoryDetails(props: any) {
     );
   }, []);
 
- 
+
 
   const onChangeInput = (
     ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -68,7 +68,7 @@ function JobHistoryDetails(props: any) {
 
   const history = useHistory();
   const onBreadcrumbAppraisalClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const onBreadcrumbGoalsettingClicked = () => {
     history.push("/appraisal/goalsetting");

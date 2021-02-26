@@ -281,7 +281,7 @@ function AddAppraisal(props: any) {
   };
 
   const _onBreadcrumbItemClicked = () => {
-    history.push("/home");
+    history.push("/appraisal");
   };
   const itemsWithHeading: IBreadcrumbItem[] = [
     { text: i18n.t("breadcrumb_items.performance"), key: "d1" },
@@ -612,7 +612,7 @@ function AddAppraisal(props: any) {
               className="flexGrow w33"
               onChange={onChangeReviewFrequency}
               options={reviewFrequencyOptions}
-              // styles={dropdownStyles}
+            // styles={dropdownStyles}
             />
           </div>
 
@@ -625,7 +625,7 @@ function AddAppraisal(props: any) {
               className="flexGrow w33"
               options={typeOptions}
               onChange={onChangeType}
-              // styles={typeDropdownStyles}
+            // styles={typeDropdownStyles}
             />
             <Dropdown
               required
@@ -637,7 +637,7 @@ function AddAppraisal(props: any) {
                 "appraisal_form.field_place_holders.select_format_type"
               )}
               options={formateTypeOptions}
-              // styles={typeDropdownStyles}
+            // styles={typeDropdownStyles}
             />
             <TextField
               required
@@ -686,7 +686,7 @@ function AddAppraisal(props: any) {
                 isOpen={successModal}
                 isBlocking={false}
                 styles={modalStyle}
-                // containerClassName={contentStyles.container}
+              // containerClassName={contentStyles.container}
               >
                 <div className="modal-header-local">
                   <div className="modal-title">
@@ -709,7 +709,7 @@ function AddAppraisal(props: any) {
                     text={t("appraisal_form.buttons.ok")}
                     allowDisabledFocus
                     onClick={() => {
-                      history.push("/home");
+                      history.push("/appraisal");
                     }}
                     disabled={false}
                     checked={false}
@@ -721,7 +721,7 @@ function AddAppraisal(props: any) {
                 isOpen={failedModal}
                 isBlocking={false}
                 styles={modalStyle}
-                // containerClassName={contentStyles.container}
+              // containerClassName={contentStyles.container}
               >
                 <div className="modal-header-local">
                   <div className="modal-title">Error</div>
@@ -754,7 +754,7 @@ function AddAppraisal(props: any) {
                 isOpen={applicationError}
                 isBlocking={false}
                 styles={modalStyle}
-                // containerClassName={contentStyles.container}
+              // containerClassName={contentStyles.container}
               >
                 <div className="modal-header-local">
                   <div className="modal-title">Error</div>
@@ -845,7 +845,7 @@ function AddAppraisal(props: any) {
                 allowDisabledFocus
                 disabled={false}
                 onClick={() => {
-                  history.push("/home");
+                  history.push("/appraisal");
                 }}
                 checked={false}
               />
