@@ -165,6 +165,7 @@ function UpdateJobHistory(props: any) {
   const [applicationError, setApplicationError] = useState(false);
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState("");
+  const [errMsgToDate, setErrMsgToDate] = useState("");
 
   const handleApplicationError = (resp: any) => {
     if (resp.status >= 400 && resp.status <= 499) {
@@ -179,6 +180,7 @@ function UpdateJobHistory(props: any) {
     }
   };
 
+  
   const handleUpdateJobHistory = () => {
     if (jobHistoryUpdateData.key_responsibilities === "") {
       setErrMsgResponsibility("Key Responsibilities is required");
@@ -191,6 +193,22 @@ function UpdateJobHistory(props: any) {
     }
     if (jobHistoryUpdateData.qualifications === "") {
       setErrMsgQualifications("Qualifications is required");
+    }
+    let checkFromDate = moment(jobHistoryUpdateData.from_date).format("YYYY-MM-DD");
+    let checkToDate = moment(jobHistoryUpdateData.to_date).format("YYYY-MM-DD");
+    if (checkFromDate > checkToDate) {
+      setErrMsgToDate("From date greater than To date");
+    }
+    if (
+      jobHistoryUpdateData.key_responsibilities === "" ||
+      jobHistoryUpdateData.place_of_posting === "" ||
+      jobHistoryUpdateData.position_held === "" ||
+      jobHistoryUpdateData.qualifications === "" ||
+      jobHistoryUpdateData.qualifications.length >= 140 ||
+      jobHistoryUpdateData.key_responsibilities.length >= 140||
+      checkFromDate > checkToDate
+    ) {
+      return false;
     }
     const updateQuery = {
       ...jobHistoryUpdateData,
@@ -298,7 +316,7 @@ function UpdateJobHistory(props: any) {
                   to_date: date,
                 })
               }
-              // textField={{ errorMessage = { errMsgPlace } }}
+              textField={{ errorMessage: errMsgToDate }}
               styles={datePickerStyle}
             />
           </div>

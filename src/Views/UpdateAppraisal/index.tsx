@@ -7,12 +7,14 @@ import { useParams } from "react-router-dom";
 import { Stack } from "office-ui-fabric-react/lib/Stack";
 import {
   addYears,
+  ComboBox,
   DatePicker,
   DayOfWeek,
   Dropdown,
   getTheme,
   IBreadcrumbItem,
   IBreadcrumbStyles,
+  IComboBoxOption,
   IconButton,
   IDatePickerStrings,
   IDatePickerStyles,
@@ -43,11 +45,11 @@ const formateTypeOptions: IDropdownOption[] = [
   { key: "key3", text: "Non Sales Employees" },
   // { key: "key4", text: "Management" },
 ];
-const departmentOptions: IDropdownOption[] = [
-  { key: "key1", text: "Delivery" },
-  { key: "key2", text: "Product Development" },
-  { key: "key3", text: "Sales" },
-  { key: "key4", text: "Accounts" },
+const departmentOptions: IComboBoxOption[] = [
+  { key: "Accounts", text: "Accounts" },
+  { key: "Delivery", text: "Delivery" },
+  { key: "Product Development", text: "Product Development" },
+  { key: "Sales", text: "Sales" },
 ];
 
 const reviewFrequencyOptions: IDropdownOption[] = [
@@ -294,11 +296,17 @@ function UpdateAppraisal(props: any) {
     if (updateData.appraisal_description === "") {
       setErrMsgDescription("Please enter the description");
     }
+    if (updateData.appraisal_description.length  >= 100) {
+      setErrMsgDescription("Limit exceeds");
+    }
     if (!pattern.test(updateData.appraisal_owner)) {
       setErrMsgOwner("Please give currect pattern ");
     }
-    if (updateData.owner === "") {
+    if (updateData.appraisal_owner === "") {
       setErrMsgOwner("Please enter the owner name");
+    }
+    if (updateData.appraisal_owner.length >= 100) {
+      setErrMsgOwner("Limit exceeds");
     }
     let checkReviewDate = moment(updateData.review_from).format("YYYY-MM-DD");
     let checkAppraisalDate = moment(updateData.appraisal_to).format(
@@ -306,6 +314,15 @@ function UpdateAppraisal(props: any) {
     );
     if (checkReviewDate > checkAppraisalDate) {
       setErrMsgAppraisalDate("From date greater than To date");
+    }
+    if (
+      checkReviewDate > checkAppraisalDate ||
+      updateData.appraisal_owner === "" ||
+      updateData.appraisal_owner.length >= 100 ||
+      updateData.appraisal_description.length >= 100 ||
+      updateData.appraisal_description === ""
+    ) {
+      return false;
     }
     const updateQuery = {
       ...updateData,
@@ -478,7 +495,7 @@ function UpdateAppraisal(props: any) {
               className="flexGrow w25"
               onChange={onChangeInput}
             />
-            <Dropdown
+            {/* <Dropdown
               label="Department"
               // placeholder={t("appraisal_form.field_place_holders.department")}
               selectedKey={
@@ -492,8 +509,27 @@ function UpdateAppraisal(props: any) {
               }
               options={departmentOptions}
             // styles={dropdownStyles}
-            />
+            /> */}
           </div>
+          <div className="goal-details">
+              <ComboBox
+                label="Department"
+                className="flexGrow w33"
+                selectedKey={
+                  departmentOptions.find(
+                    (item) => item.key === updateData.department
+                  )?.key
+                }
+                onChange={(ev, item) =>
+                  setUpdateData({ ...updateData, department: item?.key })
+                }
+                allowFreeform
+                autoComplete="on"
+                options={departmentOptions}
+              // styles={dropdownStyles}
+              />
+
+            </div>
           <Separator />
           <div className="rowCheckBox">
             <div>

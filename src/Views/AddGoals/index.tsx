@@ -201,27 +201,49 @@ function AddGoals(props: any) {
     if (goalInputData.order_no === "") {
       setErrMsgOrder("Order number is required");
     }
+    if (
+      goalInputData.order_no.length >= 5
+      ) {
+      setErrMsgOrder("Limit exceeds");
+    }
     if (goalInputData.kra === "") {
       setErrMsgKra("KRA is required");
+    }
+    if (goalInputData.kra.length >= 100) {
+      setErrMsgKra("Limit exceeds");
     }
     if (goalInputData.goal === "") {
       setErrMsgGoal("Goal is required");
     }
+    if (goalInputData.goal.length >= 100) {
+      setErrMsgGoal("Limit exceeds");
+    }
     if (goalInputData.measure === "") {
       setErrMsgMeasure("Measure is required");
     }
+    if (goalInputData.measure.length >= 100) {
+      setErrMsgMeasure("Limit exceeds");
+    }
     if (goalInputData.weightage === "") {
       setErrMsgWeightage("Weightage is required");
+    }
+    if (goalInputData.weightage.length > 100) {
+      setErrMsgWeightage("Limit exceeds");
     }
     if (goalType.text === "") {
       setErrMsgGoalType("Select goal type");
     }
     if (
       goalInputData.order_no === "" ||
+      goalInputData.order_no.length >= 5 ||
+      goalInputData.kra.length >= 100 ||
+      goalInputData.goal.length >= 100 ||
+      goalInputData.measure.length >= 100 ||
       goalInputData.kra === "" ||
       goalInputData.goal === "" ||
       goalInputData.measure === "" ||
       goalInputData.weightage === "" ||
+      goalInputData.weightage.length > 100 ||
       goalType.text === ""
     ) {
       return false;
@@ -374,6 +396,7 @@ function AddGoals(props: any) {
               required
               errorMessage={errMsgWeightage}
               label="Weightage"
+              type="number"
               value={goalInputData.weightage}
               placeholder="Enter Weightage"
               styles={textfelidStyle}

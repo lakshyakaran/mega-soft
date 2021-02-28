@@ -185,6 +185,9 @@ function JobHistory(props: any) {
     if (jobHistoryData.responsibilities === "") {
       setErrMsgResponsibility("Key Responsibilities is required");
     }
+    if (jobHistoryData.responsibilities.length >= 140 ) {
+      setErrMsgResponsibility("Limit exceeds");
+    }
     if (jobHistoryData.place === "") {
       setErrMsgPlace("Place of posting is required");
     }
@@ -193,6 +196,9 @@ function JobHistory(props: any) {
     }
     if (jobHistoryData.qualifications === "") {
       setErrMsgQualifications("Qualifications is required");
+    }
+    if (jobHistoryData.qualifications.length >= 140) {
+      setErrMsgQualifications("Limit Exceeds");
     }
 
     if (!fromDate) {
@@ -216,16 +222,19 @@ function JobHistory(props: any) {
       from_date: moment(fromDate).format("YYYY-MM-DD"),
       to_date: moment(toDate).format("YYYY-MM-DD"),
     };
-    // if (
-    //   jobHistoryData.responsibilities === "" ||
-    //   jobHistoryData.place === "" ||
-    //   jobHistoryData.position === "" ||
-    //   jobHistoryData.qualifications === "" ||
-    //   !fromDate ||
-    //   !toDate
-    // ) {
-    //   return false;
-    // }
+    if (
+      jobHistoryData.responsibilities === "" ||
+      jobHistoryData.place === "" ||
+      jobHistoryData.position === "" ||
+      jobHistoryData.qualifications === "" ||
+      jobHistoryData.qualifications.length >= 140 ||
+      jobHistoryData.responsibilities.length >= 140||
+      !fromDate ||
+      !toDate ||
+      checkFromDate > checkToDate
+    ) {
+      return false;
+    }
     add_JobHistory(addQuery)
       .then((response: any) => {
         setSuccessModal(true);

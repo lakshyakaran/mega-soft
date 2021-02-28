@@ -25,6 +25,9 @@ import {
   ColorPicker,
   Separator,
   addYears,
+  ComboBox,
+  IComboBoxOption,
+  IComboBox,
 } from "office-ui-fabric-react";
 import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
 import Header from "../../Header";
@@ -45,11 +48,11 @@ const formateTypeOptions: IDropdownOption[] = [
   { key: "key3", text: "Non Sales Employees" },
 ];
 
-const departmentOptions: IDropdownOption[] = [
-  { key: "key1", text: "Delivery" },
-  { key: "key2", text: "Product Development" },
-  { key: "key3", text: "Sales" },
-  { key: "key4", text: "Accounts" },
+const departmentOptions: IComboBoxOption[] = [
+  { key: "Accounts", text: "Accounts" },
+  { key: "Delivery", text: "Delivery" },
+  { key: "Product Development", text: "Product Development" },
+  { key: "Sales", text: "Sales" },
 ];
 
 const reviewFrequencyOptions: IDropdownOption[] = [
@@ -224,10 +227,7 @@ function AddAppraisal(props: any) {
     text: "",
   });
   
-  const [department, setDepartment] = useState<IDropdownOption>({
-    key: "",
-    text: "",
-  });
+  const [department, setDepartment]:any = useState("")
 
   const [formateType, setFormateType] = useState<IDropdownOption>({
     key: "",
@@ -281,15 +281,14 @@ function AddAppraisal(props: any) {
     );
   };
   
-  const onChangeReviewDepartment = (
-    event?: React.FormEvent<HTMLDivElement>,
-    item?: IDropdownOption
-  ): void => {
+  const onChangeDepartment = (
+    event: React.FormEvent<IComboBox>,
+    option?: IComboBoxOption,
+    index?: number,
+    value?: string
+  )=>{
     setDepartment(
-      item || {
-        key: "",
-        text: "",
-      }
+      option?.key || ""
     );
   };
 
@@ -445,14 +444,23 @@ function AddAppraisal(props: any) {
     if (claimsData.id === "") {
       setErrMsg(i18n.t("error_messages.please_enter_id"));
     }
+    if (claimsData.id.length >= 100) {
+      setErrMsg("Limit exceeds");
+    }
     if (claimsData.description === "") {
       setErrMsgDescription(i18n.t("error_messages.please_enter_description"));
+    }
+    if (claimsData.description.length >= 100) {
+      setErrMsgDescription("Limit exceeds");
     }
     if (!pattern.test(claimsData.owner)) {
       setErrMsgOwner(i18n.t("error_messages.please_enter_currect_pattern"));
     }
     if (claimsData.owner === "") {
       setErrMsgOwner(i18n.t("error_messages.please_enter_owner_name"));
+    }
+    if (claimsData.owner.length >= 100) {
+      setErrMsgOwner("Limit exceeds");
     }
     if (formateType.text === "") {
       setErrMsgFormatType(i18n.t("error_messages.select_format_type"));
@@ -487,6 +495,9 @@ function AddAppraisal(props: any) {
       selectedType.text === "" ||
       !dateReview ||
       !dateAppraisal ||
+      claimsData.description.length >= 100 ||
+      claimsData.owner.length >= 100 ||
+      claimsData.id.length >= 100 ||
       checkReviewDate > checkAppraisalDate
     ) {
       return false;
@@ -510,7 +521,7 @@ function AddAppraisal(props: any) {
       review_from: moment(dateReview).format("YYYY-MM-DD"),
       appraisal_to: moment(dateAppraisal).format("YYYY-MM-DD"),
       appraisal_owner: claimsData.owner,
-      department: department.text
+      department: department
     };
     setLoading(false);
     add_apprisal(addQuery,roleType)
@@ -645,7 +656,7 @@ function AddAppraisal(props: any) {
               label={t("common.type")}
               errorMessage={errMsgType}
               placeholder={t("appraisal_form.field_place_holders.select_type")}
-              className="flexGrow w25"
+              className="flexGrow w33"
               options={typeOptions}
               onChange={onChangeType}
             // styles={typeDropdownStyles}
@@ -654,7 +665,7 @@ function AddAppraisal(props: any) {
               required
               label={t("appraisal_form.Format_Type")}
               errorMessage={errMsgFormatType}
-              className="flexGrow w25"
+              className="flexGrow w33"
               onChange={onChangeFormateType}
               placeholder={t(
                 "appraisal_form.field_place_holders.select_format_type"
@@ -668,28 +679,25 @@ function AddAppraisal(props: any) {
               placeholder={t("appraisal_form.field_place_holders.owner")}
               pattern={"^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"}
               value={claimsData.owner}
-              className="flexGrow w25"
+              className="flexGrow w33"
               errorMessage={errMsgOwner}
               name="owner"
               onChange={onChangeInput}
             />
-            {/* <TextField
-              label={t("appraisal_form.department")}
-              placeholder={t("appraisal_form.field_place_holders.department")}
-              value={claimsData.department}
-              className="flexGrow w25"
-              name="department"
-              onChange={onChangeInput}
-            /> */}
-            <Dropdown
-              label={t("appraisal_form.department")}
-              placeholder={t("appraisal_form.field_place_holders.department")}
-              className="flexGrow w25"
-              onChange={onChangeReviewDepartment}
-              options={departmentOptions}
-            // styles={dropdownStyles}
-            />
-          </div>
+            </div>
+            <div className="goal-details">
+              <ComboBox
+                label={t("appraisal_form.department")}
+                placeholder={t("appraisal_form.field_place_holders.department")}
+                className="flexGrow w33"
+                onChange={onChangeDepartment}
+                allowFreeform
+                autoComplete="on"
+                options={departmentOptions}
+              // styles={dropdownStyles}
+              />
+
+            </div>
           <Separator />
           <div className="rowCheckBox">
             <div>

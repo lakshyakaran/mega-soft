@@ -424,6 +424,7 @@ function EmployeeDetails(props: any) {
           <TextField
             multiline
             rows={3}
+            maxLength={140}
             value={item.development_plan}
             onChange={(
               ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -447,6 +448,7 @@ function EmployeeDetails(props: any) {
             multiline
             readOnly={roleType === "Employee" ? true : false}
             rows={3}
+            maxLength={140}
             onChange={(
               ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
               text?: string
@@ -475,7 +477,7 @@ function EmployeeDetails(props: any) {
       name: "Goal ID",
       fieldName: "name",
       minWidth: 40,
-      maxWidth: 60,
+      maxWidth: 80,
       isSortedDescending: false,
       isRowHeader: true,
       isResizable: false,

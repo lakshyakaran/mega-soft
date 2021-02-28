@@ -157,20 +157,51 @@ function UpdateGoals(props: any) {
   };
 
   const handleUpdateGoal = () => {
+    
     if (updateGoalData.order_no === "") {
       setErrMsgOrder("Order number is required");
+    }
+    if (
+      updateGoalData.order_no.length >= 5
+      ) {
+      setErrMsgOrder("Limit exceeds");
     }
     if (updateGoalData.kra === "") {
       setErrMsgKra("KRA is required");
     }
+    if (updateGoalData.kra.length >= 100) {
+      setErrMsgKra("Limit exceeds");
+    }
     if (updateGoalData.goal === "") {
       setErrMsgGoal("Goal is required");
+    }
+    if (updateGoalData.goal.length >= 100) {
+      setErrMsgGoal("Limit exceeds");
     }
     if (updateGoalData.measure === "") {
       setErrMsgMeasure("Measure is required");
     }
+    if (updateGoalData.measure.length >= 100) {
+      setErrMsgMeasure("Limit exceeds");
+    }
     if (updateGoalData.weightage === "") {
       setErrMsgWeightage("Weightage is required");
+    }
+    if (updateGoalData.weightage.length > 100) {
+      setErrMsgWeightage("Limit exceeds");
+    }
+    if (
+      updateGoalData.order_no === "" ||
+      updateGoalData.kra === "" ||
+      updateGoalData.goal === "" ||
+      updateGoalData.order_no.length >= 5 ||
+      updateGoalData.kra.length >= 100 ||
+      updateGoalData.goal.length >= 100 ||
+      updateGoalData.measure.length >= 100 ||
+      updateGoalData.weightage.length > 100 ||
+      updateGoalData.measure === "" 
+    ) {
+      return false;
     }
     const addQuery = {
       ...updateGoalData,
@@ -324,6 +355,7 @@ function UpdateGoals(props: any) {
               value={updateGoalData.weightage}
               placeholder="Enter Weightage"
               styles={textfelidStyle}
+              type="number"
               className="flexGrow w50"
               name="weightage"
               onChange={onChangeInput}
