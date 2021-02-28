@@ -57,15 +57,8 @@ export const fetchEmployeeData = (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
-            if (!response.isAxiosError) {
               fetchEmployeeData(doctype, limit_start, limit, role, filters);
-            } else {
-              console.log(
-                "ERROR: 1. unable to refresh access_token logging out.",
-                response
-              );
-              dispatch(logout());
-            }
+            
           })
           .catch((error) => {
             console.log(
@@ -128,15 +121,8 @@ export const fetchEmployeeDataByID = async (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
-            if (!response.isAxiosError) {
               fetchEmployeeData(doctype, limit_start, limit, role, filters);
-            } else {
-              console.log(
-                "ERROR: 1. unable to refresh access_token logging out.",
-                response
-              );
-              // dispatch(logout());
-            }
+           
           })
           .catch((error) => {
             console.log(

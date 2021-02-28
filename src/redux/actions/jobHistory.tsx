@@ -1,5 +1,9 @@
 import axios from "axios";
-import apiUrl from "../../config";
+import apiUrl, { OAuthParameters } from "../../config";
+import { handleRefreshToken } from "./auth";
+
+const client_id = OAuthParameters.client_id;
+
 
 export const jobHistoryData = (
   role = "Employee",
@@ -13,6 +17,7 @@ export const jobHistoryData = (
     return false;
   }
   const accessToken = "bearer " + token;
+  try {
   dispatch({
     type: "FETCH_JOB_HISTORY_START",
   });
@@ -51,6 +56,40 @@ export const jobHistoryData = (
     payload: responseBody,
   });
   return responseBody;
+} catch (error) {
+  if (error.response) {
+    if (error.response.status === 403) {
+      console.log("inside 403 error block", JSON.stringify(error.response));
+      const refresh_token = sessionStorage.getItem("refresh_token");
+      const data = {
+        refresh_token: refresh_token,
+        client_id: client_id,
+      };
+      handleRefreshToken(data)
+        .then((response: any) => {
+          jobHistoryData(
+            role ,
+            filters,
+            limit_start ,
+            limit_page_length,
+            order_by,
+            );
+        })
+        .catch((error) => {
+          console.log(
+            "ERROR: 2. unable to refresh access_token logging out.",
+            error.response
+          );
+          dispatch({
+            type: "LOGOUT_SUCCESS",
+          });
+        });
+    }
+  }
+  return {
+    ...error,
+  };
+}
 };
 
 export const fetchJobHistory = async (
@@ -65,6 +104,7 @@ export const fetchJobHistory = async (
     return false;
   }
   const accessToken = "bearer " + token;
+  try{
   const response = await axios({
     url: `${apiUrl.resource}/JobHistory`,
     params: {
@@ -96,6 +136,40 @@ export const fetchJobHistory = async (
   // console.log("fetch jobhisty api response =>", response.data);
   const responseBody = await response.data;
   return responseBody;
+} catch (error) {
+  if (error.response) {
+    if (error.response.status === 403) {
+      console.log("inside 403 error block", JSON.stringify(error.response));
+      const refresh_token = sessionStorage.getItem("refresh_token");
+      const data = {
+        refresh_token: refresh_token,
+        client_id: client_id,
+      };
+      handleRefreshToken(data)
+        .then((response: any) => {
+          fetchJobHistory(
+            role ,
+            filters,
+            limit_start ,
+            limit_page_length,
+            order_by,
+            );
+        })
+        .catch((error) => {
+          console.log(
+            "ERROR: 2. unable to refresh access_token logging out.",
+            error.response
+          );
+          // dispatch({
+          //   type: "LOGOUT_SUCCESS",
+          // });
+        });
+    }
+  }
+  return {
+    ...error,
+  };
+}
 };
 
 export const fetchJobHistoryByName = async (
@@ -107,6 +181,7 @@ export const fetchJobHistoryByName = async (
     return false;
   }
   const accessToken = "bearer " + token;
+  try{
   const response = await axios({
     url: `${apiUrl.resource}/JobHistory`,
     params: {
@@ -135,6 +210,37 @@ export const fetchJobHistoryByName = async (
   // console.log("fetch jobhisty api response =>", response.data);
   const responseBody = await response.data;
   return responseBody;
+} catch (error) {
+  if (error.response) {
+    if (error.response.status === 403) {
+      console.log("inside 403 error block", JSON.stringify(error.response));
+      const refresh_token = sessionStorage.getItem("refresh_token");
+      const data = {
+        refresh_token: refresh_token,
+        client_id: client_id,
+      };
+      handleRefreshToken(data)
+        .then((response: any) => {
+          fetchJobHistory(
+            role ,
+            filters,
+            );
+        })
+        .catch((error) => {
+          console.log(
+            "ERROR: 2. unable to refresh access_token logging out.",
+            error.response
+          );
+          // dispatch({
+          //   type: "LOGOUT_SUCCESS",
+          // });
+        });
+    }
+  }
+  return {
+    ...error,
+  };
+}
 };
 
 export const add_JobHistory = async (data: any) => {

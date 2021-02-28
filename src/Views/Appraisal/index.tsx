@@ -64,11 +64,11 @@ function Appraisal(props: any) {
   const appraisal = useSelector((state: RootState) => state.appraisal);
   const { appraisalList, isLoading, count, total_count }: any = appraisal;
   const [formatDate, setFormatDate] = useState("");
-
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const params = useParams<ParamTypes>();
 
+  // console.log("roletype=>", roleT);
   const newAppraisalList = appraisalList.map((element: any) => {
-    // console.log("element=>", element);
     const a = {
       ...element,
       review_from: moment(element.review_from).format("DD-MM-YYYY"),
@@ -99,7 +99,8 @@ function Appraisal(props: any) {
         limitStart,
         limitPageLength,
         `${orderByField} ${orderBy}`,
-        JSON.stringify(filters)
+        JSON.stringify(filters),
+        roleType,
       )
     );
   }, [
@@ -111,6 +112,7 @@ function Appraisal(props: any) {
     filtersByReviewFreq,
     filtersByAppraisal,
     filtersByFormat,
+    roleType
   ]);
 
   const columns: IColumn[] = [
@@ -130,7 +132,7 @@ function Appraisal(props: any) {
       isResizable: false,
     },
     {
-      key: "04",
+      key: "02",
       name: i18n.t("appraisal_form.Description"),
       fieldName: "appraisal_description",
       minWidth: 100,
@@ -141,7 +143,7 @@ function Appraisal(props: any) {
       isResizable: false,
     },
     {
-      key: "05",
+      key: "03",
       name: i18n.t("appraisal_form.Review_From"),
       fieldName: "review_from",
       minWidth: 50,
@@ -151,7 +153,7 @@ function Appraisal(props: any) {
       isResizable: false,
     },
     {
-      key: "08",
+      key: "04",
       name: i18n.t("appraisal_form.Appraisal_To"),
       fieldName: "appraisal_to",
       minWidth: 50,
@@ -160,6 +162,16 @@ function Appraisal(props: any) {
       isRowHeader: true,
       isResizable: false,
     },
+    // {
+    //   key: "05",
+    //   name: i18n.t("appraisal_form.department"),
+    //   fieldName: "department",
+    //   minWidth: 50,
+    //   maxWidth: 120,
+    //   isSortedDescending: false,
+    //   isRowHeader: true,
+    //   isResizable: false,
+    // },
     {
       key: "06",
       name: i18n.t("common.type"),
@@ -181,7 +193,7 @@ function Appraisal(props: any) {
       isResizable: false,
     },
     {
-      key: "09",
+      key: "08",
       name: i18n.t("appraisal_form.Review_Frequency"),
       fieldName: "review_frequency",
       minWidth: 50,
@@ -191,7 +203,7 @@ function Appraisal(props: any) {
       isResizable: false,
     },
     {
-      key: "02",
+      key: "09",
       name: i18n.t("common.action"),
       fieldName: "action",
       minWidth: 110,
@@ -267,7 +279,8 @@ function Appraisal(props: any) {
       limitStart,
       limitPageLength,
       `${orderByField} ${orderBy}`,
-      JSON.stringify(filters)
+      JSON.stringify(filters),
+      roleType
     ).then((response) => {
       // console.log(response.data)
       setUpdateData(response.data[0]);

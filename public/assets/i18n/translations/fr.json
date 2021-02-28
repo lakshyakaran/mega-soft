@@ -7,6 +7,7 @@
     "Format_Type": "Type de format",
     "Owner": "Propriétaire",
     "KRA_Settings_Tabs": "KRA Onglets de paramètres",
+    "department": "département",
     "field_place_holders": {
       "id": "Entrez l'ID",
       "description": "Entrez la description",
@@ -14,7 +15,8 @@
       "select_type": "Sélectionner le genre",
       "select_format_type": "Sélectionnez le type de format",
       "select_a_date": "Sélectionnez une date",
-      "owner": "Entrez le nom du propriétaire"
+      "owner": "Entrez le nom du propriétaire",
+      "department": "Entrer dans le département"
     },
     "buttons": {
       "ok": "d'accord",

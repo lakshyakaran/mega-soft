@@ -31,17 +31,25 @@ import moment from "moment";
 
 import "./style.css";
 import { useHistory } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { edit_appraisal } from "../../redux/actions/apprisal";
 import { fetchAppraisalDataById } from "../../redux/actions/apprisal";
 import { handleRefreshToken, logout } from "../../redux/actions/auth";
 import { OAuthParameters } from "../../config";
+import { RootState } from "../../redux/reducers";
 
 const formateTypeOptions: IDropdownOption[] = [
   { key: "key1", text: "Sales Employees" },
   { key: "key3", text: "Non Sales Employees" },
   // { key: "key4", text: "Management" },
 ];
+const departmentOptions: IDropdownOption[] = [
+  { key: "key1", text: "Delivery" },
+  { key: "key2", text: "Product Development" },
+  { key: "key3", text: "Sales" },
+  { key: "key4", text: "Accounts" },
+];
+
 const reviewFrequencyOptions: IDropdownOption[] = [
   { key: "key1", text: "Monthly" },
   { key: "key2", text: "Yearly" },
@@ -65,6 +73,7 @@ function UpdateAppraisal(props: any) {
   const [orderBy] = useState("asc");
   const [orderByField] = useState("id");
   const [filtersById] = useState(params.appraisalId);
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
 
   const [updateData, setUpdateData]: any = useState({});
 
@@ -77,7 +86,8 @@ function UpdateAppraisal(props: any) {
       limitStart,
       limitPageLength,
       `${orderByField} ${orderBy}`,
-      JSON.stringify(filters)
+      JSON.stringify(filters),
+      roleType
     ).then((response) => {
       setUpdateData(response.data[0]);
     });
@@ -243,6 +253,7 @@ function UpdateAppraisal(props: any) {
   const [applicationError, setApplicationError] = useState(false);
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState("");
+  
 
   const handleApplicationError = (resp: any) => {
     if (resp.status >= 400 && resp.status <= 499) {
@@ -432,7 +443,7 @@ function UpdateAppraisal(props: any) {
               }
               label="Type"
               placeholder="Select Type"
-              className="flexGrow w33"
+              className="flexGrow w25"
               options={typeOptions}
               onChange={(ev, item) =>
                 setUpdateData({ ...updateData, type: item?.text })
@@ -447,7 +458,7 @@ function UpdateAppraisal(props: any) {
                 )?.key
               }
               label="Format Type"
-              className="flexGrow w33"
+              className="flexGrow w25"
               onChange={(ev, item) =>
                 setUpdateData({ ...updateData, format_type: item?.text })
               }
@@ -464,8 +475,23 @@ function UpdateAppraisal(props: any) {
               value={updateData.appraisal_owner}
               styles={textfelidStyle}
               name="appraisal_owner"
-              className="flexGrow w33"
+              className="flexGrow w25"
               onChange={onChangeInput}
+            />
+            <Dropdown
+              label="Department"
+              // placeholder={t("appraisal_form.field_place_holders.department")}
+              selectedKey={
+                departmentOptions.find(
+                  (item) => item.text === updateData.department
+                )?.key
+              }
+              className="flexGrow w25"
+              onChange={(ev, item) =>
+                setUpdateData({ ...updateData, department: item?.text })
+              }
+              options={departmentOptions}
+            // styles={dropdownStyles}
             />
           </div>
           <Separator />

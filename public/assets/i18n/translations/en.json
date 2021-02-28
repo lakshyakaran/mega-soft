@@ -35,6 +35,7 @@
     "Owner": "Owner",
     "Review_Frequency": "Review Frequency",
     "Review_From": "Review From",
+    "department": "Department",
     "buttons": {
       "back": "Back",
       "new": "New",
@@ -50,7 +51,8 @@
       "select": "select",
       "select_a_date": "Select a date",
       "select_format_type": "Select format type",
-      "select_type": "Select type"
+      "select_type": "Select type",
+      "department": "Enter Department"
     }
   },
   "pop_up": {

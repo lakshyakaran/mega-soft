@@ -33,6 +33,7 @@ function AppraisalDetail(props: any) {
   const [orderBy] = useState("asc");
   const [orderByField] = useState("id");
   const [filtersById] = useState(params.appraisalId);
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
 
   const [appraisalDetail, setAppraisalDetail]: any = useState({});
 
@@ -47,7 +48,8 @@ function AppraisalDetail(props: any) {
       limitStart,
       limitPageLength,
       `${orderByField} ${orderBy}`,
-      JSON.stringify(filters)
+      JSON.stringify(filters),
+      roleType
     ).then((response) => {
       setAppraisalDetail(response.data[0]);
     });
@@ -115,6 +117,10 @@ function AppraisalDetail(props: any) {
               <div className="col-md-8">
                 <span>{i18n.t("appraisal_form.Owner")}</span> :{" "}
                 {appraisalDetail.appraisal_owner}
+              </div> 
+              <div className="col-md-8">
+                <span>{i18n.t("appraisal_form.department")}</span> :{" "}
+                {appraisalDetail.department}
               </div>
             </div>
           </div>

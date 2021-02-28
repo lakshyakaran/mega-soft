@@ -173,16 +173,8 @@ export const userInfo = () => async (dispatch: any): Promise<any> => {
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
-            if (!response.isAxiosError) {
-              // fetchAppraisalData();
-              return true;
-            } else {
-              console.log(
-                "ERROR: 1. unable to refresh access_token logging out.",
-                response
-              );
-              dispatch(logout());
-            }
+              userInfo();
+            
           })
           .catch((error) => {
             console.log(

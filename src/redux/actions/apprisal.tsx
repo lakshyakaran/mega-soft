@@ -8,7 +8,8 @@ export const fetchAppraisalData = (
   limit_start = 0,
   limit_page_length = 10,
   order_by = "id asc",
-  filters: any
+  filters: any,
+  role:any
 ) => async (dispatch: any): Promise<any> => {
   const token = sessionStorage.getItem("access_token");
   if (token === null) {
@@ -29,6 +30,7 @@ export const fetchAppraisalData = (
         limit_page_length,
         order_by,
         filters,
+        role,
         fields: JSON.stringify([
           "name",
           "id",
@@ -49,6 +51,7 @@ export const fetchAppraisalData = (
           "assessment_tab_development_plan",
           "assessment_tab_summary",
           "is_deleted",
+          "department"
         ]),
       },
       method: "GET",
@@ -78,22 +81,14 @@ export const fetchAppraisalData = (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
-            if (!response.isAxiosError) {
+            console.log("indise response of if condtion==>")
               fetchAppraisalData(
                 limit_start,
                 limit_page_length,
                 order_by,
-                filters
+                filters,
+                role
               );
-            } else {
-              console.log(
-                "ERROR: 1. unable to refresh access_token logging out.",
-                response
-              );
-              dispatch({
-                type: "LOGOUT_SUCCESS",
-              });
-            }
           })
           .catch((error) => {
             console.log(
@@ -116,7 +111,8 @@ export const fetchAppraisalDataById = async (
   limit_start = 0,
   limit_page_length = 10,
   order_by = "id asc",
-  filters: any
+  filters: any,
+  role:any
 ) => {
   try {
     const token = sessionStorage.getItem("access_token");
@@ -131,6 +127,7 @@ export const fetchAppraisalDataById = async (
         limit_page_length,
         order_by,
         filters,
+        role,
         fields: JSON.stringify([
           "name",
           "id",
@@ -151,6 +148,7 @@ export const fetchAppraisalDataById = async (
           "assessment_tab_development_plan",
           "assessment_tab_summary",
           "is_deleted",
+          "department"
         ]),
       },
       method: "GET",
@@ -176,20 +174,14 @@ export const fetchAppraisalDataById = async (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
-            if (!response.isAxiosError) {
-              fetchAppraisalDataById(
+            fetchAppraisalDataById(
                 limit_start,
                 limit_page_length,
                 order_by,
-                filters
+                filters,
+                role
               );
-            } else {
-              console.log(
-                "ERROR: 1. unable to refresh access_token logging out.",
-                response
-              );
-              // dispatch(logout());
-            }
+            
           })
           .catch((error) => {
             console.log(
@@ -206,12 +198,17 @@ export const fetchAppraisalDataById = async (
   }
 };
 
-export const add_apprisal = async (data: any) => {
+export const add_apprisal = async (data: any, role:any) => {
   const token = sessionStorage.getItem("access_token");
   if (token === null) {
     return false;
   }
   const accessToken = "bearer " + token;
+  const items = {
+    data: data,
+    role
+  }
+  console.log("itmes to add==>", items)
   const response = await axios({
     url: `${apiUrl.resource}/Appraisal`,
     method: "POST",
@@ -220,7 +217,7 @@ export const add_apprisal = async (data: any) => {
       Accept: "application/json",
       Authorization: accessToken,
     },
-    data: JSON.stringify(data),
+    data: JSON.stringify(items)
   });
   return response;
 };

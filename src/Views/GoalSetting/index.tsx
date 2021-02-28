@@ -46,11 +46,13 @@ function GoalSetting(props: any) {
   const comboBoxRef = useRef<IComboBox>(null);
   const [filterOption, setFilterOption] = useState([]);
 
-  useEffect((): void => {
-    filterByEmployee(order_by).then((response) => {
-      setFilterOption(response.data);
-    });
-  }, []);
+
+  // employee name list==>
+  // useEffect((): void => {
+  //   filterByEmployee(order_by).then((response) => {
+  //     setFilterOption(response.data);
+  //   });
+  // }, []);
 
   const comboBoxBasicOptions: IComboBoxOption[] = filterOption.map(
     (element: any) => ({
@@ -337,7 +339,7 @@ function GoalSetting(props: any) {
                 style={{ padding: "0px" }}
                 styles={dropdownStyles}
               />
-              {roleType === "Manager" ? (
+              {/* {roleType === "Manager" ? (
                 <ComboBox
                   componentRef={comboBoxRef}
                   className="reviewFrequency"
@@ -349,7 +351,7 @@ function GoalSetting(props: any) {
                   autoComplete="on"
                   options={comboBoxBasicOptions}
                 />
-              ) : null}
+              ) : null} */}
               <PrimaryButton
                 iconProps={{ iconName: "Search" }}
                 style={{

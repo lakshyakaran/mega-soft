@@ -4,7 +4,7 @@ import { handleRefreshToken, logout } from "./auth";
 
 const client_id = OAuthParameters.client_id;
 
-export const sideNavigationData = (data: any) => async (
+export const sideNavigationData = (items: any) => async (
   dispatch: any
 ): Promise<any> => {
   try {
@@ -14,7 +14,7 @@ export const sideNavigationData = (data: any) => async (
     }
     const accessToken = "bearer " + token;
     const formData = new FormData();
-    formData.append("home_menu", data);
+    formData.append("home_menu", items);
     dispatch({
       type: "FETCH_NAV_DATA_START",
     });
@@ -49,15 +49,8 @@ export const sideNavigationData = (data: any) => async (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling menu again.");
-            if (!response.isAxiosError) {
-              sideNavigationData(data);
-            } else {
-              console.log(
-                "ERROR: 1. unable to refresh access_token logging out.",
-                response
-              );
-              dispatch(logout());
-            }
+              sideNavigationData(items);
+            
           })
           .catch((error) => {
             console.log(

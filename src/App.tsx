@@ -20,30 +20,34 @@ import GoalDetails from "./Views/GoalDetails";
 import ChanageColor from "./components/ChanageColor";
 
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import { validateLogin, login, getAccessToken } from "./redux/actions/auth";
+import { validateLogin, login, getAccessToken, handleRefreshToken } from "./redux/actions/auth";
 
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/reducers";
 import { setCollapedMenu } from "./redux/actions/roleType";
 import { OAuthParameters } from "./config";
+import { Spinner, SpinnerSize } from "office-ui-fabric-react";
 
-const getOAuthCode = () => {
-  const url = window.location.href;
-  const str = url;
-  const param = "code=";
-  let res = str.split("&", 1);
-  let n = res[0].search(param);
-
-  if (n < 0) {
-    return;
-  }
-  n += param.length;
-  let code = res[0].substr(n);
-  return code;
-};
 
 function App() {
+
+  const [loading, setLoading] = useState(false);
+  const menuType = useSelector((state: RootState) => state.menuType.menuType);
+
+  const getOAuthCode = () => {
+    const url = window.location.href;
+    const str = url;
+    const param = "code=";
+    let res = str.split("&", 1);
+    let n = res[0].search(param);
+    if (n < 0) {
+      return;
+    }
+    n += param.length;
+    let code = res[0].substr(n);
+    return code;
+  };
   const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.Auth);
   const selectMenu = useSelector((state: RootState) => state.roleType.menuItem);
@@ -60,10 +64,13 @@ function App() {
     getAccessToken(accesstokenData).then((response: any) => {
       const access_token = response.data.access_token;
       const refresh_token = response.data.refresh_token;
+      const expires_in = response.data.expires_in;
+      sessionStorage.setItem('expires_in',expires_in)
       if (access_token && refresh_token) {
         dispatch(login(access_token, refresh_token));
       }
     });
+    
   }
 
 
@@ -75,10 +82,10 @@ function App() {
   }, []);
 
 
-  if (auth.isLoading) {
-    console.log("isloading");
-    return null;
-  }
+  // if (auth.isLoading) {
+  //   console.log("isloading", auth.isLoading);
+  //   return null;
+  // }
 
   const handlemenuClick = () => {
     if (selectMenu === false) {
@@ -88,10 +95,11 @@ function App() {
     }
   };
 
+  // console.log("isloading==>", auth.isLoading)
   return (
     <Suspense fallback={null}>
       <BrowserRouter>
-        {auth.isLoggedIn === true ? (
+        {(auth.isLoggedIn === true && auth.isLoading == false )? (
           <Switch>
             <div className="page-wrapper">
               <Navigation />
@@ -176,11 +184,22 @@ function App() {
             </div>
           </Switch>
         ) : (
-            <Switch>
-              <Route exact path="/" component={Login} />
-              <Route path="/*" render={() => <Redirect to="/" />} />
-            </Switch>
-          )}
+          auth.isLoading == true ? (
+            <Spinner
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "50px",
+                color: "#00597d",
+              }}
+              size={SpinnerSize.large}
+            />
+          ):
+          (<Switch>
+            <Route exact path="/" component={Login} />
+            <Route path="/*" render={() => <Redirect to="/" />} />
+          </Switch>)
+        ) }
       </BrowserRouter>
     </Suspense>
   );

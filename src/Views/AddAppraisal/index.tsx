@@ -45,6 +45,13 @@ const formateTypeOptions: IDropdownOption[] = [
   { key: "key3", text: "Non Sales Employees" },
 ];
 
+const departmentOptions: IDropdownOption[] = [
+  { key: "key1", text: "Delivery" },
+  { key: "key2", text: "Product Development" },
+  { key: "key3", text: "Sales" },
+  { key: "key4", text: "Accounts" },
+];
+
 const reviewFrequencyOptions: IDropdownOption[] = [
   { key: "key1", text: "Monthly" },
   { key: "key2", text: "Yearly" },
@@ -61,7 +68,7 @@ function AddAppraisal(props: any) {
   const { t, i18n } = useTranslation();
   const stackTokens = { childrenGap: 10 };
   const [color, setColor] = useState(white);
-
+  const roleType = useSelector((state: RootState) => state.roleType.roleType);
   const updateColor = (ev: any, colorObj: IColor) => {
     setColor(colorObj);
   };
@@ -196,6 +203,7 @@ function AddAppraisal(props: any) {
     id: "",
     description: "",
     owner: "",
+    department: "",
     kraSettingGoal: false,
     kraSettingCompetencies: false,
     kraSettingDevelopmentPlan: false,
@@ -212,6 +220,11 @@ function AddAppraisal(props: any) {
   });
 
   const [reviewFrequency, setReviewFrequency] = useState<IDropdownOption>({
+    key: "",
+    text: "",
+  });
+  
+  const [department, setDepartment] = useState<IDropdownOption>({
     key: "",
     text: "",
   });
@@ -261,6 +274,18 @@ function AddAppraisal(props: any) {
     item?: IDropdownOption
   ): void => {
     setReviewFrequency(
+      item || {
+        key: "",
+        text: "",
+      }
+    );
+  };
+  
+  const onChangeReviewDepartment = (
+    event?: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    setDepartment(
       item || {
         key: "",
         text: "",
@@ -373,6 +398,11 @@ function AddAppraisal(props: any) {
       setErrorMessage(errorMessage);
       setApplicationError(true);
     }
+     if (resp.status === 409){
+      let errorMessage = "Appraisal ID already exists";
+      setErrorMessage(errorMessage);
+      setApplicationError(true);
+    }
 
     // setApplicationError(true);
     // return (
@@ -480,10 +510,10 @@ function AddAppraisal(props: any) {
       review_from: moment(dateReview).format("YYYY-MM-DD"),
       appraisal_to: moment(dateAppraisal).format("YYYY-MM-DD"),
       appraisal_owner: claimsData.owner,
+      department: department.text
     };
     setLoading(false);
-
-    add_apprisal(addQuery)
+    add_apprisal(addQuery,roleType)
       .then((response) => {
         // console.log("response=>", response);
         setSuccessModal(true);
@@ -506,15 +536,8 @@ function AddAppraisal(props: any) {
               .then((response: any) => {
                 console.log("response of refresh token ", response);
                 console.log("calling handle appraisal again.");
-                if (!response.isAxiosError) {
                   handleAddApprisal();
-                } else {
-                  console.log(
-                    "ERROR: 1. unable to refresh access_token logging out.",
-                    response
-                  );
-                  dispatch(logout());
-                }
+                
               })
               .catch((error) => {
                 console.log(
@@ -622,7 +645,7 @@ function AddAppraisal(props: any) {
               label={t("common.type")}
               errorMessage={errMsgType}
               placeholder={t("appraisal_form.field_place_holders.select_type")}
-              className="flexGrow w33"
+              className="flexGrow w25"
               options={typeOptions}
               onChange={onChangeType}
             // styles={typeDropdownStyles}
@@ -631,7 +654,7 @@ function AddAppraisal(props: any) {
               required
               label={t("appraisal_form.Format_Type")}
               errorMessage={errMsgFormatType}
-              className="flexGrow w33"
+              className="flexGrow w25"
               onChange={onChangeFormateType}
               placeholder={t(
                 "appraisal_form.field_place_holders.select_format_type"
@@ -645,10 +668,26 @@ function AddAppraisal(props: any) {
               placeholder={t("appraisal_form.field_place_holders.owner")}
               pattern={"^[a-zA-Z]+[.,-]{0,1}[ ]{0,1}[a-zA-Z]+[.]{0,1}$"}
               value={claimsData.owner}
-              className="flexGrow w33"
+              className="flexGrow w25"
               errorMessage={errMsgOwner}
               name="owner"
               onChange={onChangeInput}
+            />
+            {/* <TextField
+              label={t("appraisal_form.department")}
+              placeholder={t("appraisal_form.field_place_holders.department")}
+              value={claimsData.department}
+              className="flexGrow w25"
+              name="department"
+              onChange={onChangeInput}
+            /> */}
+            <Dropdown
+              label={t("appraisal_form.department")}
+              placeholder={t("appraisal_form.field_place_holders.department")}
+              className="flexGrow w25"
+              onChange={onChangeReviewDepartment}
+              options={departmentOptions}
+            // styles={dropdownStyles}
             />
           </div>
           <Separator />
