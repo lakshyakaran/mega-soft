@@ -172,7 +172,7 @@ export const userInfo = () => async (dispatch: any): Promise<any> => {
         handleRefreshToken(data)
           .then((response: any) => {
             console.log("response of refresh token ", response);
-            console.log("calling handle appraisal again.");
+            console.log("calling userInfo again.");
             userInfo();
 
           })

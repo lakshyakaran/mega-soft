@@ -181,8 +181,8 @@ function AddGoals(props: any) {
   };
 
   const [goalType, setGoalType] = useState<IDropdownOption>({
-    key: "",
-    text: "",
+    key: "key1",
+    text: "Goal",
   });
 
   const onChangeGoalType = (
@@ -342,6 +342,7 @@ function AddGoals(props: any) {
               placeholder="Select goal type"
               className="flexGrow w25"
               onChange={onChangeGoalType}
+              selectedKey={goalType.key}
               options={goalOptions}
             // styles={dropdownStyles}
             />

@@ -54,7 +54,6 @@ function App() {
   const [client_id] = useState(OAuthParameters.client_id);
   const [scope] = useState("all");
   const code = getOAuthCode();
-  console.log("code==>", code)
 
   const checkAccessToken = () => {
     const accesstokenData = {

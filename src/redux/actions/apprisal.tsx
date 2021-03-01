@@ -80,8 +80,11 @@ export const fetchAppraisalData = (
         handleRefreshToken(data)
           .then((response: any) => {
             console.log("response of refresh token ", response);
-            console.log("calling handle appraisal again.");
-            console.log("indise response of if condtion==>")
+            console.log("calling appraisal list again.");
+            const access_token = response.data.access_token;
+            const refresh_token = response.data.refresh_token;
+            sessionStorage.setItem("access_token", access_token)
+            sessionStorage.setItem("refresh_token", refresh_token)
             fetchAppraisalData(
               limit_start,
               limit_page_length,
@@ -173,7 +176,7 @@ export const fetchAppraisalDataById = async (
         handleRefreshToken(data)
           .then((response: any) => {
             console.log("response of refresh token ", response);
-            console.log("calling handle appraisal again.");
+            console.log("calling handle fetchAppraisalDataById again.");
             fetchAppraisalDataById(
               limit_start,
               limit_page_length,

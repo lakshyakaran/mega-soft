@@ -303,7 +303,7 @@ function UpdateGoals(props: any) {
               disabled={updateGoalData.goal_type === "Goal" ? true : false}
               label="Parent Goal"
               value={updateGoalData.parent_goal_id}
-              placeholder="Enter KRA"
+              placeholder="Enter parent goal ID"
               styles={textfelidStyle}
               className="flexGrow w25"
               name="parent_goal_id"
