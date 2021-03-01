@@ -60,10 +60,6 @@ function MainHeader(props: { children: any }) {
     dispatch(onChangeLanguage(data));
     i18n.changeLanguage(data);
 
-    // setTimeout(() => {
-    //   Utils.reloadLocale(oldLanguage, languageSelected);
-    //   // history.goBack();
-    // }, 500);
   };
 
   const history = useHistory();
@@ -72,11 +68,9 @@ function MainHeader(props: { children: any }) {
 
   const handleLogout = () => {
     window.open(`${apiUrl.method}/logout`, "_self");
-    // logout();
     dispatch(revokeToken());
-    sessionStorage.removeItem("menuType")
-    sessionStorage.removeItem("roleType")
-    sessionStorage.removeItem("menuItem")
+    // logout();
+    sessionStorage.clear()
     // window.open(
     //   `https://id.nuagebiz.tech/auth/realms/megasoft/protocol/openid-connect/logout?redirect_uri=http://localhost:3000`,
     //   "_self"

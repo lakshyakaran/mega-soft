@@ -165,30 +165,30 @@ export const userInfo = () => async (dispatch: any): Promise<any> => {
     });
     return responseBody;
   } catch (error) {
-    if (error.response) {
-      if (error.response.status === 401) {
-        console.log("inside 401 error block", JSON.stringify(error.response));
-        const refresh_token = sessionStorage.getItem("refresh_token");
-        const data = {
-          refresh_token: refresh_token,
-          client_id: client_id,
-        };
-        handleRefreshToken(data)
-          .then((response: any) => {
-            console.log("response of refresh token ", response);
-            console.log("calling userInfo again.");
-            userInfo();
+    // if (error.response) {
+    //   if (error.response.status === 401) {
+    //     console.log("inside 401 error block", JSON.stringify(error.response));
+    //     const refresh_token = sessionStorage.getItem("refresh_token");
+    //     const data = {
+    //       refresh_token: refresh_token,
+    //       client_id: client_id,
+    //     };
+    //     handleRefreshToken(data)
+    //       .then((response: any) => {
+    //         console.log("response of refresh token ", response);
+    //         console.log("calling userInfo again.");
+    //         userInfo();
 
-          })
-          .catch((error) => {
-            console.log(
-              "ERROR: 2. unable to refresh access_token logging out.",
-              error.response
-            );
-            dispatch(logout());
-          });
-      }
-    }
+    //       })
+    //       .catch((error) => {
+    //         console.log(
+    //           "ERROR: 2. unable to refresh access_token logging out.",
+    //           error.response
+    //         );
+    //         dispatch(logout());
+    //       });
+    //   }
+    // }
     return {
       ...error,
     };
