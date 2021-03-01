@@ -157,13 +157,13 @@ function UpdateGoals(props: any) {
   };
 
   const handleUpdateGoal = () => {
-    
+
     if (updateGoalData.order_no === "") {
       setErrMsgOrder("Order number is required");
     }
     if (
       updateGoalData.order_no.length >= 5
-      ) {
+    ) {
       setErrMsgOrder("Limit exceeds");
     }
     if (updateGoalData.kra === "") {
@@ -199,7 +199,7 @@ function UpdateGoals(props: any) {
       updateGoalData.goal.length >= 100 ||
       updateGoalData.measure.length >= 100 ||
       updateGoalData.weightage.length > 100 ||
-      updateGoalData.measure === "" 
+      updateGoalData.measure === ""
     ) {
       return false;
     }
@@ -214,9 +214,9 @@ function UpdateGoals(props: any) {
         if (error.response) {
           console.log("message", error.response.data);
           console.log("status", error.response.status);
-          if (error.response.status === 403) {
+          if (error.response.status === 401) {
             console.log(
-              "inside 403 error block",
+              "inside 401 error block",
               JSON.stringify(error.response)
             );
             const refresh_token = sessionStorage.getItem("refresh_token");

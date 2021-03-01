@@ -162,8 +162,8 @@ export const userInfo = () => async (dispatch: any): Promise<any> => {
     return responseBody;
   } catch (error) {
     if (error.response) {
-      if (error.response.status === 403) {
-        console.log("inside 403 error block", JSON.stringify(error.response));
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
         const refresh_token = sessionStorage.getItem("refresh_token");
         const data = {
           refresh_token: refresh_token,
@@ -173,8 +173,8 @@ export const userInfo = () => async (dispatch: any): Promise<any> => {
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
-              userInfo();
-            
+            userInfo();
+
           })
           .catch((error) => {
             console.log(

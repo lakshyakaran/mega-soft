@@ -18,78 +18,78 @@ export const jobHistoryData = (
   }
   const accessToken = "bearer " + token;
   try {
-  dispatch({
-    type: "FETCH_JOB_HISTORY_START",
-  });
-  const response = await axios({
-    url: `${apiUrl.resource}/JobHistory`,
-    params: {
-      role,
-      filters,
-      limit_start,
-      limit_page_length,
-      order_by,
-      fields: JSON.stringify([
-        "employee_id",
-        "appraisal_id",
-        "position_held",
-        "from_date",
-        "to_date",
-        "from_date",
-        "place_of_posting",
-        "key_responsibilities",
-        "qualifications",
-        "name",
-      ]),
-    },
-    method: "GET",
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Accept: "multipart/form-data",
-      Authorization: accessToken,
-    },
-  });
-  // console.log("fetch jobhisty api response =>", response.data);
-  const responseBody = await response.data;
-  dispatch({
-    type: "FETCH_JOB_HISTORY_SUCCESS",
-    payload: responseBody,
-  });
-  return responseBody;
-} catch (error) {
-  if (error.response) {
-    if (error.response.status === 403) {
-      console.log("inside 403 error block", JSON.stringify(error.response));
-      const refresh_token = sessionStorage.getItem("refresh_token");
-      const data = {
-        refresh_token: refresh_token,
-        client_id: client_id,
-      };
-      handleRefreshToken(data)
-        .then((response: any) => {
-          jobHistoryData(
-            role ,
-            filters,
-            limit_start ,
-            limit_page_length,
-            order_by,
+    dispatch({
+      type: "FETCH_JOB_HISTORY_START",
+    });
+    const response = await axios({
+      url: `${apiUrl.resource}/JobHistory`,
+      params: {
+        role,
+        filters,
+        limit_start,
+        limit_page_length,
+        order_by,
+        fields: JSON.stringify([
+          "employee_id",
+          "appraisal_id",
+          "position_held",
+          "from_date",
+          "to_date",
+          "from_date",
+          "place_of_posting",
+          "key_responsibilities",
+          "qualifications",
+          "name",
+        ]),
+      },
+      method: "GET",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "multipart/form-data",
+        Authorization: accessToken,
+      },
+    });
+    // console.log("fetch jobhisty api response =>", response.data);
+    const responseBody = await response.data;
+    dispatch({
+      type: "FETCH_JOB_HISTORY_SUCCESS",
+      payload: responseBody,
+    });
+    return responseBody;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
+        const refresh_token = sessionStorage.getItem("refresh_token");
+        const data = {
+          refresh_token: refresh_token,
+          client_id: client_id,
+        };
+        handleRefreshToken(data)
+          .then((response: any) => {
+            jobHistoryData(
+              role,
+              filters,
+              limit_start,
+              limit_page_length,
+              order_by,
             );
-        })
-        .catch((error) => {
-          console.log(
-            "ERROR: 2. unable to refresh access_token logging out.",
-            error.response
-          );
-          dispatch({
-            type: "LOGOUT_SUCCESS",
+          })
+          .catch((error) => {
+            console.log(
+              "ERROR: 2. unable to refresh access_token logging out.",
+              error.response
+            );
+            dispatch({
+              type: "LOGOUT_SUCCESS",
+            });
           });
-        });
+      }
     }
+    return {
+      ...error,
+    };
   }
-  return {
-    ...error,
-  };
-}
 };
 
 export const fetchJobHistory = async (
@@ -104,72 +104,72 @@ export const fetchJobHistory = async (
     return false;
   }
   const accessToken = "bearer " + token;
-  try{
-  const response = await axios({
-    url: `${apiUrl.resource}/JobHistory`,
-    params: {
-      role,
-      filters,
-      limit_start,
-      limit_page_length,
-      order_by,
-      fields: JSON.stringify([
-        "employee_id",
-        "appraisal_id",
-        "position_held",
-        "from_date",
-        "to_date",
-        "from_date",
-        "place_of_posting",
-        "key_responsibilities",
-        "qualifications",
-        "name",
-      ]),
-    },
-    method: "GET",
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Accept: "multipart/form-data",
-      Authorization: accessToken,
-    },
-  });
-  // console.log("fetch jobhisty api response =>", response.data);
-  const responseBody = await response.data;
-  return responseBody;
-} catch (error) {
-  if (error.response) {
-    if (error.response.status === 403) {
-      console.log("inside 403 error block", JSON.stringify(error.response));
-      const refresh_token = sessionStorage.getItem("refresh_token");
-      const data = {
-        refresh_token: refresh_token,
-        client_id: client_id,
-      };
-      handleRefreshToken(data)
-        .then((response: any) => {
-          fetchJobHistory(
-            role ,
-            filters,
-            limit_start ,
-            limit_page_length,
-            order_by,
+  try {
+    const response = await axios({
+      url: `${apiUrl.resource}/JobHistory`,
+      params: {
+        role,
+        filters,
+        limit_start,
+        limit_page_length,
+        order_by,
+        fields: JSON.stringify([
+          "employee_id",
+          "appraisal_id",
+          "position_held",
+          "from_date",
+          "to_date",
+          "from_date",
+          "place_of_posting",
+          "key_responsibilities",
+          "qualifications",
+          "name",
+        ]),
+      },
+      method: "GET",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "multipart/form-data",
+        Authorization: accessToken,
+      },
+    });
+    // console.log("fetch jobhisty api response =>", response.data);
+    const responseBody = await response.data;
+    return responseBody;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
+        const refresh_token = sessionStorage.getItem("refresh_token");
+        const data = {
+          refresh_token: refresh_token,
+          client_id: client_id,
+        };
+        handleRefreshToken(data)
+          .then((response: any) => {
+            fetchJobHistory(
+              role,
+              filters,
+              limit_start,
+              limit_page_length,
+              order_by,
             );
-        })
-        .catch((error) => {
-          console.log(
-            "ERROR: 2. unable to refresh access_token logging out.",
-            error.response
-          );
-          // dispatch({
-          //   type: "LOGOUT_SUCCESS",
-          // });
-        });
+          })
+          .catch((error) => {
+            console.log(
+              "ERROR: 2. unable to refresh access_token logging out.",
+              error.response
+            );
+            // dispatch({
+            //   type: "LOGOUT_SUCCESS",
+            // });
+          });
+      }
     }
+    return {
+      ...error,
+    };
   }
-  return {
-    ...error,
-  };
-}
 };
 
 export const fetchJobHistoryByName = async (
@@ -181,66 +181,66 @@ export const fetchJobHistoryByName = async (
     return false;
   }
   const accessToken = "bearer " + token;
-  try{
-  const response = await axios({
-    url: `${apiUrl.resource}/JobHistory`,
-    params: {
-      role,
-      filters,
-      fields: JSON.stringify([
-        "employee_id",
-        "appraisal_id",
-        "position_held",
-        "from_date",
-        "to_date",
-        "from_date",
-        "place_of_posting",
-        "key_responsibilities",
-        "qualifications",
-        "name",
-      ]),
-    },
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: accessToken,
-    },
-  });
-  // console.log("fetch jobhisty api response =>", response.data);
-  const responseBody = await response.data;
-  return responseBody;
-} catch (error) {
-  if (error.response) {
-    if (error.response.status === 403) {
-      console.log("inside 403 error block", JSON.stringify(error.response));
-      const refresh_token = sessionStorage.getItem("refresh_token");
-      const data = {
-        refresh_token: refresh_token,
-        client_id: client_id,
-      };
-      handleRefreshToken(data)
-        .then((response: any) => {
-          fetchJobHistory(
-            role ,
-            filters,
+  try {
+    const response = await axios({
+      url: `${apiUrl.resource}/JobHistory`,
+      params: {
+        role,
+        filters,
+        fields: JSON.stringify([
+          "employee_id",
+          "appraisal_id",
+          "position_held",
+          "from_date",
+          "to_date",
+          "from_date",
+          "place_of_posting",
+          "key_responsibilities",
+          "qualifications",
+          "name",
+        ]),
+      },
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: accessToken,
+      },
+    });
+    // console.log("fetch jobhisty api response =>", response.data);
+    const responseBody = await response.data;
+    return responseBody;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
+        const refresh_token = sessionStorage.getItem("refresh_token");
+        const data = {
+          refresh_token: refresh_token,
+          client_id: client_id,
+        };
+        handleRefreshToken(data)
+          .then((response: any) => {
+            fetchJobHistory(
+              role,
+              filters,
             );
-        })
-        .catch((error) => {
-          console.log(
-            "ERROR: 2. unable to refresh access_token logging out.",
-            error.response
-          );
-          // dispatch({
-          //   type: "LOGOUT_SUCCESS",
-          // });
-        });
+          })
+          .catch((error) => {
+            console.log(
+              "ERROR: 2. unable to refresh access_token logging out.",
+              error.response
+            );
+            // dispatch({
+            //   type: "LOGOUT_SUCCESS",
+            // });
+          });
+      }
     }
+    return {
+      ...error,
+    };
   }
-  return {
-    ...error,
-  };
-}
 };
 
 export const add_JobHistory = async (data: any) => {

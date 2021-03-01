@@ -46,8 +46,8 @@ export const fetchEmployeeData = (
     return responseBody;
   } catch (error) {
     if (error.response) {
-      if (error.response.status === 403) {
-        console.log("inside 403 error block", JSON.stringify(error.response));
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
         const refresh_token = sessionStorage.getItem("refresh_token");
         const data = {
           refresh_token: refresh_token,
@@ -57,8 +57,8 @@ export const fetchEmployeeData = (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
-              fetchEmployeeData(doctype, limit_start, limit, role, filters);
-            
+            fetchEmployeeData(doctype, limit_start, limit, role, filters);
+
           })
           .catch((error) => {
             console.log(
@@ -110,8 +110,8 @@ export const fetchEmployeeDataByID = async (
     return responseBody;
   } catch (error) {
     if (error.response) {
-      if (error.response.status === 403) {
-        console.log("inside 403 error block", JSON.stringify(error.response));
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
         const refresh_token = sessionStorage.getItem("refresh_token");
         const data = {
           refresh_token: refresh_token,
@@ -121,8 +121,8 @@ export const fetchEmployeeDataByID = async (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
-              fetchEmployeeData(doctype, limit_start, limit, role, filters);
-           
+            fetchEmployeeData(doctype, limit_start, limit, role, filters);
+
           })
           .catch((error) => {
             console.log(

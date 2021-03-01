@@ -226,8 +226,8 @@ function AddAppraisal(props: any) {
     key: "",
     text: "",
   });
-  
-  const [department, setDepartment]:any = useState("")
+
+  const [department, setDepartment]: any = useState("")
 
   const [formateType, setFormateType] = useState<IDropdownOption>({
     key: "",
@@ -280,13 +280,13 @@ function AddAppraisal(props: any) {
       }
     );
   };
-  
+
   const onChangeDepartment = (
     event: React.FormEvent<IComboBox>,
     option?: IComboBoxOption,
     index?: number,
     value?: string
-  )=>{
+  ) => {
     setDepartment(
       option?.key || ""
     );
@@ -397,7 +397,7 @@ function AddAppraisal(props: any) {
       setErrorMessage(errorMessage);
       setApplicationError(true);
     }
-     if (resp.status === 409){
+    if (resp.status === 409) {
       let errorMessage = "Appraisal ID already exists";
       setErrorMessage(errorMessage);
       setApplicationError(true);
@@ -524,7 +524,7 @@ function AddAppraisal(props: any) {
       department: department
     };
     setLoading(false);
-    add_apprisal(addQuery,roleType)
+    add_apprisal(addQuery, roleType)
       .then((response) => {
         // console.log("response=>", response);
         setSuccessModal(true);
@@ -533,9 +533,9 @@ function AddAppraisal(props: any) {
         if (error.response) {
           console.log("message", error.response.data);
           console.log("status", error.response.status);
-          if (error.response.status === 403) {
+          if (error.response.status === 401) {
             console.log(
-              "inside 403 error block",
+              "inside 401 error block",
               JSON.stringify(error.response)
             );
             const refresh_token = sessionStorage.getItem("refresh_token");
@@ -547,8 +547,8 @@ function AddAppraisal(props: any) {
               .then((response: any) => {
                 console.log("response of refresh token ", response);
                 console.log("calling handle appraisal again.");
-                  handleAddApprisal();
-                
+                handleAddApprisal();
+
               })
               .catch((error) => {
                 console.log(
@@ -684,20 +684,20 @@ function AddAppraisal(props: any) {
               name="owner"
               onChange={onChangeInput}
             />
-            </div>
-            <div className="goal-details">
-              <ComboBox
-                label={t("appraisal_form.department")}
-                placeholder={t("appraisal_form.field_place_holders.department")}
-                className="flexGrow w33"
-                onChange={onChangeDepartment}
-                allowFreeform
-                autoComplete="on"
-                options={departmentOptions}
-              // styles={dropdownStyles}
-              />
+          </div>
+          <div className="goal-details">
+            <ComboBox
+              label={t("appraisal_form.department")}
+              placeholder={t("appraisal_form.field_place_holders.department")}
+              className="flexGrow w33"
+              onChange={onChangeDepartment}
+              allowFreeform
+              autoComplete="on"
+              options={departmentOptions}
+            // styles={dropdownStyles}
+            />
 
-            </div>
+          </div>
           <Separator />
           <div className="rowCheckBox">
             <div>

@@ -54,6 +54,7 @@ function App() {
   const [client_id] = useState(OAuthParameters.client_id);
   const [scope] = useState("all");
   const code = getOAuthCode();
+  console.log("code==>", code)
 
   const checkAccessToken = () => {
     const accesstokenData = {
@@ -65,12 +66,12 @@ function App() {
       const access_token = response.data.access_token;
       const refresh_token = response.data.refresh_token;
       const expires_in = response.data.expires_in;
-      sessionStorage.setItem('expires_in',expires_in)
+      sessionStorage.setItem('expires_in', expires_in)
       if (access_token && refresh_token) {
         dispatch(login(access_token, refresh_token));
       }
     });
-    
+
   }
 
 
@@ -99,7 +100,7 @@ function App() {
   return (
     <Suspense fallback={null}>
       <BrowserRouter>
-        {(auth.isLoggedIn === true && auth.isLoading == false )? (
+        {(auth.isLoggedIn === true && auth.isLoading == false) ? (
           <Switch>
             <div className="page-wrapper">
               <Navigation />
@@ -184,22 +185,22 @@ function App() {
             </div>
           </Switch>
         ) : (
-          auth.isLoading == true ? (
-            <Spinner
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                padding: "50px",
-                color: "#00597d",
-              }}
-              size={SpinnerSize.large}
-            />
-          ):
-          (<Switch>
-            <Route exact path="/" component={Login} />
-            <Route path="/*" render={() => <Redirect to="/" />} />
-          </Switch>)
-        ) }
+            auth.isLoading == true ? (
+              <Spinner
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  padding: "50px",
+                  color: "#00597d",
+                }}
+                size={SpinnerSize.large}
+              />
+            ) :
+              (<Switch>
+                <Route exact path="/" component={Login} />
+                <Route path="/*" render={() => <Redirect to="/" />} />
+              </Switch>)
+          )}
       </BrowserRouter>
     </Suspense>
   );

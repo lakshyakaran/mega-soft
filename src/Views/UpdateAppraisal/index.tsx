@@ -255,7 +255,7 @@ function UpdateAppraisal(props: any) {
   const [applicationError, setApplicationError] = useState(false);
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState("");
-  
+
 
   const handleApplicationError = (resp: any) => {
     if (resp.status >= 400 && resp.status <= 499) {
@@ -296,7 +296,7 @@ function UpdateAppraisal(props: any) {
     if (updateData.appraisal_description === "") {
       setErrMsgDescription("Please enter the description");
     }
-    if (updateData.appraisal_description.length  >= 100) {
+    if (updateData.appraisal_description.length >= 100) {
       setErrMsgDescription("Limit exceeds");
     }
     if (!pattern.test(updateData.appraisal_owner)) {
@@ -339,9 +339,9 @@ function UpdateAppraisal(props: any) {
         if (error.response) {
           console.log("message", error.response.data);
           console.log("status", error.response.status);
-          if (error.response.status === 403) {
+          if (error.response.status === 401) {
             console.log(
-              "inside 403 error block",
+              "inside 401 error block",
               JSON.stringify(error.response)
             );
             const refresh_token = sessionStorage.getItem("refresh_token");
@@ -512,24 +512,24 @@ function UpdateAppraisal(props: any) {
             /> */}
           </div>
           <div className="goal-details">
-              <ComboBox
-                label="Department"
-                className="flexGrow w33"
-                selectedKey={
-                  departmentOptions.find(
-                    (item) => item.key === updateData.department
-                  )?.key
-                }
-                onChange={(ev, item) =>
-                  setUpdateData({ ...updateData, department: item?.key })
-                }
-                allowFreeform
-                autoComplete="on"
-                options={departmentOptions}
-              // styles={dropdownStyles}
-              />
+            <ComboBox
+              label="Department"
+              className="flexGrow w33"
+              selectedKey={
+                departmentOptions.find(
+                  (item) => item.key === updateData.department
+                )?.key
+              }
+              onChange={(ev, item) =>
+                setUpdateData({ ...updateData, department: item?.key })
+              }
+              allowFreeform
+              autoComplete="on"
+              options={departmentOptions}
+            // styles={dropdownStyles}
+            />
 
-            </div>
+          </div>
           <Separator />
           <div className="rowCheckBox">
             <div>

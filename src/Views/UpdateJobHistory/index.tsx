@@ -180,7 +180,7 @@ function UpdateJobHistory(props: any) {
     }
   };
 
-  
+
   const handleUpdateJobHistory = () => {
     if (jobHistoryUpdateData.key_responsibilities === "") {
       setErrMsgResponsibility("Key Responsibilities is required");
@@ -205,7 +205,7 @@ function UpdateJobHistory(props: any) {
       jobHistoryUpdateData.position_held === "" ||
       jobHistoryUpdateData.qualifications === "" ||
       jobHistoryUpdateData.qualifications.length >= 140 ||
-      jobHistoryUpdateData.key_responsibilities.length >= 140||
+      jobHistoryUpdateData.key_responsibilities.length >= 140 ||
       checkFromDate > checkToDate
     ) {
       return false;
@@ -223,9 +223,9 @@ function UpdateJobHistory(props: any) {
         if (error.response) {
           console.log("message", error.response.data);
           console.log("status", error.response.status);
-          if (error.response.status === 403) {
+          if (error.response.status === 401) {
             console.log(
-              "inside 403 error block",
+              "inside 401 error block",
               JSON.stringify(error.response)
             );
             const refresh_token = sessionStorage.getItem("refresh_token");

@@ -71,8 +71,8 @@ function MainHeader(props: { children: any }) {
   // console.log("userInfo", userinformation);
 
   const handleLogout = () => {
-    // window.open(`${apiUrl.method}/logout`, "_self");
-    logout();
+    window.open(`${apiUrl.method}/logout`, "_self");
+    // logout();
     dispatch(revokeToken());
     // window.open(
     //   `https://id.nuagebiz.tech/auth/realms/megasoft/protocol/openid-connect/logout?redirect_uri=http://localhost:3000`,

@@ -9,7 +9,7 @@ export const fetchAppraisalData = (
   limit_page_length = 10,
   order_by = "id asc",
   filters: any,
-  role:any
+  role: any
 ) => async (dispatch: any): Promise<any> => {
   const token = sessionStorage.getItem("access_token");
   if (token === null) {
@@ -70,8 +70,8 @@ export const fetchAppraisalData = (
     return responseBody;
   } catch (error) {
     if (error.response) {
-      if (error.response.status === 403) {
-        console.log("inside 403 error block", JSON.stringify(error.response));
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
         const refresh_token = sessionStorage.getItem("refresh_token");
         const data = {
           refresh_token: refresh_token,
@@ -82,13 +82,13 @@ export const fetchAppraisalData = (
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
             console.log("indise response of if condtion==>")
-              fetchAppraisalData(
-                limit_start,
-                limit_page_length,
-                order_by,
-                filters,
-                role
-              );
+            fetchAppraisalData(
+              limit_start,
+              limit_page_length,
+              order_by,
+              filters,
+              role
+            );
           })
           .catch((error) => {
             console.log(
@@ -112,7 +112,7 @@ export const fetchAppraisalDataById = async (
   limit_page_length = 10,
   order_by = "id asc",
   filters: any,
-  role:any
+  role: any
 ) => {
   try {
     const token = sessionStorage.getItem("access_token");
@@ -163,8 +163,8 @@ export const fetchAppraisalDataById = async (
     return responseBody;
   } catch (error) {
     if (error.response) {
-      if (error.response.status === 403) {
-        console.log("inside 403 error block", JSON.stringify(error.response));
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
         const refresh_token = sessionStorage.getItem("refresh_token");
         const data = {
           refresh_token: refresh_token,
@@ -175,13 +175,13 @@ export const fetchAppraisalDataById = async (
             console.log("response of refresh token ", response);
             console.log("calling handle appraisal again.");
             fetchAppraisalDataById(
-                limit_start,
-                limit_page_length,
-                order_by,
-                filters,
-                role
-              );
-            
+              limit_start,
+              limit_page_length,
+              order_by,
+              filters,
+              role
+            );
+
           })
           .catch((error) => {
             console.log(
@@ -198,7 +198,7 @@ export const fetchAppraisalDataById = async (
   }
 };
 
-export const add_apprisal = async (data: any, role:any) => {
+export const add_apprisal = async (data: any, role: any) => {
   const token = sessionStorage.getItem("access_token");
   if (token === null) {
     return false;

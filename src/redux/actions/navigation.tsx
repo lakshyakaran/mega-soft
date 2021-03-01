@@ -38,8 +38,8 @@ export const sideNavigationData = (items: any) => async (
     return responseBody;
   } catch (error) {
     if (error.response) {
-      if (error.response.status === 403) {
-        console.log("inside 403 error block", JSON.stringify(error.response));
+      if (error.response.status === 401) {
+        console.log("inside 401 error block", JSON.stringify(error.response));
         const refresh_token = sessionStorage.getItem("refresh_token");
         const data = {
           refresh_token: refresh_token,
@@ -49,8 +49,8 @@ export const sideNavigationData = (items: any) => async (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling menu again.");
-              sideNavigationData(items);
-            
+            sideNavigationData(items);
+
           })
           .catch((error) => {
             console.log(
