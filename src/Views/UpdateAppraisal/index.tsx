@@ -352,16 +352,13 @@ function UpdateAppraisal(props: any) {
             handleRefreshToken(data)
               .then((response: any) => {
                 console.log("response of refresh token ", response);
-                console.log("calling handle appraisal again.");
-                if (!response.isAxiosError) {
-                  handleUpdateApprisal();
-                } else {
-                  console.log(
-                    "ERROR: 1. unable to refresh access_token logging out.",
-                    response
-                  );
-                  dispatch(logout());
-                }
+                console.log("calling update appraisal again.");
+                const access_token = response.data.access_token;
+                const refresh_token = response.data.refresh_token;
+                sessionStorage.setItem("access_token", access_token)
+                sessionStorage.setItem("refresh_token", refresh_token)
+                handleUpdateApprisal();
+
               })
               .catch((error) => {
                 console.log(

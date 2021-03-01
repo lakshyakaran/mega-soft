@@ -185,14 +185,26 @@ function UpdateJobHistory(props: any) {
     if (jobHistoryUpdateData.key_responsibilities === "") {
       setErrMsgResponsibility("Key Responsibilities is required");
     }
+    if (jobHistoryUpdateData.key_responsibilities.length >= 140) {
+      setErrMsgResponsibility("Limit exceeds");
+    }
     if (jobHistoryUpdateData.place_of_posting === "") {
       setErrMsgPlace("Place of Posting is required");
+    }
+    if (jobHistoryUpdateData.place_of_posting.length >= 100) {
+      setErrMsgPlace("Limit exceeds");
     }
     if (jobHistoryUpdateData.position_held === "") {
       setErrMsgPosition("Position Held is required");
     }
+    if (jobHistoryUpdateData.position_held.length >= 100) {
+      setErrMsgPosition("Limit exceeds");
+    }
     if (jobHistoryUpdateData.qualifications === "") {
       setErrMsgQualifications("Qualifications is required");
+    }
+    if (jobHistoryUpdateData.qualifications.length >= 140) {
+      setErrMsgQualifications("Limit exceeds");
     }
     let checkFromDate = moment(jobHistoryUpdateData.from_date).format("YYYY-MM-DD");
     let checkToDate = moment(jobHistoryUpdateData.to_date).format("YYYY-MM-DD");
@@ -206,6 +218,8 @@ function UpdateJobHistory(props: any) {
       jobHistoryUpdateData.qualifications === "" ||
       jobHistoryUpdateData.qualifications.length >= 140 ||
       jobHistoryUpdateData.key_responsibilities.length >= 140 ||
+      jobHistoryUpdateData.place_of_posting.length >= 100 ||
+      jobHistoryUpdateData.position_held.length >= 100 ||
       checkFromDate > checkToDate
     ) {
       return false;

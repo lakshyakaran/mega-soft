@@ -187,7 +187,7 @@ function UpdateGoals(props: any) {
     if (updateGoalData.weightage === "") {
       setErrMsgWeightage("Weightage is required");
     }
-    if (updateGoalData.weightage.length > 100) {
+    if (updateGoalData.weightage.length > 3) {
       setErrMsgWeightage("Limit exceeds");
     }
     if (
@@ -198,7 +198,7 @@ function UpdateGoals(props: any) {
       updateGoalData.kra.length >= 100 ||
       updateGoalData.goal.length >= 100 ||
       updateGoalData.measure.length >= 100 ||
-      updateGoalData.weightage.length > 100 ||
+      updateGoalData.weightage.length > 3 ||
       updateGoalData.measure === ""
     ) {
       return false;

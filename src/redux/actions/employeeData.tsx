@@ -56,8 +56,8 @@ export const fetchEmployeeData = (
         handleRefreshToken(data)
           .then((response: any) => {
             console.log("response of refresh token ", response);
-            console.log("calling handle appraisal again.");
-            fetchEmployeeData(doctype, limit_start, limit, role, filters);
+            console.log("calling goalsetting again.");
+            dispatch(fetchEmployeeData(doctype, limit_start, limit, role, filters));
 
           })
           .catch((error) => {
@@ -120,7 +120,7 @@ export const fetchEmployeeDataByID = async (
         handleRefreshToken(data)
           .then((response: any) => {
             console.log("response of refresh token ", response);
-            console.log("calling handle appraisal again.");
+            console.log("calling goalsetting by id again.");
             fetchEmployeeData(doctype, limit_start, limit, role, filters);
 
           })

@@ -227,7 +227,7 @@ function AddGoals(props: any) {
     if (goalInputData.weightage === "") {
       setErrMsgWeightage("Weightage is required");
     }
-    if (goalInputData.weightage.length > 100) {
+    if (goalInputData.weightage.length > 3) {
       setErrMsgWeightage("Limit exceeds");
     }
     if (goalType.text === "") {
@@ -243,7 +243,7 @@ function AddGoals(props: any) {
       goalInputData.goal === "" ||
       goalInputData.measure === "" ||
       goalInputData.weightage === "" ||
-      goalInputData.weightage.length > 100 ||
+      goalInputData.weightage.length > 3 ||
       goalType.text === ""
     ) {
       return false;

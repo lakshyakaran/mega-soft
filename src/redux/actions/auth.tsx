@@ -56,7 +56,6 @@ export const handleRefreshToken = async (data: any) => {
     formData.append("client_id", data.client_id);
     const response = await axios({
       url: `${apiUrl.method}/frappe.integrations.oauth2.get_token`,
-
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -64,6 +63,11 @@ export const handleRefreshToken = async (data: any) => {
       },
       data: formData,
     });
+    console.log("handleRefreshToken", response.data);
+    const access_token = response.data.access_token;
+    const refresh_token = response.data.refresh_token;
+    sessionStorage.setItem("access_token", access_token)
+    sessionStorage.setItem("refresh_token", refresh_token)
     return response;
   } catch (error) {
     return {

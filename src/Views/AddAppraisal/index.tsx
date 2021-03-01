@@ -558,13 +558,6 @@ function AddAppraisal(props: any) {
                 dispatch(logout());
               });
           } else {
-            // if (error.response.status > 400 && error.response.status < 499) {
-            //   errorcode(400);
-            // }
-            // if (error.response.status > 500 && error.response.status < 599) {
-            //   errorcode(500);
-            // }
-
             handleApplicationError(error.response);
           }
           // console.log(error.response.headers);

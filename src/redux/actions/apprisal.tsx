@@ -81,17 +81,13 @@ export const fetchAppraisalData = (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling appraisal list again.");
-            const access_token = response.data.access_token;
-            const refresh_token = response.data.refresh_token;
-            sessionStorage.setItem("access_token", access_token)
-            sessionStorage.setItem("refresh_token", refresh_token)
-            fetchAppraisalData(
+            dispatch(fetchAppraisalData(
               limit_start,
               limit_page_length,
               order_by,
               filters,
               role
-            );
+            ));
           })
           .catch((error) => {
             console.log(
@@ -177,6 +173,7 @@ export const fetchAppraisalDataById = async (
           .then((response: any) => {
             console.log("response of refresh token ", response);
             console.log("calling handle fetchAppraisalDataById again.");
+
             fetchAppraisalDataById(
               limit_start,
               limit_page_length,

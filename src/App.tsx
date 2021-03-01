@@ -64,8 +64,6 @@ function App() {
     getAccessToken(accesstokenData).then((response: any) => {
       const access_token = response.data.access_token;
       const refresh_token = response.data.refresh_token;
-      const expires_in = response.data.expires_in;
-      sessionStorage.setItem('expires_in', expires_in)
       if (access_token && refresh_token) {
         dispatch(login(access_token, refresh_token));
       }

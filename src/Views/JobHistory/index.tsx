@@ -191,8 +191,14 @@ function JobHistory(props: any) {
     if (jobHistoryData.place === "") {
       setErrMsgPlace("Place of posting is required");
     }
+    if (jobHistoryData.place.length >= 100) {
+      setErrMsgPlace("Limit exceeds");
+    }
     if (jobHistoryData.position === "") {
       setErrMsgPosition("Position held is required");
+    }
+    if (jobHistoryData.position.length >= 100) {
+      setErrMsgPosition("Limit exceeds");
     }
     if (jobHistoryData.qualifications === "") {
       setErrMsgQualifications("Qualifications is required");
@@ -229,6 +235,8 @@ function JobHistory(props: any) {
       jobHistoryData.qualifications === "" ||
       jobHistoryData.qualifications.length >= 140 ||
       jobHistoryData.responsibilities.length >= 140 ||
+      jobHistoryData.position.length >= 100 ||
+      jobHistoryData.place.length >= 100 ||
       !fromDate ||
       !toDate ||
       checkFromDate > checkToDate
@@ -257,15 +265,8 @@ function JobHistory(props: any) {
               .then((response: any) => {
                 console.log("response of refresh token ", response);
                 console.log("calling handle appraisal again.");
-                if (!response.isAxiosError) {
-                  handleAddJobHistory();
-                } else {
-                  console.log(
-                    "ERROR: 1. unable to refresh access_token logging out.",
-                    response
-                  );
-                  dispatch(logout());
-                }
+                handleAddJobHistory();
+
               })
               .catch((error) => {
                 console.log(
